@@ -2,7 +2,7 @@
 // /en/days-until-[slug]/
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CountdownCalc from '../../components/calculator/CountdownCalc';
-import { INDEXED_EVENTS, getDaysUntil } from '../../data/dateEvents';
+import { INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../../data/dateEvents';
 import type { DateEvent } from '../../data/dateEvents';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../../lib/seoEngine';
 import { countdownIntros_en, variantIndex } from '../../data/contentVariants';
