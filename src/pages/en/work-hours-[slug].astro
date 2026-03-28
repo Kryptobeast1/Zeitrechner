@@ -136,8 +136,8 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           <div class="embedded-calc__subtitle">Adjust break duration and times for your shift</div>
         </div>
         <WorkHoursCalc client:visible lang="en"
-          defaultStart={`${String(range.start).padStart(2,'0')}:00`}
-          defaultEnd={`${String(range.end).padStart(2,'0')}:00`}
+          defaultStart={formatHour24(range.start)}
+          defaultEnd={formatHour24(range.end)}
           defaultBreak={30}
         />
       </div>

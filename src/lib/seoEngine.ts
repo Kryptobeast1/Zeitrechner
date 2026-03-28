@@ -75,46 +75,45 @@ const descTemplates: Record<PageType, Record<Lang, (params: Record<string, strin
 };
 
 // ─── URL BUILDERS ─────────────────────────────────────────────────────────────
+// CRITICAL: We use relative paths for internal navigation to avoid dev-mode 404s.
 
 export function getHubUrl(lang: Lang): string {
-  return lang === 'de' ? `${BASE_URL}/de/zeitrechner/` : `${BASE_URL}/en/time-calculator/`;
+  return lang === 'de' ? `/de/zeitrechner/` : `/en/time-calculator/`;
 }
 
-/**
- * Format hours to clean slugs (e.g. 8.5 -> 8-30)
- */
 export function formatTimeSlug(h: string | number): string {
   return h.toString().replace('.', '-').replace('-5', '-30');
 }
 
 export function getTimeRangeUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `${BASE_URL}/de/stunden-zwischen-${slug}/`
-    : `${BASE_URL}/en/hours-between-${slug}/`;
+    ? `/de/stunden-zwischen-${slug}/`
+    : `/en/hours-between-${slug}/`;
 }
 
 export function getWorkHoursUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `${BASE_URL}/de/arbeitsstunden-${slug}/`
-    : `${BASE_URL}/en/work-hours-${slug}/`;
+    ? `/de/arbeitsstunden-${slug}/`
+    : `/en/work-hours-${slug}/`;
 }
 
 export function getCountdownUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `${BASE_URL}/de/tage-bis-${slug}/`
-    : `${BASE_URL}/en/days-until-${slug}/`;
+    ? `/de/tage-bis-${slug}/`
+    : `/en/days-until-${slug}/`;
+}
+
+// Utility to prepends domain for Canonical/Sitemap
+export function getFullUrl(path: string): string {
+  return `${BASE_URL}${path}`;
 }
 
 // ─── INDEXING STRATEGY ────────────────────────────────────────────────────────
 
-/**
- * Determines if a page should be indexed based on demand and uniqueness.
- * Phase 3: Lowering thresholds for niche Shift intent.
- */
 export function shouldIndex(type: PageType, demandScore: number): boolean {
   if (type === 'hub') return true;
-  if (type === 'work-hours') return demandScore >= 40; // Capture more niche shifts
-  return demandScore >= 50; // Capture more long-tail time ranges in Phase 3
+  if (type === 'work-hours') return demandScore >= 40; 
+  return demandScore >= 50; 
 }
 
 // ─── META BUILDER ─────────────────────────────────────────────────────────────
@@ -134,11 +133,11 @@ export function buildSEOMeta(
   return {
     title,
     description,
-    canonical,
+    canonical: getFullUrl(canonical),
     hreflang: [
-      { lang, url: canonical },
-      { lang: alternateLang, url: alternateUrl },
-      { lang: 'x-default', url: alternateUrl },
+      { lang, url: getFullUrl(canonical) },
+      { lang: alternateLang, url: getFullUrl(alternateUrl) },
+      { lang: 'x-default', url: getFullUrl(alternateUrl) },
     ],
     noindex,
   };
@@ -166,7 +165,7 @@ export function buildBreadcrumbSchema(items: { name: string; url: string }[]): R
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: item.url,
+      item: item.url.startsWith('/') ? getFullUrl(item.url) : item.url,
     })),
   };
 }
@@ -176,7 +175,7 @@ export function buildWebAppSchema(lang: Lang): Record<string, unknown> {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: lang === 'de' ? 'Zeitrechner' : 'Time Calculator',
-    url: getHubUrl(lang),
+    url: getFullUrl(getHubUrl(lang)),
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },

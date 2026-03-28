@@ -105,37 +105,29 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
   <!-- ─── POPULAR TIME RANGES ────────────────────────────────────────────── -->
   <section class="section" style="padding-top: 0;" id="arbeit">
     <div class="container">
-      <div class="internal-links">
+      <div class="internal-links" id="zeiten">
         <div class="internal-links__header">
           <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏰ Beliebte Zeitspannen</h2>
         </div>
         <div class="link-grid">
-          {popularRanges.map(r => {
-            const hours = r.end > r.start ? r.end - r.start : 24 - r.start + r.end;
-            return (
-              <a href={getTimeRangeUrl(lang, r.deSlug)} class="link-card">
-                <span>Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)}</span>
-                <span class="link-card__arrow">→</span>
-              </a>
-            );
-          })}
+          {popularRanges.map(r => (
+            <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
+              <span>Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
         </div>
       </div>
 
-      <!-- Work hours links -->
-      <div class="internal-links" style="margin-top: 32px;">
+      <!-- Arbeitsstunden Section -->
+      <div class="internal-links" id="arbeitsstunden" style="margin-top: 32px;">
         <div class="internal-links__header">
           <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">💼 Arbeitsstunden-Rechner</h2>
         </div>
         <div class="link-grid">
-          {[
-            { slug: '9-und-17', start: '09:00', end: '17:00', break: 30 },
-            { slug: '8-und-17', start: '08:00', end: '17:00', break: 60 },
-            { slug: '7-und-15', start: '07:00', end: '15:00', break: 30 },
-            { slug: '8-und-16', start: '08:00', end: '16:00', break: 30 },
-          ].map(w => (
-            <a href={`/de/arbeitsstunden-${w.slug}/`} class="link-card">
-              <span>Arbeitsstunden {w.start} – {w.end}</span>
+          {INDEXED_RANGES.filter(r => r.workShift).map(r => (
+            <a href={getWorkHoursUrl(lang, r.slug)} class="link-card">
+              <span>Arbeitsstunden {formatHour24(r.start)} – {formatHour24(r.end)}</span>
               <span class="link-card__arrow">→</span>
             </a>
           ))}

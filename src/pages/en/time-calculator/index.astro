@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ModeTabbar from '../../../components/calculator/ModeTabbar';
-import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getCountdownUrl } from '../../../lib/seoEngine';
+import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../../../lib/seoEngine';
 import { INDEXED_RANGES, formatHour24 } from '../../../data/timeRanges';
 import { INDEXED_EVENTS } from '../../../data/dateEvents';
 
@@ -123,21 +123,33 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
         </div>
       </section>
 
+      <!-- Working Hours Calculator Section -->
+      <div class="internal-links" id="working-hours">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">💼 Working Hours Calculator</h2>
+        </div>
+        <div class="link-grid">
+          {INDEXED_RANGES.filter(r => r.workShift).map(r => (
+            <a href={getWorkHoursUrl(lang, r.slug)} class="link-card">
+              <span>Working hours {formatHour24(r.start)} – {formatHour24(r.end)}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
       <!-- Internal Link Mesh -->
-      <div class="internal-links">
+      <div class="internal-links" id="ranges">
         <div class="internal-links__header">
           <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏰ Popular Time Ranges</h2>
         </div>
         <div class="link-grid">
-          {popularRanges.map(r => {
-            const hours = r.end > r.start ? r.end - r.start : 24 - r.start + r.end;
-            return (
-              <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
-                <span>Hours between {formatHour24(r.start)} and {formatHour24(r.end)}</span>
-                <span class="link-card__arrow">→</span>
-              </a>
-            );
-          })}
+          {popularRanges.map(r => (
+            <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
+              <span>Hours between {formatHour24(r.start)} and {formatHour24(r.end)}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
         </div>
       </div>
 
