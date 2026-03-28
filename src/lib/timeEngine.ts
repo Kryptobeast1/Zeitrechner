@@ -46,6 +46,7 @@ export interface CountdownResult {
   seconds: number;
   isPast: boolean;
   targetDate: string;
+  nextOccurrence?: string; // ISO string for same date next year
 }
 
 export interface NowResult {
@@ -188,23 +189,36 @@ export function calcWorkHours(
 
 export function calcCountdown(targetISO: string): CountdownResult {
   const now = new Date();
-  const target = new Date(targetISO);
+  let target = new Date(targetISO);
   let diffMs = target.getTime() - now.getTime();
   const isPast = diffMs < 0;
-  diffMs = Math.abs(diffMs);
+  
+  let nextOccurrence: string | undefined;
+  
+  if (isPast) {
+    // If it's in the past, calculate when it happens next year (assuming recurring holiday)
+    const next = new Date(targetISO);
+    next.setFullYear(now.getFullYear());
+    if (next.getTime() < now.getTime()) {
+      next.setFullYear(now.getFullYear() + 1);
+    }
+    nextOccurrence = next.toISOString();
+  }
 
-  const totalSeconds = Math.floor(diffMs / 1000);
-  const totalMinutes = Math.floor(diffMs / 60000);
-  const totalHours = Math.floor(diffMs / 3600000);
-  const totalDays = Math.floor(diffMs / 86400000);
+  const absDiff = Math.abs(diffMs);
 
-  const days = Math.floor(diffMs / 86400000);
-  const hours = Math.floor((diffMs % 86400000) / 3600000);
-  const minutes = Math.floor((diffMs % 3600000) / 60000);
-  const seconds = Math.floor((diffMs % 60000) / 1000);
+  const totalSeconds = Math.floor(absDiff / 1000);
+  const totalMinutes = Math.floor(absDiff / 60000);
+  const totalHours = Math.floor(absDiff / 3600000);
+  const totalDays = Math.floor(absDiff / 86400000);
+
+  const days = Math.floor(absDiff / 86400000);
+  const hours = Math.floor((absDiff % 86400000) / 3600000);
+  const minutes = Math.floor((absDiff % 3600000) / 60000);
+  const seconds = Math.floor((absDiff % 60000) / 1000);
 
   return {
-    totalMs: Math.abs(target.getTime() - now.getTime()),
+    totalMs: absDiff,
     totalSeconds,
     totalMinutes,
     totalHours,
@@ -215,6 +229,7 @@ export function calcCountdown(targetISO: string): CountdownResult {
     seconds,
     isPast,
     targetDate: targetISO,
+    nextOccurrence,
   };
 }
 

@@ -113,7 +113,25 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
       {result && (
         <div className="result-panel" id="cd-result">
           {result.isPast ? (
-            <p style={{ color: 'var(--clr-amber)' }}>⚠ {L.passed}</p>
+            <div style={{ textAlign: 'center', padding: '20px 0' }}>
+              <p style={{ color: 'var(--clr-amber)', fontSize: '1.1rem', marginBottom: '16px' }}>
+                ⚠ {L.passed} ({result.days} {L.days} ago)
+              </p>
+              {result.nextOccurrence && (
+                <button 
+                  className="btn btn--accent" 
+                  onClick={() => {
+                    const nextDate = result.nextOccurrence?.split('T')[0] ?? '';
+                    setTargetDate(nextDate);
+                    // Force a tick for the new date
+                    const r = calcCountdown(nextDate + 'T00:00:00');
+                    setResult(r);
+                  }}
+                >
+                  🔄 {lang === 'de' ? 'Zum nächsten Termin springen' : 'Switch to next occurrence'}
+                </button>
+              )}
+            </div>
           ) : (
             <>
               {eventName && (
