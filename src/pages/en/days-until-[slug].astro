@@ -18,7 +18,22 @@ interface Props { event: DateEvent; }
 const { event } = Astro.props as Props;
 
 const lang = 'en';
+const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
 const days = Math.max(0, getDaysUntil(event.targetDate));
+
+// Dynamic display name if year shifted
+let displayName = event.name;
+const currentTargetYear = new Date(activeTargetDate).getFullYear();
+if (yearShift > 0) {
+  if (/20\d{2}/.test(displayName)) {
+    // Replace old year with new year
+    displayName = displayName.replace(/20\d{2}/, currentTargetYear.toString());
+  } else {
+    // Append year if not present
+    displayName = `${displayName} ${currentTargetYear}`;
+  }
+}
+
 const canonical = getCountdownUrl(lang, event.slug);
 const altUrl = getCountdownUrl('de', event.deSlug);
 
@@ -29,18 +44,18 @@ const hreflang = [
 ];
 
 const vi = variantIndex(event.slug, countdownIntros_en.length);
-const introHtml = countdownIntros_en[vi](event.name, days);
+const introHtml = countdownIntros_en[vi](displayName, days);
 
 const seoMeta = buildSEOMeta(
   'countdown', lang,
-  { name: event.name, days: days.toString() },
+  { name: displayName, days: days.toString() },
   canonical, 'de', altUrl,
 );
 
 const faqs = [
-  { q: `How many hours until ${event.name}?`, a: `There are ${days * 24} hours until ${event.name} (${event.targetDate}).` },
-  { q: `How many minutes until ${event.name}?`, a: `There are ${(days * 24 * 60).toLocaleString()} minutes until ${event.name}.` },
-  { q: `What day is ${event.name}?`, a: `${event.name} falls on ${new Date(event.targetDate).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
+  { q: `How many hours until ${displayName}?`, a: `There are ${days * 24} hours until ${displayName} (${activeTargetDate}).` },
+  { q: `How many minutes until ${displayName}?`, a: `There are ${(days * 24 * 60).toLocaleString()} minutes until ${displayName}.` },
+  { q: `What day is ${displayName}?`, a: `${displayName} falls on ${new Date(activeTargetDate).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
 ];
 
 const jsonLd = [
@@ -48,7 +63,7 @@ const jsonLd = [
   buildBreadcrumbSchema([
     { name: 'Home', url: 'https://zeitrechner.app/' },
     { name: 'Time Calculator', url: getHubUrl(lang) },
-    { name: `Days Until ${event.name}`, url: canonical },
+    { name: `Days Until ${displayName}`, url: canonical },
   ]),
 ];
 
@@ -72,7 +87,7 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         <span class="breadcrumb__sep">›</span>
         <a href={getHubUrl(lang)}>Time Calculator</a>
         <span class="breadcrumb__sep">›</span>
-        <span aria-current="page">Days Until {event.name}</span>
+        <span aria-current="page">Days Until {displayName}</span>
       </nav>
 
       <div class="landing-hero__meta">
@@ -81,7 +96,7 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         <span class="last-updated">Live updated: {lastUpdated}</span>
       </div>
 
-      <h1>How Many Days Until {event.name}?</h1>
+      <h1>How Many Days Until {displayName}?</h1>
 
       <div class="featured-snippet">
         <div class="featured-snippet__label">Quick Answer</div>
@@ -107,7 +122,7 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           <span class="stat-card__label">Weeks</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">{new Date(event.targetDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' })}</span>
+          <span class="stat-card__value">{new Date(activeTargetDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' })}</span>
           <span class="stat-card__label">Date</span>
         </div>
       </div>
@@ -118,12 +133,12 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
     <div class="container container--narrow">
       <div class="embedded-calc">
         <div class="embedded-calc__header">
-          <div class="embedded-calc__title">Live Countdown to {event.name}</div>
+          <div class="embedded-calc__title">Live Countdown to {displayName}</div>
           <div class="embedded-calc__subtitle">Updates every second</div>
         </div>
         <CountdownCalc client:load lang="en"
-          defaultTarget={event.targetDate}
-          eventName={event.name}
+          defaultTarget={activeTargetDate}
+          eventName={displayName}
         />
       </div>
     </div>

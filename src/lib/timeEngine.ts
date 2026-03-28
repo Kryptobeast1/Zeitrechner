@@ -47,6 +47,7 @@ export interface CountdownResult {
   isPast: boolean;
   targetDate: string;
   nextOccurrence?: string; // ISO string for same date next year
+  isJumped?: boolean;      // Whether the date was shifted to the next year
 }
 
 export interface NowResult {
@@ -187,22 +188,31 @@ export function calcWorkHours(
 
 // ─── 4. COUNTDOWN ────────────────────────────────────────────────────────────
 
-export function calcCountdown(targetISO: string): CountdownResult {
+export function calcCountdown(targetISO: string, autoJump = true): CountdownResult {
   const now = new Date();
   let target = new Date(targetISO);
   let diffMs = target.getTime() - now.getTime();
-  const isPast = diffMs < 0;
+  let isPast = diffMs < 0;
+  let isJumped = false;
   
   let nextOccurrence: string | undefined;
   
   if (isPast) {
-    // If it's in the past, calculate when it happens next year (assuming recurring holiday)
+    // Calculate for metadata
     const next = new Date(targetISO);
     next.setFullYear(now.getFullYear());
     if (next.getTime() < now.getTime()) {
       next.setFullYear(now.getFullYear() + 1);
     }
     nextOccurrence = next.toISOString();
+
+    // Perform auto-jump if requested
+    if (autoJump) {
+      target = next;
+      diffMs = target.getTime() - now.getTime();
+      isPast = false;
+      isJumped = true;
+    }
   }
 
   const absDiff = Math.abs(diffMs);
@@ -228,8 +238,9 @@ export function calcCountdown(targetISO: string): CountdownResult {
     minutes,
     seconds,
     isPast,
-    targetDate: targetISO,
+    targetDate: target.toISOString(),
     nextOccurrence,
+    isJumped,
   };
 }
 

@@ -75,33 +75,42 @@ export const ALL_EVENTS: DateEvent[] = [
 export const INDEXED_EVENTS = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2028);
 
 /**
+ * Helper: Find the next occurrence of a potentially passed date.
+ * If target is Jan 1st 2026 and today is March 2026, it returns Jan 1st 2027.
+ */
+export function getNextOccurrence(target: string): { date: string; yearShift: number } {
+  const now = new Date();
+  const originalDate = new Date(target);
+  let targetDate = new Date(target);
+  let yearShift = 0;
+
+  if (targetDate.getTime() < now.getTime()) {
+    // Attempt current year first
+    targetDate.setFullYear(now.getFullYear());
+    if (targetDate.getTime() < now.getTime()) {
+      targetDate.setFullYear(now.getFullYear() + 1);
+    }
+    yearShift = targetDate.getFullYear() - originalDate.getFullYear();
+  }
+  
+  // Return YYYY-MM-DD
+  const y = targetDate.getFullYear();
+  const m = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+  const d = targetDate.getDate().toString().padStart(2, '0');
+  return { date: `${y}-${m}-${d}`, yearShift };
+}
+
+/**
  * Helper: Days until a date.
- * If the date has passed and it's a common holiday (category 'holiday'), 
- * automatically moves to the next year to provide a valid countdown.
+ * Always ensures a future-facing countdown for recurring events.
  */
 export function getDaysUntil(target: string): number {
   const now = new Date();
-  let targetDate = new Date(target);
-
-  // If the target has passed, check if we should jump to next year
-  if (targetDate.getTime() < now.getTime()) {
-    // Check if it's a fixed-date recurring holiday (simple check: does its target date exist in INDEXED_EVENTS as a generic?)
-    // Or just simple rule: if it's in the past, add 1 year if it's not a specific-year event.
-    // For now, let's keep it simple: if it's 0 or negative, we show 0 in the UI unless we manually update the data.
-    // BUT to fix the "0 day" bug for the user, I'll calculate exactly.
-    
-    // Better Logic: If target is in the past, most users want the NEXT occurrence.
-    const yearDiff = now.getFullYear() - targetDate.getFullYear();
-    if (yearDiff >= 0) {
-      targetDate.setFullYear(now.getFullYear());
-      if (targetDate.getTime() < now.getTime()) {
-        targetDate.setFullYear(now.getFullYear() + 1);
-      }
-    }
-  }
-
+  const { date } = getNextOccurrence(target);
+  const targetDate = new Date(date);
+  
   const diffTime = targetDate.getTime() - now.getTime();
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 }
 
 /**

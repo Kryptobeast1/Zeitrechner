@@ -18,7 +18,22 @@ interface Props { event: DateEvent; }
 const { event } = Astro.props as Props;
 
 const lang = 'de';
+const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
 const days = Math.max(0, getDaysUntil(event.targetDate));
+
+// Dynamic display name if year shifted
+let displayName = event.deName;
+const currentTargetYear = new Date(activeTargetDate).getFullYear();
+if (yearShift > 0) {
+  if (/20\d{2}/.test(displayName)) {
+    // Replace old year with new year
+    displayName = displayName.replace(/20\d{2}/, currentTargetYear.toString());
+  } else {
+    // Append year if not present
+    displayName = `${displayName} ${currentTargetYear}`;
+  }
+}
+
 const canonical = getCountdownUrl(lang, event.deSlug);
 const altUrl = getCountdownUrl('en', event.slug);
 
@@ -29,18 +44,18 @@ const hreflang = [
 ];
 
 const vi = variantIndex(event.deSlug, countdownIntros_de.length);
-const introHtml = countdownIntros_de[vi](event.deName, days);
+const introHtml = countdownIntros_de[vi](displayName, days);
 
 const seoMeta = buildSEOMeta(
   'countdown', lang,
-  { name: event.deName, days: days.toString() },
+  { name: displayName, days: days.toString() },
   canonical, 'en', altUrl,
 );
 
 const faqs = [
-  { q: `Wie viele Stunden bis ${event.deName}?`, a: `Es sind noch ${days * 24} Stunden bis ${event.deName} (${event.targetDate}).` },
-  { q: `Wie viele Minuten bis ${event.deName}?`, a: `Noch ${(days * 24 * 60).toLocaleString('de-DE')} Minuten bis ${event.deName}.` },
-  { q: `Was ist das genaue Datum von ${event.deName}?`, a: `${event.deName} fällt auf den ${new Date(event.targetDate).toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
+  { q: `Wie viele Stunden bis ${displayName}?`, a: `Es sind noch ${days * 24} Stunden bis ${displayName} (${activeTargetDate}).` },
+  { q: `Wie viele Minuten bis ${displayName}?`, a: `Noch ${(days * 24 * 60).toLocaleString('de-DE')} Minuten bis ${displayName}.` },
+  { q: `Was ist das genaue Datum von ${displayName}?`, a: `${displayName} fällt auf den ${new Date(activeTargetDate).toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
 ];
 
 const jsonLd = [
@@ -48,7 +63,7 @@ const jsonLd = [
   buildBreadcrumbSchema([
     { name: 'Startseite', url: 'https://zeitrechner.app/' },
     { name: 'Zeitrechner', url: getHubUrl(lang) },
-    { name: `Tage bis ${event.deName}`, url: canonical },
+    { name: `Tage bis ${displayName}`, url: canonical },
   ]),
 ];
 
@@ -74,7 +89,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <span class="breadcrumb__sep">›</span>
         <a href={getHubUrl(lang)}>Zeitrechner</a>
         <span class="breadcrumb__sep">›</span>
-        <span aria-current="page">Tage bis {event.deName}</span>
+        <span aria-current="page">Tage bis {displayName}</span>
       </nav>
 
       <div class="landing-hero__meta">
@@ -83,7 +98,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <span class="last-updated">Live aktualisiert: {lastUpdated}</span>
       </div>
 
-      <h1>Wie viele Tage bis {event.deName}?</h1>
+      <h1>Wie viele Tage bis {displayName}?</h1>
 
       <div class="featured-snippet">
         <div class="featured-snippet__label">Schnellantwort</div>
@@ -109,7 +124,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <span class="stat-card__label">Wochen</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">{new Date(event.targetDate).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</span>
+          <span class="stat-card__value">{new Date(activeTargetDate).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</span>
           <span class="stat-card__label">Datum</span>
         </div>
       </div>
@@ -121,12 +136,12 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     <div class="container container--narrow">
       <div class="embedded-calc">
         <div class="embedded-calc__header">
-          <div class="embedded-calc__title">Live-Countdown bis {event.deName}</div>
+          <div class="embedded-calc__title">Live-Countdown bis {displayName}</div>
           <div class="embedded-calc__subtitle">Aktualisiert jede Sekunde</div>
         </div>
         <CountdownCalc client:load lang="de"
-          defaultTarget={event.targetDate}
-          eventName={event.deName}
+          defaultTarget={activeTargetDate}
+          eventName={displayName}
         />
       </div>
     </div>

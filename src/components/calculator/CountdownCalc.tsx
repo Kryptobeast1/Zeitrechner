@@ -137,6 +137,11 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
               {eventName && (
                 <div className="result-headline">{eventName}</div>
               )}
+              {result.isJumped && (
+                <div style={{ color: 'var(--clr-text-3)', fontSize: '0.8rem', textAlign: 'center', marginBottom: '8px' }}>
+                  🕒 {lang === 'de' ? 'Countdown zum nächsten Termin' : 'Counting to next occurrence'}
+                </div>
+              )}
               <div className="countdown-display">
                 <div className="countdown-unit">
                   <span className="countdown-value">{pad2(result.days)}</span>
