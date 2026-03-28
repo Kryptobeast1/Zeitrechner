@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ModeTabbar from '../../../components/calculator/ModeTabbar';
+import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../../../lib/seoEngine';
+import { INDEXED_RANGES, formatHour24 } from '../../../data/timeRanges';
+import { INDEXED_EVENTS } from '../../../data/dateEvents';
+
+const lang = 'de';
+const canonical = getHubUrl(lang);
+const altUrl = getHubUrl('en');
+const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'en', url: altUrl },
+  { lang: 'x-default', url: altUrl },
+];
+
+const jsonLd = [
+  buildWebAppSchema(lang),
+  buildBreadcrumbSchema([
+    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Zeitrechner', url: canonical },
+  ]),
+];
+
+// Popular ranges for links
+const popularRanges = INDEXED_RANGES.filter(r => r.priority === 'high').slice(0, 9);
+const popularEvents = INDEXED_EVENTS.filter(e => e.priority === 'high').slice(0, 6);
+
+const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+---
+
+<BaseLayout
+  title="Zeitrechner — Stunden, Arbeitszeit & Countdown berechnen"
+  description="Kostenloser Online-Zeitrechner. Berechne Zeitdifferenzen, addiere oder subtrahiere Stunden, ermittle Nettoarbeitszeit und erstelle Live-Countdowns. Schnell, präzise und mobil."
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+>
+
+  <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
+  <section class="section landing-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Zeitrechner</span>
+      </nav>
+
+      <div class="landing-hero__meta">
+        <span class="badge badge--accent">⚡ Kostenlos</span>
+        <span class="badge badge--violet">🌍 Deutsch</span>
+        <span class="badge badge--green">✓ DST-sicher</span>
+      </div>
+
+      <h1>Zeitrechner — Stunden, Zeiten & Countdowns</h1>
+
+      <p class="landing-hero__lead">
+        Berechne Zeitdifferenzen, addiere Stunden, ermittle Nettoarbeitszeiten und zähle Tage bis zu wichtigen Ereignissen.
+        <strong>5 Modi, sofortige Ergebnisse, keine Registrierung.</strong>
+      </p>
+
+      <!-- Live time -->
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+        <span style="font-size: 0.8rem; color: var(--clr-text-3);">Aktuelle Zeit:</span>
+        <span id="live-time" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);">{currentTime}</span>
+        <span class="last-updated">Zuletzt aktualisiert: {lastUpdated}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CALCULATOR ─────────────────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;" id="differenz">
+    <div class="container">
+      <ModeTabbar client:load lang="de" />
+    </div>
+  </section>
+
+  <!-- ─── FEATURED SNIPPETS ──────────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-card__value">8h</span>
+          <span class="stat-card__label">Stunden von 9 bis 17 Uhr</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">7.5h</span>
+          <span class="stat-card__label">Netto (30 Min Pause)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">480</span>
+          <span class="stat-card__label">Minuten Standardarbeitstag</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">24h</span>
+          <span class="stat-card__label">Ein vollständiger Zyklus</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── POPULAR TIME RANGES ────────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;" id="arbeit">
+    <div class="container">
+      <div class="internal-links">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏰ Beliebte Zeitspannen</h2>
+        </div>
+        <div class="link-grid">
+          {popularRanges.map(r => {
+            const hours = r.end > r.start ? r.end - r.start : 24 - r.start + r.end;
+            return (
+              <a href={getTimeRangeUrl(lang, r.deSlug)} class="link-card">
+                <span>Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)}</span>
+                <span class="link-card__arrow">→</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Work hours links -->
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">💼 Arbeitsstunden-Rechner</h2>
+        </div>
+        <div class="link-grid">
+          {[
+            { slug: '9-und-17', start: '09:00', end: '17:00', break: 30 },
+            { slug: '8-und-17', start: '08:00', end: '17:00', break: 60 },
+            { slug: '7-und-15', start: '07:00', end: '15:00', break: 30 },
+            { slug: '8-und-16', start: '08:00', end: '16:00', break: 30 },
+          ].map(w => (
+            <a href={`/de/arbeitsstunden-${w.slug}/`} class="link-card">
+              <span>Arbeitsstunden {w.start} – {w.end}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Countdown links -->
+      <div class="internal-links" style="margin-top: 32px;" id="countdown">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏳ Countdown-Timer</h2>
+        </div>
+        <div class="link-grid">
+          {popularEvents.map(e => (
+            <a href={getCountdownUrl(lang, e.deSlug)} class="link-card">
+              <span>Tage bis {e.deName}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ───────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="content-section">
+        <h2>So funktioniert der Zeitrechner</h2>
+        <div class="content-prose">
+          <p>
+            Der Zeitrechner unterstützt fünf verschiedene Berechnungsmodi — alles kostenlos und ohne Anmeldung.
+            Alle Berechnungen erfolgen clientseitig und sind <strong>sofort</strong> verfügbar.
+          </p>
+          <p>
+            <strong>Zeitdifferenz:</strong> Gib Start- und Enddatum/-uhrzeit ein. Das Ergebnis wird in Tagen,
+            Stunden, Minuten und Sekunden angezeigt — inklusive Dezimalstunden für Stundenzettelpräzise Abrechnung.
+          </p>
+          <p>
+            <strong>Addieren/Subtrahieren:</strong> Wähle eine Basiszeit und addiere oder subtrahiere beliebige
+            Stunden, Minuten oder Tage. Ideal für Terminplanung und Versandzeiten.
+          </p>
+          <p>
+            <strong>Arbeitsstunden:</strong> Trägt automatisch Pausenzeiten ab und zeigt Netto- und Bruttoarbeitszeit,
+            Dezimalstunden sowie eventuelle Überstunden an.
+          </p>
+        </div>
+      </div>
+
+      <div class="methodology-box">
+        <strong>Berechnungsmethode:</strong> Alle Berechnungen verwenden UTC-sichere JavaScript-Datumsobjekte.
+        Sommer- und Winterzeit (DST) werden automatisch über den lokalen Zeitzonenoffset des Browsers berücksichtigt.
+        Schaltjahre werden vollständig unterstützt.
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+// Live clock update
+const liveTime = document.getElementById('live-time');
+if (liveTime) {
+  setInterval(() => {
+    liveTime.textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }, 1000);
+}
+</script>

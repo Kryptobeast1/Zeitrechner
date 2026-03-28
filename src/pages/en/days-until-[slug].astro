@@ -1,0 +1,176 @@
+---
+// /en/days-until-[slug]/
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CountdownCalc from '../../components/calculator/CountdownCalc';
+import { INDEXED_EVENTS, getDaysUntil } from '../../data/dateEvents';
+import type { DateEvent } from '../../data/dateEvents';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../../lib/seoEngine';
+import { countdownIntros_en, variantIndex } from '../../data/contentVariants';
+
+export async function getStaticPaths() {
+  return INDEXED_EVENTS.map(event => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+interface Props { event: DateEvent; }
+const { event } = Astro.props as Props;
+
+const lang = 'en';
+const days = Math.max(0, getDaysUntil(event.targetDate));
+const canonical = getCountdownUrl(lang, event.slug);
+const altUrl = getCountdownUrl('de', event.deSlug);
+
+const hreflang = [
+  { lang: 'en', url: canonical },
+  { lang: 'de', url: altUrl },
+  { lang: 'x-default', url: canonical },
+];
+
+const vi = variantIndex(event.slug, countdownIntros_en.length);
+const introHtml = countdownIntros_en[vi](event.name, days);
+
+const seoMeta = buildSEOMeta(
+  'countdown', lang,
+  { name: event.name, days: days.toString() },
+  canonical, 'de', altUrl,
+);
+
+const faqs = [
+  { q: `How many hours until ${event.name}?`, a: `There are ${days * 24} hours until ${event.name} (${event.targetDate}).` },
+  { q: `How many minutes until ${event.name}?`, a: `There are ${(days * 24 * 60).toLocaleString()} minutes until ${event.name}.` },
+  { q: `What day is ${event.name}?`, a: `${event.name} falls on ${new Date(event.targetDate).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
+];
+
+const jsonLd = [
+  buildFAQSchema(faqs),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://zeitrechner.app/' },
+    { name: 'Time Calculator', url: getHubUrl(lang) },
+    { name: `Days Until ${event.name}`, url: canonical },
+  ]),
+];
+
+const relatedEvents = INDEXED_EVENTS.filter(e => e.slug !== event.slug && e.category === event.category).slice(0, 6);
+const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seoMeta.title}
+  description={seoMeta.description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+>
+
+  <section class="section landing-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href={getHubUrl(lang)}>Time Calculator</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Days Until {event.name}</span>
+      </nav>
+
+      <div class="landing-hero__meta">
+        <span class="badge badge--violet">⏳ Countdown</span>
+        <span class="badge badge--accent">{days} Days</span>
+        <span class="last-updated">Live updated: {lastUpdated}</span>
+      </div>
+
+      <h1>How Many Days Until {event.name}?</h1>
+
+      <div class="featured-snippet">
+        <div class="featured-snippet__label">Quick Answer</div>
+        <div class="featured-snippet__answer">{days} Days</div>
+        <p class="featured-snippet__sentence" set:html={introHtml} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-card__value">{days}</span>
+          <span class="stat-card__label">Days</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{(days * 24).toLocaleString()}</span>
+          <span class="stat-card__label">Hours</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{Math.floor(days / 7)}</span>
+          <span class="stat-card__label">Weeks</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{new Date(event.targetDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' })}</span>
+          <span class="stat-card__label">Date</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="embedded-calc">
+        <div class="embedded-calc__header">
+          <div class="embedded-calc__title">Live Countdown to {event.name}</div>
+          <div class="embedded-calc__subtitle">Updates every second</div>
+        </div>
+        <CountdownCalc client:load lang="en"
+          defaultTarget={event.targetDate}
+          eventName={event.name}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <h2 style="margin-bottom: 20px;">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        {faqs.map(faq => (
+          <div class="faq-item">
+            <button class="faq-item__question" aria-expanded="false">
+              {faq.q}
+              <span class="faq-arrow">▾</span>
+            </button>
+            <div class="faq-item__answer">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {relatedEvents.length > 0 && (
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="internal-links">
+          <div class="internal-links__header">
+            <h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">⏳ Related Countdowns</h2>
+          </div>
+          <div class="link-grid">
+            {relatedEvents.map(e => {
+              const d = getDaysUntil(e.targetDate);
+              return (
+                <a href={getCountdownUrl(lang, e.slug)} class="link-card">
+                  <span>Days until {e.name} ({d} days)</span>
+                  <span class="link-card__arrow">→</span>
+                </a>
+              );
+            })}
+            <a href={getHubUrl(lang)} class="link-card">
+              <span>← Back to Time Calculator</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+</BaseLayout>

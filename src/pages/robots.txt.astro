@@ -1,0 +1,11 @@
+---
+const sitemapUrl = 'https://zeitrechner.app/sitemap.xml';
+---
+User-agent: *
+Allow: /
+
+Sitemap: {sitemapUrl}
+
+# Disallow internal/admin paths
+Disallow: /api/
+Disallow: /_astro/

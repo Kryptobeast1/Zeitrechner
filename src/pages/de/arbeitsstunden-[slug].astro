@@ -1,0 +1,193 @@
+---
+// /de/arbeitsstunden-[slug]/
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
+import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../../data/timeRanges';
+import type { TimeRange } from '../../data/timeRanges';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl } from '../../lib/seoEngine';
+import { workHoursIntros_de, faqSets_de, variantIndex } from '../../data/contentVariants';
+import { calcWorkHours } from '../../lib/timeEngine';
+
+export async function getStaticPaths() {
+  const workRanges = INDEXED_RANGES.filter(r => r.workShift);
+  return workRanges.map(range => ({
+    params: { slug: range.deSlug },
+    props: { range },
+  }));
+}
+
+interface Props { range: TimeRange; }
+const { range } = Astro.props as Props;
+
+const lang = 'de';
+const hours = getRangeHours(range.start, range.end);
+const start24 = formatHour24(range.start);
+const end24 = formatHour24(range.end);
+
+// Pre-calculate with common breaks
+const BREAK_OPTIONS = [0, 30, 45, 60];
+const breakResults = BREAK_OPTIONS.map(b => ({
+  break: b,
+  result: calcWorkHours(`${String(range.start).padStart(2,'0')}:00`, `${String(range.end).padStart(2,'0')}:00`, b),
+}));
+
+const canonical = getWorkHoursUrl(lang, range.deSlug);
+const altUrl = getWorkHoursUrl('en', range.slug);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'en', url: altUrl },
+  { lang: 'x-default', url: altUrl },
+];
+
+const vi = variantIndex(range.deSlug + 'work', workHoursIntros_de.length);
+const introHtml = workHoursIntros_de[vi](start24, end24, breakResults[1].result.netHours);
+
+const fi = variantIndex(range.deSlug + 'wfaq', faqSets_de.length);
+const faqs = faqSets_de[fi](start24, end24, hours);
+
+const similarRanges = getSimilarRanges(range, 6);
+
+const seoMeta = buildSEOMeta(
+  'work-hours', lang,
+  { start: start24, end: end24, net: breakResults[1].result.netDecimal },
+  canonical, 'en', altUrl,
+);
+
+const jsonLd = [
+  buildFAQSchema(faqs),
+  buildBreadcrumbSchema([
+    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Zeitrechner', url: getHubUrl(lang) },
+    { name: `Arbeitsstunden ${start24}–${end24}`, url: canonical },
+  ]),
+];
+
+const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seoMeta.title}
+  description={seoMeta.description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+>
+
+  <section class="section landing-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href={getHubUrl(lang)}>Zeitrechner</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Arbeitsstunden {start24}–{end24}</span>
+      </nav>
+
+      <div class="landing-hero__meta">
+        <span class="badge badge--green">💼 Arbeitsstunden</span>
+        <span class="badge badge--accent">Schicht {hours}h</span>
+        <span class="last-updated">Zuletzt aktualisiert: {lastUpdated}</span>
+      </div>
+
+      <h1>Arbeitsstunden {start24} bis {end24} Uhr berechnen</h1>
+
+      <div class="featured-snippet">
+        <div class="featured-snippet__label">Schnellantwort</div>
+        <div class="featured-snippet__answer">{breakResults[1].result.formatted} netto</div>
+        <p class="featured-snippet__sentence">
+          Von {start24} bis {end24} Uhr mit 30 Minuten Pause sind es <strong>{breakResults[1].result.netDecimal} Stunden</strong> Nettoarbeitszeit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Break comparison table -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <h2 style="margin-bottom: 20px;">Nettoarbeitszeit nach Pausendauer</h2>
+      <div class="stat-grid">
+        {breakResults.map(br => (
+          <div class="stat-card">
+            <span class="stat-card__value">{br.result.formatted}</span>
+            <span class="stat-card__label">{br.break === 0 ? 'Keine Pause' : `${br.break} Min Pause`}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose">
+        <p set:html={introHtml} />
+        <p>
+          Für Lohnabrechnungszwecke ist die Dezimaldarstellung wichtig: {breakResults[1].result.netDecimal} Stunden
+          lassen sich direkt mit dem Stundensatz multiplizieren. Bei {breakResults[2].result.netDecimal} Stunden (45 Min Pause)
+          oder {breakResults[3].result.netDecimal} Stunden (60 Min Pause) ändert sich die Bruttoarbeitszeit entsprechend.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="embedded-calc">
+        <div class="embedded-calc__header">
+          <div class="embedded-calc__title">Arbeitsstunden Rechner</div>
+          <div class="embedded-calc__subtitle">Passe Pause und Zeiten für deine Schicht an</div>
+        </div>
+        <WorkHoursCalc client:visible lang="de"
+          defaultStart={`${String(range.start).padStart(2,'0')}:00`}
+          defaultEnd={`${String(range.end).padStart(2,'0')}:00`}
+          defaultBreak={30}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <h2 style="margin-bottom: 20px;">Häufig gestellte Fragen</h2>
+      <div class="faq-list">
+        {faqs.map(faq => (
+          <div class="faq-item">
+            <button class="faq-item__question" aria-expanded="false">
+              {faq.q}
+              <span class="faq-arrow">▾</span>
+            </button>
+            <div class="faq-item__answer">{faq.a}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="internal-links">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">🔗 Ähnliche Schichten</h2>
+        </div>
+        <div class="link-grid">
+          {similarRanges.map(r => (
+            <a href={getWorkHoursUrl(lang, r.deSlug)} class="link-card">
+              <span>Arbeitsstunden {formatHour24(r.start)}–{formatHour24(r.end)}</span>
+              <span class="link-card__arrow">→</span>
+            </a>
+          ))}
+          <a href={getTimeRangeUrl(lang, range.deSlug)} class="link-card">
+            <span>Stunden zwischen {start24} und {end24}</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+          <a href={getHubUrl(lang)} class="link-card">
+            <span>← Zum Zeitrechner</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

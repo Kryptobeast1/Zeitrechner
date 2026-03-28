@@ -1,0 +1,173 @@
+---
+import '../styles/global.css';
+import '../styles/calculator.css';
+import '../styles/landing.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  hreflang?: { lang: string; url: string }[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  lang?: 'de' | 'en';
+  ogType?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  hreflang = [],
+  noindex = false,
+  jsonLd = [],
+  lang = 'de',
+  ogType = 'website',
+} = Astro.props;
+
+const hubUrlDe = '/de/zeitrechner/';
+const hubUrlEn = '/en/time-calculator/';
+const hubUrl = lang === 'de' ? hubUrlDe : hubUrlEn;
+const altLang = lang === 'de' ? 'en' : 'de';
+const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
+
+const navLinks = lang === 'de' ? [
+  { href: '/de/zeitrechner/', label: 'Zeitrechner' },
+  { href: '/de/zeitrechner/#differenz', label: 'Differenz' },
+  { href: '/de/zeitrechner/#arbeit', label: 'Arbeitsstunden' },
+  { href: '/de/zeitrechner/#countdown', label: 'Countdown' },
+] : [
+  { href: '/en/time-calculator/', label: 'Calculator' },
+  { href: '/en/time-calculator/#diff', label: 'Difference' },
+  { href: '/en/time-calculator/#work', label: 'Work Hours' },
+  { href: '/en/time-calculator/#countdown', label: 'Countdown' },
+];
+
+const currentYear = new Date().getFullYear();
+---
+<!DOCTYPE html>
+<html lang={lang} dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  {!noindex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />}
+
+  <!-- hreflang -->
+  {hreflang.map(h => (
+    <link rel="alternate" hreflang={h.lang} href={h.url} />
+  ))}
+
+  <!-- Open Graph -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
+  <meta property="og:site_name" content="Zeitrechner" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#080b14" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- JSON-LD -->
+  {jsonLd.map(schema => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏱</text></svg>" />
+</head>
+<body>
+
+  <!-- ─── NAVBAR ──────────────────────────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
+    <div class="navbar__inner">
+      <a href={hubUrl} class="navbar__logo" aria-label="Home">
+        ⏱ <span>Zeit{lang === 'de' ? 'rechner' : 'Calculator'}</span>
+      </a>
+
+      <ul class="navbar__links" role="list">
+        {navLinks.map(link => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="navbar__lang">
+        <a href={hubUrlDe} class:list={['lang-btn', { active: lang === 'de' }]} hreflang="de" aria-label="Deutsch">DE</a>
+        <a href={hubUrlEn} class:list={['lang-btn', { active: lang === 'en' }]} hreflang="en" aria-label="English">EN</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN ────────────────────────────────────────────────────────────── -->
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <!-- ─── FOOTER ──────────────────────────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__col">
+        <h4>{lang === 'de' ? 'Rechner' : 'Calculators'}</h4>
+        <ul>
+          <li><a href={lang === 'de' ? '/de/zeitrechner/' : '/en/time-calculator/'}>{lang === 'de' ? 'Zeitrechner' : 'Time Calculator'}</a></li>
+          <li><a href={lang === 'de' ? '/de/stunden-zwischen-9-und-17/' : '/en/hours-between-9-and-5/'}>{lang === 'de' ? 'Stunden 9–17' : 'Hours 9–5'}</a></li>
+          <li><a href={lang === 'de' ? '/de/arbeitsstunden-9-und-17/' : '/en/work-hours-9-to-5/'}>{lang === 'de' ? 'Arbeitsstunden' : 'Work Hours'}</a></li>
+          <li><a href={lang === 'de' ? '/de/tage-bis-weihnachten-2025/' : '/en/days-until-christmas-2025/'}>Countdown</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>{lang === 'de' ? 'Beliebt' : 'Popular'}</h4>
+        <ul>
+          <li><a href={lang === 'de' ? '/de/stunden-zwischen-8-und-17/' : '/en/hours-between-8-and-5/'}>8–17 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/de/stunden-zwischen-7-und-15/' : '/en/hours-between-7-and-3/'}>7–15 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/de/stunden-zwischen-10-und-18/' : '/en/hours-between-10-and-6/'}>10–18 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/de/stunden-zwischen-9-und-12/' : '/en/hours-between-9-and-12/'}>9–12 Uhr</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>{lang === 'de' ? 'Sprache' : 'Language'}</h4>
+        <ul>
+          <li><a href="/de/zeitrechner/" hreflang="de">🇩🇪 Deutsch</a></li>
+          <li><a href="/en/time-calculator/" hreflang="en">🇬🇧 English</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {currentYear} Zeitrechner.app</span>
+      <span>{lang === 'de' ? 'Kostenloser Online-Zeitrechner' : 'Free Online Time Calculator'}</span>
+    </div>
+  </footer>
+
+  <!-- ─── FAQ ACCORDION SCRIPT ─────────────────────────────────────────────── -->
+  <script>
+    document.querySelectorAll('.faq-item__question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        const answer = btn.nextElementSibling as HTMLElement;
+        if (answer) answer.classList.toggle('open', !expanded);
+      });
+    });
+  </script>
+
+</body>
+</html>

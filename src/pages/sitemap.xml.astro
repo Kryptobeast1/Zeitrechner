@@ -1,0 +1,51 @@
+---
+import { getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../lib/seoEngine';
+import { INDEXED_RANGES } from '../data/timeRanges';
+import { INDEXED_EVENTS } from '../data/dateEvents';
+import { INDEXED_RANGES as WORK_RANGES_ALL } from '../data/timeRanges';
+
+const WORK_RANGES = WORK_RANGES_ALL.filter(r => r.workShift);
+
+// Build all sitemap entries
+const pages: { url: string; priority: number; changefreq: string }[] = [];
+
+// Hub pages
+pages.push(
+  { url: getHubUrl('de'), priority: 1.0, changefreq: 'daily' },
+  { url: getHubUrl('en'), priority: 1.0, changefreq: 'daily' },
+);
+
+// Time range pages
+for (const range of INDEXED_RANGES) {
+  if (range.index && range.priority !== 'low') {
+    pages.push({ url: getTimeRangeUrl('de', range.deSlug), priority: range.priority === 'high' ? 0.9 : 0.7, changefreq: 'weekly' });
+    pages.push({ url: getTimeRangeUrl('en', range.slug), priority: range.priority === 'high' ? 0.9 : 0.7, changefreq: 'weekly' });
+  }
+}
+
+// Work hours pages
+for (const range of WORK_RANGES) {
+  pages.push({ url: getWorkHoursUrl('de', range.deSlug), priority: 0.85, changefreq: 'weekly' });
+  pages.push({ url: getWorkHoursUrl('en', range.slug), priority: 0.85, changefreq: 'weekly' });
+}
+
+// Countdown pages
+for (const event of INDEXED_EVENTS) {
+  pages.push({ url: getCountdownUrl('de', event.deSlug), priority: event.priority === 'high' ? 0.8 : 0.6, changefreq: 'daily' });
+  pages.push({ url: getCountdownUrl('en', event.slug), priority: event.priority === 'high' ? 0.8 : 0.6, changefreq: 'daily' });
+}
+
+const lastmod = new Date().toISOString().split('T')[0];
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {pages.map(page => (
+    <url>
+      <loc>{page.url}</loc>
+      <lastmod>{lastmod}</lastmod>
+      <changefreq>{page.changefreq}</changefreq>
+      <priority>{page.priority}</priority>
+    </url>
+  ))}
+</urlset>

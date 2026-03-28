@@ -1,0 +1,219 @@
+---
+// Programmatic page: /en/hours-between-[slug]/
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
+import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../../data/timeRanges';
+import type { TimeRange } from '../../data/timeRanges';
+import {
+  buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema,
+  getTimeRangeUrl, getHubUrl, getWorkHoursUrl
+} from '../../lib/seoEngine';
+import {
+  timeRangeIntros_en, contextBlocks_en, useCases_en, faqSets_en, variantIndex
+} from '../../data/contentVariants';
+
+export async function getStaticPaths() {
+  return INDEXED_RANGES.map(range => ({
+    params: { slug: range.slug },
+    props: { range },
+  }));
+}
+
+interface Props { range: TimeRange; }
+const { range } = Astro.props as Props;
+
+const lang = 'en';
+const hours = getRangeHours(range.start, range.end);
+const start24 = formatHour24(range.start);
+const end24 = formatHour24(range.end);
+
+const canonical = getTimeRangeUrl(lang, range.slug);
+const altUrl = getTimeRangeUrl('de', range.deSlug);
+
+const hreflang = [
+  { lang: 'en', url: canonical },
+  { lang: 'de', url: altUrl },
+  { lang: 'x-default', url: canonical },
+];
+
+const vi = variantIndex(range.slug, timeRangeIntros_en.length);
+const ci = variantIndex(range.slug + 'ctx', contextBlocks_en.length);
+const ui = variantIndex(range.slug + 'use', useCases_en.length);
+const fi = variantIndex(range.slug + 'faq', faqSets_en.length);
+
+const introHtml = timeRangeIntros_en[vi](start24, end24, hours);
+const contextText = contextBlocks_en[ci](hours);
+const useCaseList = useCases_en[ui];
+const faqs = faqSets_en[fi](start24, end24, hours);
+
+const similarRanges = getSimilarRanges(range, 8);
+
+const seoMeta = buildSEOMeta(
+  'time-range', lang,
+  { start: start24, end: end24, hours: hours.toString() },
+  canonical, 'de', altUrl,
+  range.priority === 'low',
+);
+
+const jsonLd = [
+  buildFAQSchema(faqs),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://zeitrechner.app/' },
+    { name: 'Time Calculator', url: getHubUrl(lang) },
+    { name: `${hours} hours (${start24}–${end24})`, url: canonical },
+  ]),
+];
+
+const useCaseIcons = ['💼', '📋', '🕐', '📊', '🔄', '📅'];
+const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seoMeta.title}
+  description={seoMeta.description}
+  canonical={canonical}
+  hreflang={hreflang}
+  noindex={seoMeta.noindex}
+  lang={lang}
+  jsonLd={jsonLd}
+>
+
+  <section class="section landing-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href={getHubUrl(lang)}>Time Calculator</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Hours between {start24} and {end24}</span>
+      </nav>
+
+      <div class="landing-hero__meta">
+        {range.workShift && <span class="badge badge--green">💼 Work Shift</span>}
+        <span class="badge badge--accent">{hours}h Result</span>
+        <span class="last-updated">Last updated: {lastUpdated}</span>
+      </div>
+
+      <h1>How Many Hours Between {start24} and {end24}?</h1>
+
+      <div class="featured-snippet" role="complementary" aria-label="Quick Answer">
+        <div class="featured-snippet__label">Quick Answer</div>
+        <div class="featured-snippet__answer">{hours} Hours</div>
+        <p class="featured-snippet__sentence">
+          There are exactly <strong>{hours} hours</strong> between {start24} and {end24}
+          ({hours * 60} minutes / {hours * 3600} seconds).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-card__value">{hours}</span>
+          <span class="stat-card__label">Hours</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{hours * 60}</span>
+          <span class="stat-card__label">Minutes</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{hours * 3600}</span>
+          <span class="stat-card__label">Seconds</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">{hours}.00</span>
+          <span class="stat-card__label">Decimal Hours</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section">
+        <h2>Explanation</h2>
+        <div class="content-prose">
+          <p set:html={introHtml} />
+          <p>{contextText}</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>Use Cases</h2>
+        <div class="use-cases">
+          {useCaseList.map((uc, i) => (
+            <div class="use-case-item">
+              <span class="use-case-item__icon">{useCaseIcons[i % useCaseIcons.length]}</span>
+              <span class="use-case-item__text">{uc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="embedded-calc">
+        <div class="embedded-calc__header">
+          <div class="embedded-calc__title">Try the Calculator</div>
+          <div class="embedded-calc__subtitle">Adjust start and end times for your own calculation</div>
+        </div>
+        <WorkHoursCalc client:visible lang="en"
+          defaultStart={`${String(range.start).padStart(2,'0')}:00`}
+          defaultEnd={`${String(range.end).padStart(2,'0')}:00`}
+          defaultBreak={0}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(faq => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">
+                {faq.q}
+                <span class="faq-arrow" aria-hidden="true">▾</span>
+              </button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <span itemprop="text">{faq.a}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="internal-links">
+        <div class="internal-links__header">
+          <h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">🔗 Similar Time Ranges</h2>
+        </div>
+        <div class="link-grid">
+          {similarRanges.map(r => {
+            const h = getRangeHours(r.start, r.end);
+            return (
+              <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
+                <span>Hours between {formatHour24(r.start)} and {formatHour24(r.end)} ({h}h)</span>
+                <span class="link-card__arrow">→</span>
+              </a>
+            );
+          })}
+          <a href={getHubUrl(lang)} class="link-card">
+            <span>← Back to Time Calculator</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
