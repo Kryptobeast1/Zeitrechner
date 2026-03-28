@@ -2,63 +2,88 @@
 // Covers common work shifts, meal times, and all-hour combinations
 
 export interface TimeRange {
-  start: number;   // 0–23
-  end: number;     // 0–23 (can be next day if end < start)
-  slug: string;    // URL slug
-  deSlug: string;  // German slug
+  start: number;   // 0–23 (can be decimal 8.5 for 08:30)
+  end: number;     // 0–23 (can be decimal 17.5 for 17:30)
+  slug: string;    // URL slug (e.g. 8-30-and-17)
+  deSlug: string;  // German slug (e.g. 8-30-und-17)
   priority: 'high' | 'medium' | 'low';
   index: boolean;  // Should this page be indexed?
   workShift?: boolean;
+  demandScore: number; // 0-100 (intent signal)
 }
 
-// Common work shifts (HIGH priority — index all)
+/**
+ * Validates if a page has logical search intent.
+ * Prevents machine-generated nonsense pairs.
+ */
+function isValidPage(start: number, end: number, dur: number): boolean {
+  // Office hours / Work shifts are always valid
+  if (start >= 5 && start <= 11 && dur >= 3 && dur <= 12) return true;
+  if (start >= 12 && start <= 15 && dur <= 6) return true; // Afternoon/Part-time
+  if (start >= 18 && start <= 23 && dur >= 4) return true; // Evening/Night
+  if (dur === 8 || dur === 4 || dur === 1 || dur === 0.5 || dur === 1.5 || dur === 7.5) return true;
+  
+  // Logic: Most people search for intervals that start on "round" hours or common shift times.
+  const commonStarts = [0, 5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 12, 12.5, 13, 14, 15, 16, 17, 18, 20, 22];
+  if (commonStarts.includes(start)) return true;
+
+  // Otherwise, only if duration is "meaningful"
+  const meaningfulDurs = [5, 10, 12, 14, 16, 24];
+  return meaningfulDurs.includes(dur);
+}
+
+// Common work shifts (EXTREMELY HIGH demand)
 const workShifts: TimeRange[] = [
-  { start: 8, end: 16, slug: '8-and-4', deSlug: '8-und-16', priority: 'high', index: true, workShift: true },
-  { start: 8, end: 17, slug: '8-and-5', deSlug: '8-und-17', priority: 'high', index: true, workShift: true },
-  { start: 9, end: 17, slug: '9-and-5', deSlug: '9-und-17', priority: 'high', index: true, workShift: true },
-  { start: 9, end: 18, slug: '9-and-6', deSlug: '9-und-18', priority: 'high', index: true, workShift: true },
-  { start: 10, end: 18, slug: '10-and-6', deSlug: '10-und-18', priority: 'high', index: true, workShift: true },
-  { start: 10, end: 19, slug: '10-and-7', deSlug: '10-und-19', priority: 'high', index: true, workShift: true },
-  { start: 7, end: 15, slug: '7-and-3', deSlug: '7-und-15', priority: 'high', index: true, workShift: true },
-  { start: 7, end: 16, slug: '7-and-4', deSlug: '7-und-16', priority: 'high', index: true, workShift: true },
-  { start: 6, end: 14, slug: '6-and-2', deSlug: '6-und-14', priority: 'medium', index: true, workShift: true },
-  { start: 6, end: 15, slug: '6-and-3', deSlug: '6-und-15', priority: 'medium', index: true, workShift: true },
-  { start: 8, end: 12, slug: '8-and-12', deSlug: '8-und-12', priority: 'medium', index: true, workShift: true },
-  { start: 9, end: 12, slug: '9-and-12', deSlug: '9-und-12', priority: 'medium', index: true, workShift: true },
-  { start: 13, end: 17, slug: '1pm-and-5pm', deSlug: '13-und-17', priority: 'medium', index: true, workShift: true },
-  { start: 8, end: 18, slug: '8-and-6', deSlug: '8-und-18', priority: 'high', index: true, workShift: true },
-  { start: 9, end: 13, slug: '9-and-1pm', deSlug: '9-und-13', priority: 'medium', index: true, workShift: true },
-  { start: 0, end: 8, slug: '12am-and-8am', deSlug: '0-und-8', priority: 'low', index: true, workShift: true },
-  { start: 22, end: 6, slug: '10pm-and-6am', deSlug: '22-und-6', priority: 'low', index: true, workShift: true },
-  { start: 12, end: 20, slug: '12pm-and-8pm', deSlug: '12-und-20', priority: 'medium', index: true, workShift: true },
-  { start: 14, end: 22, slug: '2pm-and-10pm', deSlug: '14-und-22', priority: 'low', index: true, workShift: true },
-  { start: 8, end: 20, slug: '8-and-8pm', deSlug: '8-und-20', priority: 'medium', index: true, workShift: true },
+  { start: 8, end: 16, slug: '8-and-4', deSlug: '8-und-16', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 8, end: 17, slug: '8-and-5', deSlug: '8-und-17', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 8.5, end: 17, slug: '8-30-and-5', deSlug: '8-30-und-17', priority: 'high', index: true, workShift: true, demandScore: 90 },
+  { start: 8.5, end: 17.5, slug: '8-30-and-5-30', deSlug: '8-30-und-17-30', priority: 'high', index: true, workShift: true, demandScore: 85 },
+  { start: 9, end: 17, slug: '9-and-5', deSlug: '9-und-17', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 9, end: 18, slug: '9-and-6', deSlug: '9-und-18', priority: 'high', index: true, workShift: true, demandScore: 95 },
+  { start: 9.5, end: 18.5, slug: '9-30-and-6-30', deSlug: '9-30-und-18-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 7.5, end: 16, slug: '7-30-and-4', deSlug: '7-30-und-16', priority: 'high', index: true, workShift: true, demandScore: 85 },
+  { start: 7, end: 15, slug: '7-and-3', deSlug: '7-und-15', priority: 'high', index: true, workShift: true, demandScore: 95 },
+  { start: 7.5, end: 15.5, slug: '7-30-and-3-30', deSlug: '7-30-und-15-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 6, end: 14, slug: '6-and-2', deSlug: '6-und-14', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 12, end: 20, slug: '12pm-and-8pm', deSlug: '12-und-20', priority: 'high', index: true, workShift: true, demandScore: 80 },
 ];
 
-// General time ranges (MEDIUM priority)
-function generateGeneralRanges(): TimeRange[] {
+/**
+ * Phase 3 Scaling logic (Captures niche shifts and half-hour ranges)
+ */
+function generatePhase3Ranges(): TimeRange[] {
   const ranges: TimeRange[] = [];
-  const commonStarts = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-  const durations = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12];
-
-  for (const start of commonStarts) {
+  
+  // All start hours (0-23 in 0.5 steps)
+  for (let start = 0; start < 24; start += 0.5) {
+    // Meaningful durations (include half-hours)
+    const durations = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 8.5, 9, 10, 12, 24];
+    
     for (const dur of durations) {
       const end = (start + dur) % 24;
+      
       // Skip if already in workShifts
-      const exists = workShifts.some(w => w.start === start && w.end === end);
-      if (exists) continue;
+      if (workShifts.some(w => w.start === start && w.end === end)) continue;
+      
+      // Intent Check (Only index high-intent half-hour combos)
+      if (!isValidPage(start, end, dur)) continue;
 
-      const startH = start.toString().padStart(2, '0');
-      const endH = end.toString().padStart(2, '0');
-      const isHighDemand = (dur === 8 || dur === 4) && start >= 6 && start <= 12;
+      const isHighDemand = (dur === 8 || dur === 4 || dur === 8.5);
+      const isShiftTime = (start === 7.5 || start === 8.5 || start === 9.5);
+      
+      const dScore = (isHighDemand && isShiftTime) ? 75 : (isHighDemand ? 60 : 30);
+
+      // Slug creation helper
+      const formatSlug = (h: number) => h.toString().replace('.', '-').replace('-5', '-30');
 
       ranges.push({
         start,
         end,
-        slug: `${start}-and-${end}`,
-        deSlug: `${start}-und-${end}`,
-        priority: isHighDemand ? 'medium' : 'low',
-        index: isHighDemand || dur >= 4,
+        slug: `${formatSlug(start)}-and-${formatSlug(end)}`,
+        deSlug: `${formatSlug(start)}-und-${formatSlug(end)}`,
+        priority: dScore > 60 ? 'medium' : 'low',
+        index: dScore >= 30, 
+        demandScore: dScore,
       });
     }
   }
@@ -67,36 +92,43 @@ function generateGeneralRanges(): TimeRange[] {
 
 export const ALL_TIME_RANGES: TimeRange[] = [
   ...workShifts,
-  ...generateGeneralRanges(),
+  ...generatePhase3Ranges(),
 ];
 
 export const INDEXED_RANGES = ALL_TIME_RANGES.filter(r => r.index);
 
 // Format hour to 12h display
 export function formatHour12(h: number): string {
-  if (h === 0) return '12:00 AM';
-  if (h === 12) return '12:00 PM';
-  if (h > 12) return `${h - 12}:00 PM`;
-  return `${h}:00 AM`;
+  const hours = Math.floor(h);
+  const minutes = (h % 1) * 60;
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 }
 
 // Format hour to 24h display
 export function formatHour24(h: number): string {
-  return `${h.toString().padStart(2, '0')}:00`;
+  const hours = Math.floor(h);
+  const minutes = (h % 1) * 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
 // Get duration in hours between two times (handles overnight)
 export function getRangeHours(start: number, end: number): number {
   if (end > start) return end - start;
+  if (end === start) return 24; 
   return 24 - start + end; // overnight
 }
 
-// Get all similar ranges for internal linking  
-export function getSimilarRanges(range: TimeRange, count = 8): TimeRange[] {
+// Get all similar ranges for internal linking (Mesh Network)
+export function getSimilarRanges(range: TimeRange, count = 12): TimeRange[] {
   const hours = getRangeHours(range.start, range.end);
   return INDEXED_RANGES
     .filter(r => r.slug !== range.slug)
-    .map(r => ({ r, diff: Math.abs(getRangeHours(r.start, r.end) - hours) + Math.abs(r.start - range.start) }))
+    .map(r => ({ 
+      r, 
+      diff: Math.abs(getRangeHours(r.start, r.end) - hours) * 2 + Math.abs(r.start - range.start) 
+    }))
     .sort((a, b) => a.diff - b.diff)
     .slice(0, count)
     .map(x => x.r);

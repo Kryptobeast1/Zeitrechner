@@ -14,27 +14,27 @@ export interface SEOMeta {
 
 const BASE_URL = 'https://zeitrechner.app';
 
-// ─── TITLE TEMPLATES ─────────────────────────────────────────────────────────
+// ─── CTR-OPTIMIZED TITLE TEMPLATES ──────────────────────────────────────────
 
 const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, string>) => string>> = {
   'time-range': {
-    en: ({ start, end, hours }) => `Hours Between ${start} and ${end} — ${hours} Hours | Time Calculator`,
-    de: ({ start, end, hours }) => `Stunden zwischen ${start} und ${end} Uhr — ${hours} Stunden | Zeitrechner`,
+    en: ({ start, end, hours }) => `${hours} Hours From ${start} To ${end} (Instant Calculate)`,
+    de: ({ start, end, hours }) => `Stunden von ${start} bis ${end} Uhr: Genau ${hours} Stunden`,
   },
   'work-hours': {
-    en: ({ start, end, net }) => `Work Hours ${start}–${end} (${net}h Net) | Timesheet Calculator`,
-    de: ({ start, end, net }) => `Arbeitsstunden ${start}–${end} Uhr (${net}h netto) | Arbeitszeitrechner`,
+    en: ({ start, end, net }) => `Work Calculator: Hours Between ${start}–${end} (${net}h Net)`,
+    de: ({ start, end, net }) => `Arbeitszeitrechner: Stunden von ${start}–${end} Uhr (${net}h Netto)`,
   },
   'add-time': {
-    en: ({ hours, base }) => `What Time Is ${hours} Hours After ${base}? | Time Calculator`,
-    de: ({ hours, base }) => `Was ist ${hours} Stunden nach ${base} Uhr? | Zeitrechner`,
+    en: ({ hours, base, result }) => `What Time Is ${hours} Hours After ${base}? (Result: ${result})`,
+    de: ({ hours, base, result }) => `Was ist ${hours} Stunden nach ${base} Uhr? (${result})`,
   },
   'countdown': {
-    en: ({ name, days }) => `Days Until ${name} — ${days} Days Countdown | Timer`,
-    de: ({ name, days }) => `Tage bis ${name} — Noch ${days} Tage | Countdown`,
+    en: ({ name, days }) => `How Many Days Until ${name}? (Only ${days} Days Left)`,
+    de: ({ name, days }) => `Tage bis ${name}: Countdown (Noch ${days} Tage)`,
   },
   'hub': {
-    en: () => 'Time Calculator — Hours, Work Hours & Countdown | Zeitrechner',
+    en: () => 'Time Calculator — Hours, Work Hours & Countdown | Quick & Precise',
     de: () => 'Zeitrechner — Stunden, Arbeitsstunden & Countdown berechnen',
   },
 };
@@ -44,44 +44,47 @@ const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, stri
 const descTemplates: Record<PageType, Record<Lang, (params: Record<string, string>) => string>> = {
   'time-range': {
     en: ({ start, end, hours }) =>
-      `Calculate how many hours are between ${start} and ${end}. The answer is ${hours} hours (${parseInt(hours) * 60} minutes). Use our free time difference calculator.`,
+      `Calculate exactly how many hours are between ${start} and ${end}. Result: ${hours} hours (${Math.round(parseFloat(hours) * 60)} minutes). Optimized for payroll or scheduling.`,
     de: ({ start, end, hours }) =>
-      `Berechne, wie viele Stunden zwischen ${start} und ${end} Uhr liegen. Ergebnis: ${hours} Stunden (${parseInt(hours) * 60} Minuten). Kostenloser Zeitrechner.`,
+      `Berechne genau, wie viele Stunden zwischen ${start} und ${end} Uhr liegen. Ergebnis: ${hours} Stunden (${Math.round(parseFloat(hours) * 60)} Minuten). Für Lohnabrechnung oder Planung.`,
   },
   'work-hours': {
     en: ({ start, end, net }) =>
-      `Calculate net work hours from ${start} to ${end} with break deductions. Net result: ${net} hours. Ideal for timesheets and payroll.`,
+      `How many productive hours from ${start} to ${end}? With breaks, the net result is ${net} hours. Free timesheet calculator for every industry.`,
     de: ({ start, end, net }) =>
-      `Berechne Nettoarbeitsstunden von ${start} bis ${end} Uhr mit Pausenabzug. Nettostunden: ${net}. Ideal für Stundenzettel und Lohnabrechnung.`,
+      `Wie viele produktive Arbeitsstunden von ${start} bis ${end} Uhr? Netto-Ergebnis mit Pause: ${net} Stunden. Kostenloser Stundenzettel-Rechner.`,
   },
   'add-time': {
     en: ({ hours, base, result }) =>
-      `What time is ${hours} hours after ${base}? The answer is ${result}. Use our free time addition calculator for instant results.`,
+      `Instantly find out what time it will be ${hours} hours after ${base}. The exact answer is ${result}. Free tool for quick scheduling decisions.`,
     de: ({ hours, base, result }) =>
-      `Was ist ${hours} Stunden nach ${base} Uhr? Das Ergebnis ist ${result} Uhr. Kostenloser Zeitrechner für sofortige Ergebnisse.`,
+      `Was ist ${hours} Stunden nach ${base} Uhr? Das Ergebnis ist exakt ${result} Uhr. Kostenloser Rechner für schnelle Terminplanung.`,
   },
   'countdown': {
     en: ({ name, days }) =>
-      `Live countdown to ${name}. Only ${days} days remaining! Get the exact time in days, hours, minutes and seconds.`,
+      `Live countdown to ${name}. There are ${days} days remaining until the event. Precise d/h/m/s timer for tracking deadlines.`,
     de: ({ name, days }) =>
-      `Live-Countdown bis ${name}. Nur noch ${days} Tage! Genaue Zeit in Tagen, Stunden, Minuten und Sekunden.`,
+      `Live-Countdown bis ${name}. Es verbleiben noch ${days} Tage bis zum Ereignis. Genaue Anzeige in Tagen, Stunden, Minuten und Sekunden.`,
   },
   'hub': {
     en: () =>
-      'Free online time calculator. Calculate time differences, add or subtract hours, track work hours, and create live countdowns. Fast, accurate, mobile-friendly.',
+      'Free online calculation tool. Find time differences, manage work hours shifts, and track live countdowns. Reliable, mobile-compatible, and fast.',
     de: () =>
-      'Kostenloser Online-Zeitrechner. Berechne Zeitdifferenzen, addiere oder subtrahiere Stunden, ermittle Arbeitszeiten und erstelle Live-Countdowns.',
+      'Einfacher Online-Zeitrechner. Berechne Zeitspannen, Arbeitsstunden und Live-Countdowns. Zuverlässig, schnell und für Mobilgeräte optimiert.',
   },
 };
 
 // ─── URL BUILDERS ─────────────────────────────────────────────────────────────
 
-export function buildUrl(lang: Lang, path: string): string {
-  return `${BASE_URL}/${lang}/${path}`.replace(/\/+/g, '/').replace('https:/', 'https://');
-}
-
 export function getHubUrl(lang: Lang): string {
   return lang === 'de' ? `${BASE_URL}/de/zeitrechner/` : `${BASE_URL}/en/time-calculator/`;
+}
+
+/**
+ * Format hours to clean slugs (e.g. 8.5 -> 8-30)
+ */
+export function formatTimeSlug(h: string | number): string {
+  return h.toString().replace('.', '-').replace('-5', '-30');
 }
 
 export function getTimeRangeUrl(lang: Lang, slug: string): string {
@@ -100,6 +103,18 @@ export function getCountdownUrl(lang: Lang, slug: string): string {
   return lang === 'de'
     ? `${BASE_URL}/de/tage-bis-${slug}/`
     : `${BASE_URL}/en/days-until-${slug}/`;
+}
+
+// ─── INDEXING STRATEGY ────────────────────────────────────────────────────────
+
+/**
+ * Determines if a page should be indexed based on demand and uniqueness.
+ * Phase 3: Lowering thresholds for niche Shift intent.
+ */
+export function shouldIndex(type: PageType, demandScore: number): boolean {
+  if (type === 'hub') return true;
+  if (type === 'work-hours') return demandScore >= 40; // Capture more niche shifts
+  return demandScore >= 50; // Capture more long-tail time ranges in Phase 3
 }
 
 // ─── META BUILDER ─────────────────────────────────────────────────────────────
@@ -166,7 +181,7 @@ export function buildWebAppSchema(lang: Lang): Record<string, unknown> {
     operatingSystem: 'Web',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     description: lang === 'de'
-      ? 'Kostenloser Online-Zeitrechner für Zeitdifferenzen, Arbeitszeiten und Countdowns.'
-      : 'Free online time calculator for time differences, work hours, and countdowns.',
+      ? 'Präziser Online-Zeitrechner für Differenzen, Arbeitszeit und Live-Countdowns.'
+      : 'Accurate online time calculator for differences, work hours, and live countdowns.',
   };
 }

@@ -1,51 +1,55 @@
 ---
-import { getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../lib/seoEngine';
 import { INDEXED_RANGES } from '../data/timeRanges';
-import { INDEXED_EVENTS } from '../data/dateEvents';
-import { INDEXED_RANGES as WORK_RANGES_ALL } from '../data/timeRanges';
+import { ALL_EVENTS } from '../data/dateEvents';
+import { getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex } from '../lib/seoEngine';
 
-const WORK_RANGES = WORK_RANGES_ALL.filter(r => r.workShift);
+const languages = ['de', 'en'] as const;
 
-// Build all sitemap entries
-const pages: { url: string; priority: number; changefreq: string }[] = [];
+// Collect all indexable URLs
+const urls: string[] = [];
 
-// Hub pages
-pages.push(
-  { url: getHubUrl('de'), priority: 1.0, changefreq: 'daily' },
-  { url: getHubUrl('en'), priority: 1.0, changefreq: 'daily' },
-);
+// Hubs
+languages.forEach(lang => urls.push(getHubUrl(lang)));
 
-// Time range pages
-for (const range of INDEXED_RANGES) {
-  if (range.index && range.priority !== 'low') {
-    pages.push({ url: getTimeRangeUrl('de', range.deSlug), priority: range.priority === 'high' ? 0.9 : 0.7, changefreq: 'weekly' });
-    pages.push({ url: getTimeRangeUrl('en', range.slug), priority: range.priority === 'high' ? 0.9 : 0.7, changefreq: 'weekly' });
-  }
-}
+// Time Ranges
+INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore)).forEach(range => {
+  languages.forEach(lang => {
+    urls.push(getTimeRangeUrl(lang, range.slug));
+  });
+});
 
-// Work hours pages
-for (const range of WORK_RANGES) {
-  pages.push({ url: getWorkHoursUrl('de', range.deSlug), priority: 0.85, changefreq: 'weekly' });
-  pages.push({ url: getWorkHoursUrl('en', range.slug), priority: 0.85, changefreq: 'weekly' });
-}
+// Work Hours
+INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift).forEach(range => {
+  languages.forEach(lang => {
+    urls.push(getWorkHoursUrl(lang, range.slug));
+  });
+});
 
-// Countdown pages
-for (const event of INDEXED_EVENTS) {
-  pages.push({ url: getCountdownUrl('de', event.deSlug), priority: event.priority === 'high' ? 0.8 : 0.6, changefreq: 'daily' });
-  pages.push({ url: getCountdownUrl('en', event.slug), priority: event.priority === 'high' ? 0.8 : 0.6, changefreq: 'daily' });
-}
+// Countdowns
+ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027).forEach(event => {
+  languages.forEach(lang => {
+    urls.push(getCountdownUrl(lang, event.slug));
+  });
+});
 
-const lastmod = new Date().toISOString().split('T')[0];
----
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  {pages.map(page => (
+// Guides
+urls.push('https://zeitrechner.app/de/ratgeber/arbeitszeit-berechnen/');
+urls.push('https://zeitrechner.app/en/guides/how-to-calculate-work-hours/');
+urls.push('https://zeitrechner.app/de/ratgeber/zeiterfassung-freelancer/');
+urls.push('https://zeitrechner.app/en/guides/tracking-time-freelancers/');
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls.map(url => `
     <url>
-      <loc>{page.url}</loc>
-      <lastmod>{lastmod}</lastmod>
-      <changefreq>{page.changefreq}</changefreq>
-      <priority>{page.priority}</priority>
+      <loc>${url}</loc>
+      <changefreq>weekly</changefreq>
+      <priority>${url.includes('/de/zeitrechner/') || url.includes('/en/time-calculator/') ? '1.0' : '0.7'}</priority>
     </url>
-  ))}
-</urlset>
+  `).join('')}
+</urlset>`.trim();
+
+// Set correct header for XML
+Astro.response.headers.set('Content-Type', 'application/xml');
+---
+<Fragment set:html={sitemap} />

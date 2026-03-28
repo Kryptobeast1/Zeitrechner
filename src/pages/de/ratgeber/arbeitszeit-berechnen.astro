@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Arbeitszeit berechnen: Der komplette Ratgeber 2025';
+const description = 'Lerne, wie du deine Arbeitsstunden präzise berechnest, Pausen richtig abziehst und Überstunden rechtssicher dokumentierst.';
+
+const seo = buildSEOMeta(
+  'hub',
+  lang,
+  {},
+  'https://zeitrechner.app/de/ratgeber/arbeitszeit-berechnen/',
+  'en',
+  'https://zeitrechner.app/en/guides/how-to-calculate-work-hours/'
+);
+
+const hubUrl = getHubUrl(lang);
+---
+
+<BaseLayout seo={seo}>
+  <article class="guide-content">
+    <header class="guide-header">
+      <nav class="breadcrumb">
+        <a href={hubUrl}>Home</a> › <a href="/de/ratgeber/">Ratgeber</a> › Arbeitszeit berechnen
+      </nav>
+      <h1>{title}</h1>
+      <p class="lead">Die korrekte Berechnung der Arbeitszeit ist das Fundament für eine faire Entlohnung und die Einhaltung gesetzlicher Vorgaben. In diesem Ratgeber erfährst du alles Wissenswerte.</p>
+    </header>
+
+    <div class="glass-card content-card">
+      <section>
+        <h2>1. Brutto- vs. Nettoarbeitszeit</h2>
+        <p>Die <strong>Bruttoarbeitszeit</strong> ist die gesamte Zeitspanne zwischen Arbeitsbeginn und Arbeitsende. Die <strong>Nettoarbeitszeit</strong> ist die tatsächliche Zeit, in der gearbeitet wird – also Bruttozeit minus Pausen.</p>
+        <div class="formula">
+          <code>Nettozeit = (Ende - Beginn) - Pausendauer</code>
+        </div>
+      </section>
+
+      <section>
+        <h2>2. Gesetzliche Pausenregelungen (ArbZG)</h2>
+        <p>In Deutschland schreibt das Arbeitszeitgesetz (ArbZG) Mindestpausen vor:</p>
+        <ul>
+          <li><strong>Ab 6 Stunden Arbeit:</strong> Mindestens 30 Minuten Pause.</li>
+          <li><strong>Ab 9 Stunden Arbeit:</strong> Mindestens 45 Minuten Pause.</li>
+        </ul>
+        <p>Pausen dürfen in Zeiträume von jeweils mindestens 15 Minuten aufgeteilt werden.</p>
+      </section>
+
+      <section>
+        <h2>3. Überstunden richtig erfassen</h2>
+        <p>Überstunden entstehen, wenn die vertraglich vereinbarte tägliche oder wöchentliche Arbeitszeit überschritten wird. Eine präzise Dokumentation ist hierbei unerlässlich.</p>
+        <a href={hubUrl} class="btn btn-primary">Jetzt Arbeitsstunden berechnen</a>
+      </section>
+
+      <section>
+        <h2>4. Warum digitale Zeiterfassung sinnvoll ist</h2>
+        <p>Manuelle Stundenzettel sind fehleranfällig. Digitale Tools wie unser <a href={hubUrl}>Zeitrechner</a> helfen dabei, Rundungsfehler zu vermeiden und die gesetzlichen Ruhezeiten im Blick zu behalten.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .guide-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.6;
+  }
+  .guide-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .breadcrumb {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  h2 {
+    color: var(--primary);
+    margin-top: 2rem;
+  }
+  .content-card {
+    padding: 2.5rem;
+  }
+  .formula {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-family: var(--font-mono);
+    border-left: 4px solid var(--primary);
+  }
+  ul {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+  li {
+    margin-bottom: 0.5rem;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: var(--grad-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+</style>

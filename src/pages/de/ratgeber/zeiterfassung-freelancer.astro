@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Zeiterfassung für Freelancer: Die besten Methoden & Tools 2025';
+const description = 'Maximiere deine abrechenbaren Stunden. Lerne, wie du als Freelancer deine Zeit effizient trackst, Honorare kalkulierst und Fehler vermeidest.';
+
+const seo = buildSEOMeta(
+  'hub',
+  lang,
+  {},
+  'https://zeitrechner.app/de/ratgeber/zeiterfassung-freelancer/',
+  'en',
+  'https://zeitrechner.app/en/guides/tracking-time-freelancers/'
+);
+
+const hubUrl = getHubUrl(lang);
+---
+
+<BaseLayout seo={seo}>
+  <article class="guide-content">
+    <header class="guide-header">
+      <nav class="breadcrumb">
+        <a href={hubUrl}>Home</a> › <a href="/de/ratgeber/">Ratgeber</a> › Freelancer Zeiterfassung
+      </nav>
+      <h1>{title}</h1>
+      <p class="lead">Für Freelancer ist Zeit buchstäblich Geld. Wer seine Arbeitsstunden nicht präzise erfasst, verschenkt monatlich bares Einkommen. Wir zeigen dir, wie du dein Zeitmanagement optimierst.</p>
+    </header>
+
+    <div class="glass-card content-card">
+      <section>
+        <h2>1. Warum "Pi mal Daumen" nicht funktioniert</h2>
+        <p>Viele Selbstständige schätzen ihre Arbeitszeit am Ende des Tages. Studien zeigen, dass dabei bis zu 25% der tatsächlich geleisteten Stunden vergessen werden – besonders kurze Telefonate, E-Mails oder Recherchephasen.</p>
+        <div class="tip-box">
+          <strong>Pro-Tipp:</strong> Nutze unseren <a href={hubUrl}>Zeitrechner</a>, um auch kleine Zeitblöcke sofort in Dezimalstunden für die Rechnung umzuwandeln.
+        </div>
+      </section>
+
+      <section>
+        <h2>2. Zeitformate: Stunden oder Tage?</h2>
+        <p>Je nach Projekt rechnest du in <strong>Stundensätzen</strong> oder <strong>Tagessätzen</strong> ab. Ein Standard-Tagessatz basiert meist auf 8 Stunden. Wenn du 9 Stunden arbeitest, solltest du 1,125 Tage in Rechnung stellen.</p>
+      </section>
+
+      <section>
+        <h2>3. Die 60/20/20-Regel für Freelancer</h2>
+        <p>Ein produktiver Freelancer-Tag besteht nicht nur aus abrechenbarer Zeit:</p>
+        <ul>
+          <li><strong>60% Abrechenbare Arbeit:</strong> Kundenprojekte.</li>
+          <li><strong>20% Akquise & Marketing:</strong> Neue Projekte finden.</li>
+          <li><strong>20% Administration:</strong> Buchhaltung, E-Mails, Weiterbildung.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>4. Fazit: Konsistenz ist alles</h2>
+        <p>Egal welches Tool du nutzt: Erfasse deine Zeiten <em>sofort</em>. Unser Tool hilft dir dabei, Start- und Endzeiten präzise zu dokumentieren und Pausen korrekt abzuziehen, damit am Ende des Monats jede Minute bezahlt wird.</p>
+        <a href={hubUrl} class="btn btn-primary">Jetzt Projektzeit berechnen</a>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .guide-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.6;
+  }
+  .guide-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .breadcrumb {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  h2 {
+    color: var(--primary);
+    margin-top: 2rem;
+  }
+  .content-card {
+    padding: 2.5rem;
+  }
+  .tip-box {
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid var(--primary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+  ul {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+  li {
+    margin-bottom: 0.5rem;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: var(--grad-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+</style>
