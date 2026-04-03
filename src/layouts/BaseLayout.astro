@@ -25,17 +25,17 @@ const {
   ogType = 'website',
 } = Astro.props;
 
-const hubUrlDe = '/de/zeitrechner/';
-const hubUrlEn = '/en/time-calculator/';
+const hubUrlDe = '/';
+const hubUrlEn = '/en/';
 const hubUrl = lang === 'de' ? hubUrlDe : hubUrlEn;
 const altLang = lang === 'de' ? 'en' : 'de';
 const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
 
 const navLinks = lang === 'de' ? [
-  { href: '/de/zeitrechner/', label: 'Zeitrechner' },
-  { href: '/de/zeitrechner/#differenz', label: 'Differenz' },
-  { href: '/de/zeitrechner/#arbeit', label: 'Arbeitsstunden' },
-  { href: '/de/zeitrechner/#countdown', label: 'Countdown' },
+  { href: '/zeitrechner/', label: 'Zeitrechner' },
+  { href: '/#differenz', label: 'Differenz' },
+  { href: '/#arbeitsstunden', label: 'Arbeitsstunden' },
+  { href: '/#countdown', label: 'Countdown' },
 ] : [
   { href: '/en/time-calculator/', label: 'Calculator' },
   { href: '/en/time-calculator/#diff', label: 'Difference' },
@@ -128,31 +128,31 @@ const currentYear = new Date().getFullYear();
       <div class="footer__col">
         <h4>{lang === 'de' ? 'Rechner' : 'Calculators'}</h4>
         <ul>
-          <li><a href={lang === 'de' ? '/de/zeitrechner/' : '/en/time-calculator/'}>{lang === 'de' ? 'Zeitrechner' : 'Time Calculator'}</a></li>
-          <li><a href={lang === 'de' ? '/de/stunden-zwischen-9-und-17/' : '/en/hours-between-9-and-5/'}>{lang === 'de' ? 'Stunden 9–17' : 'Hours 9–5'}</a></li>
-          <li><a href={lang === 'de' ? '/de/arbeitsstunden-9-und-17/' : '/en/work-hours-9-to-5/'}>{lang === 'de' ? 'Arbeitsstunden' : 'Work Hours'}</a></li>
-          <li><a href={lang === 'de' ? '/de/tage-bis-weihnachten-2025/' : '/en/days-until-christmas-2025/'}>Countdown</a></li>
+          <li><a href={lang === 'de' ? '/zeitrechner/' : '/en/time-calculator/'}>{lang === 'de' ? 'Zeitrechner' : 'Time Calculator'}</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-9-und-17/' : '/en/hours-between-9-and-5/'}>{lang === 'de' ? 'Stunden 9–17' : 'Hours 9–5'}</a></li>
+          <li><a href={lang === 'de' ? '/arbeitsstunden-9-und-17/' : '/en/work-hours-9-to-5/'}>{lang === 'de' ? 'Arbeitsstunden' : 'Work Hours'}</a></li>
+          <li><a href={lang === 'de' ? '/tage-bis-weihnachten-2025/' : '/en/days-until-christmas-2025/'}>Countdown</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>{lang === 'de' ? 'Beliebt' : 'Popular'}</h4>
         <ul>
-          <li><a href={lang === 'de' ? '/de/stunden-zwischen-8-und-17/' : '/en/hours-between-8-and-5/'}>8–17 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/de/stunden-zwischen-7-und-15/' : '/en/hours-between-7-and-3/'}>7–15 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/de/stunden-zwischen-10-und-18/' : '/en/hours-between-10-and-6/'}>10–18 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/de/stunden-zwischen-9-und-12/' : '/en/hours-between-9-and-12/'}>9–12 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-8-und-17/' : '/en/hours-between-8-and-5/'}>8–17 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-7-und-15/' : '/en/hours-between-7-and-3/'}>7–15 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-10-und-18/' : '/en/hours-between-10-and-6/'}>10–18 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-9-und-12/' : '/en/hours-between-9-and-12/'}>9–12 Uhr</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>{lang === 'de' ? 'Sprache' : 'Language'}</h4>
         <ul>
-          <li><a href="/de/zeitrechner/" hreflang="de">🇩🇪 Deutsch</a></li>
-          <li><a href="/en/time-calculator/" hreflang="en">🇬🇧 English</a></li>
+          <li><a href="/" hreflang="de">🇩🇪 Deutsch</a></li>
+          <li><a href="/en/" hreflang="en">🇬🇧 English</a></li>
         </ul>
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© {currentYear} Zeitrechner.app</span>
+      <span>© {currentYear} Zeit-Rechner.com</span>
       <span>{lang === 'de' ? 'Kostenloser Online-Zeitrechner' : 'Free Online Time Calculator'}</span>
     </div>
   </footer>

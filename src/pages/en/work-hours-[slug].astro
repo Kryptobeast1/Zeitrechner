@@ -55,7 +55,7 @@ const seoMeta = buildSEOMeta(
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Home', url: 'https://zeitrechner.app/' },
+    { name: 'Home', url: getHubUrl('de') },
     { name: 'Time Calculator', url: getHubUrl(lang) },
     { name: `Work Hours ${start24}–${end24}`, url: canonical },
   ]),

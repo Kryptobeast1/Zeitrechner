@@ -10,15 +10,21 @@ const seo = buildSEOMeta(
   'hub',
   lang,
   {},
-  'https://zeitrechner.app/en/guides/how-to-calculate-work-hours/',
+  '/en/guides/how-to-calculate-work-hours/',
   'de',
-  'https://zeitrechner.app/de/ratgeber/arbeitszeit-berechnen/'
+  '/ratgeber/arbeitszeit-berechnen/'
 );
 
 const hubUrl = getHubUrl(lang);
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
   <article class="guide-content">
     <header class="guide-header">
       <nav class="breadcrumb">

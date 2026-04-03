@@ -1,0 +1,31 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.zeit-rechner.com"
+        }
+      ],
+      "destination": "https://zeit-rechner.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/de",
+      "destination": "/",
+      "redirect": true,
+      "permanent": true
+    },
+    {
+      "source": "/de/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/((?!.*\\.).*[^/])",
+      "destination": "/$1/",
+      "permanent": true
+    }
+  ]
+}

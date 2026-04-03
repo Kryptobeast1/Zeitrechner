@@ -1,42 +1,45 @@
 ---
 import { INDEXED_RANGES } from '../data/timeRanges';
 import { ALL_EVENTS } from '../data/dateEvents';
-import { getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex } from '../lib/seoEngine';
+import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex, getFullUrl } from '../lib/seoEngine';
 
 const languages = ['de', 'en'] as const;
 
 // Collect all indexable URLs
 const urls: string[] = [];
 
-// Hubs
-languages.forEach(lang => urls.push(getHubUrl(lang)));
+// Hubs & Tools
+languages.forEach(lang => {
+  urls.push(getFullUrl(getHubUrl(lang)));
+  urls.push(getFullUrl(getToolUrl(lang)));
+});
 
 // Time Ranges
 INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore)).forEach(range => {
   languages.forEach(lang => {
-    urls.push(getTimeRangeUrl(lang, range.slug));
+    urls.push(getFullUrl(getTimeRangeUrl(lang, range.slug)));
   });
 });
 
 // Work Hours
 INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift).forEach(range => {
   languages.forEach(lang => {
-    urls.push(getWorkHoursUrl(lang, range.slug));
+    urls.push(getFullUrl(getWorkHoursUrl(lang, range.slug)));
   });
 });
 
 // Countdowns
 ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027).forEach(event => {
   languages.forEach(lang => {
-    urls.push(getCountdownUrl(lang, event.slug));
+    urls.push(getFullUrl(getCountdownUrl(lang, event.slug)));
   });
 });
 
 // Guides
-urls.push('https://zeitrechner.app/de/ratgeber/arbeitszeit-berechnen/');
-urls.push('https://zeitrechner.app/en/guides/how-to-calculate-work-hours/');
-urls.push('https://zeitrechner.app/de/ratgeber/zeiterfassung-freelancer/');
-urls.push('https://zeitrechner.app/en/guides/tracking-time-freelancers/');
+urls.push(getFullUrl(getGuideUrl('de', 'arbeitszeit-berechnen')));
+urls.push(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
+urls.push(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
+urls.push(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -44,7 +47,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <url>
       <loc>${url}</loc>
       <changefreq>weekly</changefreq>
-      <priority>${url.includes('/de/zeitrechner/') || url.includes('/en/time-calculator/') ? '1.0' : '0.7'}</priority>
+      <priority>${url.endsWith('/') && url.split('/').length <= 4 ? '1.0' : '0.7'}</priority>
     </url>
   `).join('')}
 </urlset>`.trim();

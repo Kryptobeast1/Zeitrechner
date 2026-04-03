@@ -4,7 +4,14 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://zeitrechner.app',
+  site: 'https://zeit-rechner.com',
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    }
+  },
   integrations: [
     react(),
     sitemap({

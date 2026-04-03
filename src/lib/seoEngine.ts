@@ -12,7 +12,7 @@ export interface SEOMeta {
   jsonLd?: Record<string, unknown>;
 }
 
-const BASE_URL = 'https://zeitrechner.app';
+const BASE_URL = 'https://zeit-rechner.com';
 
 // ─── CTR-OPTIMIZED TITLE TEMPLATES ──────────────────────────────────────────
 
@@ -78,7 +78,11 @@ const descTemplates: Record<PageType, Record<Lang, (params: Record<string, strin
 // CRITICAL: We use relative paths for internal navigation to avoid dev-mode 404s.
 
 export function getHubUrl(lang: Lang): string {
-  return lang === 'de' ? `/de/zeitrechner/` : `/en/time-calculator/`;
+  return lang === 'de' ? `/` : `/en/`;
+}
+
+export function getToolUrl(lang: Lang): string {
+  return lang === 'de' ? `/zeitrechner/` : `/en/time-calculator/`;
 }
 
 export function formatTimeSlug(h: string | number): string {
@@ -87,20 +91,26 @@ export function formatTimeSlug(h: string | number): string {
 
 export function getTimeRangeUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `/de/stunden-zwischen-${slug}/`
+    ? `/stunden-zwischen-${slug}/`
     : `/en/hours-between-${slug}/`;
 }
 
 export function getWorkHoursUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `/de/arbeitsstunden-${slug}/`
+    ? `/arbeitsstunden-${slug}/`
     : `/en/work-hours-${slug}/`;
 }
 
 export function getCountdownUrl(lang: Lang, slug: string): string {
   return lang === 'de'
-    ? `/de/tage-bis-${slug}/`
+    ? `/tage-bis-${slug}/`
     : `/en/days-until-${slug}/`;
+}
+
+export function getGuideUrl(lang: Lang, slug: string): string {
+  return lang === 'de'
+    ? `/ratgeber/${slug}/`
+    : `/en/guides/${slug}/`;
 }
 
 // Utility to prepends domain for Canonical/Sitemap

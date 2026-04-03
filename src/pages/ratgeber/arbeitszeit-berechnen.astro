@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
 const title = 'Arbeitszeit berechnen: Der komplette Ratgeber 2025';
@@ -10,19 +10,25 @@ const seo = buildSEOMeta(
   'hub',
   lang,
   {},
-  'https://zeitrechner.app/de/ratgeber/arbeitszeit-berechnen/',
+  '/ratgeber/arbeitszeit-berechnen/',
   'en',
-  'https://zeitrechner.app/en/guides/how-to-calculate-work-hours/'
+  '/en/guides/how-to-calculate-work-hours/'
 );
 
 const hubUrl = getHubUrl(lang);
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
   <article class="guide-content">
     <header class="guide-header">
       <nav class="breadcrumb">
-        <a href={hubUrl}>Home</a> › <a href="/de/ratgeber/">Ratgeber</a> › Arbeitszeit berechnen
+        <a href={hubUrl}>Home</a> › <a href="/ratgeber/">Ratgeber</a> › Arbeitszeit berechnen
       </nav>
       <h1>{title}</h1>
       <p class="lead">Die korrekte Berechnung der Arbeitszeit ist das Fundament für eine faire Entlohnung und die Einhaltung gesetzlicher Vorgaben. In diesem Ratgeber erfährst du alles Wissenswerte.</p>

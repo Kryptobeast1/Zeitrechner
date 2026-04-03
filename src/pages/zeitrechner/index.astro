@@ -1,13 +1,14 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ModeTabbar from '../../../components/calculator/ModeTabbar';
-import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../../../lib/seoEngine';
-import { INDEXED_RANGES, formatHour24 } from '../../../data/timeRanges';
-import { INDEXED_EVENTS } from '../../../data/dateEvents';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModeTabbar from '../../components/calculator/ModeTabbar';
+import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, getGuideUrl } from '../../lib/seoEngine';
+import { INDEXED_RANGES, formatHour24 } from '../../data/timeRanges';
+import { INDEXED_EVENTS } from '../../data/dateEvents';
 
 const lang = 'de';
-const canonical = getHubUrl(lang);
-const altUrl = getHubUrl('en');
+const canonical = getToolUrl(lang); // "/zeitrechner/"
+const altUrl = getToolUrl('en'); // "/en/time-calculator/"
+const hubUrl = getHubUrl(lang); // "/"
 const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
 
 const hreflang = [
@@ -19,7 +20,7 @@ const hreflang = [
 const jsonLd = [
   buildWebAppSchema(lang),
   buildBreadcrumbSchema([
-    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Startseite', url: hubUrl },
     { name: 'Zeitrechner', url: canonical },
   ]),
 ];
@@ -44,7 +45,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
   <section class="section landing-hero">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
+        <a href={hubUrl}>Home</a>
         <span class="breadcrumb__sep">›</span>
         <span aria-current="page">Zeitrechner</span>
       </nav>
@@ -138,14 +139,14 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
       <section class="guides-section">
         <h3>📖 Ratgeber & Ressourcen</h3>
         <div class="link-grid">
-          <a href="/de/ratgeber/arbeitszeit-berechnen/" class="glass-card link-item">
+          <a href={getGuideUrl(lang, 'arbeitszeit-berechnen')} class="glass-card link-item">
             <span class="icon">💼</span>
             <div class="link-info">
               <span class="label">Arbeitszeit berechnen</span>
               <span class="sub">Der komplette Guide 2025</span>
             </div>
           </a>
-          <a href="/de/ratgeber/zeiterfassung-freelancer/" class="glass-card link-item">
+          <a href={getGuideUrl(lang, 'zeiterfassung-freelancer')} class="glass-card link-item">
             <span class="icon">🚀</span>
             <div class="link-info">
               <span class="label">Freelancer Zeiterfassung</span>
@@ -184,7 +185,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
           </p>
           <p>
             <strong>Zeitdifferenz:</strong> Gib Start- und Enddatum/-uhrzeit ein. Das Ergebnis wird in Tagen,
-            Stunden, Minuten und Sekunden angezeigt — inklusive Dezimalstunden für Stundenzettelpräzise Abrechnung.
+            Stunden, Minuten and Sekunden angezeigt — inklusive Dezimalstunden für Stundenzettelpräzise Abrechnung.
           </p>
           <p>
             <strong>Addieren/Subtrahieren:</strong> Wähle eine Basiszeit und addiere oder subtrahiere beliebige

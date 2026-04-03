@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
 const title = 'Zeiterfassung für Freelancer: Die besten Methoden & Tools 2025';
@@ -10,19 +10,25 @@ const seo = buildSEOMeta(
   'hub',
   lang,
   {},
-  'https://zeitrechner.app/de/ratgeber/zeiterfassung-freelancer/',
+  '/ratgeber/zeiterfassung-freelancer/',
   'en',
-  'https://zeitrechner.app/en/guides/tracking-time-freelancers/'
+  '/en/guides/tracking-time-freelancers/'
 );
 
 const hubUrl = getHubUrl(lang);
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
   <article class="guide-content">
     <header class="guide-header">
       <nav class="breadcrumb">
-        <a href={hubUrl}>Home</a> › <a href="/de/ratgeber/">Ratgeber</a> › Freelancer Zeiterfassung
+        <a href={hubUrl}>Home</a> › <a href="/ratgeber/">Ratgeber</a> › Freelancer Zeiterfassung
       </nav>
       <h1>{title}</h1>
       <p class="lead">Für Freelancer ist Zeit buchstäblich Geld. Wer seine Arbeitsstunden nicht präzise erfasst, verschenkt monatlich bares Einkommen. Wir zeigen dir, wie du dein Zeitmanagement optimierst.</p>

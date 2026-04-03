@@ -10,15 +10,21 @@ const seo = buildSEOMeta(
   'hub',
   lang,
   {},
-  'https://zeitrechner.app/en/guides/tracking-time-freelancers/',
+  '/en/guides/tracking-time-freelancers/',
   'de',
-  'https://zeitrechner.app/de/ratgeber/zeiterfassung-freelancer/'
+  '/ratgeber/zeiterfassung-freelancer/'
 );
 
 const hubUrl = getHubUrl(lang);
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout 
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
   <article class="guide-content">
     <header class="guide-header">
       <nav class="breadcrumb">

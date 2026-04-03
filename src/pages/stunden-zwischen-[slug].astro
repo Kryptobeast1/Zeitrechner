@@ -1,16 +1,16 @@
 ---
-// Programmatic page: /de/stunden-zwischen-[slug]/
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
-import { INDEXED_RANGES, formatHour24, formatHour12, getRangeHours, getSimilarRanges } from '../../data/timeRanges';
-import type { TimeRange } from '../../data/timeRanges';
+// Programmatic page: /stunden-zwischen-[slug]/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
+import { INDEXED_RANGES, formatHour24, formatHour12, getRangeHours, getSimilarRanges } from '../data/timeRanges';
+import type { TimeRange } from '../data/timeRanges';
 import {
   buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema,
   getTimeRangeUrl, getHubUrl, getWorkHoursUrl
-} from '../../lib/seoEngine';
+} from '../lib/seoEngine';
 import {
   timeRangeIntros_de, contextBlocks_de, useCases_de, faqSets_de, variantIndex
-} from '../../data/contentVariants';
+} from '../data/contentVariants';
 
 export async function getStaticPaths() {
   return INDEXED_RANGES.map(range => ({
@@ -59,7 +59,7 @@ const seoMeta = buildSEOMeta(
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Startseite', url: getHubUrl(lang) },
     { name: 'Zeitrechner', url: getHubUrl(lang) },
     { name: `${hours} Stunden (${start24}–${end24})`, url: canonical },
   ]),

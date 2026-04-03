@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHubUrl, getToolUrl } from '../lib/seoEngine';
+
+// Simple 404 doesn't have a specific language, but we can try to guess from the URL
+// In Astro, we can't easily get the current path in the frontmatter without a middleware,
+// but for a static 404.html generated at the root, we default to a bilingual experience.
+
+const title = '404 - Seite nicht gefunden / Page Not Found';
+const description = 'Entschuldigung, die gesuchte Seite existiert nicht. / Sorry, the page you are looking for does not exist.';
+const canonical = 'https://zeit-rechner.com/404/';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  noindex={true}
+  lang="de"
+>
+  <section class="section landing-hero" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+    <div class="container container--narrow">
+      <div class="error-emoji" style="font-size: 5rem; margin-bottom: 2rem;">⌛</div>
+      
+      <div class="bilingual-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px;">
+        <!-- German Column -->
+        <div class="error-col">
+          <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">404</h1>
+          <p class="landing-hero__lead" style="margin-bottom: 2rem;">
+            Hoppla! Diese Zeitspanne existiert wohl nicht. Die gesuchte Seite wurde verschoben oder gelöscht.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href={getHubUrl('de')} class="btn btn--primary">Zur Startseite</a>
+            <a href={getToolUrl('de')} class="btn btn--secondary">Zum Zeitrechner</a>
+          </div>
+        </div>
+
+        <!-- English Column -->
+        <div class="error-col" style="border-left: 1px solid var(--clr-border); padding-left: 40px;">
+          <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">404</h1>
+          <p class="landing-hero__lead" style="margin-bottom: 2rem;">
+            Oops! This time range doesn't exist. The page you are looking for has been moved or deleted.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href={getHubUrl('en')} class="btn btn--primary">Back to Home</a>
+            <a href={getToolUrl('en')} class="btn btn--secondary">Go to Calculator</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--clr-border);">
+        <p style="color: var(--clr-text-3);">
+          Suchen Sie etwas Bestimmtes? <br/>
+          Looking for something specific?
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .error-emoji {
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  @media (max-width: 768px) {
+    .bilingual-grid {
+      grid-template-columns: 1fr !important;
+      gap: 60px !important;
+    }
+    .error-col {
+      border-left: none !important;
+      padding-left: 0 !important;
+      border-bottom: 1px solid var(--clr-border);
+      padding-bottom: 40px;
+    }
+    .error-col:last-child {
+      border-bottom: none;
+    }
+  }
+</style>

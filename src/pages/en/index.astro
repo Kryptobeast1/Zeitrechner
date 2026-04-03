@@ -1,14 +1,13 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ModeTabbar from '../../../components/calculator/ModeTabbar';
-import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl } from '../../../lib/seoEngine';
-import { INDEXED_RANGES, formatHour24 } from '../../../data/timeRanges';
-import { INDEXED_EVENTS } from '../../../data/dateEvents';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModeTabbar from '../../components/calculator/ModeTabbar';
+import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, getGuideUrl } from '../../lib/seoEngine';
+import { INDEXED_RANGES, formatHour24 } from '../../data/timeRanges';
+import { INDEXED_EVENTS } from '../../data/dateEvents';
 
 const lang = 'en';
-const canonical = getToolUrl(lang); // "/en/time-calculator/"
-const altUrl = getToolUrl('de'); // "/zeitrechner/"
-const hubUrl = getHubUrl(lang); // "/en/"
+const canonical = getHubUrl(lang); // "/en/"
+const altUrl = getHubUrl('de'); // "/"
 const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 
 const hreflang = [
@@ -20,8 +19,7 @@ const hreflang = [
 const jsonLd = [
   buildWebAppSchema(lang),
   buildBreadcrumbSchema([
-    { name: 'Home', url: hubUrl },
-    { name: 'Time Calculator', url: canonical },
+    { name: 'Home', url: canonical },
   ]),
 ];
 
@@ -42,12 +40,6 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
   <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
   <section class="section landing-hero">
     <div class="container">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href={hubUrl}>Home</a>
-        <span class="breadcrumb__sep">›</span>
-        <span aria-current="page">Time Calculator</span>
-      </nav>
-
       <div class="landing-hero__meta">
         <span class="badge badge--accent">⚡ Free</span>
         <span class="badge badge--violet">🌍 English</span>
@@ -107,14 +99,14 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
       <section class="guides-section">
         <h3>📖 Guides & Resources</h3>
         <div class="link-grid">
-          <a href="/en/guides/how-to-calculate-work-hours/" class="glass-card link-item">
+          <a href={getGuideUrl(lang, 'how-to-calculate-work-hours')} class="glass-card link-item">
             <span class="icon">💼</span>
             <div class="link-info">
               <span class="label">Calculating Work Hours</span>
               <span class="sub">Ultimate Guide 2025</span>
             </div>
           </a>
-          <a href="/en/guides/tracking-time-freelancers/" class="glass-card link-item">
+          <a href={getGuideUrl(lang, 'tracking-time-freelancers')} class="glass-card link-item">
             <span class="icon">🚀</span>
             <div class="link-info">
               <span class="label">Freelancer Time Tracking</span>

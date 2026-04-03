@@ -1,11 +1,11 @@
 ---
-// /de/tage-bis-[slug]/
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CountdownCalc from '../../components/calculator/CountdownCalc';
-import { INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../../data/dateEvents';
-import type { DateEvent } from '../../data/dateEvents';
-import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../../lib/seoEngine';
-import { countdownIntros_de, variantIndex } from '../../data/contentVariants';
+// /tage-bis-[slug]/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CountdownCalc from '../components/calculator/CountdownCalc';
+import { INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../data/dateEvents';
+import type { DateEvent } from '../data/dateEvents';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../lib/seoEngine';
+import { countdownIntros_de, variantIndex } from '../data/contentVariants';
 
 export async function getStaticPaths() {
   return INDEXED_EVENTS.map(event => ({
@@ -61,7 +61,7 @@ const faqs = [
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Startseite', url: getHubUrl(lang) },
     { name: 'Zeitrechner', url: getHubUrl(lang) },
     { name: `Tage bis ${displayName}`, url: canonical },
   ]),

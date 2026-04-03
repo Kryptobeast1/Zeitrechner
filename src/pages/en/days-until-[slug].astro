@@ -61,7 +61,7 @@ const faqs = [
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Home', url: 'https://zeitrechner.app/' },
+    { name: 'Home', url: getHubUrl('de') },
     { name: 'Time Calculator', url: getHubUrl(lang) },
     { name: `Days Until ${displayName}`, url: canonical },
   ]),

@@ -1,12 +1,12 @@
 ---
-// /de/arbeitsstunden-[slug]/
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
-import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../../data/timeRanges';
-import type { TimeRange } from '../../data/timeRanges';
-import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl } from '../../lib/seoEngine';
-import { workHoursIntros_de, faqSets_de, variantIndex } from '../../data/contentVariants';
-import { calcWorkHours } from '../../lib/timeEngine';
+// /arbeitsstunden-[slug]/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
+import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../data/timeRanges';
+import type { TimeRange } from '../data/timeRanges';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl } from '../lib/seoEngine';
+import { workHoursIntros_de, faqSets_de, variantIndex } from '../data/contentVariants';
+import { calcWorkHours } from '../lib/timeEngine';
 
 export async function getStaticPaths() {
   const workRanges = INDEXED_RANGES.filter(r => r.workShift);
@@ -57,7 +57,7 @@ const seoMeta = buildSEOMeta(
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Startseite', url: 'https://zeitrechner.app/' },
+    { name: 'Startseite', url: getHubUrl(lang) },
     { name: 'Zeitrechner', url: getHubUrl(lang) },
     { name: `Arbeitsstunden ${start24}–${end24}`, url: canonical },
   ]),
