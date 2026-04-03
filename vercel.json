@@ -14,7 +14,6 @@
     {
       "source": "/de",
       "destination": "/",
-      "redirect": true,
       "permanent": true
     },
     {
