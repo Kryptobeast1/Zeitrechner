@@ -1,7 +1,7 @@
 ---
 import { INDEXED_RANGES } from '../data/timeRanges';
 import { ALL_EVENTS } from '../data/dateEvents';
-import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex, getFullUrl } from '../lib/seoEngine';
+import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, getGuideUrl, shouldIndex, getFullUrl } from '../lib/seoEngine';
 
 const languages = ['de', 'en'] as const;
 
@@ -41,15 +41,17 @@ urls.push(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
 urls.push(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
 urls.push(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
 
+const now = new Date().toISOString();
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${urls.map(url => `
-    <url>
-      <loc>${url}</loc>
-      <changefreq>weekly</changefreq>
-      <priority>${url.endsWith('/') && url.split('/').length <= 4 ? '1.0' : '0.7'}</priority>
-    </url>
-  `).join('')}
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${url.endsWith('/') && url.split('/').length <= 4 ? '1.0' : '0.7'}</priority>
+  </url>`).join('')}
 </urlset>`.trim();
 
 // Set correct header for XML
