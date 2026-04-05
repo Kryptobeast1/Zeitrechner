@@ -1,0 +1,78 @@
+import { INDEXED_RANGES } from '../data/timeRanges';
+import { ALL_EVENTS } from '../data/dateEvents';
+import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, getGuideUrl, shouldIndex, getFullUrl } from '../lib/seoEngine';
+
+export async function GET() {
+  const languages = ['de', 'en'] as const;
+
+  // Collect all indexable URLs
+  const urlSet = new Set<string>();
+
+  // Hubs & Tools
+  languages.forEach(lang => {
+    urlSet.add(getFullUrl(getHubUrl(lang)));
+    urlSet.add(getFullUrl(getToolUrl(lang)));
+  });
+
+  // Time Ranges
+  INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore)).forEach(range => {
+    languages.forEach(lang => {
+      urlSet.add(getFullUrl(getTimeRangeUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
+    });
+  });
+
+  // Work Hours
+  INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift).forEach(range => {
+    languages.forEach(lang => {
+      urlSet.add(getFullUrl(getWorkHoursUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
+    });
+  });
+
+  // Countdowns
+  ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027).forEach(event => {
+    languages.forEach(lang => {
+      urlSet.add(getFullUrl(getCountdownUrl(lang, lang === 'de' ? event.deSlug : event.slug)));
+    });
+  });
+
+  // Guides
+  urlSet.add(getFullUrl(getGuideUrl('de', 'arbeitszeit-berechnen')));
+  urlSet.add(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
+  urlSet.add(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
+  urlSet.add(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
+
+  // HTML Sitemaps
+  urlSet.add(getFullUrl('/alle-rechner/'));
+  urlSet.add(getFullUrl('/en/all-calculators/'));
+
+  // Legal Pages
+  urlSet.add(getFullUrl('/impressum/'));
+  urlSet.add(getFullUrl('/datenschutz/'));
+  urlSet.add(getFullUrl('/nutzungsbedingungen/'));
+  urlSet.add(getFullUrl('/ueber-uns/'));
+  urlSet.add(getFullUrl('/en/imprint/'));
+  urlSet.add(getFullUrl('/en/privacy-policy/'));
+  urlSet.add(getFullUrl('/en/terms-of-service/'));
+  urlSet.add(getFullUrl('/en/about-us/'));
+
+  const urls = Array.from(urlSet);
+
+  const now = new Date().toISOString();
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls.map(url => `
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${url.endsWith('/') && url.split('/').length <= 4 ? '1.0' : '0.7'}</priority>
+  </url>`).join('')}
+</urlset>`.trim();
+
+  return new Response(sitemap, {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
+  });
+}
