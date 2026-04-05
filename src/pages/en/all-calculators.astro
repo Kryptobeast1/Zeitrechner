@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { INDEXED_RANGES, formatHour24 } from '../../data/timeRanges';
+import { ALL_EVENTS } from '../../data/dateEvents';
+import { buildSEOMeta, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex } from '../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'All Calculators & Variations (Sitemap)';
+const description = 'HTML Sitemap: A complete directory of all available time calculator, work hours, and countdown pages.';
+const canonical = '/en/all-calculators/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'de', '/alle-rechner/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+
+const timeRanges = INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore));
+const workRanges = INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift);
+const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027);
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <h1>All Calculators & Timers</h1>
+      <p class="landing-hero__lead">This is a directory of every single time calculation combination available on our platform.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      
+      <div class="internal-links">
+        <h2 style="margin-bottom: 16px;">Work Hours Calculators</h2>
+        <div style="column-count: 2; column-gap: 32px;">
+          {workRanges.map(r => (
+            <div style="break-inside: avoid; margin-bottom: 8px;">
+              <a href={getWorkHoursUrl(lang, r.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
+                Work hours from {formatHour24(r.start)} to {formatHour24(r.end)}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="internal-links" style="margin-top: 48px;">
+        <h2 style="margin-bottom: 16px;">Time Difference Calculators</h2>
+        <div style="column-count: 2; column-gap: 32px;">
+          {timeRanges.map(r => (
+            <div style="break-inside: avoid; margin-bottom: 8px;">
+              <a href={getTimeRangeUrl(lang, r.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
+                Hours between {formatHour24(r.start)} and {formatHour24(r.end)}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="internal-links" style="margin-top: 48px;">
+        <h2 style="margin-bottom: 16px;">Countdowns</h2>
+        <div style="column-count: 2; column-gap: 32px;">
+          {countdowns.map(e => (
+            <div style="break-inside: avoid; margin-bottom: 8px;">
+              <a href={getCountdownUrl(lang, e.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
+                Days until {e.name}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
