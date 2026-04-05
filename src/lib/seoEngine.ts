@@ -18,20 +18,20 @@ const BASE_URL = 'https://zeit-rechner.com';
 
 const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, string>) => string>> = {
   'time-range': {
-    en: ({ start, end, hours }) => `${hours} Hours From ${start} To ${end} (Instant Calculate)`,
-    de: ({ start, end, hours }) => `Stunden von ${start} bis ${end} Uhr: Genau ${hours} Stunden`,
+    en: ({ start, end }) => `Hours From ${start} To ${end} — How many?`,
+    de: ({ start, end }) => `Stunden von ${start} bis ${end} Uhr berechnen`,
   },
   'work-hours': {
-    en: ({ start, end, net }) => `Work Calculator: Hours Between ${start}–${end} (${net}h Net)`,
-    de: ({ start, end, net }) => `Arbeitszeitrechner: Stunden von ${start}–${end} Uhr (${net}h Netto)`,
+    en: ({ start, end }) => `Work Calculator: Hours Between ${start}–${end}`,
+    de: ({ start, end }) => `Arbeitszeitrechner: Stunden von ${start}–${end} Uhr`,
   },
   'add-time': {
-    en: ({ hours, base, result }) => `What Time Is ${hours} Hours After ${base}? (Result: ${result})`,
-    de: ({ hours, base, result }) => `Was ist ${hours} Stunden nach ${base} Uhr? (${result})`,
+    en: ({ hours, base }) => `What Time Is ${hours} Hours After ${base}?`,
+    de: ({ hours, base }) => `Wie viel Uhr ist ${hours} Stunden nach ${base}?`,
   },
   'countdown': {
-    en: ({ name, days }) => `How Many Days Until ${name}? (Only ${days} Days Left)`,
-    de: ({ name, days }) => `Tage bis ${name}: Countdown (Noch ${days} Tage)`,
+    en: ({ name }) => `How Many Days Until ${name}? — Countdown`,
+    de: ({ name }) => `Tage bis ${name}: Wie lange noch?`,
   },
   'hub': {
     en: () => 'Time Calculator — Hours, Work Hours & Countdown | Quick & Precise',
