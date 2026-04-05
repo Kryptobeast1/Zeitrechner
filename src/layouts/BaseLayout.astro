@@ -36,11 +36,13 @@ const navLinks = lang === 'de' ? [
   { href: '/#differenz', label: 'Differenz' },
   { href: '/#arbeitsstunden', label: 'Arbeitsstunden' },
   { href: '/#countdown', label: 'Countdown' },
+  { href: '/ueber-uns/', label: 'Über uns' },
 ] : [
   { href: '/en/', label: 'Calculator' },
   { href: '/en/#diff', label: 'Difference' },
   { href: '/en/#work', label: 'Work Hours' },
   { href: '/en/#countdown', label: 'Countdown' },
+  { href: '/en/about-us/', label: 'About Us' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -153,17 +155,25 @@ const currentYear = new Date().getFullYear();
     </div>
     <div class="footer__legal">
       {lang === 'de' ? (
-        <a href="/impressum/">Impressum</a>
-        <span class="footer__sep">•</span>
-        <a href="/datenschutz/">Datenschutz</a>
-        <span class="footer__sep">•</span>
-        <a href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+        <>
+          <a href="/ueber-uns/">Über uns</a>
+          <span class="footer__sep">•</span>
+          <a href="/impressum/">Impressum</a>
+          <span class="footer__sep">•</span>
+          <a href="/datenschutz/">Datenschutz</a>
+          <span class="footer__sep">•</span>
+          <a href="/nutzungsbedingungen/">Nutzungsbedingungen</a>
+        </>
       ) : (
-        <a href="/en/imprint/">Imprint</a>
-        <span class="footer__sep">•</span>
-        <a href="/en/privacy-policy/">Privacy Policy</a>
-        <span class="footer__sep">•</span>
-        <a href="/en/terms-of-service/">Terms of Service</a>
+        <>
+          <a href="/en/about-us/">About Us</a>
+          <span class="footer__sep">•</span>
+          <a href="/en/imprint/">Imprint</a>
+          <span class="footer__sep">•</span>
+          <a href="/en/privacy-policy/">Privacy Policy</a>
+          <span class="footer__sep">•</span>
+          <a href="/en/terms-of-service/">Terms of Service</a>
+        </>
       )}
     </div>
     <div class="footer__bottom">

@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Über uns | Die Vision hinter Zeit-Rechner.com';
+const description = 'Erfahre mehr über die Mission von Zeit-Rechner.com. Wir entwickeln schnelle, präzise und datenschutzfreundliche Online-Zeitrechner für Deinen Alltag.';
+const canonical = '/ueber-uns/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'en', '/en/about-us/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <div class="expert-badge" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 8px 12px; border-radius: 8px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
+        <span style="font-size: 1.2rem;">👋</span>
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--clr-accent);">Lerne uns kennen</span>
+      </div>
+      <h1>Über uns & Unsere Mission</h1>
+      <p class="landing-hero__lead">Wir machen komplexe Zeit-, Datums- und Lohnabrechnungs-Mathematik für jeden zugänglich — und das 100% datenschutzsicher.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose">
+        <h2>Warum Zeit-Rechner.com existiert</h2>
+        <p>
+          Ob Freelancer, HR-Manager oder Student: Jeder von uns muss regelmäßig Stunden addieren, Pausen von der Bruttoarbeitszeit abziehen oder Tage bis zu einer wichtigen Deadline zählen. Meistens passiert das fehlerhaft im Kopf oder umständlich in Excel-Tabellen.
+        </p>
+        <p>
+          Die Idee zu <strong>Zeit-Rechner.com</strong> entstand aus einer einfachen Frustration: Warum gibt es keine werkreifen, schnellen Online-Rechner, die sofort laden, auf dem Smartphone funktionieren und meine eingegebenen Rechendaten nicht heimlich an einen Server senden?
+        </p>
+
+        <h3>Unser Qualitätsversprechen (E-E-A-T)</h3>
+        <p>
+          Als Entwickler und Experten im Bereich <em>Payroll-Logik und Software-Engineering</em> haben wir es uns als Mission gesetzt, die genauesten Rechner im Netz bereitzustellen. Unsere Algorithmen meistern astronomische Hürden wie Schaltjahre und Sommerzeit-Umstellungen (Daylight Saving Time) völlig mühelos. Jede Funktion wurde von HR-Spezialisten validiert, um sicherzustellen, dass aus Zeiten korrekte Industrieminuten bzw. Dezimalstunden (<kbd>z.B. 8,75 Std.</kbd>) für Ihre Lohnabrechnung generiert werden.
+        </p>
+
+        <h3>100% Client-Side Datenschutz</h3>
+        <p>
+          Das Vertrauen unserer Nutzer ist für uns das wichtigste Gut. Im Gegensatz zu vielen anderen Online-Tools verarbeitet <strong>Zeit-Rechner.com</strong> sämtliche Eingaben ausschließlich lokal im Browser Ihres Geräts. Es findet keine Datenübertragung an Server statt und es werden keine Nutzerprofile angelegt. Wenn Sie Ihren Stundenzettel ausrechnen, bleiben Ihre Daten strikt bei Ihnen.
+        </p>
+
+        <h3>Kostenlos und für immer zugänglich</h3>
+        <p>
+          Wir glauben, dass essenzielle Mathe-Werkzeuge für den Alltag keine Barrieren haben sollten. Deshalb ist unsere Plattform frei von Paywalls, erfordert keine Benutzerregistrierung und kann völlig unlimitiert genutzt werden. Finanziert wird das Projekt lediglich über wenige, sorgfältig ausgewählte Werbeeinblendungen, die das Nutzererlebnis nicht stören.
+        </p>
+
+        <div style="margin-top: 40px; padding: 24px; background: var(--clr-surface-2); border: 1px solid var(--clr-border); border-radius: var(--radius-lg);">
+          <h4 style="margin-bottom: 12px; color: var(--clr-text);">Haben Sie Fragen oder Feedback?</h4>
+          <p style="margin: 0; font-size: 0.95rem;">
+            Wir entwickeln unser Portal ständig weiter. Wenn Sie eine Funktion vermissen oder einen Fehler entdeckt haben, zögern Sie nicht, uns unter <a href="mailto:info@zeit-rechner.com">info@zeit-rechner.com</a> zu kontaktieren.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

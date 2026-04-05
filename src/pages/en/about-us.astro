@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'About Us | The Vision Behind Zeit-Rechner.com';
+const description = 'Learn more about the mission of Zeit-Rechner.com. We build fast, accurate, and privacy-focused online time calculators for your everyday needs.';
+const canonical = '/en/about-us/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'de', '/ueber-uns/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <div class="expert-badge" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 8px 12px; border-radius: 8px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
+        <span style="font-size: 1.2rem;">👋</span>
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--clr-accent);">Get to Know Us</span>
+      </div>
+      <h1>About Us & Our Mission</h1>
+      <p class="landing-hero__lead">Making complex time, date, and payroll mathematics accessible to everyone—with a 100% commitment to data privacy.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose">
+        <h2>Why Zeit-Rechner.com was Built</h2>
+        <p>
+          Whether you're a freelancer logging billable hours, an HR manager calculating Fair Labor Standards Act (FLSA) compliance, or a student counting down days to a deadline—we all deal with time math. Usually, this means making frustrating calculating errors in our heads or dealing with clunky Excel spreadsheets.
+        </p>
+        <p>
+          The idea for <strong>Zeit-Rechner.com</strong> was born out of a simple frustration: Why are there no beautifully designed, mobile-friendly online calculators that load instantly, work offline, and actually protect the user's data? 
+        </p>
+
+        <h3>Our Commitment to Quality (E-E-A-T)</h3>
+        <p>
+          As developers with deep roots in <em>payroll logic and software engineering</em>, we made it our mission to engineer the most precise calculators on the web. Our algorithms flawlessly navigate celestial hurdles like leap years and Daylight Saving Time (DST) shifts. We've verified every function with HR specialists to ensure that net worked hours perfectly convert into industrial minutes/decimal hours (<kbd>e.g., 8.75 hrs</kbd>) for highly reliable timesheet generation.
+        </p>
+
+        <h3>100% Client-Side Privacy</h3>
+        <p>
+          User trust is our foundational pillar. Unlike many online utility tools, <strong>Zeit-Rechner.com</strong> processes all calculations entirely locally within your browser. There is absolutely no server-side tracking, and no user profiles are generated. When you calculate your sensitive payroll or timesheet data, your input mathematically stays entirely on your own device.
+        </p>
+
+        <h3>Free and Always Accessible</h3>
+        <p>
+          We believe essential productivity tools should have zero barriers to entry. That’s why our platform is entirely free of paywalls, requires no user registration, and has no usage limits. To maintain the servers and development costs, the project is funded through minimal, carefully placed contextual ads that do not disrupt your user experience.
+        </p>
+
+        <div style="margin-top: 40px; padding: 24px; background: var(--clr-surface-2); border: 1px solid var(--clr-border); border-radius: var(--radius-lg);">
+          <h4 style="margin-bottom: 12px; color: var(--clr-text);">Got Questions or Feedback?</h4>
+          <p style="margin: 0; font-size: 0.95rem;">
+            We are constantly improving and expanding our calculators. If you are missing a feature or have discovered a bug, please don't hesitate to reach out to us at <a href="mailto:info@zeit-rechner.com">info@zeit-rechner.com</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
