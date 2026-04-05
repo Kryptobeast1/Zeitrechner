@@ -430,3 +430,28 @@
   .embedded-calc { padding: var(--space-5); }
   .featured-snippet { padding: var(--space-4); }
 }
+
+/* ─── LEGAL CONTENT ───────────────────────────────────────────────────────── */
+.legal-content h3 {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  color: var(--clr-text);
+  font-size: 1.25rem;
+}
+
+.legal-content p, .legal-content ul, .legal-content address {
+  margin-bottom: var(--space-4);
+  color: var(--clr-text-2);
+  line-height: 1.8;
+  font-style: normal;
+}
+
+.legal-content a {
+  color: var(--clr-accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 212, 255, 0.4);
+}
+.legal-content a:hover {
+  text-decoration-color: var(--clr-accent);
+}
+

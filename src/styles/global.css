@@ -381,9 +381,34 @@ code, kbd {
 }
 .footer__col ul a:hover { color: var(--clr-accent); }
 
-.footer__bottom {
+.footer__legal {
   max-width: var(--max-width);
   margin: var(--space-8) auto 0;
+  padding: 0 var(--space-6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+}
+
+.footer__legal a {
+  color: var(--clr-text-3);
+  transition: color var(--transition);
+}
+
+.footer__legal a:hover {
+  color: var(--clr-accent);
+}
+
+.footer__sep {
+  color: var(--clr-border-2);
+}
+
+.footer__bottom {
+  max-width: var(--max-width);
+  margin: var(--space-6) auto 0;
   padding: var(--space-6) var(--space-6) 0;
   border-top: 1px solid var(--clr-border);
   display: flex;

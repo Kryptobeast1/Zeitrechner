@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'Imprint & Legal Notice';
+const description = 'Legal information and imprint for Zeit-Rechner.com';
+const canonical = '/en/imprint/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'de', '/impressum/',
+  false
+);
+
+// Overwrite title and desc
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <h1>Imprint</h1>
+      <p class="landing-hero__lead">Legal Disclosure</p>
+      <div class="last-updated">Last Updated: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>Information in accordance with § 5 TMG</h3>
+        <address>
+          <strong>Zeit-Rechner.com</strong><br>
+          Musterstraße 42<br>
+          10115 Berlin<br>
+          Germany
+        </address>
+
+        <h3>Contact Information</h3>
+        <p>
+          Email: <a href="mailto:info@zeit-rechner.com">info@zeit-rechner.com</a><br>
+          Phone: +49 (0) 30 12345678
+        </p>
+
+        <h3>Disclaimer regarding Content</h3>
+        <p>
+          As service providers, we are liable for our own contents on these pages in accordance with general laws. However, we are not obligated to monitor transmitted or stored external information or to investigate circumstances that suggest illegal activity. Obligations to remove or block the use of information under general laws remain unaffected. However, liability in this regard is only possible from the moment of knowledge of a specific infringement. Upon notification of such violations, we will remove the content immediately.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

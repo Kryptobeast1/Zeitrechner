@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'Terms of Service';
+const description = 'Terms of Service for Zeit-Rechner.com';
+const canonical = '/en/terms-of-service/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'de', '/nutzungsbedingungen/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <h1>Terms of Service</h1>
+      <p class="landing-hero__lead">General Terms and Disclaimer of Liability.</p>
+      <div class="last-updated">Last Updated: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>1. Scope</h3>
+        <p>
+          The following terms apply to the use of the online calculators at Zeit-Rechner.com. By using this website, you agree to comply with these terms.
+        </p>
+
+        <h3>2. Service Availability</h3>
+        <p>
+          Zeit-Rechner.com is provided free of charge. We reserve the right to alter, pause, or unconditionally discontinue operations of this website at any time without prior notice. 
+        </p>
+
+        <h3>3. Disclaimer of Liability for Calculations</h3>
+        <p>
+          All calculations (e.g., time differences, work hours, break deductions, and countdowns) have been programmed with the utmost care. However, due to the complexity of time zones, Daylight Saving Time anomalies, leap years, and disparate browser APIs, <strong>we assume no liability or guarantee for the accuracy, completeness, or legal reliability of the results provided</strong>.
+        </p>
+        <p>
+          The results are for informational purposes only. They do not replace legally binding payroll accounting, tax advice, or HR processing. The sole responsibility for the application of the calculated data—especially regarding labor laws and payroll—rests entirely with the user.
+        </p>
+
+        <h3>4. Copyright</h3>
+        <p>
+          The content and works published on this website (including text, calculator source code logic, and design) are governed by copyright laws. Any duplication, processing, distribution, or any form of commercialization of such material beyond the scope of the copyright law shall require the prior written consent of its respective author or creator.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

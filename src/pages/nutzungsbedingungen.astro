@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Nutzungsbedingungen';
+const description = 'Nutzungsbedingungen für Zeit-Rechner.com';
+const canonical = '/nutzungsbedingungen/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'en', '/en/terms-of-service/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <h1>Nutzungsbedingungen</h1>
+      <p class="landing-hero__lead">Allgemeine Geschäftsbedingungen und Haftungsausschluss.</p>
+      <div class="last-updated">Stand: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>1. Geltungsbereich</h3>
+        <p>
+          Die nachfolgenden Nutzungsbedingungen gelten für die Nutzung des Online-Zeitrechners unter Zeit-Rechner.com. Mit der Nutzung der Website erklären Sie sich mit diesen Bedingungen einverstanden.
+        </p>
+
+        <h3>2. Bereitstellung und Nutzung</h3>
+        <p>
+          Zeit-Rechner.com ist ein kostenloser Service. Wir behalten uns das Recht vor, den Betrieb des Rechners jederzeit und ohne Angabe von Gründen ganz oder teilweise einzustellen oder zu verändern. 
+        </p>
+
+        <h3>3. Haftungsausschluss für Berechnungen</h3>
+        <p>
+          Sämtliche Berechnungen (z.B. Zeitdifferenzen, Arbeitszeiten, Pausenabzüge und Countdowns) wurden mit größter Sorgfalt programmiert. Aufgrund der Komplexität von Zeitzonen, Schaltjahren und Browser-APIs <strong>übernehmen wir jedoch keine Gewähr für die Richtigkeit, Vollständigkeit oder Rechtsverbindlichkeit der angezeigten Ergebnisse</strong>.
+        </p>
+        <p>
+          Die Ergebnisse dienen ausschließlich der persönlichen Information und Orientierung. Sie ersetzen keine rechtlich bindende Lohnabrechnung oder Steuerauskunft. Die alleinige Verantwortung für die Verwendung der Berechnungen — insbesondere im Rahmen der Lohnabrechnung — liegt beim Nutzer.
+        </p>
+
+        <h3>4. Urheberrecht</h3>
+        <p>
+          Die auf dieser Website veröffentlichten Inhalte (Texte, Quellcode der Rechner, Design) unterliegen dem Urheberrecht. Vervielfältigungen, Bearbeitungen, Verbreitungen oder jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

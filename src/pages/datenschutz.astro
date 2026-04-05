@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Datenschutzerklärung';
+const description = 'Datenschutzerklärung von Zeit-Rechner.com. Wir verarbeiten Ihre Berechnungsdaten zu 100% lokal im Browser.';
+const canonical = '/datenschutz/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'en', '/en/privacy-policy/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <div class="expert-badge" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 8px 12px; background: rgba(50, 205, 50, 0.1); border-radius: 8px;">
+        <span style="font-size: 1.2rem;">🔒</span>
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--clr-text);">100% Client-Side Privacy</span>
+      </div>
+      <h1>Datenschutzerklärung</h1>
+      <p class="landing-hero__lead">Ihre Daten gehören Ihnen. Erfahren Sie, wie wir Ihre Privatsphäre schützen.</p>
+      <div class="last-updated">Stand: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>1. Datenschutz auf einen Blick</h3>
+        <p>
+          Die Nutzung von Zeit-Rechner.com ist in der Regel ohne Angabe personenbezogener Daten möglich. 
+          Soweit auf unseren Seiten personenbezogene Daten erhoben werden, erfolgt dies immer auf freiwilliger Basis.
+        </p>
+        <p><strong>Besonderer Hinweis zum Zeitrechner:</strong></p>
+        <ul>
+          <li>Alle Berechnungen (Zeiten, Daten, Countdowns) werden <strong>ausschließlich lokal in Ihrem Browser</strong> durchgeführt.</li>
+          <li>Ihre Berechnungsdaten werden <strong>niemals an unsere Server oder Dritte gesendet</strong>.</li>
+          <li>Wir speichern keine Cookies, um ihr Nutzerverhalten oder Ihre Berechnungen zu profilieren.</li>
+        </ul>
+
+        <h3>2. Hosting und Vercel</h3>
+        <p>
+          Unsere Website wird bei Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet.
+          Vercel erhebt bei der Bereitstellung der Website sogenannte Server-Logfiles (umfasst u.A. IP-Adresse, Datum und Uhrzeit der Anfrage, genutzter Browser, Betriebssystem).
+          Die Erfassung dieser Daten durch Vercel ist technisch notwendig, um Ihnen unsere Website sicher und zuverlässig anzeigen zu können (Art. 6 Abs. 1 lit. f DSGVO).
+        </p>
+
+        <h3>3. E-Mails und Kontaktaufnahmen</h3>
+        <p>
+          Wenn Sie uns per E-Mail kontaktieren, wird Ihre E-Mail inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+        </p>
+
+        <h3>4. Ihre Rechte</h3>
+        <p>
+          Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.
+          Bei Fragen zum Datenschutz wenden Sie sich bitte an unsere im Impressum angegebene Adresse.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

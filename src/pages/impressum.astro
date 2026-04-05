@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Impressum';
+const description = 'Impressum und rechtliche Hinweise von Zeit-Rechner.com';
+const canonical = '/impressum/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'en', '/en/imprint/',
+  false
+);
+
+// Overwrite title and desc
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <h1>Impressum</h1>
+      <p class="landing-hero__lead">Angaben gemäß § 5 TMG</p>
+      <div class="last-updated">Stand: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>Seitenbetreiber</h3>
+        <address>
+          <strong>Zeit-Rechner.com</strong><br>
+          Musterstraße 42<br>
+          10115 Berlin<br>
+          Deutschland
+        </address>
+
+        <h3>Kontakt</h3>
+        <p>
+          E-Mail: <a href="mailto:info@zeit-rechner.com">info@zeit-rechner.com</a><br>
+          Telefon: +49 (0) 30 12345678
+        </p>
+
+        <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+        <p>
+          Max Mustermann<br>
+          Musterstraße 42, 10115 Berlin
+        </p>
+
+        <h3>Haftung für Inhalte</h3>
+        <p>
+          Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

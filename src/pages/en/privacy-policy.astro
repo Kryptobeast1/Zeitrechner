@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'Privacy Policy';
+const description = 'Privacy Policy for Zeit-Rechner.com. We process your calculations 100% locally in your browser to guarantee privacy.';
+const canonical = '/en/privacy-policy/';
+
+const seo = buildSEOMeta(
+  'hub', lang,
+  {},
+  canonical, 'de', '/datenschutz/',
+  false
+);
+
+seo.title = title;
+seo.description = description;
+
+const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  canonical={seo.canonical}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero" style="padding-bottom: 20px;">
+    <div class="container container--narrow">
+      <div class="expert-badge" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 8px 12px; background: rgba(50, 205, 50, 0.1); border-radius: 8px;">
+        <span style="font-size: 1.2rem;">🔒</span>
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--clr-text);">100% Client-Side Privacy</span>
+      </div>
+      <h1>Privacy Policy</h1>
+      <p class="landing-hero__lead">Your data is yours. Learn how we protect your privacy.</p>
+      <div class="last-updated">Last Updated: {lastUpdated}</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-prose legal-content">
+        <h3>1. Data Protection at a Glance</h3>
+        <p>
+          The use of our website is generally possible without providing any personal data. 
+          If personal data is collected on our pages, it is always done on a voluntary basis.
+        </p>
+        <p><strong>Special Note on the Time Calculator:</strong></p>
+        <ul>
+          <li>All calculations (times, dates, countdowns) are performed <strong>entirely locally within your browser</strong>.</li>
+          <li>Your calculation data is <strong>never sent to our servers or any third party</strong>.</li>
+          <li>We do not store cookies to track your behavior or your timesheet entries.</li>
+        </ul>
+
+        <h3>2. Hosting and Vercel</h3>
+        <p>
+          Our website is hosted by Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA).
+          When providing the website, Vercel collects server log files (which may include IP address, date and time of the request, browser used, operating system).
+          This data collection by Vercel is highly standard and technically necessary to display our website reliably and securely to you.
+        </p>
+
+        <h3>3. Contact Information</h3>
+        <p>
+          If you correspond with us via email, your email address and message will only be saved for the purpose of communicating with you and answering your request. We will not share this data without your explicit consent.
+        </p>
+
+        <h3>4. Your Rights</h3>
+        <p>
+          You have the right to request information about your stored personal data, its origin, its recipients, and the purpose of its collection at no charge. You also have the right to request that it be corrected, blocked, or deleted. 
+          If you have further questions about privacy and data protection, you can contact us at any time using the address given in the Imprint.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
