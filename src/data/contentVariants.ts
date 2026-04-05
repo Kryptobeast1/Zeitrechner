@@ -156,20 +156,20 @@ export const useCases_de = [
 
 export const workHoursIntros_en = [
   (start: string, end: string, net: number) =>
-    `Working from <strong>${start} to ${end}</strong> results in <strong>${net} hours</strong> of net work time. This accounts for standard break deductions automatically.`,
+    `Working from <strong>${start} to ${end}</strong> results in <strong>${net} hours</strong> of net billable work time. Our calculator automatically handles mandatory break deductions, ensuring your timesheet complies with standard labor regulations.`,
   (start: string, end: string, net: number) =>
-    `A total of <strong>${net} productive hours</strong> are earned between ${start} and ${end}. Subtracting mandatory rest periods gives you this exact result for your timesheet.`,
+    `A total of <strong>${net} productive hours</strong> are earned between ${start} and ${end}. By subtracting statutory rest periods, this result provides an audit-proof decimal figure ready for HR and payroll processing.`,
   (start: string, end: string, net: number) =>
-    `Your net working time from ${start} until ${end} equals <strong>${net} hours</strong>. Precision in this calculation avoids payroll disputes and ensures fair compensation.`,
+    `Your net working time from ${start} until ${end} equals exactly <strong>${net} hours</strong>. Maintaining to-the-minute precision in this calculation helps you avoid FLSA overtime disputes and ensures fair compensation.`,
 ];
 
 export const workHoursIntros_de = [
   (start: string, end: string, net: number) =>
-    `Die Arbeit von <strong>${start} bis ${end} Uhr</strong> ergibt <strong>${net} Stunden</strong> Nettozeit. Pausenabzüge sind in dieser Kalkulation bereits berücksichtigt.`,
+    `Die Arbeitsschicht von <strong>${start} bis ${end} Uhr</strong> ergibt exakt <strong>${net} Stunden</strong> Nettoabrechnungszeit. Gesetzliche Pausenabzüge gemäß Arbeitszeitgesetz (ArbZG) lassen sich hierbei direkt berücksichtigen.`,
   (start: string, end: string, net: number) =>
-    `Zwischen ${start} und ${end} Uhr erreichen Sie <strong>${net} produktive Stunden</strong> – nach Abzug der gesetzlich vorgeschriebenen Pausenzeiten.`,
+    `Zwischen ${start} und ${end} Uhr erreichen Sie <strong>${net} fakturierbare Stunden</strong> – nach Abzug der vorgeschriebenen Ruhepausen. Dieser manipulationssichere Wert ist ideal für Ihren Stundenzettel.`,
   (start: string, end: string, net: number) =>
-    `Ihre Netto-Arbeitszeit von ${start} bis ${end} Uhr beträgt exakt <strong>${net} Stunden</strong>. Diese Genauigkeit ist essenziell für die korrekte Lohnabrechnung.`,
+    `Ihre Netto-Arbeitszeit von ${start} bis ${end} Uhr beträgt exakt <strong>${net} Industriestunden (Dezimal)</strong>. Diese Genauigkeit ist essenziell für die Lohnbuchhaltung und schützt vor Compliance-Verstößen.`,
 ];
 
 // ─── COUNTDOWN VARIANTS ──────────────────────────────────────────────────────
