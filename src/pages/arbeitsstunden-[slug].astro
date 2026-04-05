@@ -4,13 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
 import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../data/timeRanges';
 import type { TimeRange } from '../data/timeRanges';
-import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl } from '../lib/seoEngine';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl, shouldIndex } from '../lib/seoEngine';
 import { workHoursIntros_de, faqSets_de, variantIndex } from '../data/contentVariants';
 import { calcWorkHours } from '../lib/timeEngine';
 
 export async function getStaticPaths() {
-  const workRanges = INDEXED_RANGES.filter(r => r.workShift);
-  return workRanges.map(range => ({
+  return INDEXED_RANGES.map(range => ({
     params: { slug: range.deSlug },
     props: { range },
   }));
@@ -48,10 +47,13 @@ const faqs = faqSets_de[fi](start24, end24, hours);
 
 const similarRanges = getSimilarRanges(range, 6);
 
+const isIndexed = shouldIndex('work-hours', range.demandScore) || range.workShift;
+
 const seoMeta = buildSEOMeta(
   'work-hours', lang,
   { start: start24, end: end24, net: breakResults[1].result.netDecimal },
   canonical, 'en', altUrl,
+  !isIndexed
 );
 
 const jsonLd = [
