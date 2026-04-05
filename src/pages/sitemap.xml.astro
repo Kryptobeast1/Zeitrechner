@@ -6,40 +6,42 @@ import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUr
 const languages = ['de', 'en'] as const;
 
 // Collect all indexable URLs
-const urls: string[] = [];
+const urlSet = new Set<string>();
 
 // Hubs & Tools
 languages.forEach(lang => {
-  urls.push(getFullUrl(getHubUrl(lang)));
-  urls.push(getFullUrl(getToolUrl(lang)));
+  urlSet.add(getFullUrl(getHubUrl(lang)));
+  urlSet.add(getFullUrl(getToolUrl(lang)));
 });
 
 // Time Ranges
 INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore)).forEach(range => {
   languages.forEach(lang => {
-    urls.push(getFullUrl(getTimeRangeUrl(lang, range.slug)));
+    urlSet.add(getFullUrl(getTimeRangeUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
   });
 });
 
 // Work Hours
 INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift).forEach(range => {
   languages.forEach(lang => {
-    urls.push(getFullUrl(getWorkHoursUrl(lang, range.slug)));
+    urlSet.add(getFullUrl(getWorkHoursUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
   });
 });
 
 // Countdowns
 ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027).forEach(event => {
   languages.forEach(lang => {
-    urls.push(getFullUrl(getCountdownUrl(lang, event.slug)));
+    urlSet.add(getFullUrl(getCountdownUrl(lang, lang === 'de' ? event.deSlug : event.slug)));
   });
 });
 
 // Guides
-urls.push(getFullUrl(getGuideUrl('de', 'arbeitszeit-berechnen')));
-urls.push(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
-urls.push(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
-urls.push(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
+urlSet.add(getFullUrl(getGuideUrl('de', 'arbeitszeit-berechnen')));
+urlSet.add(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
+urlSet.add(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
+urlSet.add(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
+
+const urls = Array.from(urlSet);
 
 const now = new Date().toISOString();
 

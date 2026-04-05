@@ -16,11 +16,15 @@ export interface DateEvent {
  */
 export const BASE_EVENTS: DateEvent[] = [
   // Global / Major
-  { name: 'Christmas', deName: 'Weihnachten', slug: 'christmas', deSlug: 'weihnachten-2026', targetDate: '2026-12-25', category: 'holiday', priority: 'high' },
+  { name: 'Christmas', deName: 'Weihnachten', slug: 'christmas', deSlug: 'weihnachten', targetDate: '2026-12-25', category: 'holiday', priority: 'high' },
+  { name: 'Christmas 2025', deName: 'Weihnachten 2025', slug: 'christmas-2025', deSlug: 'weihnachten-2025', targetDate: '2025-12-25', category: 'holiday', priority: 'low' },
+  { name: 'Christmas 2026', deName: 'Weihnachten 2026', slug: 'christmas-2026', deSlug: 'weihnachten-2026', targetDate: '2026-12-25', category: 'holiday', priority: 'low' },
   { name: '2nd Day of Christmas', deName: '2. Weihnachtstag', slug: 'boxing-day', deSlug: 'zweiter-weihnachtstag', targetDate: '2026-12-26', category: 'holiday', priority: 'medium' },
   { name: 'New Year 2027', deName: 'Neujahr 2027', slug: 'new-year-2027', deSlug: 'neujahr-2027', targetDate: '2027-01-01', category: 'holiday', priority: 'high' },
+  { name: 'New Year', deName: 'Neujahr', slug: 'new-year', deSlug: 'neujahr', targetDate: '2027-01-01', category: 'holiday', priority: 'high' },
   { name: 'Valentine\'s Day', deName: 'Valentinstag', slug: 'valentines-day', deSlug: 'valentinstag', targetDate: '2027-02-14', category: 'holiday', priority: 'medium' },
   { name: 'Easter Sunday 2026', deName: 'Ostersonntag 2026', slug: 'easter-2026', deSlug: 'ostersonntag-2026', targetDate: '2026-04-05', category: 'holiday', priority: 'high' },
+  { name: 'Easter Sunday', deName: 'Ostersonntag', slug: 'easter', deSlug: 'ostersonntag', targetDate: '2027-04-17', category: 'holiday', priority: 'high' },
   { name: 'Easter Sunday 2027', deName: 'Ostersonntag 2027', slug: 'easter-2027', deSlug: 'ostersonntag-2027', targetDate: '2027-04-17', category: 'holiday', priority: 'medium' },
   { name: 'Halloween', deName: 'Halloween', slug: 'halloween', deSlug: 'halloween', targetDate: '2026-10-31', category: 'holiday', priority: 'high' },
   { name: 'St. Patrick\'s Day', deName: 'St. Patrick\'s Day', slug: 'st-patricks-day', deSlug: 'st-patricks-day', targetDate: '2027-03-17', category: 'holiday', priority: 'medium' },

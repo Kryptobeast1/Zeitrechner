@@ -82,7 +82,7 @@ export function getHubUrl(lang: Lang): string {
 }
 
 export function getToolUrl(lang: Lang): string {
-  return lang === 'de' ? `/zeitrechner/` : `/en/time-calculator/`;
+  return getHubUrl(lang);
 }
 
 export function formatTimeSlug(h: string | number): string {

@@ -32,15 +32,15 @@ const altLang = lang === 'de' ? 'en' : 'de';
 const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
 
 const navLinks = lang === 'de' ? [
-  { href: '/zeitrechner/', label: 'Zeitrechner' },
+  { href: '/', label: 'Zeitrechner' },
   { href: '/#differenz', label: 'Differenz' },
   { href: '/#arbeitsstunden', label: 'Arbeitsstunden' },
   { href: '/#countdown', label: 'Countdown' },
 ] : [
-  { href: '/en/time-calculator/', label: 'Calculator' },
-  { href: '/en/time-calculator/#diff', label: 'Difference' },
-  { href: '/en/time-calculator/#work', label: 'Work Hours' },
-  { href: '/en/time-calculator/#countdown', label: 'Countdown' },
+  { href: '/en/', label: 'Calculator' },
+  { href: '/en/#diff', label: 'Difference' },
+  { href: '/en/#work', label: 'Work Hours' },
+  { href: '/en/#countdown', label: 'Countdown' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -128,10 +128,10 @@ const currentYear = new Date().getFullYear();
       <div class="footer__col">
         <h4>{lang === 'de' ? 'Rechner' : 'Calculators'}</h4>
         <ul>
-          <li><a href={lang === 'de' ? '/zeitrechner/' : '/en/time-calculator/'}>{lang === 'de' ? 'Zeitrechner' : 'Time Calculator'}</a></li>
+          <li><a href={lang === 'de' ? '/' : '/en/'}>{lang === 'de' ? 'Zeitrechner' : 'Time Calculator'}</a></li>
           <li><a href={lang === 'de' ? '/stunden-zwischen-9-und-17/' : '/en/hours-between-9-and-5/'}>{lang === 'de' ? 'Stunden 9–17' : 'Hours 9–5'}</a></li>
           <li><a href={lang === 'de' ? '/arbeitsstunden-9-und-17/' : '/en/work-hours-9-to-5/'}>{lang === 'de' ? 'Arbeitsstunden' : 'Work Hours'}</a></li>
-          <li><a href={lang === 'de' ? '/tage-bis-weihnachten-2025/' : '/en/days-until-christmas-2025/'}>Countdown</a></li>
+          <li><a href={lang === 'de' ? '/tage-bis-weihnachten/' : '/en/days-until-christmas/'}>Countdown</a></li>
         </ul>
       </div>
       <div class="footer__col">

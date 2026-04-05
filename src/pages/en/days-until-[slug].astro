@@ -61,8 +61,7 @@ const faqs = [
 const jsonLd = [
   buildFAQSchema(faqs),
   buildBreadcrumbSchema([
-    { name: 'Home', url: getHubUrl('de') },
-    { name: 'Time Calculator', url: getHubUrl(lang) },
+    { name: 'Home', url: getHubUrl(lang) },
     { name: `Days Until ${displayName}`, url: canonical },
   ]),
 ];
@@ -83,9 +82,7 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
   <section class="section landing-hero">
     <div class="container">
       <nav class="breadcrumb">
-        <a href="/">Home</a>
-        <span class="breadcrumb__sep">›</span>
-        <a href={getHubUrl(lang)}>Time Calculator</a>
+        <a href={getHubUrl(lang)}>Home</a>
         <span class="breadcrumb__sep">›</span>
         <span aria-current="page">Days Until {displayName}</span>
       </nav>

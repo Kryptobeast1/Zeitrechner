@@ -22,6 +22,16 @@
       "permanent": true
     },
     {
+      "source": "/zeitrechner/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/time-calculator/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
       "source": "/((?!.*\\.).*[^/])",
       "destination": "/$1/",
       "permanent": true
