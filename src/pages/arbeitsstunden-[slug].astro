@@ -9,7 +9,7 @@ import { workHoursIntros_de, faqSets_de, variantIndex } from '../data/contentVar
 import { calcWorkHours } from '../lib/timeEngine';
 
 export async function getStaticPaths() {
-  return INDEXED_RANGES.map(range => ({
+  return ALL_TIME_RANGES.map(range => ({
     params: { slug: range.deSlug },
     props: { range },
   }));
