@@ -17,9 +17,9 @@ const homeFaqsEn = [
 ];
 
 const hreflang = [
-  { lang: 'en', url: canonical },
-  { lang: 'de', url: altUrl },
-  { lang: 'x-default', url: canonical },
+  { lang: 'en', url: getFullUrl(canonical) },
+  { lang: 'de', url: getFullUrl(altUrl) },
+  { lang: 'x-default', url: getFullUrl(canonical) },
 ];
 
 const jsonLd = [
@@ -46,7 +46,7 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
 <BaseLayout
   title="Time Calculator — Hours, Work Hours, Countdown & More | Free Online Tool"
   description="Free online time calculator. Calculate time differences, add or subtract hours, track work hours with breaks, and create live countdowns. Fast, accurate, mobile-friendly."
-  canonical={canonical}
+  canonical={getFullUrl(canonical)}
   hreflang={hreflang}
   lang={lang}
   jsonLd={jsonLd}
@@ -79,7 +79,7 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
   <!-- ─── CALCULATOR ─────────────────────────────────────────────────────── -->
   <section class="section" style="padding-top: 0;" id="diff">
     <div class="container">
-      <ModeTabbar client:load lang="en" />
+      <ModeTabbar client:visible lang="en" />
     </div>
   </section>
 

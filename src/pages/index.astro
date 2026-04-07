@@ -19,9 +19,9 @@ const homeFaqsDe = [
 ];
 
 const hreflang = [
-  { lang: 'de', url: canonical },
-  { lang: 'en', url: altUrl },
-  { lang: 'x-default', url: altUrl },
+  { lang: 'de', url: getFullUrl(canonical) },
+  { lang: 'en', url: getFullUrl(altUrl) },
+  { lang: 'x-default', url: getFullUrl(altUrl) },
 ];
 
 const jsonLd = [
@@ -50,7 +50,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
 <BaseLayout
   title="Zeitrechner — Stunden, Arbeitszeit & Countdown berechnen"
   description="Kostenloser Online-Zeitrechner. Berechne Zeitdifferenzen, addiere oder subtrahiere Stunden, ermittle Nettoarbeitszeit und erstelle Live-Countdowns. Schnell, präzise und mobil."
-  canonical={canonical}
+  canonical={getFullUrl(canonical)}
   hreflang={hreflang}
   lang={lang}
   jsonLd={jsonLd}
@@ -84,7 +84,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
   <!-- ─── CALCULATOR ─────────────────────────────────────────────────────── -->
   <section class="section" style="padding-top: 0;" id="differenz">
     <div class="container">
-      <ModeTabbar client:load lang="de" />
+      <ModeTabbar client:visible lang="de" />
     </div>
   </section>
 
