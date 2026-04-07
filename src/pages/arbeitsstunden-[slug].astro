@@ -2,21 +2,33 @@
 // /arbeitsstunden-[slug]/
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
-import { INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../data/timeRanges';
+import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../data/timeRanges';
 import type { TimeRange } from '../data/timeRanges';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl, shouldIndex } from '../lib/seoEngine';
 import { workHoursIntros_de, faqSets_de, variantIndex } from '../data/contentVariants';
 import { calcWorkHours } from '../lib/timeEngine';
 
 export async function getStaticPaths() {
-  return ALL_TIME_RANGES.map(range => ({
-    params: { slug: range.deSlug },
-    props: { range },
-  }));
+  const paths = [];
+  for (const range of ALL_TIME_RANGES) {
+    // Add primary German slug
+    paths.push({ params: { slug: range.deSlug }, props: { range } });
+    // Add English slug for redirection/robustness
+    if (range.slug !== range.deSlug) {
+      paths.push({ params: { slug: range.slug }, props: { range } });
+    }
+  }
+  return paths;
 }
 
 interface Props { range: TimeRange; }
 const { range } = Astro.props as Props;
+const { slug } = Astro.params;
+
+// 301 Redirect to German slug if English slug is used on a German page
+if (slug === range.slug && range.slug !== range.deSlug) {
+  return Astro.redirect(getWorkHoursUrl('de', range.deSlug), 301);
+}
 
 const lang = 'de';
 const hours = getRangeHours(range.start, range.end);

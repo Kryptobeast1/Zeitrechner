@@ -2,20 +2,30 @@
 // /en/days-until-[slug]/
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CountdownCalc from '../../components/calculator/CountdownCalc';
-import { INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../../data/dateEvents';
+import { ALL_EVENTS, INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../../data/dateEvents';
 import type { DateEvent } from '../../data/dateEvents';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../../lib/seoEngine';
 import { countdownIntros_en, variantIndex } from '../../data/contentVariants';
 
 export async function getStaticPaths() {
-  return INDEXED_EVENTS.map(event => ({
-    params: { slug: event.slug },
-    props: { event },
-  }));
+  const paths = [];
+  for (const event of ALL_EVENTS) {
+    paths.push({ params: { slug: event.slug }, props: { event } });
+    if (event.deSlug !== event.slug) {
+      paths.push({ params: { slug: event.deSlug }, props: { event } });
+    }
+  }
+  return paths;
 }
 
 interface Props { event: DateEvent; }
 const { event } = Astro.props as Props;
+const { slug } = Astro.params;
+
+// 301 Redirect to English slug if German slug is used on an English page
+if (slug === event.deSlug && event.deSlug !== event.slug) {
+  return Astro.redirect(getCountdownUrl('en', event.slug), 301);
+}
 
 const lang = 'en';
 const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
