@@ -12,6 +12,8 @@ interface Props {
   jsonLd?: Record<string, unknown>[];
   lang?: 'de' | 'en';
   ogType?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const {
@@ -23,6 +25,8 @@ const {
   jsonLd = [],
   lang = 'de',
   ogType = 'website',
+  ogImage = 'https://zeit-rechner.com/og-image.png',
+  ogImageAlt = lang === 'de' ? 'Zeit-Rechner.com — Präzise Online-Zeitrechner' : 'Zeit-Rechner.com — Precise Online Time Calculators',
 } = Astro.props;
 
 const hubUrlDe = '/';
@@ -82,12 +86,19 @@ const currentYear = new Date().getFullYear();
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
-  <meta property="og:site_name" content="Zeitrechner" />
+  <meta property="og:site_name" content={lang === 'de' ? 'Zeit-Rechner.com' : 'Time-Calculator.com'} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content={ogImageAlt} />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
 
   <!-- Theme -->
   <meta name="theme-color" content="#080b14" />

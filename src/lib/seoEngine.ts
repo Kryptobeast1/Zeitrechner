@@ -10,6 +10,8 @@ export interface SEOMeta {
   hreflang: { lang: string; url: string }[];
   noindex: boolean;
   jsonLd?: Record<string, unknown>;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const BASE_URL = 'https://zeit-rechner.com';
@@ -136,6 +138,8 @@ export function buildSEOMeta(
   alternateLang: Lang,
   alternateUrl: string,
   noindex = false,
+  ogImage?: string,
+  ogImageAlt?: string,
 ): SEOMeta {
   const title = titleTemplates[type][lang](params);
   const description = descTemplates[type][lang](params);
@@ -150,6 +154,8 @@ export function buildSEOMeta(
       { lang: 'x-default', url: getFullUrl(alternateUrl) },
     ],
     noindex,
+    ogImage: ogImage ? getFullUrl(ogImage) : getFullUrl('/og-image.png'),
+    ogImageAlt: ogImageAlt || (lang === 'de' ? 'Zeit-Rechner.com — Präzise Online-Zeitrechner für Alltag und Beruf' : 'Zeit-Rechner.com — Precise Online Time Calculators for Everyone'),
   };
 }
 
