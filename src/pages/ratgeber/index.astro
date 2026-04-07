@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Ratgeber & Expertenwissen — Zeit-Rechner.com';
+const description = 'Vertiefen Sie Ihr Wissen über Zeiterfassung, Stundenberechnung und Produktivitäts-Optimierung.';
+const canonical = '/ratgeber/';
+
+const seo = buildSEOMeta(
+  'hub',
+  lang,
+  {},
+  canonical,
+  'en',
+  '/en/guides/'
+);
+
+const hubUrl = getHubUrl(lang);
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  canonical={getFullUrl(canonical)}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero">
+    <div class="container container--narrow">
+      <span class="badge badge--accent">Wissensdatenbank</span>
+      <h1>Experten-Ratgeber & Anleitungen</h1>
+      <p class="landing-hero__lead">Meistern Sie Ihr Zeitmanagement und die Lohnabrechnung mit unseren geprüften Ressourcen.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="link-grid link-grid--large">
+        <a href="/ratgeber/arbeitszeit-berechnen/" class="glass-card link-item link-item--featured">
+          <span class="icon" style="font-size: 2.5rem;">💼</span>
+          <div class="link-info">
+            <h2 class="label" style="font-size: 1.4rem; margin-bottom: 0.5rem;">Ratgeber: Arbeitszeit berechnen</h2>
+            <p class="sub" style="font-size: 1rem; opacity: 0.8;">Das ultimative Handbuch 2026 zur Berechnung der Nettoarbeitszeit, Abzug von Pausen und Umgang mit Überstunden.</p>
+            <span class="link-item__meta" style="display: block; margin-top: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--clr-accent);">Zum Ratgeber →</span>
+          </div>
+        </a>
+
+        <a href="/ratgeber/zeiterfassung-freelancer/" class="glass-card link-item link-item--featured" style="margin-top: 24px;">
+          <span class="icon" style="font-size: 2.5rem;">🚀</span>
+          <div class="link-info">
+            <h2 class="label" style="font-size: 1.4rem; margin-bottom: 0.5rem;">Zeiterfassung für Freelancer</h2>
+            <p class="sub" style="font-size: 1rem; opacity: 0.8;">Maximieren Sie Ihre fakturierbaren Stunden und optimieren Sie Ihr Reporting mit professionellen Strategien.</p>
+            <span class="link-item__meta" style="display: block; margin-top: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--clr-accent);">Zum Ratgeber →</span>
+          </div>
+        </a>
+      </div>
+
+      <div style="margin-top: 4rem; text-align: center;">
+        <a href={hubUrl} class="btn btn--outline">Zurück zum Zeitrechner</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.link-grid--large {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.link-item--featured {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 2.5rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+.link-item--featured:hover {
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+@media (max-width: 640px) {
+  .link-item--featured {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+}
+</style>

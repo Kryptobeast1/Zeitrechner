@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildSEOMeta, getHubUrl, getFullUrl } from '../../../lib/seoEngine';
+
+const lang = 'en';
+const title = 'Guides & Expert Resources — Zeit-Rechner.com';
+const description = 'Explore our deep-dives into time tracking, payroll calculation, and productivity optimization.';
+const canonical = '/en/guides/';
+
+const seo = buildSEOMeta(
+  'hub',
+  lang,
+  {},
+  canonical,
+  'de',
+  '/ratgeber/'
+);
+
+const hubUrl = getHubUrl(lang);
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  canonical={getFullUrl(canonical)}
+  hreflang={seo.hreflang}
+  lang={lang}
+>
+  <section class="section landing-hero">
+    <div class="container container--narrow">
+      <span class="badge badge--accent">Knowledge Base</span>
+      <h1>Expert Guides & How-Tos</h1>
+      <p class="landing-hero__lead">Master the art of time management and payroll calculation with our verified resources.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="link-grid link-grid--large">
+        <a href="/en/guides/how-to-calculate-work-hours/" class="glass-card link-item link-item--featured">
+          <span class="icon" style="font-size: 2.5rem;">💼</span>
+          <div class="link-info">
+            <h2 class="label" style="font-size: 1.4rem; margin-bottom: 0.5rem;">Work Hours Calculation Guide</h2>
+            <p class="sub" style="font-size: 1rem; opacity: 0.8;">The ultimate 2026 handbook for calculating net work time, deducting breaks, and handling overtime.</p>
+            <span class="link-item__meta" style="display: block; margin-top: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--clr-accent);">Read Guide →</span>
+          </div>
+        </a>
+
+        <a href="/en/guides/tracking-time-freelancers/" class="glass-card link-item link-item--featured" style="margin-top: 24px;">
+          <span class="icon" style="font-size: 2.5rem;">🚀</span>
+          <div class="link-info">
+            <h2 class="label" style="font-size: 1.4rem; margin-bottom: 0.5rem;">Time Tracking for Freelancers</h2>
+            <p class="sub" style="font-size: 1rem; opacity: 0.8;">Maximize your billable hours and streamline your client reporting with expert tracking strategies.</p>
+            <span class="link-item__meta" style="display: block; margin-top: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--clr-accent);">Read Guide →</span>
+          </div>
+        </a>
+      </div>
+
+      <div style="margin-top: 4rem; text-align: center;">
+        <a href={hubUrl} class="btn btn--outline">Back to Clock Calculator</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.link-grid--large {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.link-item--featured {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 2.5rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+.link-item--featured:hover {
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+@media (max-width: 640px) {
+  .link-item--featured {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+}
+</style>
