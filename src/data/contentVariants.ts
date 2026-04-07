@@ -53,6 +53,12 @@ export const timeRangeIntros_en = [
     `The delta between ${start} and ${end} is <strong>${hours} hours</strong>. Precision down to the minute is required when these intervals are used for payroll or billing compliance.`,
   (start: string, end: string, hours: number) =>
     `A total of <strong>${hours} hours</strong> pass between ${start} and ${end}. In today's flex-time world, these specific intervals are increasingly common for shift-based employees.`,
+  (start: string, end: string, hours: number) =>
+    `From the start point of ${start} to the conclusion at ${end}, the duration is exactly <strong>${hours} hours</strong>. This measurable gap is a fundamental building block for many logistics and time-sensitive operations.`,
+  (start: string, end: string, hours: number) =>
+    `Exactly <strong>${hours} hours</strong> are contained within the span of ${start} to ${end}. Accurate calculation of these periods is a critical step for maintaining correct digital logs and historical data.`,
+  (start: string, end: string, hours: number) =>
+    `Spanning from ${start} until ${end}, we find a period of <strong>${hours} hours</strong>. Such precise time-tracking is often mandated by specific industry standards and quality control protocols.`,
 ];
 
 export const timeRangeIntros_de = [
@@ -81,6 +87,12 @@ export const timeRangeIntros_de = [
     `Die Zeitspanne von ${start} bis ${end} Uhr ergibt exakt <strong>${hours} Stunden</strong>. Für Gleitzeitmodelle ist die korrekte Erfassung solcher Zeitfenster unerlässlich.`,
   (start: string, end: string, hours: number) =>
     `Von ${start} bis ${end} Uhr verstreichen insgesamt <strong>${hours} Stunden</strong>. Diese Berechnung hilft Ihnen dabei, den Überblick über Ihre Tageskapazität zu behalten.`,
+  (start: string, end: string, hours: number) =>
+    `Zwischen dem Beginn um ${start} und dem Ende um ${end} Uhr liegen exakt <strong>${hours} Stunden</strong>. In der modernen Arbeitswelt ist die minutengenaue Erfassung solcher Intervalle für die Fairness am Arbeitsplatz zentral.`,
+  (start: string, end: string, hours: number) =>
+    `Die Zeitspanne von ${start} bis ${end} Uhr beläuft sich auf <strong>${hours} Stunden</strong>. Ob für Projektphasen oder Dienstübergaben – die genaue Kenntnis dieser Dauer optimiert jeden Prozess.`,
+  (start: string, end: string, hours: number) =>
+    `Vom Startzeitpunkt ${start} bis zum Ziel um ${end} Uhr messen wir <strong>${hours} Stunden</strong>. Dieser Wert ist ein verlässlicher Ankerpunkt für Ihre persönliche Zeitplanung und Dokumentation.`,
 ];
 
 export const contextBlocks_en = [

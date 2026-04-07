@@ -6,7 +6,7 @@ import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, getRangeHours, getSimila
 import type { TimeRange } from '../../data/timeRanges';
 import {
   buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema,
-  getTimeRangeUrl, getHubUrl, getWorkHoursUrl
+  getTimeRangeUrl, getHubUrl, getWorkHoursUrl, shouldIndex
 } from '../../lib/seoEngine';
 import {
   timeRangeIntros_en, contextBlocks_en, useCases_en, faqSets_en, variantIndex
@@ -64,7 +64,7 @@ const seoMeta = buildSEOMeta(
   'time-range', lang,
   { start: start24, end: end24, hours: hours.toString() },
   canonical, 'de', altUrl,
-  range.priority === 'low',
+  !shouldIndex('time-range', range.demandScore),
 );
 
 const jsonLd = [

@@ -81,7 +81,7 @@ function generatePhase3Ranges(): TimeRange[] {
         end,
         slug: `${formatSlug(start)}-and-${formatSlug(end)}`,
         deSlug: `${formatSlug(start)}-und-${formatSlug(end)}`,
-        priority: dScore > 60 ? 'medium' : 'low',
+        priority: dScore >= 60 ? 'medium' : 'low', // Keep 'low' for very common durations to prioritize crawl budget on high-demand, but we now index both.
         index: dScore >= 30, 
         demandScore: dScore,
       });

@@ -122,8 +122,8 @@ export function getFullUrl(path: string): string {
 
 export function shouldIndex(type: PageType, demandScore: number): boolean {
   if (type === 'hub') return true;
-  if (type === 'work-hours') return demandScore >= 40; 
-  return demandScore >= 50; 
+  // Lower threshold (30 instead of 40/50) to index all valid programmatic pages.
+  return demandScore >= 30; 
 }
 
 // ─── META BUILDER ─────────────────────────────────────────────────────────────
