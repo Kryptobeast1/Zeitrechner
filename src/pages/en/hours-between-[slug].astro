@@ -82,8 +82,8 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
 <BaseLayout
   title={seoMeta.title}
   description={seoMeta.description}
-  canonical={canonical}
-  hreflang={hreflang}
+  canonical={seoMeta.canonical}
+  hreflang={seoMeta.hreflang}
   noindex={seoMeta.noindex}
   lang={lang}
   jsonLd={jsonLd}
