@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import '../styles/calculator.css';
 import '../styles/landing.css';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
   title: string;
@@ -99,6 +100,9 @@ const currentYear = new Date().getFullYear();
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+  <!-- Vercel Speed Insights -->
+  <SpeedInsights />
 </head>
 <body>
 
