@@ -144,10 +144,23 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
       <div class="content-section">
-        <h2>Explanation</h2>
+        <h2>Calculating the Duration from {start24} to {end24}</h2>
         <div class="content-prose">
           <p set:html={introHtml} />
           <p>{contextText}</p>
+
+          <div class="expert-box" style="margin-top: 40px; padding: 24px; background: var(--clr-surf-2); border-radius: 12px; border: 1px solid var(--clr-border);">
+            <h3 style="margin-top: 0;">🔬 Precision & Modern Timekeeping</h3>
+            <p>
+              In modern computing and logistics, determining time differences relies on the <strong>sexagesimal system</strong> (base 60). 
+              Our calculator uses high-precision offsets to ensure that even complex scenarios—like overnight shifts crossing 
+              the midnight threshold—are calculated with 100% accuracy.
+            </p>
+            <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: var(--clr-text-3);">
+              <em>Did you know? Precise timekeeping is a cornerstone of global GPS synchronization, network latency management, 
+              and efficient international supply chain coordination.</em>
+            </p>
+          </div>
         </div>
       </div>
 

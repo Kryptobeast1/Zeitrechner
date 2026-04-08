@@ -137,6 +137,22 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           can be multiplied directly by your hourly rate. With a 45-minute break you get {breakResults[2].result.netDecimal} hours,
           and with a full hour's break, {breakResults[3].result.netDecimal} net hours.
         </p>
+
+        <div class="expert-box" style="margin-top: 40px; padding: 24px; background: var(--clr-surf-2); border-radius: 12px; border: 1px solid var(--clr-border);">
+          <h3 style="margin-top: 0;">💡 Expert Insight: Precision in Payroll</h3>
+          <p>
+            Accurate time tracking is essential for both compliance and fair compensation. In many regions, including the 
+            <strong>UK (Working Time Regulations)</strong> and the <strong>US (FLSA)</strong>, keeping detailed records of 
+            clock-in/out times and unpaid breaks is a legal requirement for employers.
+          </p>
+          <ul style="margin-bottom: 0;">
+            <li><strong>Decimal Conversion:</strong> Converting ${breakResults[1].result.formatted.split(' ')[0]} into ${breakResults[1].result.netDecimal} hours ensures no rounding errors when calculating gross pay.</li>
+            <li><strong>Audit Trails:</strong> Using consistent calculation methods helps in maintaining a reliable audit trail for tax and labor reviews.</li>
+          </ul>
+          <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: var(--clr-text-3);">
+            <em>Note: This tool is designed to provide quick, precise calculations for your daily timesheets and project logs.</em>
+          </p>
+        </div>
       </div>
     </div>
   </section>
