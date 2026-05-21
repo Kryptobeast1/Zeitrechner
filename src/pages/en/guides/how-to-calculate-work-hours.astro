@@ -24,110 +24,76 @@ const hubUrl = getHubUrl(lang);
   canonical={seo.canonical}
   hreflang={seo.hreflang}
   lang={lang}
+  theme="guide"
 >
-  <article class="guide-content">
-    <header class="guide-header">
-      <nav class="breadcrumb">
-        <a href={hubUrl}>Home</a> › <a href="/en/guides/">Guides</a> › Work Hours Calculation
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/en/guides/">Guides</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Work Hours Calculation</span>
       </nav>
-      <h1>{title}</h1>
-      <p class="lead">Accurate work hour calculation ensures fair pay, legal compliance, and effective project management. This guide covers the essential math for every professional.</p>
-    </header>
 
-    <div class="glass-card content-card">
-      <section>
-        <h2>1. Gross vs. Net Work Hours</h2>
-        <p><strong>Gross work hours</strong> represent the total time from start to finish. <strong>Net work hours</strong> are the actual productive hours after subtracting breaks.</p>
-        <div class="formula">
-          <code>Net Hours = (End Time - Start Time) - Total Break Duration</code>
-        </div>
-      </section>
-
-      <section>
-        <h2>2. Standard Work Break Rules</h2>
-        <p>While laws vary by region, most countries have minimum break requirements:</p>
-        <ul>
-          <li><strong>Over 6 hours:</strong> Minimum 30 minutes.</li>
-          <li><strong>Over 8 hours:</strong> Minimum 45 to 60 minutes.</li>
-        </ul>
-        <p>Maintaining these breaks isn't just a legal requirement — it's vital for maintaining productivity and reducing burnout.</p>
-      </section>
-
-      <section>
-        <h2>3. Calculating Overtime</h2>
-        <p>Overtime occurs when daily or weekly contracted hours are exceeded. To track it, you must first establish your baseline hours per period.</p>
-        <a href={hubUrl} class="btn btn-primary">Start Calculating Hours Now</a>
-      </section>
-
-      <section>
-        <h2>4. Why Automated Calculation Wins</h2>
-        <p>Manual tracking is prone to rounding errors. Digital tools like <a href={hubUrl}>Time Calculator</a> provide instant decimal conversions (e.g., 8 hours 15 minutes = 8.25 hours), which are essential for billing and payroll integrity.</p>
-      </section>
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">📚 Guide</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
     </div>
-  </article>
-</BaseLayout>
+  </section>
 
-<style>
-  .guide-content {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    line-height: 1.6;
-  }
-  .guide-header {
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-  .breadcrumb a {
-    color: var(--primary);
-    text-decoration: none;
-  }
-  .lead {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-  }
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: var(--grad-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  h2 {
-    color: var(--primary);
-    margin-top: 2rem;
-  }
-  .content-card {
-    padding: 2.5rem;
-  }
-  .formula {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 1rem 0;
-    font-family: var(--font-mono);
-    border-left: 4px solid var(--primary);
-  }
-  ul {
-    padding-left: 1.5rem;
-    margin: 1rem 0;
-  }
-  li {
-    margin-bottom: 0.5rem;
-  }
-  .btn {
-    display: inline-block;
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    background: var(--grad-primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-</style>
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Table of Contents">
+          <div class="guide-toc__title">Table of Contents</div>
+          <ul class="guide-toc__list">
+            <li><a href="#gross-net" class="guide-toc__link">1. Gross vs. Net Work Hours</a></li>
+            <li><a href="#break-rules" class="guide-toc__link">2. Standard Break Rules</a></li>
+            <li><a href="#overtime" class="guide-toc__link">3. Calculating Overtime</a></li>
+            <li><a href="#automated" class="guide-toc__link">4. Why Automation Wins</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          <section id="gross-net" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Gross vs. Net Work Hours</h2>
+            <p style="margin-bottom: var(--space-4);"><strong>Gross work hours</strong> represent the total time from start to finish. <strong>Net work hours</strong> are the actual productive hours after subtracting breaks.</p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: var(--space-4);">
+              <code style="background: transparent; padding: 0; color: var(--clr-text);">Net Hours = (End Time - Start Time) - Total Break Duration</code>
+            </div>
+          </section>
+
+          <section id="break-rules" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Standard Work Break Rules</h2>
+            <p style="margin-bottom: var(--space-4);">While laws vary by region, most countries have minimum break requirements:</p>
+            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
+              <li style="margin-bottom: var(--space-2);"><strong>Over 6 hours:</strong> Minimum 30 minutes.</li>
+              <li style="margin-bottom: var(--space-2);"><strong>Over 8 hours:</strong> Minimum 45 to 60 minutes.</li>
+            </ul>
+            <p>Maintaining these breaks isn't just a legal requirement — it's vital for maintaining productivity and reducing burnout.</p>
+          </section>
+
+          <section id="overtime" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Calculating Overtime</h2>
+            <p style="margin-bottom: var(--space-4);">Overtime occurs when daily or weekly contracted hours are exceeded. To track it, you must first establish your baseline hours per period.</p>
+            <div style="margin-top: var(--space-6); margin-bottom: var(--space-6);">
+              <a href={hubUrl} class="btn btn--primary">Start Calculating Hours Now</a>
+            </div>
+          </section>
+
+          <section id="automated">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Why Automated Calculation Wins</h2>
+            <p>Manual tracking is prone to rounding errors. Digital tools like <a href={hubUrl}>Time Calculator</a> provide instant decimal conversions (e.g., 8 hours 15 minutes = 8.25 hours), which are essential for billing and payroll integrity.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

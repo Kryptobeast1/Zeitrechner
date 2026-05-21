@@ -86,9 +86,10 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
   jsonLd={jsonLd}
   ogImage={seoMeta.ogImage}
   ogImageAlt={seoMeta.ogImageAlt}
+  theme="work-hours"
 >
 
-  <section class="section landing-hero">
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container">
       <nav class="breadcrumb">
         <a href={getHubUrl(lang)}>Home</a>
@@ -96,62 +97,89 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         <span aria-current="page">Work Hours {start24}–{end24}</span>
       </nav>
 
-      <div class="landing-hero__meta">
-        <span class="badge badge--green">💼 Work Hours</span>
-        <span class="badge badge--accent">{hours}h Shift</span>
-        <span class="last-updated">Last updated: {lastUpdated}</span>
-      </div>
-
-      <h1>Work Hours {start24} to {end24} — Net Time Calculator</h1>
-
-      <div class="featured-snippet">
-        <div class="featured-snippet__label">Quick Answer</div>
-        <div class="featured-snippet__answer">{breakResults[1].result.formatted} net</div>
-        <p class="featured-snippet__sentence">
-          Working from {start24} to {end24} with a 30-minute break gives you <strong>{breakResults[1].result.netDecimal} net hours</strong>.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 0;">
-    <div class="container container--narrow">
-      <h2 style="margin-bottom: 20px;">Net Hours by Break Duration</h2>
-      <div class="stat-grid">
-        {breakResults.map(br => (
-          <div class="stat-card">
-            <span class="stat-card__value">{br.result.formatted}</span>
-            <span class="stat-card__label">{br.break === 0 ? 'No break' : `${br.break} min break`}</span>
+      <div class="dashboard-grid" style="margin-top: 1.5rem; align-items: center;">
+        <!-- Left: Payroll Comparison Card -->
+        <div>
+          <div class="payroll-sheet">
+            <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; color: var(--clr-text);">
+              📊 Net Work Time Comparison
+            </h3>
+            {breakResults.map(br => {
+              const pct = hours > 0 ? (br.result.netDecimal / hours) * 100 : 0;
+              return (
+                <div class="payroll-row">
+                  <div class="payroll-info">
+                    <span class="payroll-label">
+                      {br.break === 0 ? 'No break' : `${br.break} min break`}
+                    </span>
+                    <span class="payroll-val">{br.result.formatted} ({br.result.netDecimal}h)</span>
+                  </div>
+                  <div class="payroll-bar-track">
+                    <div class="payroll-bar-fill" style={`width: ${pct}%`} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
+        </div>
+
+        <!-- Right: Text & Featured Snippet -->
+        <div>
+          <div class="landing-hero__meta" style="margin-bottom: 1rem;">
+            <span class="badge badge--green">💼 Work Hours</span>
+            <span class="badge badge--accent">{hours}h Shift</span>
+            <span class="last-updated">Last updated: {lastUpdated}</span>
+          </div>
+
+          <h1 style="font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 1.5rem; line-height: 1.3;">
+            Work Hours {start24} to {end24} — Net Time Calculator
+          </h1>
+
+          <div class="featured-snippet" role="complementary" aria-label="Quick Answer" style="margin: 0;">
+            <div class="featured-snippet__label">Quick Answer</div>
+            <div class="featured-snippet__answer">{breakResults[1].result.formatted} net</div>
+            <p class="featured-snippet__sentence" style="margin-top: var(--space-2); margin-bottom: 0;">
+              Working from {start24} to {end24} with a 30-minute break gives you <strong>{breakResults[1].result.netDecimal} net hours</strong>.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Prose and legal warning -->
   <section class="section" style="padding-top: 0;">
-    <div class="container container--narrow">
-      <div class="content-prose">
-        <p set:html={introHtml} />
-        <p>
-          For payroll purposes, the decimal format matters: {breakResults[1].result.netDecimal} hours
-          can be multiplied directly by your hourly rate. With a 45-minute break you get {breakResults[2].result.netDecimal} hours,
-          and with a full hour's break, {breakResults[3].result.netDecimal} net hours.
-        </p>
-
-        <div class="expert-box" style="margin-top: 40px; padding: 24px; background: var(--clr-surf-2); border-radius: 12px; border: 1px solid var(--clr-border);">
-          <h3 style="margin-top: 0;">💡 Expert Insight: Precision in Payroll</h3>
+    <div class="container">
+      <div class="dashboard-grid" style="align-items: start;">
+        <!-- Left: Prose Content -->
+        <div class="content-prose">
+          <p set:html={introHtml} />
+          <br />
           <p>
-            Accurate time tracking is essential for both compliance and fair compensation. In many regions, including the 
-            <strong>UK (Working Time Regulations)</strong> and the <strong>US (FLSA)</strong>, keeping detailed records of 
-            clock-in/out times and unpaid breaks is a legal requirement for employers.
+            For payroll purposes, the decimal format matters: <strong>{breakResults[1].result.netDecimal} hours</strong>
+            can be multiplied directly by your hourly rate. With a 45-minute break you get {breakResults[2].result.netDecimal} hours,
+            and with a full hour's break, {breakResults[3].result.netDecimal} net hours.
           </p>
-          <ul style="margin-bottom: 0;">
-            <li><strong>Decimal Conversion:</strong> Converting ${breakResults[1].result.formatted.split(' ')[0]} into ${breakResults[1].result.netDecimal} hours ensures no rounding errors when calculating gross pay.</li>
-            <li><strong>Audit Trails:</strong> Using consistent calculation methods helps in maintaining a reliable audit trail for tax and labor reviews.</li>
-          </ul>
-          <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: var(--clr-text-3);">
-            <em>Note: This tool is designed to provide quick, precise calculations for your daily timesheets and project logs.</em>
-          </p>
+        </div>
+
+        <!-- Right: Sticky Expert Box -->
+        <div>
+          <div class="glass glass--accent expert-box" style="position: sticky; top: 96px; padding: 24px; border-radius: 12px;">
+            <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+              ⚖️ Expert Insight: Precision in Payroll
+            </h3>
+            <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--clr-text-2);">
+              Accurate time tracking is essential for both compliance and fair compensation:
+            </p>
+            <ul style="margin-bottom: 12px; padding-left: 20px; font-size: 0.85rem; color: var(--clr-text-2); display: flex; flex-direction: column; gap: 6px;">
+              <li><strong>Decimal Conversion:</strong> Converting hours to decimals ensures zero rounding errors for payroll.</li>
+              <li><strong>UK Regulations:</strong> The Working Time Regulations specify mandatory breaks for long shifts.</li>
+              <li><strong>FLSA Compliance:</strong> US employers must keep precise logs of unpaid break durations.</li>
+            </ul>
+            <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.8rem; color: var(--clr-text-3);">
+              <em>Note: This tool is designed to provide quick, precise calculations for your daily timesheets.</em>
+            </p>
+          </div>
         </div>
       </div>
     </div>

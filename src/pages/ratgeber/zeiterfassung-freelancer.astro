@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+import { buildSEOMeta, getHubUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
 const title = 'Zeiterfassung für Freelancer: Die besten Methoden & Tools 2026';
@@ -24,109 +24,76 @@ const hubUrl = getHubUrl(lang);
   canonical={seo.canonical}
   hreflang={seo.hreflang}
   lang={lang}
+  theme="guide"
 >
-  <article class="guide-content">
-    <header class="guide-header">
-      <nav class="breadcrumb">
-        <a href={hubUrl}>Home</a> › <a href="/ratgeber/">Ratgeber</a> › Freelancer Zeiterfassung
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Freelancer Zeiterfassung</span>
       </nav>
-      <h1>{title}</h1>
-      <p class="lead">Für Freelancer ist Zeit buchstäblich Geld. Wer seine Arbeitsstunden nicht präzise erfasst, verschenkt monatlich bares Einkommen. Wir zeigen dir, wie du dein Zeitmanagement optimierst.</p>
-    </header>
 
-    <div class="glass-card content-card">
-      <section>
-        <h2>1. Warum "Pi mal Daumen" nicht funktioniert</h2>
-        <p>Viele Selbstständige schätzen ihre Arbeitszeit am Ende des Tages. Studien zeigen, dass dabei bis zu 25% der tatsächlich geleisteten Stunden vergessen werden – besonders kurze Telefonate, E-Mails oder Recherchephasen.</p>
-        <div class="tip-box">
-          <strong>Pro-Tipp:</strong> Nutze unseren <a href={hubUrl}>Zeitrechner</a>, um auch kleine Zeitblöcke sofort in Dezimalstunden für die Rechnung umzuwandeln.
-        </div>
-      </section>
-
-      <section>
-        <h2>2. Zeitformate: Stunden oder Tage?</h2>
-        <p>Je nach Projekt rechnest du in <strong>Stundensätzen</strong> oder <strong>Tagessätzen</strong> ab. Ein Standard-Tagessatz basiert meist auf 8 Stunden. Wenn du 9 Stunden arbeitest, solltest du 1,125 Tage in Rechnung stellen.</p>
-      </section>
-
-      <section>
-        <h2>3. Die 60/20/20-Regel für Freelancer</h2>
-        <p>Ein produktiver Freelancer-Tag besteht nicht nur aus abrechenbarer Zeit:</p>
-        <ul>
-          <li><strong>60% Abrechenbare Arbeit:</strong> Kundenprojekte.</li>
-          <li><strong>20% Akquise & Marketing:</strong> Neue Projekte finden.</li>
-          <li><strong>20% Administration:</strong> Buchhaltung, E-Mails, Weiterbildung.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>4. Fazit: Konsistenz ist alles</h2>
-        <p>Egal welches Tool du nutzt: Erfasse deine Zeiten <em>sofort</em>. Unser Tool hilft dir dabei, Start- und Endzeiten präzise zu dokumentieren und Pausen korrekt abzuziehen, damit am Ende des Monats jede Minute bezahlt wird.</p>
-        <a href={hubUrl} class="btn btn-primary">Jetzt Projektzeit berechnen</a>
-      </section>
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">🚀 Freelancer</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
     </div>
-  </article>
-</BaseLayout>
+  </section>
 
-<style>
-  .guide-content {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    line-height: 1.6;
-  }
-  .guide-header {
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-  .breadcrumb a {
-    color: var(--primary);
-    text-decoration: none;
-  }
-  .lead {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-  }
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: var(--grad-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  h2 {
-    color: var(--primary);
-    margin-top: 2rem;
-  }
-  .content-card {
-    padding: 2.5rem;
-  }
-  .tip-box {
-    background: rgba(var(--primary-rgb), 0.1);
-    border: 1px solid var(--primary);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin: 1.5rem 0;
-  }
-  ul {
-    padding-left: 1.5rem;
-    margin: 1rem 0;
-  }
-  li {
-    margin-bottom: 0.5rem;
-  }
-  .btn {
-    display: inline-block;
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    background: var(--grad-primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-</style>
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#schaetzung" class="guide-toc__link">1. Warum Schätzen scheitert</a></li>
+            <li><a href="#zeitformate" class="guide-toc__link">2. Zeitformate: Stunden/Tage</a></li>
+            <li><a href="#regel" class="guide-toc__link">3. Die 60/20/20-Regel</a></li>
+            <li><a href="#fazit" class="guide-toc__link">4. Fazit & Abrechnung</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          <section id="schaetzung" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Warum "Pi mal Daumen" nicht funktioniert</h2>
+            <p style="margin-bottom: var(--space-4);">Viele Selbstständige schätzen ihre Arbeitszeit am Ende des Tages. Studien zeigen, dass dabei bis zu 25% der tatsächlich geleisteten Stunden vergessen werden – besonders kurze Telefonate, E-Mails oder Recherchephasen.</p>
+            <div class="glass glass--accent" style="padding: var(--space-4); border-radius: var(--radius); margin-bottom: var(--space-4);">
+              <strong>💡 Pro-Tipp:</strong> Nutze unseren <a href={hubUrl}>Zeitrechner</a>, um auch kleine Zeitblöcke sofort in Dezimalstunden für die Rechnung umzuwandeln.
+            </div>
+          </section>
+
+          <section id="zeitformate" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Zeitformate: Stunden oder Tage?</h2>
+            <p>Je nach Projekt rechnest du in <strong>Stundensätzen</strong> oder <strong>Tagessätzen</strong> ab. Ein Standard-Tagessatz basiert meist auf 8 Stunden. Wenn du 9 Stunden arbeitest, solltest du 1,125 Tage in Rechnung stellen.</p>
+          </section>
+
+          <section id="regel" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Die 60/20/20-Regel für Freelancer</h2>
+            <p style="margin-bottom: var(--space-4);">Ein produktiver Freelancer-Tag besteht nicht nur aus abrechenbarer Zeit:</p>
+            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
+              <li style="margin-bottom: var(--space-2);"><strong>60% Abrechenbare Arbeit:</strong> Kundenprojekte.</li>
+              <li style="margin-bottom: var(--space-2);"><strong>20% Akquise & Marketing:</strong> Neue Projekte finden.</li>
+              <li style="margin-bottom: var(--space-2);"><strong>20% Administration:</strong> Buchhaltung, E-Mails, Weiterbildung.</li>
+            </ul>
+          </section>
+
+          <section id="fazit">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Fazit: Konsistenz ist alles</h2>
+            <p>Egal welches Tool du nutzt: Erfasse deine Zeiten <em>sofort</em>. Unser Tool hilft dir dabei, Start- und Endzeiten präzise zu dokumentieren und Pausen korrekt abzuziehen, damit am Ende des Monats jede Minute bezahlt wird.</p>
+            <div style="margin-top: var(--space-6);">
+              <a href={hubUrl} class="btn btn--primary">Jetzt Projektzeit berechnen</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

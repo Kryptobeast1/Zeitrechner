@@ -26,12 +26,12 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
   canonical={seo.canonical}
   hreflang={seo.hreflang}
   lang={lang}
+  theme="info"
 >
-  <section class="section landing-hero" style="padding-bottom: 20px;">
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container container--narrow">
-      <div class="expert-badge" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 8px 12px; background: rgba(50, 205, 50, 0.1); border-radius: 8px;">
-        <span style="font-size: 1.2rem;">🔒</span>
-        <span style="font-size: 0.9rem; font-weight: 600; color: var(--clr-text);">100% Client-Side Privacy</span>
+      <div class="badge badge--accent" style="margin-bottom: var(--space-3);">
+        🔒 100% Client-Side Privacy
       </div>
       <h1>Privacy Policy</h1>
       <p class="landing-hero__lead">Your data is yours. Learn how we protect your privacy.</p>
@@ -41,7 +41,7 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
 
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
-      <div class="content-prose legal-content">
+      <div class="content-prose legal-content animate-in">
         <h3>1. Data Protection at a Glance</h3>
         <p>
           The use of our website is generally possible without providing any personal data. 

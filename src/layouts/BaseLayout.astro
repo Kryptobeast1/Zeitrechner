@@ -14,6 +14,7 @@ interface Props {
   ogType?: string;
   ogImage?: string;
   ogImageAlt?: string;
+  theme?: 'home' | 'time-range' | 'work-hours' | 'countdown' | 'guide' | 'info';
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   ogType = 'website',
   ogImage = 'https://zeit-rechner.com/og-image.png',
   ogImageAlt = lang === 'de' ? 'Zeit-Rechner.com — Präzise Online-Zeitrechner' : 'Zeit-Rechner.com — Precise Online Time Calculators',
+  theme = 'home',
 } = Astro.props;
 
 const hubUrlDe = '/';
@@ -123,7 +125,19 @@ const currentYear = new Date().getFullYear();
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
-<body>
+<body class={`theme-${theme}`}>
+  {theme === 'guide' && <div class="reading-progress" id="reading-progress" aria-hidden="true" style="position: fixed; top: 64px; left: 0; height: 3px; background: var(--clr-accent); width: 0%; z-index: 101; transition: width 0.1s ease;"></div>}
+  {theme === 'guide' && (
+    <script is:inline>
+      window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+        const progress = document.getElementById('reading-progress');
+        if (progress) progress.style.width = scrolled + '%';
+      });
+    </script>
+  )}
 
   <!-- ─── NAVBAR ──────────────────────────────────────────────────────────── -->
   <nav class="navbar" role="navigation" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>

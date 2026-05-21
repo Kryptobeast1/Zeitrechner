@@ -91,9 +91,10 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
   jsonLd={jsonLd}
   ogImage={seoMeta.ogImage}
   ogImageAlt={seoMeta.ogImageAlt}
+  theme="countdown"
 >
 
-  <section class="section landing-hero">
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container">
       <nav class="breadcrumb">
         <a href="/">Home</a>
@@ -101,44 +102,77 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <span aria-current="page">Tage bis {displayName}</span>
       </nav>
 
-      <div class="landing-hero__meta">
+      <div class="landing-hero__meta" style="margin-bottom: 1.5rem;">
         <span class="badge badge--violet">⏳ Countdown</span>
         <span class="badge badge--accent">{days} Tage</span>
-        <span class="last-updated">Live aktualisiert: {lastUpdated}</span>
+        <span class="last-updated">Zuletzt aktualisiert: {lastUpdated}</span>
       </div>
 
-      <h1>Wie viele Tage bis {displayName}?</h1>
+      <h1 style="text-align: center; margin-bottom: 2rem;">Wie viele Tage bis {displayName}?</h1>
 
-      <div class="featured-snippet">
+      <div class="countdown-scoreboard">
+        <div class="flip-card animate-in">
+          <span class="flip-card__number">{days}</span>
+          <span class="flip-card__label">Tage</span>
+        </div>
+        <div class="flip-card animate-in" style="animation-delay: 0.1s;">
+          <span class="flip-card__number">{(days * 24).toLocaleString('de-DE')}</span>
+          <span class="flip-card__label">Stunden</span>
+        </div>
+        <div class="flip-card animate-in" style="animation-delay: 0.2s;">
+          <span class="flip-card__number">{Math.floor(days / 7)}</span>
+          <span class="flip-card__label">Wochen</span>
+        </div>
+        <div class="flip-card animate-in" style="animation-delay: 0.3s;">
+          <span class="flip-card__number">{new Date(activeTargetDate).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</span>
+          <span class="flip-card__label">Datum</span>
+        </div>
+      </div>
+
+      <div class="featured-snippet" role="complementary" aria-label="Schnellantwort" style="margin-top: 2rem;">
         <div class="featured-snippet__label">Schnellantwort</div>
         <div class="featured-snippet__answer">{days} Tage</div>
         <p class="featured-snippet__sentence" set:html={introHtml} />
       </div>
-    </div>
-  </section>
 
-  <section class="section" style="padding-top: 0;">
-    <div class="container">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <span class="stat-card__value">{days}</span>
-          <span class="stat-card__label">Tage</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__value">{(days * 24).toLocaleString('de-DE')}</span>
-          <span class="stat-card__label">Stunden</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__value">{Math.floor(days / 7)}</span>
-          <span class="stat-card__label">Wochen</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__value">{new Date(activeTargetDate).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })}</span>
-          <span class="stat-card__label">Datum</span>
+      <div class="glass glass--raised animate-in" style="padding: var(--space-4); margin-top: var(--space-6); text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--clr-border);">
+        <p style="margin-bottom: var(--space-3); font-weight: 600; color: var(--clr-text); font-size: 0.9rem;">
+          🔗 Diesen Countdown teilen:
+        </p>
+        <div style="display: flex; gap: var(--space-2); max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
+          <input type="text" id="share-link-input" readonly value="" class="glass" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--clr-border-2); color: var(--clr-text-2); font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2);" />
+          <button id="copy-btn" class="btn btn--primary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-lang={lang}>
+            Kopieren
+          </button>
         </div>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('share-link-input');
+      const btn = document.getElementById('copy-btn');
+      if (input) {
+        input.value = window.location.href;
+      }
+      if (btn && input) {
+        btn.addEventListener('click', () => {
+          navigator.clipboard.writeText(input.value).then(() => {
+            const origText = btn.textContent;
+            btn.textContent = btn.getAttribute('data-lang') === 'de' ? 'Kopiert!' : 'Copied!';
+            btn.style.background = 'linear-gradient(135deg, var(--clr-green), #059669)';
+            btn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+            setTimeout(() => {
+              btn.textContent = origText;
+              btn.style.background = '';
+              btn.style.boxShadow = '';
+            }, 2000);
+          });
+        });
+      }
+    });
+  </script>
 
   <!-- Live countdown -->
   <section class="section" style="padding-top: 0;">

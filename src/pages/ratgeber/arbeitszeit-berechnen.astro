@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
+import { buildSEOMeta, getHubUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
 const title = 'Arbeitszeit berechnen: Der komplette Ratgeber 2026';
@@ -24,110 +24,76 @@ const hubUrl = getHubUrl(lang);
   canonical={seo.canonical}
   hreflang={seo.hreflang}
   lang={lang}
+  theme="guide"
 >
-  <article class="guide-content">
-    <header class="guide-header">
-      <nav class="breadcrumb">
-        <a href={hubUrl}>Home</a> › <a href="/ratgeber/">Ratgeber</a> › Arbeitszeit berechnen
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Arbeitszeit berechnen</span>
       </nav>
-      <h1>{title}</h1>
-      <p class="lead">Die korrekte Berechnung der Arbeitszeit ist das Fundament für eine faire Entlohnung und die Einhaltung gesetzlicher Vorgaben. In diesem Ratgeber erfährst du alles Wissenswerte.</p>
-    </header>
 
-    <div class="glass-card content-card">
-      <section>
-        <h2>1. Brutto- vs. Nettoarbeitszeit</h2>
-        <p>Die <strong>Bruttoarbeitszeit</strong> ist die gesamte Zeitspanne zwischen Arbeitsbeginn und Arbeitsende. Die <strong>Nettoarbeitszeit</strong> ist die tatsächliche Zeit, in der gearbeitet wird – also Bruttozeit minus Pausen.</p>
-        <div class="formula">
-          <code>Nettozeit = (Ende - Beginn) - Pausendauer</code>
-        </div>
-      </section>
-
-      <section>
-        <h2>2. Gesetzliche Pausenregelungen (ArbZG)</h2>
-        <p>In Deutschland schreibt das Arbeitszeitgesetz (ArbZG) Mindestpausen vor:</p>
-        <ul>
-          <li><strong>Ab 6 Stunden Arbeit:</strong> Mindestens 30 Minuten Pause.</li>
-          <li><strong>Ab 9 Stunden Arbeit:</strong> Mindestens 45 Minuten Pause.</li>
-        </ul>
-        <p>Pausen dürfen in Zeiträume von jeweils mindestens 15 Minuten aufgeteilt werden.</p>
-      </section>
-
-      <section>
-        <h2>3. Überstunden richtig erfassen</h2>
-        <p>Überstunden entstehen, wenn die vertraglich vereinbarte tägliche oder wöchentliche Arbeitszeit überschritten wird. Eine präzise Dokumentation ist hierbei unerlässlich.</p>
-        <a href={hubUrl} class="btn btn-primary">Jetzt Arbeitsstunden berechnen</a>
-      </section>
-
-      <section>
-        <h2>4. Warum digitale Zeiterfassung sinnvoll ist</h2>
-        <p>Manuelle Stundenzettel sind fehleranfällig. Digitale Tools wie unser <a href={hubUrl}>Zeitrechner</a> helfen dabei, Rundungsfehler zu vermeiden und die gesetzlichen Ruhezeiten im Blick zu behalten.</p>
-      </section>
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">📚 Ratgeber</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
     </div>
-  </article>
-</BaseLayout>
+  </section>
 
-<style>
-  .guide-content {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    line-height: 1.6;
-  }
-  .guide-header {
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-  .breadcrumb a {
-    color: var(--primary);
-    text-decoration: none;
-  }
-  .lead {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-  }
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: var(--grad-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  h2 {
-    color: var(--primary);
-    margin-top: 2rem;
-  }
-  .content-card {
-    padding: 2.5rem;
-  }
-  .formula {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 1rem 0;
-    font-family: var(--font-mono);
-    border-left: 4px solid var(--primary);
-  }
-  ul {
-    padding-left: 1.5rem;
-    margin: 1rem 0;
-  }
-  li {
-    margin-bottom: 0.5rem;
-  }
-  .btn {
-    display: inline-block;
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    background: var(--grad-primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-</style>
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#brutto-netto" class="guide-toc__link">1. Brutto- vs. Nettoarbeitszeit</a></li>
+            <li><a href="#pausen" class="guide-toc__link">2. Gesetzliche Pausenregelungen</a></li>
+            <li><a href="#ueberstunden" class="guide-toc__link">3. Überstunden richtig erfassen</a></li>
+            <li><a href="#digitale-zeiterfassung" class="guide-toc__link">4. Digitale Zeiterfassung</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          <section id="brutto-netto" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Brutto- vs. Nettoarbeitszeit</h2>
+            <p style="margin-bottom: var(--space-4);">Die <strong>Bruttoarbeitszeit</strong> ist die gesamte Zeitspanne zwischen Arbeitsbeginn und Arbeitsende. Die <strong>Nettoarbeitszeit</strong> ist die tatsächliche Zeit, in der gearbeitet wird – also Bruttozeit minus Pausen.</p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: var(--space-4);">
+              <code style="background: transparent; padding: 0; color: var(--clr-text);">Nettozeit = (Ende - Beginn) - Pausendauer</code>
+            </div>
+          </section>
+
+          <section id="pausen" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Gesetzliche Pausenregelungen (ArbZG)</h2>
+            <p style="margin-bottom: var(--space-4);">In Deutschland schreibt das Arbeitszeitgesetz (ArbZG) Mindestpausen vor:</p>
+            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
+              <li style="margin-bottom: var(--space-2);"><strong>Ab 6 Stunden Arbeit:</strong> Mindestens 30 Minuten Pause.</li>
+              <li style="margin-bottom: var(--space-2);"><strong>Ab 9 Stunden Arbeit:</strong> Mindestens 45 Minuten Pause.</li>
+            </ul>
+            <p>Pausen dürfen in Zeiträume von jeweils mindestens 15 Minuten aufgeteilt werden.</p>
+          </section>
+
+          <section id="ueberstunden" style="margin-bottom: var(--space-8);">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Überstunden richtig erfassen</h2>
+            <p style="margin-bottom: var(--space-4);">Überstunden entstehen, wenn die vertraglich vereinbarte tägliche oder wöchentliche Arbeitszeit überschritten wird. Eine präzise Dokumentation ist hierbei unerlässlich.</p>
+            <div style="margin-top: var(--space-6); margin-bottom: var(--space-6);">
+              <a href={hubUrl} class="btn btn--primary">Jetzt Arbeitsstunden berechnen</a>
+            </div>
+          </section>
+
+          <section id="digitale-zeiterfassung">
+            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Warum digitale Zeiterfassung sinnvoll ist</h2>
+            <p>Manuelle Stundenzettel sind fehleranfällig. Digitale Tools wie unser <a href={hubUrl}>Zeitrechner</a> helfen dabei, Rundungsfehler zu vermeiden und die gesetzlichen Ruhezeiten im Blick zu behalten.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

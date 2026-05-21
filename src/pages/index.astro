@@ -52,37 +52,43 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
   hreflang={hreflang}
   lang={lang}
   jsonLd={jsonLd}
+  theme="home"
 >
 
-  <!-- ─── HERO ───────────────────────────────────────────────────────────── -->
-  <section class="section landing-hero">
+  <!-- ─── HERO & CALCULATOR GRID ─────────────────────────────────────────── -->
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container">
-      <div class="landing-hero__meta">
-        <span class="badge badge--accent">⚡ Kostenlos</span>
-        <span class="badge badge--violet">🌍 Deutsch</span>
-        <span class="badge badge--green">✓ DST-sicher</span>
+      <div class="home-hero-grid">
+        <!-- Hero text column -->
+        <div class="home-hero-content">
+          <div class="landing-hero__meta">
+            <span class="badge badge--accent">⚡ Kostenlos</span>
+            <span class="badge badge--violet">🌍 Deutsch</span>
+            <span class="badge badge--green">✓ DST-sicher</span>
+          </div>
+
+          <h1 style="margin-bottom: 1.5rem;">Zeitrechner — Stunden, Zeiten & Countdowns</h1>
+
+          <p class="landing-hero__lead" style="margin-bottom: 2rem;">
+            Berechne Zeitdifferenzen, addiere Stunden, ermittle Nettoarbeitszeiten und zähle Tage bis zu wichtigen Ereignissen.
+            <strong>5 Modi, sofortige Ergebnisse, keine Registrierung.</strong>
+          </p>
+
+          <!-- Live time -->
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; background: var(--clr-surface-2); padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--clr-border); width: fit-content; flex-wrap: wrap;">
+            <span style="font-size: 0.8rem; color: var(--clr-text-3);">Aktuelle Zeit:</span>
+            <span id="live-time" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);">{currentTime}</span>
+            <span class="last-updated" style="margin-left: 8px;">Aktualisiert: {lastUpdated}</span>
+          </div>
+        </div>
+
+        <!-- Calculator column -->
+        <div class="home-hero-calc" id="differenz" style="margin-top: 1rem;">
+          <div class="glass glass--raised" style="padding: 1.5rem; border-radius: var(--radius-xl); box-shadow: 0 0 30px var(--clr-violet-glow);">
+            <ModeTabbar client:visible lang="de" />
+          </div>
+        </div>
       </div>
-
-      <h1>Zeitrechner — Stunden, Zeiten & Countdowns</h1>
-
-      <p class="landing-hero__lead">
-        Berechne Zeitdifferenzen, addiere Stunden, ermittle Nettoarbeitszeiten und zähle Tage bis zu wichtigen Ereignissen.
-        <strong>5 Modi, sofortige Ergebnisse, keine Registrierung.</strong>
-      </p>
-
-      <!-- Live time -->
-      <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
-        <span style="font-size: 0.8rem; color: var(--clr-text-3);">Aktuelle Zeit:</span>
-        <span id="live-time" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);">{currentTime}</span>
-        <span class="last-updated">Zuletzt aktualisiert: {lastUpdated}</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── CALCULATOR ─────────────────────────────────────────────────────── -->
-  <section class="section" style="padding-top: 0;" id="differenz">
-    <div class="container">
-      <ModeTabbar client:visible lang="de" />
     </div>
   </section>
 

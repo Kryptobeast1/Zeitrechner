@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { INDEXED_RANGES, formatHour24 } from '../../data/timeRanges';
 import { ALL_EVENTS } from '../../data/dateEvents';
-import { buildSEOMeta, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex, getFullUrl } from '../../lib/seoEngine';
+import { buildSEOMeta, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex } from '../../lib/seoEngine';
 
 const lang = 'en';
 const title = 'All Time Calculators & Timers (HTML Sitemap) — Zeit-Rechner.com';
@@ -30,55 +30,87 @@ const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.tar
   canonical={seo.canonical}
   hreflang={seo.hreflang}
   lang={lang}
+  theme="info"
 >
-  <section class="section landing-hero" style="padding-bottom: 20px;">
-    <div class="container container--narrow">
-      <h1>All Calculators & Timers</h1>
-      <p class="landing-hero__lead">This is a directory of every single time calculation combination available on our platform.</p>
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={getHubUrl(lang)}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">All Calculators</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--accent">Sitemap</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">All Calculators & Timers</h1>
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
     </div>
   </section>
 
   <section class="section" style="padding-top: 0;">
-    <div class="container container--narrow">
+    <div class="container">
       
-      <div class="internal-links">
-        <h2 style="margin-bottom: 16px;">Work Hours Calculators</h2>
-        <div style="column-count: 2; column-gap: 32px;">
+      <!-- Tabs -->
+      <div class="directory-tabs">
+        <button class="directory-tab-btn active" data-tab="work">Work Hours</button>
+        <button class="directory-tab-btn" data-tab="time">Time Ranges</button>
+        <button class="directory-tab-btn" data-tab="countdown">Countdowns</button>
+      </div>
+
+      <!-- Tab Content: Work Hours -->
+      <div class="directory-section animate-in" id="tab-work">
+        <div class="directory-column-grid">
           {workRanges.map(r => (
-            <div style="break-inside: avoid; margin-bottom: 8px;">
-              <a href={getWorkHoursUrl(lang, r.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
-                Work hours from {formatHour24(r.start)} to {formatHour24(r.end)}
-              </a>
-            </div>
+            <a href={getWorkHoursUrl(lang, r.slug)} class="directory-link-item">
+              💼 Work Hours: {formatHour24(r.start)} to {formatHour24(r.end)}
+            </a>
           ))}
         </div>
       </div>
 
-      <div class="internal-links" style="margin-top: 48px;">
-        <h2 style="margin-bottom: 16px;">Time Difference Calculators</h2>
-        <div style="column-count: 2; column-gap: 32px;">
+      <!-- Tab Content: Time Range -->
+      <div class="directory-section animate-in" id="tab-time" style="display: none;">
+        <div class="directory-column-grid">
           {timeRanges.map(r => (
-            <div style="break-inside: avoid; margin-bottom: 8px;">
-              <a href={getTimeRangeUrl(lang, r.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
-                Hours between {formatHour24(r.start)} and {formatHour24(r.end)}
-              </a>
-            </div>
+            <a href={getTimeRangeUrl(lang, r.slug)} class="directory-link-item">
+              ⏱️ Hours between {formatHour24(r.start)} and {formatHour24(r.end)}
+            </a>
           ))}
         </div>
       </div>
 
-      <div class="internal-links" style="margin-top: 48px;">
-        <h2 style="margin-bottom: 16px;">Countdowns</h2>
-        <div style="column-count: 2; column-gap: 32px;">
+      <!-- Tab Content: Countdown -->
+      <div class="directory-section animate-in" id="tab-countdown" style="display: none;">
+        <div class="directory-column-grid">
           {countdowns.map(e => (
-            <div style="break-inside: avoid; margin-bottom: 8px;">
-              <a href={getCountdownUrl(lang, e.slug)} style="color: var(--clr-text-2); text-decoration: underline; text-decoration-color: var(--clr-border-2); font-size: 0.9rem;">
-                Days until {e.name}
-              </a>
-            </div>
+            <a href={getCountdownUrl(lang, e.slug)} class="directory-link-item">
+              ⏳ Days until {e.name}
+            </a>
           ))}
         </div>
       </div>
+
+      <!-- Vanilla JS Tab Swapping -->
+      <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+          const buttons = document.querySelectorAll('.directory-tab-btn');
+          const sections = document.querySelectorAll('.directory-section');
+          buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+              buttons.forEach(b => b.classList.remove('active'));
+              sections.forEach(s => s.style.display = 'none');
+              
+              btn.classList.add('active');
+              const tabId = 'tab-' + btn.getAttribute('data-tab');
+              const activeSection = document.getElementById(tabId);
+              if (activeSection) {
+                activeSection.style.display = 'block';
+              }
+            });
+          });
+        });
+      </script>
 
     </div>
   </section>
