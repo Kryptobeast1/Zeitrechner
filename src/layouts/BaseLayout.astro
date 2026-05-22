@@ -78,7 +78,7 @@ const currentYear = new Date().getFullYear();
   {!noindex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />}
 
   <!-- hreflang -->
-  {hreflang.map(h => (
+  {!noindex && hreflang.map(h => (
     <link rel="alternate" hreflang={h.lang} href={h.url} />
   ))}
 
