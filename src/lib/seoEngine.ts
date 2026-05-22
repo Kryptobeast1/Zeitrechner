@@ -46,33 +46,33 @@ const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, stri
 const descTemplates: Record<PageType, Record<Lang, (params: Record<string, string>) => string>> = {
   'time-range': {
     en: ({ start, end, hours }) =>
-      `Calculate exactly how many hours are between ${start} and ${end}. Result: ${hours} hours. Optimized for payroll, shift planning, and scheduling. Free and precise online tool.`,
+      `Calculate the hours between ${start} and ${end} (${hours} hours). Precise timesheet calculator for payroll, scheduling, and shifts. Free & online.`,
     de: ({ start, end, hours }) =>
-      `Berechne genau, wie viele Stunden zwischen ${start} und ${end} Uhr liegen. Ergebnis: ${hours} Stunden. Ideal für Lohnabrechnung, Dienstpläne und Zeitmanagement. Jetzt kostenlos nutzen.`,
+      `Berechne die Stunden von ${start} bis ${end} Uhr (${hours} Stunden). Präziser Stundenrechner für Lohnabrechnung, Schichtpläne & Freizeit. Kostenlos.`,
   },
   'work-hours': {
     en: ({ start, end, net }) =>
-      `How many productive hours from ${start} to ${end}? With breaks, the net result is ${net} hours. Professional timesheet calculator for every industry. Mobile-friendly and fast.`,
+      `Calculate work hours from ${start} to ${end} (${net}h net with breaks). Professional timesheet calculator for payroll, freelancers, and shifts. Fast & free.`,
     de: ({ start, end, net }) =>
-      `Wie viele produktive Arbeitsstunden von ${start} bis ${end} Uhr? Netto-Ergebnis mit Pause: ${net} Stunden. Professioneller Stundenzettel-Rechner für alle Branchen. Schnell & mobil.`,
+      `Arbeitszeit von ${start} bis ${end} Uhr berechnen (Netto: ${net}h mit Pause). Stundenzettel-Rechner für Lohnabrechnung, Freelancer & Zeiterfassung.`,
   },
   'add-time': {
     en: ({ hours, base, result }) =>
-      `Instantly find out what time it will be ${hours} hours after ${base}. The exact answer is ${result}. Free tool for quick scheduling, meeting planning, and deadline management.`,
+      `Find out what time is ${hours} hours after ${base} (Result: ${result}). Free tool for meeting planning, scheduling, and deadline calculations.`,
     de: ({ hours, base, result }) =>
-      `Was ist ${hours} Stunden nach ${base} Uhr? Das Ergebnis ist exakt ${result} Uhr. Kostenloser Rechner für schnelle Terminplanung, Deadlines und effizientes Zeitmanagement.`,
+      `Ermittle, wie viel Uhr es ${hours} Stunden nach ${base} Uhr ist (Ergebnis: ${result} Uhr). Rechner für Termine, Deadlines & Zeitmanagement.`,
   },
   'countdown': {
     en: ({ name, days }) =>
-      `Live countdown to ${name}. Only ${days} days remaining. Precise day, hour, minute, and second timer for tracking your important deadlines and events in real-time.`,
+      `Live countdown to ${name}. There are ${days} days remaining. Track the exact days, hours, and minutes in real-time. Free online timer.`,
     de: ({ name, days }) =>
-      `Live-Countdown bis ${name}. Es verbleiben noch ${days} Tage bis zum Ereignis. Genaue Anzeige in Tagen, Stunden, Minuten und Sekunden. Verpasse nie wieder eine wichtige Deadline.`,
+      `Live-Countdown bis ${name}. Noch ${days} Tage bis zum Event. Genaue verbleibende Zeit in Tagen, Stunden und Minuten live mitverfolgen.`,
   },
   'hub': {
     en: () =>
-      'Free online calculation tool. Find time differences, manage work hours shifts, and track live countdowns. Reliable, mobile-compatible, and fast for professional use.',
+      'Free online time calculator. Compute time differences, track work hours with breaks, and view live countdowns. Fast, precise, and private.',
     de: () =>
-      'Ihr kostenloser Online-Zeitrechner. Berechne Zeitspannen, Arbeitsstunden und Live-Countdowns. Zuverlässig, schnell und für Mobilgeräte optimiert für Alltag und Beruf.',
+      'Kostenloser Zeitrechner online. Berechne Zeitdifferenzen, Arbeitsstunden mit Pausen und Live-Countdowns. Präzise, schnell und mobiloptimiert.',
   },
 };
 
