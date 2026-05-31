@@ -1,0 +1,413 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Datum in X Tagen berechnen: Rechner & Fristenrechner 2026';
+const description = 'Ermitteln Sie schnell, welches Datum in X Tagen oder vor X Tagen ist. Kostenloser Fristen- & Datumsrechner mit Angabe von Wochentag & Kalenderwoche.';
+
+const canonical = getFullUrl('/datum-in-x-tagen/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Datum in X Tagen berechnen: Rechner & Fristenrechner 2026",
+        "description": "Erfahren Sie, wie Sie Fristen und Datumsabstände berechnen. Inklusive Erläuterungen zur Fristberechnung nach BGB und Online-Fristenrechner.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man ein Datum in X Tagen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Man zählt die gewünschte Anzahl an Tagen zum Ausgangsdatum hinzu. Unser Online-Fristenrechner übernimmt diese Addition unter Berücksichtigung von Schaltjahren und Monatslängen automatisch."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Was gilt bei Fristen, die an einem Samstag, Sonntag oder Feiertag enden?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nach § 193 BGB verschiebt sich das Fristende auf den nächstfolgenden Werktag (in der Regel Montag), wenn das berechnete Fristende auf einen Samstag, einen Sonntag oder einen am Erfüllungsort staatlich anerkannten allgemeinen Feiertag fällt."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Was ist der Unterschied zwischen Werktagen und Arbeitstagen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Werktage sind gesetzlich alle Kalendertage, die nicht Sonn- oder Feiertage sind – also auch der Samstag (§ 3 BUrlG). Arbeitstage hingegen sind die Tage, an denen im jeweiligen Betrieb tatsächlich gearbeitet wird (in der Regel Montag bis Freitag)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man die Frist für eine Kündigung?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Fristen im Zivilrecht werden nach den §§ 187 bis 193 BGB berechnet. Beginnt eine Frist mit einem Ereignis (z. B. dem Zugang des Kündigungsschreibens), wird dieser Tag für die Berechnung nicht mitgezählt (§ 187 Abs. 1 BGB). Die Frist beginnt am Folgetag zu laufen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie viele Tage hat das aktuelle Kalenderjahr 2026?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Das Jahr 2026 ist kein Schaltjahr und hat somit genau 365 Kalendertage."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Datum in X Tagen</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Datum in X Tagen berechnen: Fristen & Wochentage</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#rechner" class="guide-toc__link">1. Fristenrechner</a></li>
+            <li><a href="#fristberechnung" class="guide-toc__link">2. Fristberechnung nach BGB</a></li>
+            <li><a href="#samstag-sonntag" class="guide-toc__link">3. Fristende am Wochenende</a></li>
+            <li><a href="#werktag-arbeitstag" class="guide-toc__link">4. Werktage vs. Arbeitstage</a></li>
+            <li><a href="#beispiele" class="guide-toc__link">5. Typische Berechnungsbeispiele</a></li>
+            <li><a href="#faq" class="guide-toc__link">6. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">7. Fazit</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="rechner" style="margin-bottom: var(--space-8);">
+            <h2>1. Interaktiver Datums- und Fristenrechner</h2>
+            <p>
+              Geben Sie ein Startdatum und die Anzahl der Tage ein (Verwenden Sie ein Minuszeichen für die Vergangenheit), um das resultierende Zieldatum mit Wochentag und Kalenderwoche zu berechnen.
+            </p>
+
+            <div class="glass" style="padding: 24px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--clr-border);">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Startdatum</label>
+                    <input type="date" id="startdatum" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Tage hinzufügen (oder abziehen)</label>
+                    <input type="number" id="verschiebung-tage" value="14" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="nur-werktage" style="width: 18px; height: 18px;" />
+                  <label for="nur-werktage" style="font-size: 0.9rem; font-weight: 600; color: var(--clr-text); cursor: pointer;">Nur Werktage zählen (Samstage/Sonntage überspringen)</label>
+                </div>
+
+                <button id="calc-date-btn" class="btn btn--primary" style="align-self: flex-start; margin-top: 10px;">Datum berechnen</button>
+                
+                <div id="date-results" class="glass" style="padding: 16px; border-radius: 8px; margin-top: 15px; display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--clr-border);">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Ergebnis-Datum:</span>
+                    <strong id="res-zieldatum" style="color: var(--clr-accent); font-size: 1.2rem;">-</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Wochentag:</span>
+                    <strong id="res-wochentag">-</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Kalenderwoche (ISO):</span>
+                    <strong id="res-kw">-</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Tag des Jahres (1-365):</span>
+                    <strong id="res-tag-des-jahres">-</strong>
+                  </div>
+                  <div id="frist-bgb-hint" style="margin-top: 12px; font-size: 0.8rem; color: var(--clr-text-3); display: none; border-top: 1px solid var(--clr-border); padding-top: 8px;">
+                    ⚖️ BGB-Hinweis: Fällt das berechnete Fristende auf ein Wochenende, verschiebt sich die Frist im Zivilrecht nach § 193 BGB auf den nächsten Werktag (Montag).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fristberechnung" style="margin-bottom: var(--space-8);">
+            <h2>2. Fristberechnung nach dem Bürgerlichen Gesetzbuch (BGB)</h2>
+            <p>
+              In Deutschland sind gesetzliche Fristen im täglichen Leben und im Beruf allgegenwärtig – sei es beim Widerrufsrecht bei Online-Käufen (14 Tage), bei Kündigungsfristen oder bei Gewährleistungsansprüchen.
+            </p>
+            <p>
+              Die §§ 186 bis 193 BGB regeln die Berechnung von Fristen einheitlich:
+            </p>
+            <ul>
+              <li><strong>Ereignisfrist (§ 187 Abs. 1 BGB):</strong> Ist für den Beginn einer Frist ein Ereignis bestimmend (z. B. der Erhalt einer Rechnung oder der Kündigung), wird der Tag des Ereignisses bei der Berechnung <strong>nicht mitgezählt</strong>. Die Frist beginnt am darauf folgenden Tag um 0:00 Uhr zu laufen.</li>
+              <li><strong>Beginnfrist (§ 187 Abs. 2 BGB):</strong> Beginnt die Frist mit dem Beginn eines Tages (z. B. der Geburtstag oder der Tag des Inkrafttretens eines Vertrags), zählt dieser Tag voll mit.</li>
+            </ul>
+          </section>
+
+          <section id="samstag-sonntag" style="margin-bottom: var(--space-8);">
+            <h2>3. Verschiebung des Fristendes bei Samstagen, Sonntagen und Feiertagen</h2>
+            <p>
+              Ein wichtiger gesetzlicher Schutz für Verbraucher/innen und Arbeitnehmer/innen findet sich in **§ 193 BGB**:
+            </p>
+            <blockquote style="border-left: 4px solid var(--clr-accent); padding-left: 15px; margin: 20px 0; color: var(--clr-text-2);">
+              „Ist an einem bestimmten Tage oder innerhalb einer Frist eine Willenserklärung abzugeben oder eine Leistung zu bewirken und fällt der bestimmte Tag oder der letzte Tag der Frist auf einen Sonntag, einen staatlich anerkannten allgemeinen Feiertag oder einen Samstag, so tritt an die Stelle eines solchen Tages der nächste Werktag.“
+            </blockquote>
+            <p>
+              Endet eine 14-tägige Widerrufsfrist beispielsweise an einem Samstag, dürfen Sie den Widerruf noch am folgenden Montag einreichen. Der Sonntag und Samstag werden übersprungen.
+            </p>
+          </section>
+
+          <section id="werktag-arbeitstag" style="margin-bottom: var(--space-8);">
+            <h2>4. Werktage vs. Arbeitstage: Die feinen Unterschiede</h2>
+            <p>
+              Bei Fristberechnungen im Mietrecht (z. B. Kündigung oder Mietzahlung „bis zum 3. Werktag des Monats“) kommt es häufig zu Streitigkeiten über die Definition von Werktagen:
+            </p>
+            <ul>
+              <li><strong>Werktage:</strong> Gesetzlich gelten alle Tage außer Sonn- und Feiertage als Werktage – also auch der <strong>Samstag</strong> (§ 3 Abs. 2 BUrlG).</li>
+              <li><strong>Arbeitstage:</strong> Dies sind die Tage, an denen tatsächlich gearbeitet wird (in der Regel Montag bis Freitag).</li>
+            </ul>
+            <p>
+              Im Mietrecht gilt der Samstag laut BGH-Rechtsprechung bei der Berechnung des 3. Werktags im Monat als Werktag, es sei denn, dies führt zu einer unzumutbaren Verkürzung für den Mieter. Unser Rechner bietet eine Option, um gezielt nur Wochentage (ohne Samstage/Sonntage) zu addieren.
+            </p>
+          </section>
+
+          <section id="beispiele" style="margin-bottom: var(--space-8);">
+            <h2>5. Typische Berechnungsbeispiele aus der Praxis</h2>
+            <p>
+              Hier sind praxisnahe Anwendungsfälle für die Datumsaddition:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Widerruf (14 Tage):</strong> Erhalt der Ware am Dienstag, 10. März. Der Tag des Erhalts zählt nicht (§ 187 Abs. 1 BGB). Die Frist beginnt am Mittwoch, 11. März, und endet genau 14 Tage später am Dienstag, 24. März um 24:00 Uhr.</li>
+              <li><strong>Zahlungsfrist (30 Tage):</strong> Erhalt einer Rechnung mit 30 Tagen Zahlungsziel am 1. November. Die Frist endet am 1. Dezember.</li>
+              <li><strong>Schwangerschaft (280 Tage):</strong> Die durchschnittliche Schwangerschaftsdauer beträgt ab dem ersten Tag der letzten Periode genau 280 Tage (40 Wochen).</li>
+            </ul>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>6. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Wie berechnet man ein Datum in X Tagen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Man zählt die Tage zum Ausgangsdatum hinzu. Unser Fristenrechner rechnet Schaltjahre und Monatslängen automatisch mit ein.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Was gilt bei Fristen, die an einem Samstag, Sonntag oder Feiertag enden?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Nach § 193 BGB verschiebt sich das Fristende auf den nächstfolgenden Werktag (in der Regel Montag), um Nachteile für Verbraucher zu verhindern.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Was ist der Unterschied zwischen Werktagen und Arbeitstagen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Werktage schließen gesetzlich alle Tage außer Sonn- und Feiertage ein (also inklusive Samstag). Arbeitstage sind die reinen betrieblichen Arbeitstage (in der Regel Montag bis Freitag).</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Wie berechnet man die Frist für eine Kündigung?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Zivilrechtliche Fristen schließen den Tag des Zugangs nicht mit ein (§ 187 Abs. 1 BGB). Die Frist läuft ab dem Folgetag.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Wie viele Tage hat das aktuelle Kalenderjahr 2026?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Das Kalenderjahr 2026 ist kein Schaltjahr und hat somit exakt 365 Kalendertage.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>7. Fazit: Rechtssicherheit durch Fristenrechner</h2>
+            <p>
+              Die exakte Fristberechnung schützt vor teuren Fristversäumnissen. Nutzen Sie unseren Rechner, um das Fristende oder den Abstand in Tagen schnell, sicher und fehlerfrei zu ermitteln.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // Set default date to today
+  document.getElementById('startdatum').valueAsDate = new Date();
+
+  // Date calculation script
+  document.getElementById('calc-date-btn').addEventListener('click', () => {
+    const startInput = document.getElementById('startdatum').value;
+    const tageVerschiebung = parseInt(document.getElementById('verschiebung-tage').value) || 0;
+    const nurWerktage = document.getElementById('nur-werktage').checked;
+    
+    if (!startInput) return;
+    
+    let current = new Date(startInput);
+    
+    if (nurWerktage) {
+      // Add or subtract weekdays only (Mon-Fri)
+      let added = 0;
+      const step = tageVerschiebung >= 0 ? 1 : -1;
+      const target = Math.abs(tageVerschiebung);
+      
+      while (added < target) {
+        current.setDate(current.getDate() + step);
+        const day = current.getDay();
+        if (day !== 0 && day !== 6) { // Not Sunday (0) and not Saturday (6)
+          added++;
+        }
+      }
+    } else {
+      current.setDate(current.getDate() + tageVerschiebung);
+    }
+    
+    // Formatting results
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateFormatted = current.toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const weekdayFormatted = current.toLocaleDateString('de-DE', { weekday: 'long' });
+    
+    // Calculate calendar week (ISO 8601)
+    const targetDate = new Date(current.valueOf());
+    const dayNr = (current.getDay() + 6) % 7;
+    targetDate.setDate(targetDate.getDate() - dayNr + 3);
+    const firstThursday = targetDate.valueOf();
+    targetDate.setMonth(0, 1);
+    if (targetDate.getDay() !== 4) {
+      targetDate.setMonth(0, 1 + ((4 - targetDate.getDay()) + 7) % 7);
+    }
+    const kw = 1 + Math.ceil((firstThursday - targetDate) / 604800000);
+    
+    // Day of year
+    const startOfYear = new Date(current.getFullYear(), 0, 1);
+    const diff = current - startOfYear;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay) + 1;
+    
+    // Results DOM
+    document.getElementById('res-zieldatum').textContent = dateFormatted;
+    document.getElementById('res-wochentag').textContent = weekdayFormatted;
+    document.getElementById('res-kw').textContent = kw;
+    document.getElementById('res-tag-des-jahres').textContent = dayOfYear + '. Tag';
+    
+    // Show BGB hint if result is weekend
+    const resultDay = current.getDay();
+    if (resultDay === 0 || resultDay === 6) {
+      document.getElementById('frist-bgb-hint').style.display = 'block';
+    } else {
+      document.getElementById('frist-bgb-hint').style.display = 'none';
+    }
+    
+    document.getElementById('date-results').style.display = 'block';
+  });
+
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

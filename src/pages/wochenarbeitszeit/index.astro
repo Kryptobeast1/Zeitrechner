@@ -1,0 +1,461 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Wochenarbeitszeit berechnen: Rechner & gesetzliche Regeln 2026';
+const description = 'Berechnen Sie Ihre Wochenarbeitszeit einfach mit unserem kostenlosen Stundenzettel-Rechner. Mit allen gesetzlichen Höchstgrenzen und Pausenregelungen nach ArbZG.';
+
+const canonical = getFullUrl('/wochenarbeitszeit/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Wochenarbeitszeit berechnen: Rechner & gesetzliche Regeln 2026",
+        "description": "Ein umfassender Leitfaden zur Berechnung der wöchentlichen Arbeitszeit, Höchstgrenzen (48-Stunden-Regel) nach ArbZG, Überstundenkonten und Rechner.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wie viele Stunden darf man gesetzlich maximal pro Woche arbeiten?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Laut Arbeitszeitgesetz (ArbZG) liegt die gesetzliche wöchentliche Höchstarbeitszeit bei 48 Stunden. Da das Gesetz von 6 Werktagen (Montag bis Samstag) ausgeht, liegt das tägliche Limit bei 8 Stunden. Vorübergehend kann die Arbeitszeit auf bis zu 60 Stunden pro Woche (10 Stunden pro Tag) erhöht werden, wenn im Durchschnitt von 6 Monaten wieder 8 Stunden täglich erreicht werden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man die wöchentliche Sollarbeitszeit bei Feiertagen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Fällt ein gesetzlicher Feiertag auf einen normalen Arbeitstag (z. B. Christi Himmelfahrt an einem Donnerstag), verringert sich die wöchentliche Sollzeit für diesen Tag um die Stunden, die Arbeitnehmer/innen normalerweise gearbeitet hätten (Entgeltfortzahlungsgesetz § 2)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Ist die wöchentliche Arbeitszeit inklusive oder exklusive Pausen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die vertraglich vereinbarte Wochenarbeitszeit (z. B. 40 Stunden) ist immer die Nettoarbeitszeit. Gesetzliche Ruhepausen zählen nicht zur Arbeitszeit und werden bei der Ermittlung der wöchentlichen Arbeitsleistung abgezogen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie rechnet man wöchentliche Arbeitszeiten in monatliche Arbeitsstunden um?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Man multipliziert die wöchentliche Arbeitszeit mit dem Faktor 4,35. Beispiel: 40 Stunden/Woche × 4,35 = 174 Stunden/Monat."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Was gilt als Arbeitszeit auf Dienstreisen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Bei Dienstreisen gilt die Reisezeit als Arbeitszeit, wenn Beschäftigte während der Fahrt aktiv arbeitet (z. B. E-Mails schreibt) oder wenn sie selbst das Fahrzeug lenken müssen. Fahren sie als Beifahrer im Zug oder fliegen sie und entspannen sich dabei, ist dies in der Regel keine Arbeitszeit, es sei denn, Tarif- oder Arbeitsvertrag regeln dies vorteilhafter."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Wochenarbeitszeit berechnen</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Wochenarbeitszeit berechnen: Rechner & gesetzliche Regeln 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#rechner" class="guide-toc__link">1. Wochen-Rechner</a></li>
+            <li><a href="#definition" class="guide-toc__link">2. Gesetzliche Wochenarbeitszeit</a></li>
+            <li><a href="#limits" class="guide-toc__link">3. Höchstgrenzen (48h-Regel)</a></li>
+            <li><a href="#pausen" class="guide-toc__link">4. Gesetzliche Pausenzeiten</a></li>
+            <li><a href="#feiertage" class="guide-toc__link">5. Einfluss von Feiertagen</a></li>
+            <li><a href="#umrechnung" class="guide-toc__link">6. Umrechnung in Monatsstunden</a></li>
+            <li><a href="#reisen" class="guide-toc__link">7. Dienstreisen & Reisezeiten</a></li>
+            <li><a href="#dokumentation" class="guide-toc__link">8. Die wöchentliche Dokumentationspflicht</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="rechner" style="margin-bottom: var(--space-8);">
+            <h2>1. Interaktiver Wochenarbeitszeit-Rechner (Stundenzettel)</h2>
+            <p>
+              Geben Sie Ihre täglichen Arbeits- und Pausenzeiten für die gesamte Woche ein, um die wöchentliche Nettoarbeitszeit in Stunden und Dezimalstunden exakt zu berechnen.
+            </p>
+
+            <div class="glass" style="padding: 24px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--clr-border);">
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9rem; text-align: left;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                      <th style="padding: 8px;">Wochentag</th>
+                      <th style="padding: 8px;">Arbeitsbeginn</th>
+                      <th style="padding: 8px;">Arbeitsende</th>
+                      <th style="padding: 8px;">Pause (Minuten)</th>
+                      <th style="padding: 8px;">Netto-Arbeitszeit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'].map((day, idx) => {
+                      const isWeekend = idx >= 5;
+                      const defaultStart = isWeekend ? '' : '08:00';
+                      const defaultEnd = isWeekend ? '' : '17:00';
+                      const defaultBreak = isWeekend ? '0' : '60';
+                      return (
+                        <tr style="border-bottom: 1px solid var(--clr-border);">
+                          <td style="padding: 8px; font-weight: 600;">{day}</td>
+                          <td style="padding: 8px;">
+                            <input type="time" id={`start-${idx}`} value={defaultStart} style="padding: 6px; border-radius: 4px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                          </td>
+                          <td style="padding: 8px;">
+                            <input type="time" id={`end-${idx}`} value={defaultEnd} style="padding: 6px; border-radius: 4px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                          </td>
+                          <td style="padding: 8px;">
+                            <input type="number" id={`break-${idx}`} value={defaultBreak} min="0" step="5" style="width: 70px; padding: 6px; border-radius: 4px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                          </td>
+                          <td style="padding: 8px;" id={`net-${idx}`}>
+                            {isWeekend ? '0,00 Std.' : '8,00 Std.'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                <button id="calc-weekly-btn" class="btn btn--primary">Wochenzeit berechnen</button>
+                <button id="reset-weekly-btn" class="btn btn--secondary">Zurücksetzen</button>
+              </div>
+
+              <div id="weekly-results" class="glass" style="padding: 16px; border-radius: 8px; margin-top: 20px; background: rgba(0,0,0,0.2); border: 1px solid var(--clr-border);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span>Wöchentliche Arbeitszeit (Brutto):</span>
+                  <strong id="res-weekly-gross">45,00 Std.</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span>Abgezogene Pausen gesamt:</span>
+                  <strong id="res-weekly-breaks">5,00 Std. (300 Min.)</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span>Wöchentliche Arbeitszeit (Netto):</span>
+                  <strong id="res-weekly-net" style="color: var(--clr-accent); font-size: 1.2rem;">40,00 Dezimalstunden</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="definition" style="margin-bottom: var(--space-8);">
+            <h2>2. Was ist die gesetzliche Wochenarbeitszeit?</h2>
+            <p>
+              In Deutschland legt der Arbeits- oder Tarifvertrag fest, wie viele Stunden Beschäftigte wöchentlich arbeiten müssen (Sollarbeitszeit). Die durchschnittliche wöchentliche Arbeitszeit für Vollzeitkräfte liegt in der Praxis meist zwischen **38 und 40 Stunden**.
+            </p>
+            <p>
+              Gesetzlich regelt das Arbeitszeitgesetz (ArbZG) die wöchentliche Obergrenze. Das Gesetz geht hierbei von einer **6-Tage-Woche** (Werktage Montag bis Samstag) aus.
+            </p>
+          </section>
+
+          <section id="limits" style="margin-bottom: var(--space-8);">
+            <h2>3. Die gesetzlichen Höchstgrenzen: Die 48-Stunden-Regel</h2>
+            <p>
+              Nach § 3 ArbZG darf die tägliche Arbeitszeit 8 Stunden nicht überschreiten. Umgelegt auf 6 Werktage ergibt sich die **gesetzliche wöchentliche Höchstarbeitszeit von 48 Stunden**.
+            </p>
+            <p>
+              Das Gesetz erlaubt jedoch eine vorübergehende Ausweitung auf **bis zu 60 Stunden pro Woche** (10 Stunden täglich an 6 Tagen), wenn ein Ausgleich stattfindet:
+            </p>
+            <blockquote style="border-left: 4px solid var(--clr-accent); padding-left: 15px; margin: 20px 0; color: var(--clr-text-2);">
+              Innerhalb von 6 Kalendermonaten oder 24 Wochen darf die durchschnittliche tägliche Arbeitszeit 8 Stunden (also 48 Stunden wöchentlich) nicht überschreiten.
+            </blockquote>
+            <p>
+              Arbeitgeber müssen durch ein Zeiterfassungssystem sicherstellen, dass diese durchschnittlichen wöchentlichen Obergrenzen konsequent überwacht und eingehalten werden.
+            </p>
+          </section>
+
+          <section id="pausen" style="margin-bottom: var(--space-8);">
+            <h2>4. Wöchentliche Pausenzeiten und Mindestruhe</h2>
+            <p>
+              Wöchentliche Arbeitsstunden sind immer als **Nettoarbeitszeit** zu verstehen. Gemäß § 4 ArbZG müssen Pausenzeiten von Arbeitnehmern/innen eingehalten und von Arbeitgeber/innen unbezahlt abgezogen werden:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li>Mindestens 30 Minuten bei einer täglichen Arbeitszeit von 6 bis 9 Stunden.</li>
+              <li>Mindestens 45 Minuten bei einer täglichen Arbeitszeit von mehr als 9 Stunden.</li>
+            </ul>
+            <p>
+              Zudem haben alle Arbeitnehmer/innen pro Woche Anspruch auf eine ununterbrochene Ruhezeit von mindestens 36 Stunden, welche in der Regel den Sonntag umschließen muss (wöchentliche Ruhezeit).
+            </p>
+          </section>
+
+          <section id="feiertage" style="margin-bottom: var(--space-8);">
+            <h2>5. Wochenarbeitszeit bei gesetzlichen Feiertagen</h2>
+            <p>
+              Fällt ein gesetzlicher Feiertag auf einen Wochentag, an dem Arbeitnehmer/innen regulär hätten arbeiten müssen, gilt das **Entgeltausfallprinzip** nach § 2 Abs. 1 Entgeltfortzahlungsgesetz (EFZG):
+            </p>
+            <p>
+              Der Feiertag darf nicht zu einem Lohnausfall führen. Die Sollarbeitszeit der entsprechenden Woche verringert sich automatisch um die Stunden, die an diesem Feiertag angefallen wären. Arbeitnehmer/innen müssen diese Stunden nicht nacharbeiten oder vorarbeiten.
+            </p>
+          </section>
+
+          <section id="umrechnung" style="margin-bottom: var(--space-8);">
+            <h2>6. Umrechnung von Wochenarbeitszeit in Monatsstunden</h2>
+            <p>
+              Da Monate nicht genau 4 Wochen haben (außer dem Februar in Nicht-Schaltjahren), führt die Multiplikation der Wochenstunden mit 4 zu falschen monatlichen Sollarbeitszeiten. In der Lohnabrechnung wird daher mit dem Faktor **4,35** gerechnet:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Monatliche Arbeitszeit = Wochenarbeitszeit × 4,35</code>
+            </div>
+            <p>
+              Eine typische 40-Stunden-Woche entspricht somit im Durchschnitt genau 174 Monatsarbeitsstunden (40 × 4,35 = 174).
+            </p>
+          </section>
+
+          <section id="reisen" style="margin-bottom: var(--space-8);">
+            <h2>7. Dienstreisen und Wegezeiten innerhalb der Woche</h2>
+            <p>
+              Die Bewertung von Reisezeiten ist im Arbeitsrecht differenziert. Es gilt die sogenannte **Beanspruchungstheorie**:
+            </p>
+            <ul>
+              <li><strong>Aktive Arbeit:</strong> Reisen Beschäftigte im Zug und arbeiten am Laptop oder fahren sie selbst den Dienstwagen, gilt die gesamte Fahrtzeit als Arbeitszeit und zählt zur Wochenarbeitszeit.</li>
+              <li><strong>Passive Reisezeit:</strong> Reisen Beschäftigte passiv im Zug oder Flugzeug und lesen ein Buch oder schlafen, gilt dies nicht als Arbeitszeit im Sinne des ArbZG, sofern Arbeitgeber/innen dies nicht ausdrücklich als Arbeitszeit angeordnet haben.</li>
+            </ul>
+          </section>
+
+          <section id="dokumentation" style="margin-bottom: var(--space-8);">
+            <h2>8. Die Pflicht zur wöchentlichen und täglichen Zeiterfassung</h2>
+            <p>
+              Nach dem Grundsatzbeschluss des BAG (Az. 1 ABR 22/21) sind Arbeitgeber/innen verpflichtet, Beginn, Ende und Dauer der täglichen Arbeitszeit aller Beschäftigten systematisch aufzuzeichnen. Die wöchentliche Aufzeichnung auf Stundenzetteln dient der Nachprüfbarkeit gegenüber Arbeitsschutzbehörden und schützt vor illegaler, unbezahlter Mehrarbeit.
+            </p>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Wie viele Stunden darf man gesetzlich maximal pro Woche arbeiten?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Laut Arbeitszeitgesetz (ArbZG) liegt die wöchentliche Höchstarbeitszeit bei 48 Stunden. Vorübergehend sind bis zu 60 Stunden pro Woche zulässig, wenn innerhalb von 6 Monaten ein Ausgleich stattfindet.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Wie berechnet man die wöchentliche Sollarbeitszeit bei Feiertagen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Fällt ein gesetzlicher Feiertag auf einen normalen Arbeitstag, verringert sich die wöchentliche Sollzeit um die Stunden, die Arbeitnehmer/innen normalerweise gearbeitet hätten. Nacharbeit ist unzulässig.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Ist die wöchentliche Arbeitszeit inklusive oder exklusive Pausen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Die vereinbarte Arbeitszeit ist immer die Nettoarbeitszeit. Gesetzliche Pausen werden nicht vergütet und nicht auf die Wochenarbeitszeit angerechnet.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Wie rechnet man wöchentliche Arbeitszeiten in monatliche Arbeitsstunden um?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Man multipliziert die wöchentliche Arbeitszeit mit dem Faktor 4,35. Beispiel: 40 Stunden/Woche × 4,35 = 174 Stunden/Monat.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Was gilt als Arbeitszeit auf Dienstreisen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Reisezeit gilt als Arbeitszeit, wenn Beschäftigte währenddessen aktiv arbeiten oder selbst ein Fahrzeug lenken. Passive Fahrten gelten in der Regel nicht als gesetzliche Arbeitszeit.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>10. Fazit: Wochenarbeitszeit genau im Blick behalten</h2>
+            <p>
+              Die Dokumentation der Wochenarbeitszeit sichert die Konformität mit dem Arbeitszeitgesetz und garantiert eine korrekte Lohnabrechnung. Nutzen Sie unseren kostenlosen Wochenstundenrechner, um Ihre Zeiten GoBD-konform zu verwalten.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // Weekly timesheet calculator script
+  function parseTimeToMinutes(timeStr) {
+    if (!timeStr) return null;
+    const [h, m] = timeStr.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  function calculateDailyNet() {
+    let weeklyGrossMinutes = 0;
+    let weeklyBreakMinutes = 0;
+    let weeklyNetMinutes = 0;
+
+    for (let i = 0; i < 7; i++) {
+      const startVal = document.getElementById(`start-${i}`).value;
+      const endVal = document.getElementById(`end-${i}`).value;
+      const breakVal = parseInt(document.getElementById(`break-${i}`).value) || 0;
+      
+      const startMin = parseTimeToMinutes(startVal);
+      const endMin = parseTimeToMinutes(endVal);
+      
+      let dailyNet = 0;
+      let dailyGross = 0;
+      
+      if (startMin !== null && endMin !== null) {
+        if (endMin >= startMin) {
+          dailyGross = endMin - startMin;
+        } else {
+          // overnight shift
+          dailyGross = (24 * 60 - startMin) + endMin;
+        }
+        
+        dailyNet = Math.max(0, dailyGross - breakVal);
+        
+        weeklyGrossMinutes += dailyGross;
+        weeklyBreakMinutes += breakVal;
+        weeklyNetMinutes += dailyNet;
+      }
+      
+      const decHours = dailyNet / 60;
+      document.getElementById(`net-${i}`).textContent = decHours.toFixed(2).replace('.', ',') + ' Std.';
+    }
+
+    const grossHours = weeklyGrossMinutes / 60;
+    const breakHours = weeklyBreakMinutes / 60;
+    const netHours = weeklyNetMinutes / 60;
+
+    document.getElementById('res-weekly-gross').textContent = grossHours.toFixed(2).replace('.', ',') + ' Std.';
+    document.getElementById('res-weekly-breaks').textContent = breakHours.toFixed(2).replace('.', ',') + ' Std. (' + weeklyBreakMinutes + ' Min.)';
+    document.getElementById('res-weekly-net').textContent = netHours.toFixed(2).replace('.', ',') + ' Dezimalstunden';
+  }
+
+  document.getElementById('calc-weekly-btn').addEventListener('click', calculateDailyNet);
+
+  document.getElementById('reset-weekly-btn').addEventListener('click', () => {
+    for (let i = 0; i < 7; i++) {
+      const isWeekend = i >= 5;
+      document.getElementById(`start-${i}`).value = isWeekend ? '' : '08:00';
+      document.getElementById(`end-${i}`).value = isWeekend ? '' : '17:00';
+      document.getElementById(`break-${i}`).value = isWeekend ? '0' : '60';
+      document.getElementById(`net-${i}`).textContent = isWeekend ? '0,00 Std.' : '8,00 Std.';
+    }
+    document.getElementById('res-weekly-gross').textContent = '45,00 Std.';
+    document.getElementById('res-weekly-breaks').textContent = '5,00 Std. (300 Min.)';
+    document.getElementById('res-weekly-net').textContent = '40,00 Dezimalstunden';
+  });
+
+  // Init
+  calculateDailyNet();
+
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

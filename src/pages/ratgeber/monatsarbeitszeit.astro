@@ -1,0 +1,463 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Monatsarbeitszeit berechnen: Formeln, Rechner & Tabellen 2026';
+const description = 'Berechnen Sie Ihre Monatsarbeitszeit mit unserem kostenlosen Rechner. Erfahren Sie alles über den Berechnungsfaktor 4,35, tatsächliche Arbeitstage und gesetzliche Regeln.';
+
+const canonical = getFullUrl('/ratgeber/monatsarbeitszeit/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Monatsarbeitszeit berechnen: Formeln, Rechner & Tabellen 2026",
+        "description": "Erfahren Sie, wie Sie die monatliche Arbeitszeit berechnen. Inklusive Erläuterung der Durchschnittsformel 4,35, Tabellen für 2026 und Online-Rechner.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man die durchschnittliche Monatsarbeitszeit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die durchschnittliche Monatsarbeitszeit berechnet sich aus der wöchentlichen Arbeitszeit multipliziert mit dem Faktor 4,35. Formel: Monatsstunden = Wochenstunden × 4,35."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Woher kommt der Faktor 4,35 bei der Arbeitszeitberechnung?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ein Jahr hat 52 Wochen und 12 Monate. Teilt man 52 Wochen durch 12 Monate, ergibt sich ein Durchschnittswert von 4,33 Wochen pro Monat. Da ein Jahr jedoch 365 Tage (in Schaltjahren 366) hat, ergibt sich mathematisch präzise ein Durchschnitt von 4,3482 Wochen pro Monat, welcher in der Lohnabrechnung auf 4,35 gerundet wird."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man die tatsächliche Monatsarbeitszeit eines bestimmten Monats?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die tatsächliche Monatsarbeitszeit basiert auf den realen Arbeitstagen des jeweiligen Kalendermonats abzüglich Wochenenden und gesetzlichen Feiertagen. Formel: Tatsächliche Monatsstunden = Arbeitstage des Monats × tägliche Arbeitszeit (z. B. 8,00 Stunden)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie viele Arbeitsstunden hat ein Monat im Durchschnitt bei Vollzeit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Bei einer klassischen 40-Stunden-Woche beträgt die durchschnittliche Monatsarbeitszeit 174 Stunden. Bei einer 35-Stunden-Woche sind es durchschnittlich 152,25 Stunden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Haben Feiertage Einfluss auf das Monatsgehalt?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nein, gesetzliche Feiertage dürfen nicht zu einer Minderung des Arbeitsentgelts führen. Gemäß § 2 EFZG haben Arbeitnehmer/innen Anspruch auf Lohnfortzahlung für die Arbeitszeit, die wegen eines gesetzlichen Feiertags ausfällt."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Monatsarbeitszeit berechnen</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Monatsarbeitszeit berechnen: Formeln, Rechner & Tabellen 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#rechner" class="guide-toc__link">1. Monatsarbeitszeit-Rechner</a></li>
+            <li><a href="#formel" class="guide-toc__link">2. Die Formel mit Faktor 4,35</a></li>
+            <li><a href="#herkunft" class="guide-toc__link">3. Woher kommt der Faktor 4,35?</a></li>
+            <li><a href="#tatsaechlich" class="guide-toc__link">4. Tatsächliche Monatsarbeitszeit</a></li>
+            <li><a href="#tabellen" class="guide-toc__link">5. Tabellen für das Jahr 2026</a></li>
+            <li><a href="#feiertage" class="guide-toc__link">6. Feiertagsregelungen</a></li>
+            <li><a href="#teilzeit" class="guide-toc__link">7. Monatsstunden bei Teilzeit</a></li>
+            <li><a href="#lohn" class="guide-toc__link">8. Stundenlohn aus Monatsgehalt</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="rechner" style="margin-bottom: var(--space-8);">
+            <h2>1. Interaktiver Monatsarbeitszeit-Rechner</h2>
+            <p>
+              Berechnen Sie Ihre durchschnittliche Monatsarbeitszeit sowie die tatsächliche Nettoarbeitszeit für einen bestimmten Monat des Jahres 2026 unter Berücksichtigung von Arbeitstagen und Wochenenden.
+            </p>
+
+            <div class="glass" style="padding: 24px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--clr-border);">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Wochenarbeitszeit (Stunden)</label>
+                    <input type="number" id="wochenstunden" value="40" step="0.5" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Monat auswählen (für tatsächliche Berechnung)</label>
+                    <select id="berechnungs-monat" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);">
+                      <option value="1">Januar 2026 (22 Arbeitstage)</option>
+                      <option value="2">Februar 2026 (20 Arbeitstage)</option>
+                      <option value="3">März 2026 (22 Arbeitstage)</option>
+                      <option value="4">April 2026 (20 Arbeitstage)</option>
+                      <option value="5">Mai 2026 (18 Arbeitstage)</option>
+                      <option value="6">Juni 2026 (22 Arbeitstage)</option>
+                      <option value="7">Juli 2026 (23 Arbeitstage)</option>
+                      <option value="8">August 2026 (21 Arbeitstage)</option>
+                      <option value="9">September 2026 (22 Arbeitstage)</option>
+                      <option value="10">Oktober 2026 (21 Arbeitstage)</option>
+                      <option value="11">November 2026 (21 Arbeitstage)</option>
+                      <option value="12">Dezember 2026 (21 Arbeitstage)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Tägliche Sollzeit (Stunden)</label>
+                    <input type="number" id="tagesstunden" value="8" step="0.5" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Abzuziehende Feiertage/Ausfalltage (optional)</label>
+                    <input type="number" id="ausfalltage" value="0" min="0" max="10" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                </div>
+
+                <button id="calc-monat-btn" class="btn btn--primary" style="align-self: flex-start; margin-top: 10px;">Monatszeit berechnen</button>
+                
+                <div id="monat-results" class="glass" style="padding: 16px; border-radius: 8px; margin-top: 15px; display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--clr-border);">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Durchschnittliche Monatsarbeitszeit (Faktor 4,35):</span>
+                    <strong id="res-monat-durchschnitt" style="color: var(--clr-text);">0,00 Std.</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Tatsächliche Arbeitstage im gewählten Monat:</span>
+                    <strong id="res-monat-tage">0 Tage</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Tatsächliche Netto-Arbeitsstunden in diesem Monat:</span>
+                    <strong id="res-monat-tatsaechlich" style="color: var(--clr-accent); font-size: 1.2rem;">0,00 Dezimalstunden</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="formel" style="margin-bottom: var(--space-8);">
+            <h2>2. Die Formel zur Berechnung: Warum der Faktor 4,35?</h2>
+            <p>
+              In Deutschland wird für Lohnabrechnungen und zur Berechnung der monatlichen Arbeitsstunden fast immer eine standardisierte Durchschnittsformel verwendet. Die Formel lautet:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Monatliche Soll-Arbeitszeit = Wochenarbeitszeit × 4,35</code>
+            </div>
+            <p>
+              Diese Formel gleicht die Tatsache aus, dass das Jahr 52 Wochen, aber nur 12 Monate hat. Ein Monat hat somit im Schnitt mehr als genau vier Wochen.
+            </p>
+          </section>
+
+          <section id="herkunft" style="margin-bottom: var(--space-8);">
+            <h2>3. Mathematische Herleitung des Faktors 4,35</h2>
+            <p>
+              Woher kommt der Faktor 4,35 genau? Die mathematische Herleitung ist einfach:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li>Ein Jahr hat genau <strong>52 Wochen</strong>.</li>
+              <li>Ein Jahr hat genau <strong>12 Monate</strong>.</li>
+              <li>Teilt man die Wochen durch die Monate, ergibt sich: <code>52 / 12 = 4,33 Wochen pro Monat</code>.</li>
+              <li>Da ein Standardjahr jedoch 365 Tage hat (52 Wochen × 7 Tage = 364 Tage, es bleibt also ein Tag übrig), ist der exakte Faktor etwas höher: <code>365 Tage / 7 Tage pro Woche = 52,14 Wochen pro Jahr</code>.</li>
+              <li>Teilt man 52,14 Wochen durch 12 Monate, ergibt sich: <code>52,14 / 12 = 4,345 Wochen pro Monat</code>.</li>
+              <li>In der Lohnbuchhaltung wird dieser Wert üblicherweise auf <strong>4,35</strong> gerundet, um kaufmännisch sicher und einheitlich zu rechnen.</li>
+            </ol>
+          </section>
+
+          <section id="tatsaechlich" style="margin-bottom: var(--space-8);">
+            <h2>4. Tatsächliche vs. durchschnittliche Monatsarbeitszeit</h2>
+            <p>
+              Bei der Arbeitszeitberechnung muss zwischen zwei Modellen unterschieden werden:
+            </p>
+            <ul>
+              <li><strong>Durchschnittliche Monatsarbeitszeit:</strong> Sie bleibt jeden Monat gleich und dient bei Personen mit Festgehalt als rechnerische Basis (z. B. 174,00 Stunden bei einer 40-Stunden-Woche).</li>
+              <li><strong>Tatsächliche Monatsarbeitszeit:</strong> Sie variiert von Monat zu Monat, da die Anzahl der Kalendertage (28 bis 31 Tage), der Wochenenden und der Feiertage schwankt. Ein Monat mit vielen Arbeitstagen (z. B. Juli 2026 mit 23 Arbeitstagen) hat bei einer täglichen Arbeitszeit von 8,00 Stunden 184,00 tatsächliche Arbeitsstunden. Ein Monat mit vielen Feiertagen (z. B. Mai 2026 mit 18 Arbeitstagen) hat nur 144,00 tatsächliche Arbeitsstunden.</li>
+            </ul>
+          </section>
+
+          <section id="tabellen" style="margin-bottom: var(--space-8);">
+            <h2>5. Tabellen zur Monatsarbeitszeit für das Jahr 2026</h2>
+            <p>
+              Die folgende Tabelle zeigt die durchschnittlichen Monatsarbeitszeiten für typische vertragliche Wochenarbeitszeiten auf Basis des Faktors 4,35:
+            </p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                  <th style="padding: 8px;">Wochenstunden</th>
+                  <th style="padding: 8px;">Durchschnittliche Monatsstunden</th>
+                  <th style="padding: 8px;">Tägliche Arbeitszeit (5-Tage-Woche)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">40 Stunden</td>
+                  <td style="padding: 8px;"><strong>174,00 Stunden</strong></td>
+                  <td style="padding: 8px;">8,00 Std.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">39 Stunden</td>
+                  <td style="padding: 8px;"><strong>169,65 Stunden</strong></td>
+                  <td style="padding: 8px;">7,80 Std. (7 Std. 48 Min.)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">38 Stunden</td>
+                  <td style="padding: 8px;"><strong>165,30 Stunden</strong></td>
+                  <td style="padding: 8px;">7,60 Std. (7 Std. 36 Min.)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">35 Stunden</td>
+                  <td style="padding: 8px;"><strong>152,25 Stunden</strong></td>
+                  <td style="padding: 8px;">7,00 Std.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">30 Stunden (Teilzeit)</td>
+                  <td style="padding: 8px;"><strong>130,50 Stunden</strong></td>
+                  <td style="padding: 8px;">6,00 Std.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">20 Stunden (Teilzeit)</td>
+                  <td style="padding: 8px;"><strong>87,00 Stunden</strong></td>
+                  <td style="padding: 8px;">4,00 Std.</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="feiertage" style="margin-bottom: var(--space-8);">
+            <h2>6. Feiertagsregelungen bei der Monatsarbeitszeit</h2>
+            <p>
+              Laut § 2 Abs. 1 Entgeltfortzahlungsgesetz (EFZG) gilt für gesetzliche Feiertage: Fällt die Arbeit infolge eines gesetzlichen Feiertages aus, behalten Arbeitnehmer/innen ihren Anspruch auf Fortzahlung des Arbeitsentgelts.
+            </p>
+            <p>
+              Für die tatsächliche Monatsarbeitszeit bedeutet dies: Fällt ein Feiertag auf einen Wochentag (z. B. Ostermontag), verringert sich die tatsächliche monatliche Sollarbeitszeit entsprechend um die ausgefallenen Stunden. Sie müssen nicht nachgearbeitet werden und das Monatsgehalt darf nicht gekürzt werden.
+            </p>
+          </section>
+
+          <section id="teilzeit" style="margin-bottom: var(--space-8);">
+            <h2>7. Monatsstunden bei Teilzeitbeschäftigung</h2>
+            <p>
+              Bei Teilzeitmodellen wird die Monatsarbeitszeit exakt analog berechnet. Arbeiten Beschäftigte beispielsweise 22,00 Stunden pro Woche, ergibt sich eine durchschnittliche Monatsarbeitszeit von:
+              <br />
+              <code>22 Wochenstunden × 4,35 = 95,70 Stunden pro Monat.</code>
+            </p>
+          </section>
+
+          <section id="lohn" style="margin-bottom: var(--space-8);">
+            <h2>8. Stundenlohn aus festem Monatsgehalt ermitteln</h2>
+            <p>
+              Möchten Sie Ihren Stundenlohn aus einem festen Monatsgehalt (Bruttogehalt) errechnen, drehen Sie die Formel einfach um:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Stundenlohn = Monatsgehalt (Brutto) / (Wochenstunden × 4,35)</code>
+            </div>
+            <p>
+              <strong>Berechnungsbeispiel:</strong> Bei einem Bruttogehalt von 4.000 € und einer 40-Stunden-Woche:
+              <br />
+              <code>Stundenlohn = 4.000 € / (40 × 4,35) = 4.000 € / 174 = 22,99 € pro Stunde.</code>
+            </p>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Wie berechnet man die durchschnittliche Monatsarbeitszeit?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Die durchschnittliche Monatsarbeitszeit berechnet sich aus der wöchentlichen Arbeitszeit multipliziert mit dem Faktor 4,35. Formel: Monatsstunden = Wochenstunden × 4,35.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Woher kommt der Faktor 4,35 bei der Arbeitszeitberechnung?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Ein Jahr hat 52 Wochen und 12 Monate. Da ein Jahr jedoch 365 Tage hat, ergibt sich mathematisch präzise ein Durchschnitt von 4,345 Wochen pro Monat, welcher in der Lohnabrechnung auf 4,35 gerundet wird.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Wie berechnet man die tatsächliche Monatsarbeitszeit eines bestimmten Monats?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Die tatsächliche Monatsarbeitszeit basiert auf den realen Arbeitstagen des Kalendermonats abzüglich Wochenenden und Feiertagen. Formel: Tatsächliche Monatsstunden = Arbeitstage des Monats × tägliche Sollzeit.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Wie viele Arbeitsstunden hat ein Monat im Durchschnitt bei Vollzeit?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Bei einer klassischen 40-Stunden-Woche beträgt die durchschnittliche Monatsarbeitszeit 174 Stunden. Bei einer 38-Stunden-Woche sind es 165,30 Stunden.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Haben Feiertage Einfluss auf das Monatsgehalt?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Nein. Nach dem Entgeltfortzahlungsgesetz darf an gesetzlichen Feiertagen kein Lohnausfall stattfinden. Das Gehalt bleibt ungekürzt bestehen.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>10. Fazit: Planungssicherheit durch standardisierte Formeln</h2>
+            <p>
+              Die Verwendung des Umrechnungsfaktors 4,35 garantiert eine einheitliche Lohnabrechnung und verhindert monatliche Schwankungen beim Gehalt. Nutzen Sie unseren Rechner zur unkomplizierten Ermittlung Ihrer Sollarbeitszeiten.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // Monthly calculator script
+  const MONTH_DAYS_2026 = {
+    1: 22, // Jan
+    2: 20, // Feb
+    3: 22, // Mar
+    4: 20, // Apr
+    5: 18, // May
+    6: 22, // Jun
+    7: 23, // Jul
+    8: 21, // Aug
+    9: 22, // Sep
+    10: 21, // Oct
+    11: 21, // Nov
+    12: 21  // Dec
+  };
+
+  document.getElementById('calc-monat-btn').addEventListener('click', () => {
+    const wochenstunden = parseFloat(document.getElementById('wochenstunden').value) || 0;
+    const monat = parseInt(document.getElementById('berechnungs-monat').value) || 1;
+    const tagesstunden = parseFloat(document.getElementById('tagesstunden').value) || 8;
+    const ausfalltage = parseFloat(document.getElementById('ausfalltage').value) || 0;
+    
+    const durchschnitt = wochenstunden * 4.35;
+    const baseDays = MONTH_DAYS_2026[monat] || 22;
+    const actualDays = Math.max(0, baseDays - ausfalltage);
+    const tatsaechlich = actualDays * tagesstunden;
+    
+    document.getElementById('res-monat-durchschnitt').textContent = durchschnitt.toFixed(2).replace('.', ',') + ' Std.';
+    document.getElementById('res-monat-tage').textContent = actualDays + ' Tage';
+    document.getElementById('res-monat-tatsaechlich').textContent = tatsaechlich.toFixed(2).replace('.', ',') + ' Dezimalstunden';
+    
+    document.getElementById('monat-results').style.display = 'block';
+  });
+
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

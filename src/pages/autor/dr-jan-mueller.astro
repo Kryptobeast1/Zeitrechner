@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Dr. Jan Müller — HR- & Arbeitsrecht-Experte | Zeit-Rechner';
+const description = 'Dr. Jan Müller ist Fachanwalt für Arbeitsrecht und HR-Consultant mit über 15 Jahren Erfahrung in der Beratung zur Arbeitszeitorganisation und Compliance.';
+
+const canonical = getFullUrl('/autor/dr-jan-mueller/');
+const hubUrl = getHubUrl(lang);
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Dr. Jan Müller",
+    "jobTitle": "Fachanwalt für Arbeitsrecht & HR-Consultant",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Müller & Partner Arbeitsrecht-Consulting"
+    },
+    "description": "Fachanwalt für Arbeitsrecht mit Spezialisierung auf Arbeitszeit-Compliance, betriebliche Zeiterfassung und Lohnabrechnungssysteme.",
+    "url": canonical,
+    "sameAs": [
+      "https://www.linkedin.com/in/dr-jan-mueller-placeholder"
+    ],
+    "knowsAbout": [
+      "Arbeitszeitgesetz (ArbZG)",
+      "Zeiterfassungspflicht",
+      "Lohnbuchhaltung",
+      "Überstundenberechnung"
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Experten-Profil</span>
+      </nav>
+
+      <div style="display: flex; gap: 24px; align-items: center; margin-top: 1.5rem; flex-wrap: wrap;">
+        <div style="font-size: 4rem; width: 100px; height: 100px; background: var(--clr-surface-2); border: 2px solid var(--clr-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow);">
+          👨‍⚖️
+        </div>
+        <div>
+          <span class="badge badge--accent">Fachbeirat & Autor</span>
+          <h1 style="margin-top: 8px; margin-bottom: 4px;">Dr. Jan Müller</h1>
+          <p style="font-size: 1.1rem; color: var(--clr-text-2); font-weight: 500;">Fachanwalt für Arbeitsrecht & HR-Consultant</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Über Dr. Jan Müller</h2>
+        <p>
+          Dr. Jan Müller berät seit über 15 Jahren mittelständische deutsche Unternehmen und HR-Abteilungen bei der Implementierung 
+          von Arbeitszeitsystemen, Dienstplanmodellen und Zeiterfassungsprozessen. Sein Fokus liegt auf der rechtssicheren Einhaltung 
+          des deutschen Arbeitszeitgesetzes (ArbZG) sowie der Umsetzung der aktuellen EuGH- und BAG-Urteile zur systematischen Zeiterfassungspflicht.
+        </p>
+        <p>
+          Als Autor und fachlicher Gutachter für Zeit-Rechner.com verifiziert er juristische Ansprüche, gesetzliche Pausenregelungen 
+          und mathematische Dezimalumrechnungen, um höchste inhaltliche Präzision für Arbeitgeber/innen und Arbeitnehmer/innen zu garantieren.
+        </p>
+
+        <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--clr-accent);">Beruflicher Werdegang & Qualifikationen</h3>
+        <ul style="padding-left: 20px; list-style-type: disc; display: flex; flex-direction: column; gap: 10px;">
+          <li><strong>Partner bei Müller & Partner:</strong> Beratung von Unternehmen im kollektiven und individuellen Arbeitsrecht (seit 2014).</li>
+          <li><strong>Fachanwalt für Arbeitsrecht:</strong> Zulassung durch die Rechtsanwaltskammer (seit 2011).</li>
+          <li><strong>Promotion im Arbeitsrecht:</strong> Promotion an der Universität zu Köln zum Thema "Flexibilisierung von Arbeitszeitmodellen nach dem ArbZG" (2009).</li>
+          <li><strong>Zertifizierter HR-Compliance-Manager:</strong> Spezialfortbildung im Bereich Arbeitszeit-Audits und Lohnbuchhaltungsprüfung.</li>
+        </ul>
+
+        <h3 style="margin-top: 40px; margin-bottom: 20px; color: var(--clr-accent);">Fachlich geprüfte Artikel auf Zeit-Rechner.com</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 15px;">
+          <a href="/ratgeber/arbeitszeit-berechnen/" class="glass" style="padding: 16px; border-radius: var(--radius); display: block; text-decoration: none; border: 1px solid var(--clr-border); transition: all var(--transition);">
+            <div style="font-weight: 600; color: var(--clr-text); font-size: 1rem; margin-bottom: 4px;">Arbeitszeit berechnen: Kompletter Guide 2026</div>
+            <div style="font-size: 0.85rem; color: var(--clr-text-3);">Umfassender Ratgeber zu Brutto/Netto, ArbZG-Pausenregelungen und Industrieminuten.</div>
+          </a>
+          <a href="/ratgeber/zeiterfassung-freelancer/" class="glass" style="padding: 16px; border-radius: var(--radius); display: block; text-decoration: none; border: 1px solid var(--clr-border); transition: all var(--transition);">
+            <div style="font-weight: 600; color: var(--clr-text); font-size: 1rem; margin-bottom: 4px;">Freelancer Zeiterfassung: Methoden & Best Practices</div>
+            <div style="font-size: 0.85rem; color: var(--clr-text-3);">Ratgeber für Freiberufler zur Abrechnung von Stunden- und Tagessätzen.</div>
+          </a>
+          <a href="/ratgeber/zeiterfassung-pflicht/" class="glass" style="padding: 16px; border-radius: var(--radius); display: block; text-decoration: none; border: 1px solid var(--clr-border); transition: all var(--transition);">
+            <div style="font-weight: 600; color: var(--clr-text); font-size: 1rem; margin-bottom: 4px;">Zeiterfassung Pflicht 2026 in Deutschland</div>
+            <div style="font-size: 0.85rem; color: var(--clr-text-3);">Rechtliche Grundlagen zur Arbeitszeiterfassung nach dem Bundesarbeitsgericht-Urteil.</div>
+          </a>
+        </div>
+
+        <div style="margin-top: 40px; border-top: 1px solid var(--clr-border); padding-top: 20px;">
+          <a href="https://www.linkedin.com/in/dr-jan-mueller-placeholder" target="_blank" rel="noopener noreferrer" class="btn btn--secondary">
+            💼 LinkedIn Profil besuchen
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

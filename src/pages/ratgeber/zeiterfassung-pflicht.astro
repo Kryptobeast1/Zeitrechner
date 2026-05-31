@@ -1,0 +1,340 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Zeiterfassungspflicht 2026: Gesetze, BAG-Urteil & Ausnahmen';
+const description = 'Alles zur gesetzlichen Zeiterfassungspflicht in Deutschland nach dem BAG-Urteil. Erfahren Sie, was für Arbeitgeber, Arbeitnehmer & Homeoffice gilt.';
+
+const canonical = getFullUrl('/ratgeber/zeiterfassung-pflicht/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Zeiterfassungspflicht 2026: Gesetze, BAG-Urteil & Ausnahmen",
+        "description": "Ein umfassender juristischer Leitfaden zur gesetzlichen Pflicht zur Arbeitszeiterfassung für Unternehmen in Deutschland nach der Rechtsprechung des BAG.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Gilt die Zeiterfassungspflicht bereits in Deutschland?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Seit dem Grundsatzbeschluss des Bundesarbeitsgerichts (BAG) vom 13. September 2022 (Az. 1 ABR 22/21) besteht in Deutschland eine unmittelbare gesetzliche Pflicht für alle Arbeitgeber/innen, Beginn, Ende und Dauer der täglichen Arbeitszeit von Beschäftigten systematisch zu erfassen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Ist Vertrauensarbeitszeit trotz Zeiterfassungspflicht weiterhin zulässig?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Vertrauensarbeitszeit ist weiterhin möglich. Die Zeiterfassungspflicht schließt eine flexible Arbeitszeitgestaltung nicht aus. Arbeitgeber/innen müssen jedoch sicherstellen und kontrollieren, dass die geleisteten Arbeitsstunden ordnungsgemäß erfasst und die Höchstarbeitszeiten sowie Ruhepausen nach dem ArbZG eingehalten werden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Gibt es Ausnahmen von der Zeiterfassungspflicht?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die Pflicht gilt grundsätzlich für alle Arbeitnehmer/innen. Ausgenommen sind echte leitende Angestellte im Sinne des § 5 Abs. 3 BetrVG sowie Chefärzte. Für Kleinstbetriebe (z. B. unter 10 Beschäftigte) sieht der Gesetzgeber in Entwürfen vereinfachte Aufzeichnungspflichten (z. B. in Papierform) vor."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Muss die Zeiterfassung digital oder elektronisch erfolgen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Der Gesetzgeber plant im Entwurf zur Änderung des Arbeitszeitgesetzes eine Pflicht zur elektronischen Erfassung (z. B. via App, Excel oder Terminal). Solange das Gesetz nicht final verabschiedet ist, sind theoretisch auch Papieraufzeichnungen (Stundenzettel) zulässig, sofern sie objektiv, verlässlich und zugänglich sind."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Drohen Bußgelder bei Nichtbeachtung der Zeiterfassung?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Eine direkte Geldbuße für das bloße Fehlen eines Zeiterfassungssystems ist im aktuellen ArbZG noch nicht verankert. Die Gewerbeaufsichtsämter können jedoch eine Anordnung zur Einführung erlassen. Wird diese Anordnung ignoriert, drohen Zwangsgelder und Bußgelder von bis zu 30.000,00 Euro."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Zeiterfassungspflicht 2026</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Zeiterfassungspflicht 2026: Gesetze, BAG-Urteil & Ausnahmen</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#einleitung" class="guide-toc__link">1. Einleitung</a></li>
+            <li><a href="#eugh-urteil" class="guide-toc__link">2. Das EuGH-Stechuhr-Urteil</a></li>
+            <li><a href="#bag-urteil" class="guide-toc__link">3. Das historische BAG-Urteil</a></li>
+            <li><a href="#anforderungen" class="guide-toc__link">4. Anforderungen an das System</a></li>
+            <li><a href="#homeoffice" class="guide-toc__link">5. Regelungen für Homeoffice</a></li>
+            <li><a href="#vertrauen" class="guide-toc__link">6. Aus für Vertrauensarbeitszeit?</a></li>
+            <li><a href="#ausnahmen" class="guide-toc__link">7. Gesetzliche Ausnahmen</a></li>
+            <li><a href="#sanktionen" class="guide-toc__link">8. Sanktionen und Bußgelder</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit & Checkliste</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="einleitung" style="margin-bottom: var(--space-8);">
+            <h2>1. Einleitung: Die Rückkehr der Stechuhr</h2>
+            <p>
+              Die Zeiterfassungspflicht ist eines der am intensivsten diskutierten arbeitsrechtlichen Themen der letzten Jahrzehnte. Was früher mit Stempelkarten und mechanischen Wanduhren begann, wurde im Zuge der Flexibilisierung und Digitalisierung zunehmend durch Vertrauensarbeitszeit ersetzt.
+            </p>
+            <p>
+              Doch diese Ära ist rechtlich vorbei: Sowohl der Europäische Gerichtshof (EuGH) als auch das Bundesarbeitsgericht (BAG) haben klargestellt, dass ohne systematische Arbeitszeiterfassung weder der Schutz von Beschäftigten noch die Einhaltung gesetzlicher Höchstarbeitszeiten gewährleistet werden kann. Arbeitgeber/innen stehen nun in der Pflicht, rechtssichere Erfassungssysteme zu etablieren. Dieser Guide erläutert den rechtlichen Ist-Zustand im Jahr 2026.
+            </p>
+          </section>
+
+          <section id="eugh-urteil" style="margin-bottom: var(--space-8);">
+            <h2>2. Das wegweisende EuGH-Urteil von 2019</h2>
+            <p>
+              Den Anstoß für den Systemwechsel gab der Europäische Gerichtshof mit seinem Urteil vom 14. Mai 2019 (Rechtssache C-55/18, oft als „Stechuhr-Urteil“ bezeichnet).
+            </p>
+            <p>
+              Der EuGH entschied, dass die Mitgliedstaaten der EU die Arbeitgeber verpflichten müssen, ein **„objektives, verlässliches und zugängliches System“** einzurichten, mit dem die von allen Beschäftigten geleistete tägliche Arbeitszeit gemessen werden kann. Nur so lässt sich prüfen, ob die wöchentliche Höchstarbeitszeit (nach der EU-Arbeitszeitrichtlinie maximal 48,00 Stunden) und die täglichen Ruhezeiten eingehalten werden.
+            </p>
+          </section>
+
+          <section id="bag-urteil" style="margin-bottom: var(--space-8);">
+            <h2>3. Das historische BAG-Urteil von 2022</h2>
+            <p>
+              Während in Politik und Wirtschaft lange gestritten wurde, ob das EuGH-Urteil erst in deutsches Recht gegossen werden muss, schuf das Bundesarbeitsgericht am 13. September 2022 überraschend vollendete Tatsachen (Az. 1 ABR 22/21):
+            </p>
+            <p>
+              Das BAG leitete eine unmittelbare Pflicht zur Arbeitszeiterfassung direkt aus dem bestehenden **§ 3 Abs. 2 Nr. 1 des Arbeitsschutzgesetzes (ArbSchG)** ab. Demnach sind Arbeitgeber verpflichtet, ein System zur Erfassung der geleisteten Arbeitsstunden einzuführen. Damit besteht die Pflicht zur Arbeitszeiterfassung in Deutschland unmittelbar und unabhängig von einem neuen Gesetz durch den Bundestag.
+            </p>
+          </section>
+
+          <section id="anforderungen" style="margin-bottom: var(--space-8);">
+            <h2>4. Gesetzliche Anforderungen an ein Zeiterfassungssystem</h2>
+            <p>
+              Das Zeiterfassungssystem muss den vom EuGH geforderten Kriterien entsprechen:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Objektiv:</strong> Das System darf keine willkürlichen Schätzungen zulassen, sondern muss die tatsächlichen Arbeitszeiten neutral abbilden.</li>
+              <li><strong>Verlässlich:</strong> Die Daten müssen manipulationssicher sein. Nachträgliche Korrekturen müssen dokumentiert werden (GoBD-Konformität).</li>
+              <li><strong>Zugänglich:</strong> Sowohl Beschäftigte als auch die Aufsichtsbehörden (Gewerbeaufsicht) müssen jederzeit Zugriff auf die Aufzeichnungen haben.</li>
+            </ol>
+            <p>
+              Erfasst werden müssen: **Beginn der Arbeit, Ende der Arbeit und die Dauer der täglichen Arbeitszeit einschließlich aller Ruhepausen**.
+            </p>
+          </section>
+
+          <section id="homeoffice" style="margin-bottom: var(--space-8);">
+            <h2>5. Besondere Regeln für Homeoffice und mobiles Arbeiten</h2>
+            <p>
+              Die Zeiterfassungspflicht gilt uneingeschränkt auch für Arbeitnehmer/innen im Homeoffice, bei Dienstreisen oder bei mobilem Arbeiten. 
+            </p>
+            <p>
+              Arbeitgeber/innen dürfen die Pflicht zur täglichen Erfassung der Arbeitszeit zwar auf Arbeitnehmer/innen delegieren (z. B. durch das Eintragen in eine App oder Web-Software). Sie bleiben jedoch gesetzlich in der **Überwachungs- und Kontrollverantwortung**. Das bedeutet, dass die Arbeitgeber/innen stichprobenartig prüfen müssen, ob die Aufzeichnungen ordnungsgemäß geführt und gesetzliche Pausen eingehalten werden.
+            </p>
+          </section>
+
+          <section id="vertrauen" style="margin-bottom: var(--space-8);">
+            <h2>6. Das Schicksal der Vertrauensarbeitszeit</h2>
+            <p>
+              Die Sorge, dass die Zeiterfassungspflicht das Ende der beliebten Vertrauensarbeitszeit bedeutet, ist unbegründet. Vertrauensarbeitszeit ist weiterhin zulässig.
+            </p>
+            <p>
+              <strong>Der Unterschied:</strong> Die Arbeitgeber/innen verzichten nach wie vor darauf zu kontrollieren, *wann* Beschäftigte arbeiten, solange die Arbeitsleistung erbracht wird. Dennoch müssen Beginn, Ende und Dauer der täglichen Arbeitszeit dokumentiert werden. Die Dokumentation dient dem Arbeitszeit- und Gesundheitsschutz und schließt eine freie Zeiteinteilung nicht aus.
+            </p>
+          </section>
+
+          <section id="ausnahmen" style="margin-bottom: var(--space-8);">
+            <h2>7. Ausnahmen von der Erfassungspflicht</h2>
+            <p>
+              Die gesetzliche Pflicht gilt nicht ausnahmslos für alle Beschäftigten:
+            </p>
+            <ul>
+              <li><strong>Leitende Angestellte:</strong> Echte leitende Angestellte im Sinne des § 5 Abs. 3 Betriebsverfassungsgesetz (BetrVG) sowie Chefärzte sind vom Arbeitszeitgesetz und somit auch von der Pflicht zur Erfassung der Arbeitszeit ausgenommen.</li>
+              <li><strong>Kleinstbetriebe:</strong> Die Gesetzesentwürfe des BMAS sehen Erleichterungen für Kleinstbetriebe vor (z. B. keine Pflicht zur elektronischen Erfassung für Unternehmen mit weniger als 10 Beschäftigten; hier reicht die manuelle Erfassung auf Papier).</li>
+            </ul>
+          </section>
+
+          <section id="sanktionen" style="margin-bottom: var(--space-8);">
+            <h2>8. Sanktionen und Bußgelder für Arbeitgeber</h2>
+            <p>
+              Ein Verstoß gegen das Arbeitsschutzgesetz (wie das Fehlen eines Erfassungssystems) führt nicht sofort zu einem Bußgeld. Die zuständige Aufsichtsbehörde (Gewerbeaufsichtsamt) wird Arbeitgeber/innen zunächst auffordern, ein System einzuführen.
+            </p>
+            <p>
+              Kommen Arbeitgeber/innen dieser behördlichen Anordnung nicht fristgerecht nach, handelt es sich um eine Ordnungswidrigkeit, die mit Bußgeldern von **bis zu 30.000,00 Euro** geahndet werden kann.
+            </p>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Gilt die Zeiterfassungspflicht bereits in Deutschland?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Ja. Seit dem Grundsatzbeschluss des Bundesarbeitsgerichts (BAG) vom 13. September 2022 besteht in Deutschland eine unmittelbare gesetzliche Pflicht für alle Arbeitgeber/innen, die Arbeitszeiten systematisch zu erfassen.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Ist Vertrauensarbeitszeit trotz Zeiterfassungspflicht weiterhin zulässig?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Ja. Vertrauensarbeitszeit ist weiterhin möglich. Die Zeiterfassungspflicht schließt eine flexible Arbeitszeitgestaltung nicht aus, verlangt jedoch die Dokumentation der geleisteten Stunden.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Gibt es Ausnahmen von der Zeiterfassungspflicht?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Ausgenommen sind leitende Angestellte und Chefärzte. Kleinstbetriebe erhalten Erleichterungen bezüglich der Form der Aufzeichnung (z. B. Papier erlaubt).</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Muss die Zeiterfassung digital oder elektronisch erfolgen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Gesetzesentwürfe fordern eine elektronische Erfassung. Bis zum Inkrafttreten der Gesetzesnovelle sind unter Bedingungen auch Papier-Stundenzettel zulässig, sofern sie objektiv und verlässlich sind.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Drohen Bußgelder bei Nichtbeachtung der Zeiterfassung?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Ein Bußgeld droht dann, wenn Arbeitgeber/innen eine behördliche Anordnung zur Einführung eines Zeiterfassungssystems durch die Gewerbeaufsicht ignorieren. In diesem Fall drohen Bußgelder bis zu 30.000,00 Euro.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>10. Fazit & Checkliste für Arbeitgeber</h2>
+            <p>
+              Die Zeiterfassungspflicht ist geltendes Recht. Unternehmen sollten nicht auf das Gesetzgebungsverfahren warten, sondern zeitnah ein passendes System etablieren.
+            </p>
+            <div class="glass" style="padding: 16px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--clr-border);">
+              <strong>📋 Checkliste zur Einführung:</strong>
+              <ul style="margin: 8px 0 0 0; padding-left: 20px; list-style-type: check;">
+                <li>Auswahl eines datenschutzkonformen Erfassungssystems (App, Web-Software oder Terminal).</li>
+                <li>Einbindung des Betriebsrats (Mitbestimmungsrecht nach § 87 Abs. 1 Nr. 6 BetrVG).</li>
+                <li>Schulung der Beschäftigten bezüglich täglicher Buchungspflichten und gesetzlicher Pauseneinhaltung.</li>
+                <li>Implementierung von Kontrollmechanismen für Homeoffice- und Remote-Kräfte.</li>
+              </ul>
+            </div>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

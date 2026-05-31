@@ -4,6 +4,7 @@ import { getHubUrl, getToolUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUr
 
 export async function GET() {
   const languages = ['de', 'en'] as const;
+  const currentYear = 2026;
 
   // Collect all indexable URLs
   const urlSet = new Set<string>();
@@ -14,32 +15,43 @@ export async function GET() {
     urlSet.add(getFullUrl(getToolUrl(lang)));
   });
 
-  // Time Ranges
-  INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore)).forEach(range => {
+  // Time Ranges (Exclude same-time ranges)
+  INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore) && r.start !== r.end).forEach(range => {
     languages.forEach(lang => {
       urlSet.add(getFullUrl(getTimeRangeUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
     });
   });
 
-  // Work Hours
-  INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift).forEach(range => {
+  // Work Hours (Exclude same-time ranges)
+  INDEXED_RANGES.filter(r => (shouldIndex('work-hours', r.demandScore) || r.workShift) && r.start !== r.end).forEach(range => {
     languages.forEach(lang => {
       urlSet.add(getFullUrl(getWorkHoursUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
     });
   });
 
-  // Countdowns
-  ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027).forEach(event => {
+  // Countdowns (Exclude past-year countdowns)
+  ALL_EVENTS.filter(e => {
+    const eventYear = parseInt(e.targetDate.split('-')[0]);
+    if (eventYear < currentYear) return false;
+    return e.priority !== 'low' || eventYear <= 2027;
+  }).forEach(event => {
     languages.forEach(lang => {
       urlSet.add(getFullUrl(getCountdownUrl(lang, lang === 'de' ? event.deSlug : event.slug)));
     });
   });
 
-  // Guides
+  // Guides & Tools
   urlSet.add(getFullUrl(getGuideUrl('de', 'arbeitszeit-berechnen')));
   urlSet.add(getFullUrl(getGuideUrl('en', 'how-to-calculate-work-hours')));
   urlSet.add(getFullUrl(getGuideUrl('de', 'zeiterfassung-freelancer')));
   urlSet.add(getFullUrl(getGuideUrl('en', 'tracking-time-freelancers')));
+  urlSet.add(getFullUrl(getGuideUrl('de', 'ueberstunden-berechnen')));
+  urlSet.add(getFullUrl(getGuideUrl('de', 'urlaubstage-berechnen')));
+  urlSet.add(getFullUrl('/wochenarbeitszeit/'));
+  urlSet.add(getFullUrl(getGuideUrl('de', 'monatsarbeitszeit')));
+  urlSet.add(getFullUrl('/datum-in-x-tagen/'));
+  urlSet.add(getFullUrl(getGuideUrl('de', 'zeiterfassung-pflicht')));
+  urlSet.add(getFullUrl('/autor/dr-jan-mueller/'));
 
   // HTML Sitemaps
   urlSet.add(getFullUrl('/alle-rechner/'));
@@ -76,3 +88,4 @@ export async function GET() {
     },
   });
 }
+

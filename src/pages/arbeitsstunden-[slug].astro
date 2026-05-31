@@ -5,7 +5,7 @@ import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
 import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, getRangeHours, getSimilarRanges } from '../data/timeRanges';
 import type { TimeRange } from '../data/timeRanges';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl, shouldIndex } from '../lib/seoEngine';
-import { workHoursIntros_de, faqSets_de, variantIndex } from '../data/contentVariants';
+import { workHoursIntros_de, workHoursFaqSets_de, getContextClusterDE, variantIndex } from '../data/contentVariants';
 import { calcWorkHours } from '../lib/timeEngine';
 
 export async function getStaticPaths() {
@@ -53,9 +53,9 @@ const hreflang = [
 
 const vi = variantIndex(range.deSlug + 'work', workHoursIntros_de.length);
 const introHtml = workHoursIntros_de[vi](start24, end24, breakResults[1].result.netHours);
+const contextText = getContextClusterDE(range.start, range.end, hours);
 
-const fi = variantIndex(range.deSlug + 'wfaq', faqSets_de.length);
-const faqs = faqSets_de[fi](start24, end24, hours);
+const faqs = workHoursFaqSets_de[0](start24, end24, breakResults[1].result.netDecimal);
 
 const similarRanges = getSimilarRanges(range, 6);
 
@@ -156,6 +156,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <!-- Left: Prose Content -->
         <div class="content-prose">
           <p set:html={introHtml} />
+          <p style="margin-top: 15px;">{contextText}</p>
           <br />
           <p>
             Für Lohnabrechnungszwecke ist die Dezimaldarstellung wichtig: <strong>{breakResults[1].result.netDecimal} Stunden</strong>
@@ -192,7 +193,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
       <div class="embedded-calc">
         <div class="embedded-calc__header">
           <div class="embedded-calc__title">Arbeitsstunden Rechner</div>
-          <div class="embedded-calc__subtitle">Passe Pause und Zeiten für deine Schicht an</div>
+          <div class="embedded-calc__subtitle">Passen Sie Pause und Zeiten für Ihre Schicht an</div>
         </div>
         <WorkHoursCalc client:visible lang="de"
           defaultStart={`${String(range.start).padStart(2,'0')}:00`}
@@ -203,17 +204,19 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     </div>
   </section>
 
-  <section class="section" style="padding-top: 0;">
+  <section class="section" style="padding-top: 0;" id="faq-section">
     <div class="container container--narrow">
       <h2 style="margin-bottom: 20px;">Häufig gestellte Fragen</h2>
-      <div class="faq-list">
-        {faqs.map(faq => (
-          <div class="faq-item">
-            <button class="faq-item__question" aria-expanded="false">
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((faq, idx) => (
+          <div class="faq-item" id={`faq-${idx}`} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button class="faq-item__question" aria-expanded="false" itemprop="name" aria-controls={`faq-answer-${idx}`}>
               {faq.q}
-              <span class="faq-arrow">▾</span>
+              <span class="faq-arrow" aria-hidden="true">▾</span>
             </button>
-            <div class="faq-item__answer">{faq.a}</div>
+            <div class="faq-item__answer" id={`faq-answer-${idx}`} aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <span itemprop="text">{faq.a}</span>
+            </div>
           </div>
         ))}
       </div>

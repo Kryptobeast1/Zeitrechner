@@ -216,30 +216,195 @@ export function variantIndex(slug: string, max: number): number {
   return Math.abs(hash) % max;
 }
 
-// FAQ sets for time range pages
+// FAQ sets for time range pages (Stunden)
 export const faqSets_en = [
   (start: string, end: string, hours: number) => [
-    { q: `How many minutes are between ${start} and ${end}?`, a: `Exactly ${hours * 60} minutes separate ${start} and ${end}.` },
-    { q: `What is the duration in seconds?`, a: `A total of ${hours * 3600} seconds occur between those two times.` },
-    { q: `How much of a standard workday is ${hours} hours?`, a: `It accounts for ${Math.round((hours / 8) * 100)}% of a typical 8-hour shift.` },
-    { q: `What if a 30-minute break is taken?`, a: `The net duration would drop to ${hours - 0.5} hours.` },
+    {
+      q: `How many minutes and seconds are between ${start} and ${end}?`,
+      a: `Exactly ${hours * 60} minutes or ${hours * 3600} seconds elapse during a ${hours}-hour time block. This high-precision calculation is critical for shift logging, airline schedules, and server synchronization across international network configurations.`
+    },
+    {
+      q: `Is a ${hours}-hour shift considered full-time or part-time work?`,
+      a: `A daily duration of ${hours} hours can represent either full-time or part-time work depending on your weekly contract. Typically, full-time employment ranges from 35 to 40 hours per week (averaging 7 to 8 hours daily). Daily shifts shorter than 6 hours are generally classified as part-time.`
+    },
+    {
+      q: `How do I calculate overtime for a ${hours}-hour duration?`,
+      a: `Overtime is determined by comparing your actual working hours against your contract. If your contract defines a standard 8-hour workday, working ${hours} hours results in ${hours > 8 ? (hours - 8).toFixed(2) : 0} hours of potential overtime. Remember that unpaid rest breaks must be deducted to find your true working hours.`
+    },
+    {
+      q: `Does a break count as working time during a ${hours}-hour shift?`,
+      a: `No, standard labor regulations (such as the UK Working Time Regulations or US FLSA) state that rest breaks do not count as paid working hours. If your shift exceeds 6 hours, a minimum rest break of 20 to 30 minutes is legally required and must be subtracted from the total elapsed hours.`
+    },
+    {
+      q: `How should I log ${hours} hours on my timesheet?`,
+      a: `Record your starting time at ${start} and your ending time at ${end}. If you took any breaks during this time, enter them separately to calculate your net decimal hours. Use our online Time Calculator to automate the conversion of hours and minutes for billing.`
+    }
   ],
   (start: string, end: string, hours: number) => [
-    { q: `How do I convert ${hours} hours between ${start} and ${end} into decimal?`, a: `The decimal value is simply ${hours.toFixed(2)}.` },
-    { q: `Is ${hours} hours considered overtime?`, a: hours > 8 ? `Yes, it exceeds the standard 8-hour shift by ${hours - 8} hour(s).` : `No, it falls within or below the 8-hour standard.` },
-    { q: `How many minutes is ${hours} hours?`, a: `${hours * 60} minutes.` },
-  ],
+    {
+      q: `How do I convert ${hours} hours between ${start} and ${end} into decimal?`,
+      a: `The decimal value is simply ${hours.toFixed(2)} hours. Converting to decimal format (like multiplying by an hourly wage) is the standard method for billing and payroll processing to prevent rounding discrepancies.`
+    },
+    {
+      q: `Is ${hours} hours considered overtime?`,
+      a: hours > 8 ? `Yes, it exceeds the standard 8-hour shift by ${(hours - 8).toFixed(2)} hour(s). Most employment agreements require overtime pay or comp time for hours worked beyond 8 hours a day.` : `No, it falls within or below the standard 8-hour workday, meaning it is usually logged as standard operating hours.`
+    },
+    {
+      q: `How many minutes is ${hours} hours?`,
+      a: `It is exactly ${hours * 60} minutes. Knowing the minutes breakdown is useful for tracking shorter billable increments or logging client consulting calls.`
+    },
+    {
+      q: `What is the rest requirement after a ${hours}-hour shift?`,
+      a: `Generally, labor laws dictate a minimum of 11 consecutive hours of rest in any 24-hour period. If you complete a ${hours}-hour shift, you must ensure this mandatory rest period is taken before starting your next shift.`
+    },
+    {
+      q: `Can I automate my timesheet for ${hours} hours?`,
+      a: `Yes, you can use our built-in timesheet calculator to enter your exact start, end, and break times. It will output your total gross hours, net hours, and decimal values, which you can easily copy or print.`
+    }
+  ]
 ];
 
 export const faqSets_de = [
   (start: string, end: string, hours: number) => [
-    { q: `Wie viele Minuten sind ${hours} Stunden von ${start} bis ${end} Uhr?`, a: `Es sind exakt ${hours * 60} Minuten.` },
-    { q: `Gilt ${hours} Stunden als Überstunden?`, a: hours > 8 ? `Ja, es übersteigt den 8-Stunden-Standard um ${hours - 8} Stunde(n).` : `Nein, es liegt im oder unter dem 8-Stunden-Standard.` },
-    { q: `Was sind ${hours} Stunden in Sekunden?`, a: `Das sind insgesamt ${hours * 3600} Sekunden.` },
+    {
+      q: `Wie viele Minuten sind ${hours} Stunden von ${start} bis ${end} Uhr?`,
+      a: `Es sind exakt ${hours * 60} Minuten beziehungsweise ${hours * 3600} Sekunden. Diese präzise Umrechnung ist besonders in der industriellen Fertigung und Logistik wichtig, wo Zeitspannen minutengenau dokumentiert werden müssen.`
+    },
+    {
+      q: `Gilt eine Zeitspanne von ${hours} Stunden als Vollzeit oder Teilzeit?`,
+      a: `Eine tägliche Arbeitszeit von ${hours} Stunden kann je nach wöchentlicher Vereinbarung Teilzeit oder Vollzeit sein. In Deutschland gilt eine 5-Tage-Woche mit 35 bis 40 Stunden als Vollzeit (durchschnittlich 7 bis 8 Stunden pro Tag). Kürzere tägliche Arbeitszeiten deuten meist auf ein Teilzeitverhältnis hin.`
+    },
+    {
+      q: `Wie berechne ich Überstunden für eine Schicht von ${hours} Stunden?`,
+      a: `Überstunden hängen von Ihrer vertraglichen Arbeitszeit ab. Wenn Ihr Arbeitsvertrag beispielsweise 8 Stunden pro Tag vorsieht und Sie regulär arbeiten, haben Sie bei ${hours} Stunden Anwesenheit eventuell Mehrarbeit geleistet. Bitte beachten Sie, dass gesetzliche Pausenzeiten nach dem Arbeitszeitgesetz (ArbZG) von der reinen Arbeitszeit abgezogen werden müssen.`
+    },
+    {
+      q: `Zählt die Pause bei einer Schicht von ${hours} Stunden zur Arbeitszeit?`,
+      a: `Nein, gemäß § 4 des deutschen Arbeitszeitgesetzes (ArbZG) zählen Ruhepausen nicht zur Arbeitszeit und werden daher nicht bezahlt. Bei einer Gesamtdauer von mehr als 6 Stunden ist eine Pause von mindestens 30 Minuten gesetzlich vorgeschrieben. Bei mehr als 9 Stunden Arbeit erhöht sich die Pflichtpause auf 45 Minuten.`
+    },
+    {
+      q: `Wie trage ich ${hours} Stunden in meinen Stundenzettel oder die Zeiterfassung ein?`,
+      a: `Sie tragen die Startzeit um ${start} Uhr und die Endzeit um ${end} Uhr in Ihren Stundenzettel ein. Sollten Sie in dieser Zeit gearbeitet und Pausen gemacht haben, müssen Sie die Pausenzeit abziehen. Nutzen Sie unseren kostenlosen Arbeitsstunden-Rechner, um die Nettoarbeitszeit exakt in Dezimalstunden für die Lohnabrechnung umzurechnen.`
+    }
   ],
   (start: string, end: string, hours: number) => [
-    { q: `Wie viel Prozent der Arbeitszeit sind ${hours} Stunden?`, a: `Bei 8 Stunden Basis sind das ${Math.round((hours / 8) * 100)}%.` },
-    { q: `Was ist der Dezimalwert von ${hours} Stunden?`, a: `Der Dezimalwert ist ${hours.toFixed(2).replace('.', ',')}.` },
-    { q: `Wie viele halbe Stunden stecken in ${hours} Stunden?`, a: `Es sind genau ${hours * 2} halbe Stunden.` },
-  ],
+    {
+      q: `Wie viel Prozent der Arbeitszeit sind ${hours} Stunden?`,
+      a: `Bei einer Basis von 8 Stunden Arbeitszeit entspricht das ${Math.round((hours / 8) * 100)}% des Standardarbeitstages. Dies hilft Projektmanagern bei der Ressourcenallokation und Budgetierung von Projektstunden.`
+    },
+    {
+      q: `Was ist der Dezimalwert von ${hours} Stunden?`,
+      a: `Der Dezimalwert ist ${hours.toFixed(2).replace('.', ',')} Stunden. Die Lohnbuchhaltung benötigt diesen Wert zur direkten Multiplikation mit dem Stundenlohn.`
+    },
+    {
+      q: `Wie viele halbe Stunden stecken in ${hours} Stunden?`,
+      a: `Es sind genau ${hours * 2} halbe Stunden. Dies ist nützlich, wenn Ihre Zeiterfassung in 30-Minuten-Schritten abrechnet.`
+    },
+    {
+      q: `Welche Ruhezeiten gelten nach einer Schicht von ${hours} Stunden?`,
+      a: `Nach Beendigung der täglichen Arbeitszeit müssen Arbeitnehmer in Deutschland eine ununterbrochene Ruhezeit von mindestens 11 Stunden einhalten (§ 5 ArbZG). Bei Krankenhäusern, Gaststätten oder Verkehrsbetrieben gibt es gesetzliche Ausnahmen.`
+    },
+    {
+      q: `Kann ich das Ergebnis dieser Berechnung ausdrucken oder speichern?`,
+      a: `Ja. Unter dem Ergebnis der Berechnung finden Sie eine Schaltfläche zum Ausdrucken oder Speichern als PDF. Die Druckansicht blendet Navigation und Werbung aus und stellt die Ergebnisse kontrastreich dar.`
+    }
+  ]
 ];
+
+// Dedicated FAQ sets for Work Hours (Arbeitsstunden) pages, resolving the accuracy bug
+export const workHoursFaqSets_de = [
+  (start: string, end: string, netDecimal: string | number) => {
+    const netVal = typeof netDecimal === 'string' ? parseFloat(netDecimal) : netDecimal;
+    return [
+      {
+        q: `Was ist der Dezimalwert von ${start} bis ${end} Uhr mit 30 Minuten Pause?`,
+        a: `Der Dezimalwert der Nettoarbeitszeit (mit 30 Minuten Pause) beträgt ${netVal.toFixed(2).replace('.', ',')} Dezimalstunden. Lohnabrechnungssysteme benötigen diesen Dezimalwert, da er direkt mit dem Stundenlohn multipliziert werden kann, um den Bruttoverdienst ohne Rundungsfehler zu ermitteln.`
+      },
+      {
+        q: `Zählt die Pause zur Arbeitszeit bei dieser Arbeitszeitspanne?`,
+        a: `Nein, laut § 4 des Arbeitszeitgesetzes (ArbZG) in Deutschland sind Ruhepausen keine Arbeitszeit. Bei einer Gesamtanwesenheit von über 6 Stunden müssen mindestens 30 Minuten Pause genommen und abgezogen werden. Diese Pause darf nicht am Anfang oder Ende der Arbeitszeit liegen, sondern muss die Arbeitszeit unterbrechen.`
+      },
+      {
+        q: `Wie berechne ich Überstunden bei einer Schicht von ${start} bis ${end} Uhr?`,
+        a: `Vergleichen Sie Ihre Nettoarbeitszeit (${netVal.toFixed(2).replace('.', ',')} Stunden nach Abzug der Pause) mit Ihrer vertraglichen täglichen Arbeitszeit. Beträgt Ihre reguläre Arbeitszeit beispielsweise 8 Stunden, so beläuft sich Ihre Mehrarbeit bei einer Nettoarbeitszeit von ${netVal.toFixed(2).replace('.', ',')} Stunden auf ${(netVal - 8).toFixed(2).replace('.', ',')} Stunden.`
+      },
+      {
+        q: `Gilt diese Nettoarbeitszeit als Vollzeit oder Teilzeit?`,
+        a: `Eine regelmäßige Nettoarbeitszeit von ${netVal.toFixed(2).replace('.', ',')} Stunden pro Tag liegt bei einer 5-Tage-Woche (ca. ${Math.round(netVal * 5)} Wochenstunden) im Vollzeitbereich. Arbeitszeiten unter 6 Stunden pro Tag werden meist als Teilzeit oder Minijob eingestuft.`
+      },
+      {
+        q: `Wie erfasse ich diese Zeit korrekt im Stundenzettel?`,
+        a: `Tragen Sie ${start} Uhr als Beginn und ${end} Uhr als Ende ein. Vermerken Sie die 30-minütige Pflichtpause separat. Die Nettoarbeitszeit beträgt somit ${netVal.toFixed(2).replace('.', ',')} Stunden. Nutzen Sie unseren Arbeitsstunden-Rechner, um die genaue Nettoarbeitszeit auch für andere Pausenzeiten (wie 45 oder 60 Minuten) präzise zu ermitteln.`
+      }
+    ];
+  }
+];
+
+export const workHoursFaqSets_en = [
+  (start: string, end: string, netDecimal: string | number) => {
+    const netVal = typeof netDecimal === 'string' ? parseFloat(netDecimal) : netDecimal;
+    return [
+      {
+        q: `What is the decimal value of work from ${start} to ${end} with a 30-minute break?`,
+        a: `The decimal value of your net work hours (with a 30-minute break deducted) is ${netVal.toFixed(2)} decimal hours. Payroll departments require decimal format (e.g., 7.50 instead of 7h 30m) to multiply directly by your hourly pay rate for error-free wage calculation.`
+      },
+      {
+        q: `Does the break count as working time for this shift?`,
+        a: `No, standard labor laws like the UK Working Time Regulations or the US Fair Labor Standards Act (FLSA) specify that rest breaks of 30 minutes or more are unpaid and do not count toward your active working hours. They must be deducted from your total attendance time.`
+      },
+      {
+        q: `How do I calculate overtime for a shift from ${start} to ${end}?`,
+        a: `Compare your net work hours (${netVal.toFixed(2)} hours after break deduction) against your contracted daily hours. If your contract specifies a standard 8-hour workday, working ${netVal.toFixed(2)} net hours results in ${(netVal - 8).toFixed(2)} hours of overtime.`
+      },
+      {
+        q: `Are the hours between ${start} and ${end} considered full-time or part-time?`,
+        a: `A daily shift yielding ${netVal.toFixed(2)} net hours is generally considered a full-time workday when performed on a regular 5-day schedule. Weekly hours totaling 35 to 40 hours represent standard full-time employment in most English-speaking markets.`
+      },
+      {
+        q: `How do I record this shift on my daily timesheet?`,
+        a: `Log your start time at ${start} and your end time at ${end}, listing the 30-minute break separately. This yields a net total of ${netVal.toFixed(2)} hours. Use our online Work Hours Calculator to easily adjust start, end, and break durations.`
+      }
+    ];
+  }
+];
+
+export function getContextClusterDE(start: number, end: number, hours: number): string {
+  if (hours >= 4 && hours <= 6) {
+    return `Ein tägliches Arbeitszeitfenster von ${hours} Stunden fällt typischerweise in den Bereich der Teilzeitbeschäftigung. Für viele Arbeitnehmer in Deutschland, insbesondere im Rahmen von Minijobs oder Gleitzeit-Teilzeitverträgen, ist dies die vertraglich geregelte tägliche Arbeitszeit. Bei solchen Modellen gelten dieselben gesetzlichen Bestimmungen des Arbeitszeitgesetzes (ArbZG) bezüglich Mindestlohn und anteiligen Urlaubsansprüchen. Beträgt die Arbeitszeit exakt 6 Stunden, ist gesetzlich noch keine Ruhepause vorgeschrieben; erst ab einer Überschreitung von 6 Stunden muss eine 30-minütige Pause eingelegt werden.`;
+  }
+  if ((start >= 5 && start <= 7.5) && (hours >= 6 && hours <= 9)) {
+    return `Diese Zeitspanne entspricht einer klassischen Frühschicht, wie sie in der Industrie, Logistik, im Handwerk oder im Gesundheitswesen üblich ist. Frühschichten erfordern eine präzise Taktung und haben besondere gesetzliche Rahmenbedingungen: Falls die Schicht vor 6:00 Uhr beginnt, gilt der Teil davor gesetzlich als Nachtarbeit, wofür ggf. Schichtzuschläge anfallen. Nach Beendigung dieser Frühschicht müssen Arbeitgeber die gesetzlich vorgeschriebene ununterbrochene Ruhezeit von 11 Stunden gemäß § 5 des Arbeitszeitgesetzes (ArbZG) strikt einhalten, bevor der Arbeitnehmer wieder eingesetzt werden darf.`;
+  }
+  if ((start >= 8 && start <= 9.5) && (hours >= 7 && hours <= 9.5)) {
+    return `Dieser Zeitraum repräsentiert die klassische Normalarbeitszeit oder Büroarbeitszeit in Deutschland. Eine typische 5-Tage-Woche mit wöchentlich 38,5 bis 40 Stunden basiert meist auf diesem Tagesrhythmus (z. B. von 8:00 bis 17:00 Uhr). Im Rahmen von modernen Gleitzeitmodellen (Gleitzeit) können Arbeitnehmer Beginn und Ende flexibel gestalten. Da die Anwesenheit hierbei über 6 Stunden liegt, ist gemäß § 4 ArbZG ein Abzug einer Ruhepause von mindestens 30 Minuten zwingend vorgeschrieben, um die rechtssichere Nettoarbeitszeit zu ermitteln.`;
+  }
+  if ((start >= 13 && start <= 15.5) && (hours >= 6 && hours <= 9)) {
+    return `Diese Arbeitszeit fällt in den Bereich der Spätschicht, welche häufig im Einzelhandel, in der Gastronomie, im Kundenservice oder im medizinischen Bereich anzutreffen ist. Da Spätschichten oft bis in die späten Abendstunden hineinreichen, sind sie mit logistischen Herausforderungen wie der Nutzung des öffentlichen Nahverkehrs verbunden. Gesetzlich ist darauf zu achten, dass bei einer Arbeitszeit von mehr als 6 Stunden eine Pause von 30 Minuten und bei mehr als 9 Stunden eine Pause von 45 Minuten eingeplant und vom Stundenzettel abgezogen werden muss.`;
+  }
+  const crossesMidnight = end < start;
+  if (crossesMidnight || (start >= 20 || start < 5)) {
+    return `Diese Konstellation umfasst eine klassische Nachtschicht oder Nachtarbeit nach deutschem Recht (§ 2 ArbZG). Arbeit zwischen 23:00 und 6:00 Uhr gilt als Nachtarbeit und begründet für Arbeitnehmer Anspruch auf einen angemessenen finanziellen Ausgleich (Nachtschichtzuschlag) oder entsprechenden Freizeitausgleich. Aufgrund der erhöhten körperlichen Belastung sieht das Arbeitszeitgesetz für Nachtarbeiter besondere Schutzrechte vor, einschließlich des Rechts auf regelmäßige arbeitsmedizinische Untersuchungen und strengerer Höchstarbeitszeitgrenzen.`;
+  }
+  return `Die Erfassung und Berechnung dieses spezifischen Zeitraums von ${hours} Stunden ist für eine transparente Zeitwirtschaft unerlässlich. Unabhängig davon, ob es sich um ein flexibles Arbeitszeitmodell, ein Projektzeitbudget oder eine private Planung handelt, sorgt die exakte Berechnung der Stunden und Minuten für maximale Nachvollziehbarkeit. Bitte beachten Sie bei der Aufzeichnung in Ihrem Stundenzettel stets die gesetzlichen Vorgaben zur Pausenregelung und Mindestruhezeit nach dem Arbeitszeitgesetz (ArbZG).`;
+}
+
+export function getContextClusterEN(start: number, end: number, hours: number): string {
+  if (hours >= 4 && hours <= 6) {
+    return `A daily work window of ${hours} hours is typical for part-time employment, flexible schedules, or student internships. Under standard labor guidelines (such as the UK Working Time Regulations or US FLSA), part-time employees are entitled to proportional benefits and minimum wage protections. If your shift is exactly 6 hours, note that UK regulations require a mandatory 20-minute rest break once a shift exceeds 6 hours. Logging these hours accurately on your timesheet prevents compliance issues and ensures correct compensation.`;
+  }
+  if ((start >= 5 && start <= 7.5) && (hours >= 6 && hours <= 9)) {
+    return `This time span covers a standard early morning shift, commonly scheduled in manufacturing, logistics, healthcare, and construction sectors. Early shifts require precise coordination and have unique compliance rules: in many jurisdictions, work starting before 6:00 AM qualifies for night shift premiums or special transport provisions. Furthermore, after completing this shift, a minimum consecutive rest period (e.g., 11 hours in the EU/UK) must be observed before the employee can safely return to work.`;
+  }
+  if ((start >= 8 && start <= 9.5) && (hours >= 7 && hours <= 9.5)) {
+    return `This period represents the classic 9-to-5 office hours pattern widely adopted across corporate, financial, and administrative sectors. A standard 40-hour workweek is built on this daily schedule. With modern flex-time policies, employees can adjust their exact start and end times. Since this shift exceeds 6 hours, labor regulations require deducting a rest break (typically 30 minutes) from total elapsed hours to calculate net work hours for payroll processing.`;
+  }
+  if ((start >= 13 && start <= 15.5) && (hours >= 6 && hours <= 9)) {
+    return `This duration aligns with a typical afternoon or late shift, standard in retail, hospitality, customer support, and medical fields. Late shifts often run into the evening, requiring careful coordination around break schedules and transportation. Under standard employment regulations, a rest break of at least 20 to 30 minutes must be allocated and recorded on timesheets for any shift exceeding 6 hours to ensure compliance.`;
+  }
+  const crossesMidnight = end < start;
+  if (crossesMidnight || (start >= 20 || start < 5)) {
+    return `This shift pattern covers night work or overnight shifts. Under most international labor standards (such as the US FLSA or UK Working Time Regulations), hours worked between 11:00 PM and 6:00 AM trigger night shift differentials, premium pay rates, or compensatory rest requirements. Due to the health impacts of overnight labor, regulations mandate strict compliance with maximum shift lengths and regular medical assessments.`;
+  }
+  return `Accurately tracking this duration of ${hours} hours is essential for billing clients, validating employee timesheets, and project resource scheduling. Whether managing flexible flextime systems or billing hourly consulting contracts, using an automated calculator ensures zero rounding errors. Always remember to subtract unpaid rest breaks to remain compliant with local labor guidelines.`;
+}
+

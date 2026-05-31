@@ -158,7 +158,7 @@ export default function AddSubtractCalc({ lang = 'de' }: Props) {
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="as-copy-btn">
-              {copied ? '✓ Copied!' : `📋 ${L.copy}`}
+              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${L.copy}`}
             </button>
           </div>
         </div>

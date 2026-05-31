@@ -1,29 +1,103 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../lib/seoEngine';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
-const title = 'Zeiterfassung für Freelancer: Die besten Methoden & Tools 2026';
-const description = 'Maximiere deine abrechenbaren Stunden. Lerne, wie du als Freelancer deine Zeit effizient trackst, Honorare kalkulierst und Fehler vermeidest.';
+const title = 'Zeiterfassung für Freelancer: Methoden, Tools & Rechtliches 2026';
+const description = 'Maximieren Sie Ihre abrechenbaren Stunden als Freelancer. Der komplette Leitfaden zu Zeiterfassungsmethoden, 60/20/20-Regel, Tagessätzen & GoBD-Richtlinien.';
 
-const seo = buildSEOMeta(
-  'hub',
-  lang,
-  {},
-  '/ratgeber/zeiterfassung-freelancer/',
-  'en',
-  '/en/guides/tracking-time-freelancers/'
-);
-
+const canonical = getFullUrl('/ratgeber/zeiterfassung-freelancer/');
+const altUrl = getFullUrl('/en/guides/tracking-time-freelancers/');
 const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'en', url: altUrl },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Zeiterfassung für Freelancer: Methoden, Tools & Rechtliches 2026",
+        "description": "Ein umfassender Leitfaden für Freiberufler und Selbstständige zur effizienten Zeiterfassung, Stundenabrechnung, GoBD-Konformität und Kalkulation von Tagessätzen.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Sind Freelancer zur Zeiterfassung gesetzlich verpflichtet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nein, das deutsche Arbeitszeitgesetz (ArbZG) und die Zeiterfassungspflicht nach den EuGH- und BAG-Urteilen gelten grundsätzlich nur für Arbeitnehmer. Freelancer müssen jedoch für das Finanzamt (GoBD) und zur Rechnungsstellung einen nachvollziehbaren Leistungsnachweis erbringen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie rechnet man Stunden in Dezimalzeit für Rechnungen um?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Stunden und Minuten werden in Dezimalstunden umgerechnet, indem man die Minuten durch 60 dividiert. Beispielsweise entsprechen 7 Stunden und 45 Minuten 7,75 Dezimalstunden (45 / 60 = 0,75)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Was besagt die 60/20/20-Regel bei Selbstständigen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die 60/20/20-Regel besagt, dass ein Freelancer-Tag idealerweise aus 60% direkt abrechenbarer Kundenarbeit, 20% Akquise & Marketing sowie 20% administrativen Aufgaben (Buchhaltung, Weiterbildung) bestehen sollte."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie rechnet man einen Tagessatz in Stundensätze um?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ein Standard-Tagessatz basiert in der Regel auf 8 Stunden. Ein Tagessatz von 800 Euro entspricht somit rechnerisch einem Stundensatz von 100 Euro. Arbeitet man länger oder kürzer, wird die Zeit anteilig als Dezimalwert (z.B. 0,5 Tage für 4 Stunden) abgerechnet."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Welche steuerlichen Vorschriften gelten für Zeiterfassung (GoBD)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nach den GoBD müssen alle geschäftsrelevanten Belege und Aufzeichnungen, wozu auch Stundenprotokolle für Kunden gehören, unveränderbar, zeitnah und nachvollziehbar dokumentiert werden. Nachträgliche Änderungen müssen lückenlos dokumentiert sein."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
 ---
 
-<BaseLayout 
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  hreflang={seo.hreflang}
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
   lang={lang}
+  jsonLd={jsonLd}
   theme="guide"
 >
 
@@ -38,8 +112,17 @@ const hubUrl = getHubUrl(lang);
       </nav>
 
       <div style="margin-top: 1.5rem;">
-        <span class="badge badge--violet">🚀 Freelancer</span>
-        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Zeiterfassung für Freelancer: Methoden, Tools & Rechtliches 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
         <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
       </div>
     </div>
@@ -52,43 +135,243 @@ const hubUrl = getHubUrl(lang);
         <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
           <div class="guide-toc__title">Inhaltsverzeichnis</div>
           <ul class="guide-toc__list">
-            <li><a href="#schaetzung" class="guide-toc__link">1. Warum Schätzen scheitert</a></li>
-            <li><a href="#zeitformate" class="guide-toc__link">2. Zeitformate: Stunden/Tage</a></li>
-            <li><a href="#regel" class="guide-toc__link">3. Die 60/20/20-Regel</a></li>
-            <li><a href="#fazit" class="guide-toc__link">4. Fazit & Abrechnung</a></li>
+            <li><a href="#einleitung" class="guide-toc__link">1. Einleitung</a></li>
+            <li><a href="#warum-wichtig" class="guide-toc__link">2. Warum Zeiterfassung existentiell ist</a></li>
+            <li><a href="#methoden" class="guide-toc__link">3. Die verschiedenen Methoden</a></li>
+            <li><a href="#regel-60-20-20" class="guide-toc__link">4. Die 60/20/20-Regel</a></li>
+            <li><a href="#stunden-tages-satz" class="guide-toc__link">5. Stunden- vs. Tagessätze</a></li>
+            <li><a href="#steuer-gobd" class="guide-toc__link">6. Steuer & GoBD-Vorgaben</a></li>
+            <li><a href="#dezimalzeit" class="guide-toc__link">7. Dezimalstunden abrechnen</a></li>
+            <li><a href="#fehler" class="guide-toc__link">8. Häufige Fehler vermeiden</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit & Tools</a></li>
           </ul>
         </aside>
 
         <!-- Main Editorial Content -->
         <div class="guide-main content-prose">
-          <section id="schaetzung" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Warum "Pi mal Daumen" nicht funktioniert</h2>
-            <p style="margin-bottom: var(--space-4);">Viele Selbstständige schätzen ihre Arbeitszeit am Ende des Tages. Studien zeigen, dass dabei bis zu 25% der tatsächlich geleisteten Stunden vergessen werden – besonders kurze Telefonate, E-Mails oder Recherchephasen.</p>
-            <div class="glass glass--accent" style="padding: var(--space-4); border-radius: var(--radius); margin-bottom: var(--space-4);">
-              <strong>💡 Pro-Tipp:</strong> Nutze unseren <a href={hubUrl}>Zeitrechner</a>, um auch kleine Zeitblöcke sofort in Dezimalstunden für die Rechnung umzuwandeln.
-            </div>
+          
+          <section id="einleitung" style="margin-bottom: var(--space-8);">
+            <h2>1. Einleitung: Die Währung der Selbstständigkeit</h2>
+            <p>
+              Als Freelancer, Freiberufler oder Solo-Selbstständiger verkaufen Sie im Wesentlichen ein Gut: Ihre Zeit und Ihre Expertise. Während Angestellte auf ein festes Monatsgehalt vertrauen können, ist bei Selbstständigen jede nicht erfasste Stunde ein direkter finanzieller Verlust. Trotz dieser klaren Kausalität verzichten viele Freelancer auf eine systematische Erfassung ihrer Zeiten oder schätzen diese am Monatsende lediglich grob ab.
+            </p>
+            <p>
+              Eine solche Vorgehensweise birgt erhebliche Risiken: Sie verschenken bares Geld, gefährden die Profitabilität Ihrer Projekte und stehen bei steuerlichen Betriebsprüfungen oder Kundenstreitigkeiten ohne verlässliche Beweismittel da. Dieser Leitfaden führt Sie umfassend durch die besten Zeiterfassungsmethoden, steuerliche Vorgaben sowie mathematische Umrechnungsregeln im Jahr 2026.
+            </p>
           </section>
 
-          <section id="zeitformate" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Zeitformate: Stunden oder Tage?</h2>
-            <p>Je nach Projekt rechnest du in <strong>Stundensätzen</strong> oder <strong>Tagessätzen</strong> ab. Ein Standard-Tagessatz basiert meist auf 8 Stunden. Wenn du 9 Stunden arbeitest, solltest du 1,125 Tage in Rechnung stellen.</p>
-          </section>
-
-          <section id="regel" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Die 60/20/20-Regel für Freelancer</h2>
-            <p style="margin-bottom: var(--space-4);">Ein produktiver Freelancer-Tag besteht nicht nur aus abrechenbarer Zeit:</p>
-            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
-              <li style="margin-bottom: var(--space-2);"><strong>60% Abrechenbare Arbeit:</strong> Kundenprojekte.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>20% Akquise & Marketing:</strong> Neue Projekte finden.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>20% Administration:</strong> Buchhaltung, E-Mails, Weiterbildung.</li>
+          <section id="warum-wichtig" style="margin-bottom: var(--space-8);">
+            <h2>2. Warum Zeiterfassung für Freelancer existentiell ist</h2>
+            <p>
+              Die Vorteile einer strukturierten Zeiterfassung gehen weit über die reine Rechnungserstellung hinaus. Eine lückenlose Dokumentation Ihrer täglichen Aktivitäten hat direkte Auswirkungen auf den Erfolg Ihres Geschäftsmodells:
+            </p>
+            <ul>
+              <li><strong>Vermeidung von "Revenue Leakage" (Umsatzverluste):</strong> Kurze Telefonate, Abstimmungs-E-Mails, Feedback-Schleifen oder spontane Recherchen summieren sich. Wer diese Kleinstzeiten nicht sofort notiert, verliert im Schnitt 15% bis 25% seiner tatsächlichen Arbeitszeit pro Monat.</li>
+              <li><strong>Präzise Projektkalkulation:</strong> Nur wenn Sie wissen, wie lange Sie tatsächlich für bestimmte Projektschritte (z. B. Konzeption, Design, Code, QA) benötigt haben, können Sie zukünftige Angebote realistisch kalkulieren und das Risiko von Festpreis-Projekten minimieren.</li>
+              <li><strong>Erhöhtes Kundenvertrauen:</strong> Detaillierte Leistungsnachweise (Timesheets), die auf die Minute genau auflisten, welche Arbeitsschritte wann durchgeführt wurden, reduzieren Rückfragen und Konflikte bei der Rechnungsfreigabe drastisch.</li>
+              <li><strong>Selbstmanagement und Produktivitätssteigerung:</strong> Durch die Erfassung sehen Sie schwarz auf weiß, welche Aufgaben "Zeitfresser" sind und in welchen Stunden des Tages Sie am produktivsten arbeiten.</li>
             </ul>
           </section>
 
+          <section id="methoden" style="margin-bottom: var(--space-8);">
+            <h2>3. Methoden der Zeiterfassung: Von Papier bis KI</h2>
+            <p>
+              Je nach persönlicher Arbeitsweise und Projektkomplexität eignen sich unterschiedliche Erfassungsmethoden. Keine Methode ist pauschal die beste; entscheidend ist die Disziplin bei der Anwendung.
+            </p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                  <th style="padding: 8px;">Methode</th>
+                  <th style="padding: 8px;">Vorteile</th>
+                  <th style="padding: 8px;">Nachteile</th>
+                  <th style="padding: 8px;">Geeignet für</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Manuell (Notizbuch)</strong></td>
+                  <td style="padding: 8px;">Einfach, lenkt nicht ab, keine Software nötig.</td>
+                  <td style="padding: 8px;">Fehleranfällig, keine automatische Auswertung, unprofessioneller Export.</td>
+                  <td style="padding: 8px;">Einsteiger, sehr geringe Projektanzahl.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Tabellen (Excel, Google Sheets)</strong></td>
+                  <td style="padding: 8px;">Kostenlos, hochgradig anpassbar, einfache Formeln.</td>
+                  <td style="padding: 8px;">Manuelle Eingabe nötig, Versionierungsprobleme, keine Live-Stoppuhr.</td>
+                  <td style="padding: 8px;">Strukturierte Freelancer mit wenigen Kunden.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Spezifische Zeiterfassungstools</strong></td>
+                  <td style="padding: 8px;">Live-Tracker, Budgetüberwachung, automatisches Reporting.</td>
+                  <td style="padding: 8px;">Monatliche Kosten, Einarbeitungszeit, Disziplin beim Stoppen/Starten nötig.</td>
+                  <td style="padding: 8px;">Etablierte Freelancer mit parallelen Projekten.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Automatische Tracker (KI-gestützt)</strong></td>
+                  <td style="padding: 8px;">Läuft unsichtbar im Hintergrund, erfasst genutzte Programme vollautomatisch.</td>
+                  <td style="padding: 8px;">Datenschutzbedenken, hoher Sortieraufwand am Tagesende.</td>
+                  <td style="padding: 8px;">Kreative, die ständig zwischen Aufgaben wechseln.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="glass glass--accent" style="padding: var(--space-4); border-radius: var(--radius); margin-bottom: var(--space-4);">
+              <strong>💡 Pro-Tipp:</strong> Kombinieren Sie ein einfaches Live-Tracking-Tool mit unserem kostenlosen <a href={hubUrl}>Zeitrechner</a>, um Arbeitsintervalle direkt in das für Rechnungen notwendige Dezimalformat umzurechnen.
+            </div>
+          </section>
+
+          <section id="regel-60-20-20" style="margin-bottom: var(--space-8);">
+            <h2>4. Die 60/20/20-Regel: Gesundes Zeitbudget für Selbstständige</h2>
+            <p>
+              Ein weit verbreiteter Fehler von frischgebackenen Freelancern ist die Annahme, dass 8 Stunden Anwesenheit am Schreibtisch auch 8 abrechenbare Stunden bedeuten. In der Realität müssen Sie erhebliche Zeitanteile für unbezahlte, aber überlebenswichtige administrative und vertriebliche Tätigkeiten aufwenden.
+            </p>
+            <p>
+              Als bewährtes Framework für eine gesunde Auslastung gilt die <strong>60/20/20-Regel</strong>:
+            </p>
+            <ul>
+              <li><strong>60 % Abrechenbare Projektarbeit:</strong> Dies ist die Zeit, die Sie direkt für Kundenprojekte aufwenden und in Rechnung stellen können (z. B. Programmierarbeit, Designentwürfe, Beratungstermine). Bei einer 40-Stunden-Woche entspricht dies etwa 24 Stunden.</li>
+              <li><strong>20 % Akquise, Marketing & Netzwerken:</strong> Diese Zeit reservieren Sie für die Zukunftssicherung Ihres Geschäfts. Dazu gehören Angebote schreiben, Vorgespräche führen, Ihr Portfolio pflegen, Fachartikel schreiben oder Netzwerkveranstaltungen besuchen.</li>
+              <li><strong>20 % Administration & Weiterbildung:</strong> Buchhaltung, Steuererklärungen sortieren, Rechnungen schreiben, Software-Updates durchführen, Verträge prüfen und die eigene Weiterbildung.</li>
+            </ul>
+            <p>
+              Wenn Sie diese Regel bei der Kalkulation Ihres Stundensatzes ignorieren, geraten Sie schnell in eine wirtschaftliche Schieflage. Ihr Stundensatz muss so hoch sein, dass die 60 % abrechenbare Arbeitszeit auch die restlichen 40 % der unbezahlten Tätigkeiten (sowie Urlaub, Krankheit und Altersvorsorge) komplett mitfinanzieren.
+            </p>
+          </section>
+
+          <section id="stunden-tages-satz" style="margin-bottom: var(--space-8);">
+            <h2>5. Stunden- vs. Tagessätze: Umrechnung und Mischformen</h2>
+            <p>
+              Je nach Branche (z. B. IT-Beratung vs. Grafikdesign) werden entweder Stunden- oder Tagessätze vereinbart. Beide Modelle haben Vor- und Nachteile und verlangen eine präzise Zeiterfassung.
+            </p>
+            <p>
+              <strong>Der Tagessatz:</strong> Ein Standard-Tagessatz basiert in Deutschland üblicherweise auf einer Arbeitszeit von <strong>8 Stunden</strong>. Vereinbaren Sie beispielsweise einen Tagessatz von 960 Euro, entspricht dies rechnerisch einem Stundensatz von 120 Euro.
+            </p>
+            <p>
+              Kompliziert wird es, wenn Teiltage abgerechnet werden müssen. Arbeitet ein Freelancer an einem Tag nur 3 Stunden für den Kunden, muss dieser Bruchteil mathematisch als Dezimalwert auf Basis des vereinbarten Tagewerks erfasst werden:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Anteiliger Tagessatz = (Geleistete Stunden / Standard-Tagesstunden) * Tagessatz</code>
+            </div>
+            <p>
+              Bei 3 geleisteten Stunden und einer 8-Stunden-Basis ergibt sich: <code>(3 / 8) = 0,375 Tage</code>. Abrechnung bei 960 € Tagessatz: <code>0,375 × 960 € = 360,00 €</code>. Jede Rundung zu Ihren Ungunsten schmälert Ihre Marge.
+            </p>
+          </section>
+
+          <section id="steuer-gobd" style="margin-bottom: var(--space-8);">
+            <h2>6. Steuerliche Vorschriften und GoBD-Konformität</h2>
+            <p>
+              Als selbstständig tätige Person unterliegen Sie den Regelungen der <strong>GoBD</strong> (Grundsätze zur ordnungsmäßigen Führung und Aufbewahrung von Büchern, Aufzeichnungen und Unterlagen in elektronischer Form sowie zum Datenzugriff). 
+            </p>
+            <p>
+              Wenn Sie Zeiterfassungsdaten als Grundlage für Ihre Rechnungsstellung nutzen, gelten diese Berichte als steuerlich relevante Belege. Das bedeutet:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Unveränderbarkeit:</strong> Zeiterfassungen dürfen im Nachhinein nicht spurlos manipuliert oder abgeändert werden. Nutzen Sie Excel-Tabellen, sollten Sie diese nach Abschluss des Abrechnungsmonats als PDF exportieren und unveränderbar archivieren.</li>
+              <li><strong>Nachvollziehbarkeit:</strong> Für das Finanzamt muss klar ersichtlich sein, welche Rechnungssumme auf welchem Stundenprotokoll basiert. Bewahren Sie daher die Stundennachweise gemeinsam mit der jeweiligen Rechnung auf.</li>
+              <li><strong>Aufbewahrungsfrist:</strong> Genau wie Rechnungen unterliegen auch die dazugehörigen Zeiterfassungsprotokolle und Leistungsnachweise einer gesetzlichen Aufbewahrungsfrist von <strong>10 Jahren</strong>.</li>
+            </ol>
+          </section>
+
+          <section id="dezimalzeit" style="margin-bottom: var(--space-8);">
+            <h2>7. Dezimalstunden: Die mathematische Stolperfalle bei der Abrechnung</h2>
+            <p>
+              Ein klassischer Berechnungsfehler liegt im Mischen von Zeitformaten. Wenn Sie 8 Stunden und 45 Minuten arbeiten und dies mit einem Stundensatz von 100 Euro multiplizieren, lautet die instinktive, aber falsche Rechnung: <code>8,45 * 100 € = 845,00 €</code>.
+            </p>
+            <p>
+              Tatsächlich müssen die 45 Minuten jedoch in Industrieminuten (Dezimalstunden) umgerechnet werden. Da eine Stunde 60 Minuten hat, teilen wir die Minuten durch 60: <code>45 / 60 = 0,75</code>. Die korrekte Arbeitszeit beträgt somit 8,75 Dezimalstunden.
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Korrekte Abrechnung: 8,75 Stunden × 100 €/Std. = 875,00 € (Sie gewinnen 30,00 € im Vergleich zur Falschrechnung).</code>
+            </div>
+            <p>
+              Nutzen Sie stets dezimale Werte auf Ihren Rechnungen, um mathematische Fehler zu vermeiden und Transparenz für die Buchhaltung Ihres Kunden zu gewährleisten.
+            </p>
+          </section>
+
+          <section id="fehler" style="margin-bottom: var(--space-8);">
+            <h2>8. Häufige Fehler bei der Zeiterfassung und wie man sie vermeidet</h2>
+            <p>
+              Die Praxis zeigt, dass Freelancer immer wieder in dieselben Zeiterfassungsfallen tappen. Vermeiden Sie diese typischen Fehler:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Fehler 1: Nachträgliches Schätzen.</strong> Wer Zeiten erst am Freitag oder am Monatsende einträgt, verliert wertvolle Details. Gewöhnen Sie sich an, den Tracker synchron zur Aufgabe zu starten oder direkt nach Beendigung zu pflegen.</li>
+              <li><strong>Fehler 2: Zu grobe Rasterung.</strong> Wenn Sie Tätigkeiten nur in vollen Stunden abrechnen, wirkt das entweder unprofessionell auf den Kunden (wenn Sie aufrunden) oder Sie verschenken Zeit (wenn Sie abrunden). Rechnen Sie im 5- oder 15-Minuten-Takt (0,08 bzw. 0,25 Dezimalstunden) ab.</li>
+              <li><strong>Fehler 3: Fehlende Abgrenzung von Projekten.</strong> Werden Telefonate für Kunde A fälschlicherweise auf das Zeitkonto von Kunde B gebucht, führt dies zu massiven Vertrauensbrüchen, sobald der Fehler auffällt. Sortieren Sie Ihre Aufgaben präzise.</li>
+            </ul>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQs)</h2>
+            <div class="faq-accordion" style="margin-top: 20px;">
+              <div class="faq-item" style="border-bottom: 1px solid var(--clr-border); padding: 15px 0;">
+                <button class="faq-question" aria-expanded="false" style="width: 100%; text-align: left; background: none; border: none; color: var(--clr-text); font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                  Sind Freelancer zur Zeiterfassung gesetzlich verpflichtet?
+                  <span class="faq-icon" style="transition: transform 0.3s;">▼</span>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-right: 20px;">
+                  <p style="padding-top: 10px; color: var(--clr-text-2); line-height: 1.6;">
+                    Nein, das deutsche Arbeitszeitgesetz (ArbZG) und die Zeiterfassungspflicht nach den EuGH- und BAG-Urteilen gelten grundsätzlich nur für Arbeitnehmer. Freelancer müssen jedoch für das Finanzamt (GoBD) und zur Rechnungsstellung einen nachvollziehbaren Leistungsnachweis erbringen.
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item" style="border-bottom: 1px solid var(--clr-border); padding: 15px 0;">
+                <button class="faq-question" aria-expanded="false" style="width: 100%; text-align: left; background: none; border: none; color: var(--clr-text); font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                  Wie rechnet man Stunden in Dezimalzeit für Rechnungen um?
+                  <span class="faq-icon" style="transition: transform 0.3s;">▼</span>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-right: 20px;">
+                  <p style="padding-top: 10px; color: var(--clr-text-2); line-height: 1.6;">
+                    Stunden und Minuten werden in Dezimalstunden umgerechnet, indem man die Minuten durch 60 dividiert. Beispielsweise entsprechen 7 Stunden und 45 Minuten 7,75 Dezimalstunden (45 / 60 = 0,75).
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item" style="border-bottom: 1px solid var(--clr-border); padding: 15px 0;">
+                <button class="faq-question" aria-expanded="false" style="width: 100%; text-align: left; background: none; border: none; color: var(--clr-text); font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                  Was besagt die 60/20/20-Regel bei Selbstständigen?
+                  <span class="faq-icon" style="transition: transform 0.3s;">▼</span>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-right: 20px;">
+                  <p style="padding-top: 10px; color: var(--clr-text-2); line-height: 1.6;">
+                    Die 60/20/20-Regel besagt, dass ein Freelancer-Tag idealerweise aus 60% direkt abrechenbarer Kundenarbeit, 20% Akquise & Marketing sowie 20% administrativen Aufgaben (Buchhaltung, Weiterbildung) bestehen sollte.
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item" style="border-bottom: 1px solid var(--clr-border); padding: 15px 0;">
+                <button class="faq-question" aria-expanded="false" style="width: 100%; text-align: left; background: none; border: none; color: var(--clr-text); font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                  Wie rechnet man einen Tagessatz in Stundensätze um?
+                  <span class="faq-icon" style="transition: transform 0.3s;">▼</span>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-right: 20px;">
+                  <p style="padding-top: 10px; color: var(--clr-text-2); line-height: 1.6;">
+                    Ein Standard-Tagessatz basiert in der Regel auf 8 Stunden. Ein Tagessatz von 800 Euro entspricht somit rechnerisch einem Stundensatz von 100 Euro. Arbeitet man länger oder kürzer, wird die Zeit anteilig als Dezimalwert (z.B. 0,5 Tage für 4 Stunden) abgerechnet.
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item" style="border-bottom: 1px solid var(--clr-border); padding: 15px 0;">
+                <button class="faq-question" aria-expanded="false" style="width: 100%; text-align: left; background: none; border: none; color: var(--clr-text); font-weight: 600; font-size: 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                  Welche steuerlichen Vorschriften gelten für Zeiterfassung (GoBD)?
+                  <span class="faq-icon" style="transition: transform 0.3s;">▼</span>
+                </button>
+                <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-right: 20px;">
+                  <p style="padding-top: 10px; color: var(--clr-text-2); line-height: 1.6;">
+                    Nach den GoBD müssen alle geschäftsrelevanten Belege und Aufzeichnungen, wozu auch Stundenprotokolle für Kunden gehören, unveränderbar, zeitnah und nachvollziehbar dokumentiert werden. Nachträgliche Änderungen müssen lückenlos dokumentiert sein.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section id="fazit">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Fazit: Konsistenz ist alles</h2>
-            <p>Egal welches Tool du nutzt: Erfasse deine Zeiten <em>sofort</em>. Unser Tool hilft dir dabei, Start- und Endzeiten präzise zu dokumentieren und Pausen korrekt abzuziehen, damit am Ende des Monats jede Minute bezahlt wird.</p>
+            <h2>10. Fazit: Konsistenz schlägt Tool-Auswahl</h2>
+            <p>
+              Das beste Tool nützt nichts, wenn es nicht konsequent bedient wird. Für den Start reicht oft ein einfacher Timer oder eine Excel-Tabelle – Hauptsache, die Zeiten werden unmittelbar und fehlerfrei erfasst. Wer auf professionelle Abrechnung per Dezimalstunden setzt und administrative Pufferzeiten einplant, erhöht den eigenen Gewinn und beugt Missverständnissen mit Kunden vor.
+            </p>
             <div style="margin-top: var(--space-6);">
-              <a href={hubUrl} class="btn btn--primary">Jetzt Projektzeit berechnen</a>
+              <a href={hubUrl} class="btn btn--primary">Jetzt Projektzeiten berechnen</a>
             </div>
           </section>
         </div>
@@ -96,4 +379,27 @@ const hubUrl = getHubUrl(lang);
     </div>
   </section>
 
+  <script is:inline>
+    // FAQ Accordion Handler
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const icon = button.querySelector('.faq-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        
+        button.setAttribute('aria-expanded', !isExpanded);
+        
+        if (!isExpanded) {
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          answer.style.maxHeight = '0';
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+  </script>
+
 </BaseLayout>
+

@@ -1,0 +1,483 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Urlaubstage berechnen: Rechner & Regeln bei Austritt & Eintritt 2026';
+const description = 'Berechnen Sie Ihren Urlaubsanspruch bei Kündigung, Eintritt oder Austritt unterjährig. Kostenloser Urlaubsrechner mit allen gesetzlichen Regeln des BUrlG.';
+
+const canonical = getFullUrl('/ratgeber/urlaubstage-berechnen/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Urlaubstage berechnen: Rechner & Regeln bei Austritt & Eintritt 2026",
+        "description": "Erfahren Sie, wie Sie den gesetzlichen Urlaubsanspruch bei Jobwechsel, Eintritt oder Austritt berechnen. Inklusive Rundenregeln nach BUrlG und Rechner.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Was passiert mit dem Urlaub, wenn ich in der ersten Jahreshälfte kündige?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Scheiden Arbeitnehmer/innen vor dem 30. Juni (erste Jahreshälfte) aus dem Unternehmen aus, haben sie nach § 5 Abs. 1c BUrlG Anspruch auf ein Zwölftel des Jahresurlaubs für jeden vollen Monat des Bestehens des Arbeitsverhältnisses."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Habe ich bei Austritt in der zweiten Jahreshälfte Anspruch auf den vollen Urlaub?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Scheiden Arbeitnehmer/innen nach dem 30. Juni (zweite Jahreshälfte) aus und haben die sechsmonatige Wartezeit (§ 4 BUrlG) erfüllt, steht ihnen der volle gesetzliche Mindesturlaub (20 Tage bei einer 5-Tage-Woche) zu. Vertraglicher Zusatzurlaub kann jedoch vertraglich zeitanteilig gekürzt werden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie werden halbe Urlaubstage gerundet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gemäß § 5 Abs. 2 BUrlG sind Bruchteile von Urlaubstagen, die mindestens einen halben Tag ergeben (also >= 0,5), auf volle Urlaubstage aufzurunden. Bruchteile unter 0,5 Tage dürfen nicht abgerundet werden, sondern müssen tageweise im Bruchteil gewährt oder ausbezahlt werden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kann Resturlaub verfallen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Grundsätzlich muss Urlaub im laufenden Kalenderjahr genommen werden. Eine Übertragung auf das Folgejahr bis zum 31. März ist nur aus dringenden betrieblichen oder persönlichen Gründen zulässig. Nach der BAG-Rechtsprechung verfällt der Urlaub jedoch nur dann, wenn der Arbeitgeber die Arbeitnehmer/innen rechtzeitig und konkret aufgefordert hat, den Urlaub zu nehmen, und auf den drohenden Verfall hingewiesen hat."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie hoch ist der gesetzliche Mindesturlaub?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nach § 3 BUrlG beträgt der gesetzliche Mindesturlaub 24 Werktage bei einer 6-Tage-Woche. Umgerechnet auf eine übliche 5-Tage-Woche entspricht das exakt 20 Urlaubstagen pro Kalenderjahr."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Urlaubsanspruch berechnen</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Urlaubstage berechnen: Rechner & Regeln bei Eintritt & Austritt 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#rechner" class="guide-toc__link">1. Urlaubsrechner</a></li>
+            <li><a href="#mindesturlaub" class="guide-toc__link">2. Gesetzlicher Mindesturlaub</a></li>
+            <li><a href="#eintritt" class="guide-toc__link">3. Urlaubsanspruch bei Eintritt</a></li>
+            <li><a href="#austritt-h1" class="guide-toc__link">4. Austritt in der 1. Jahreshälfte</a></li>
+            <li><a href="#austritt-h2" class="guide-toc__link">5. Austritt in der 2. Jahreshälfte</a></li>
+            <li><a href="#runden" class="guide-toc__link">6. Die gesetzliche Rundungsregel</a></li>
+            <li><a href="#abgeltung" class="guide-toc__link">7. Urlaubsabgeltung (Auszahlung)</a></li>
+            <li><a href="#verfall" class="guide-toc__link">8. Verfall von Urlaubstagen</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="rechner" style="margin-bottom: var(--space-8);">
+            <h2>1. Interaktiver Urlaubsanspruchs-Rechner</h2>
+            <p>
+              Ermitteln Sie Ihren genauen Anspruch auf Erholungsurlaub bei unterjährigem Eintritt oder Austritt aus dem Beschäftigungsverhältnis nach den Richtlinien des Bundesurlaubsgesetzes (BUrlG).
+            </p>
+
+            <div class="glass" style="padding: 24px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--clr-border);">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Jahresurlaub laut Vertrag (Tage)</label>
+                    <input type="number" id="jahresurlaub" value="30" step="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Arbeitstage pro Woche</label>
+                    <select id="wochentage" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);">
+                      <option value="5" selected>5 Tage (Standard)</option>
+                      <option value="6">6 Tage (Werktagsbasis)</option>
+                      <option value="4">4 Tage</option>
+                      <option value="3">3 Tage</option>
+                      <option value="2">2 Tage</option>
+                      <option value="1">1 Tag</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Zeitpunkt des Austritts</label>
+                    <select id="austritt-zeitpunkt" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);">
+                      <option value="h1" selected>Erste Jahreshälfte (bis 30. Juni)</option>
+                      <option value="h2">Zweite Jahreshälfte (ab 1. Juli)</option>
+                      <option value="full">Ganzes Jahr gearbeitet</option>
+                    </select>
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Volle Monate im Beschäftigungsverhältnis</label>
+                    <input type="number" id="volle-monate" value="5" min="1" max="12" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" id="wartezeit-erfuellt" checked style="width: 18px; height: 18px;" />
+                  <label for="wartezeit-erfuellt" style="font-size: 0.9rem; font-weight: 600; color: var(--clr-text); cursor: pointer;">6-monatige Wartezeit erfüllt?</label>
+                </div>
+
+                <button id="calc-urlaub-btn" class="btn btn--primary" style="align-self: flex-start; margin-top: 10px;">Urlaubsanspruch berechnen</button>
+                
+                <div id="urlaub-results" class="glass" style="padding: 16px; border-radius: 8px; margin-top: 15px; display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--clr-border);">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Rechnerischer Anspruch:</span>
+                    <strong id="res-rechnungen">0,00 Tage</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Gesetzlicher Rundungsanspruch (§ 5 Abs. 2 BUrlG):</span>
+                    <strong id="res-gerundet" style="color: var(--clr-accent);">0 Tage</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>Davon gesetzlicher Mindesturlaub:</span>
+                    <strong id="res-mindest" style="color: var(--clr-green);">0 Tage</strong>
+                  </div>
+                  <div id="urlaub-warning" style="margin-top: 12px; font-size: 0.8rem; color: var(--clr-text-3); display: none; border-top: 1px solid var(--clr-border); padding-top: 8px;">
+                    ⚠️ Hinweis: Vertraglicher Zusatzurlaub kann unterjährig gekürzt werden. Gesetzlicher Mindesturlaub ist geschützt.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="mindesturlaub" style="margin-bottom: var(--space-8);">
+            <h2>2. Gesetzlicher Mindesturlaub nach dem Bundesurlaubsgesetz (BUrlG)</h2>
+            <p>
+              In Deutschland haben alle Arbeitnehmer/innen einen gesetzlichen Anspruch auf bezahlten Erholungsurlaub. Das Bundesurlaubsgesetz (BUrlG) legt in § 3 fest, wie hoch dieser Anspruch mindestens sein muss:
+            </p>
+            <ul>
+              <li><strong>24 Werktage bei einer 6-Tage-Woche:</strong> Als Werktage gelten alle Kalendertage, die nicht Sonn- oder Feiertage sind (also auch der Samstag).</li>
+              <li><strong>20 Arbeitstage bei einer 5-Tage-Woche:</strong> Da die meisten Arbeitnehmer/innen an 5 Tagen pro Woche arbeiten, entspricht der gesetzliche Mindestanspruch umgerechnet genau 20,00 Tagen pro Jahr.</li>
+            </ul>
+            <p>
+              Viele Arbeits- und Tarifverträge sehen einen deutlich höheren Urlaubsanspruch vor (üblich sind heute 28 bis 30 Urlaubstage bei einer 5-Tage-Woche). Bei der unterjährigen Berechnung unterscheidet das Gesetz jedoch strikt zwischen dem unantastbaren gesetzlichen Mindesturlaub und dem vertraglich vereinbarten Zusatzurlaub.
+            </p>
+          </section>
+
+          <section id="eintritt" style="margin-bottom: var(--space-8);">
+            <h2>3. Urlaubsanspruch bei unterjährigem Eintritt</h2>
+            <p>
+              Wer im Laufe eines Kalenderjahres ein neues Arbeitsverhältnis beginnt, hat zunächst keinen Anspruch auf den vollen Jahresurlaub. Nach § 5 Abs. 1a BUrlG entsteht in diesem Fall ein Teilurlaubsanspruch:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Teilurlaub = (Volle Beschäftigungsmonate / 12) × Jahresurlaub</code>
+            </div>
+            <p>
+              <strong>Beispiel:</strong> Tritt eine beschäftigte Person am 1. August in ein Unternehmen ein (vertraglicher Jahresurlaub: 30 Tage), ist sie bis zum Jahresende genau 5 volle Monate beschäftigt. Der Urlaubsanspruch beträgt:
+              <br />
+              <code>(5 / 12) × 30 Tage = 12,5 Urlaubstage</code>
+            </p>
+            <p>
+              Zusätzlich gilt die gesetzliche Wartezeit nach § 4 BUrlG. Erst nach einem sechsmonatigen Bestehen des Arbeitsverhältnisses erwerben Arbeitnehmer/innen den vollen Urlaubsanspruch (sofern sie nicht unterjährig ausscheiden).
+            </p>
+          </section>
+
+          <section id="austritt-h1" style="margin-bottom: var(--space-8);">
+            <h2>4. Austritt in der ersten Jahreshälfte (bis zum 30. Juni)</h2>
+            <p>
+              Entscheidend für die Berechnung des Resturlaubs bei Beendigung des Arbeitsverhältnisses ist das genaue Austrittsdatum. Scheiden Arbeitnehmer/innen in der ersten Jahreshälfte (also spätestens am 30. Juni) aus, gilt die <strong>Zwölftelungsregel</strong> nach § 5 Abs. 1c BUrlG:
+            </p>
+            <p>
+              Beschäftigte erhalten für jeden vollen Monat des Bestehens des Arbeitsverhältnisses ein Zwölftel des Jahresurlaubs.
+            </p>
+            <p>
+              <strong>Ein konkretes Beispiel:</strong> Beschäftigte mit 30,00 Tagen Jahresurlaub kündigen und scheiden zum 30. April aus. Sie waren in diesem Jahr 4 volle Monate beschäftigt.
+              <br />
+              <code>Urlaubsanspruch = (4 / 12) × 30 Tage = 10 Tage</code>
+            </p>
+            <p>
+              Hat der Mitarbeiter bis zum Ausscheiden bereits mehr Urlaub genommen (z. B. 12 Tage), darf der Arbeitgeber das zu viel gezahlte Urlaubsentgelt nicht zurückfordern (§ 5 Abs. 3 BUrlG).
+            </p>
+          </section>
+
+          <section id="austritt-h2" style="margin-bottom: var(--space-8);">
+            <h2>5. Austritt in der zweiten Jahreshälfte (ab dem 1. Juli)</h2>
+            <p>
+              Dies ist eine der am häufigsten übersehenen arbeitsrechtlichen Besonderheiten: Scheiden Arbeitnehmer/innen in der **zweiten Jahreshälfte** (also ab dem 1. Juli) aus dem Unternehmen aus, greift die Zwölftelungsregel des § 5 BUrlG für den gesetzlichen Mindesturlaub nicht mehr – vorausgesetzt, die sechsmonatige Wartezeit (§ 4 BUrlG) wurde erfüllt.
+            </p>
+            <p>
+              In diesem Fall haben Arbeitnehmer/innen gesetzlichen Anspruch auf den **vollen gesetzlichen Mindesturlaub** (20 Tage bei 5-Tage-Woche), nicht nur auf einen Teilurlaub.
+            </p>
+            <p>
+              <strong>Was passiert mit dem vertraglichen Zusatzurlaub?</strong>
+            </p>
+            <p>
+              Dies hängt vom Arbeitsvertrag ab. Enthält der Vertrag eine sogenannte <strong>„Pro-rata-temporis“-Klausel</strong> (zeitanteilige Kürzung bei unterjährigem Austritt), darf der Arbeitgeber den über den gesetzlichen Mindesturlaub hinausgehenden vertraglichen Urlaub kürzen. Fehlt eine solche Klausel im Vertrag, hat der Mitarbeiter Anspruch auf den *gesamten vertraglichen Jahresurlaub* (z. B. volle 30 Tage bei Austritt zum 31. Juli).
+            </p>
+          </section>
+
+          <section id="runden" style="margin-bottom: var(--space-8);">
+            <h2>6. Die gesetzliche Rundungsregel für Urlaubstage</h2>
+            <p>
+              Häufig ergeben sich bei der Division durch 12 Nachkommastellen (z. B. 12,5 Tage oder 8,33 Tage). Das BUrlG regelt in § 5 Abs. 2 unmissverständlich, wie mit diesen Brüchen umzugehen ist:
+            </p>
+            <blockquote style="border-left: 4px solid var(--clr-accent); padding-left: 15px; margin: 20px 0; font-style: italic; color: var(--clr-text-2);">
+              „Bruchteile von Urlaubstagen, die mindestens einen halben Tag ergeben, sind auf volle Urlaubstage aufzurunden.“
+            </blockquote>
+            <p>
+              Ein rechnerischer Anspruch von **12,5 Tagen** wird zwingend auf **13 Tage** aufgerundet. 
+            </p>
+            <p>
+              Beträgt der Bruchteil hingegen weniger als einen halben Tag (z. B. 8,33 Tage), darf der Arbeitgeber den Anspruch **nicht abrunden** (also nicht auf 8 Tage kürzen). Den Arbeitnehmern/innen stehen in diesem Fall entweder exakt 8 Tage und ein Drittel Urlaubstag zu (welcher z. B. in Stunden genommen oder am Ende ausbezahlt werden kann), oder der Arbeitgeber rundet freiwillig auf.
+            </p>
+          </section>
+
+          <section id="abgeltung" style="margin-bottom: var(--space-8);">
+            <h2>7. Urlaubsabgeltung: Auszahlung von Resturlaub</h2>
+            <p>
+              Nach § 7 Abs. 4 BUrlG darf Urlaub grundsätzlich nicht ausbezahlt werden. Er dient dem Gesundheitsschutz und muss als Freizeit gewährt werden. Eine Ausnahme gilt jedoch bei der Beendigung des Arbeitsverhältnisses:
+            </p>
+            <p>
+              Kann der Urlaub wegen der Beendigung des Arbeitsverhältnisses ganz oder teilweise nicht mehr genommen werden, ist er abzugelten (Urlaubsabgeltung).
+            </p>
+            <p>
+              Die Formel für die Abgeltung basiert auf dem Durchschnittsverdienst der letzten 13 Wochen vor der Beendigung (§ 11 BUrlG):
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Bruttowert pro Urlaubstag = (Quartalsbrutto / 65 Tage bei 5-Tage-Woche) × Resturlaubstage</code>
+            </div>
+          </section>
+
+          <section id="verfall" style="margin-bottom: var(--space-8);">
+            <h2>8. Verfall von Urlaub: Neue Mitwirkungspflichten des Arbeitgebers</h2>
+            <p>
+              Früher verfiel Resturlaub am 31. Dezember oder spätestens am 31. März des Folgejahres automatisch. Nach wegweisenden Urteilen des EuGH und des BAG verfällt Urlaub heute nur noch, wenn der Arbeitgeber seiner **Mitwirkungspflicht** nachgekommen ist:
+            </p>
+            <p>
+              Arbeitgeber müssen ihre Beschäftigten rechtzeitig und konkret schriftlich auffordern, den Urlaub zu nehmen, und klar darauf hinweisen, dass der Urlaub andernfalls verfällt. Unterlässt der Arbeitgeber diesen Hinweis, bleibt der Urlaubsanspruch unbegrenzt bestehen und kann auch nach Jahren noch eingeklagt oder bei Kündigung ausbezahlt werden.
+            </p>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Was passiert mit dem Urlaub, wenn ich in der ersten Jahreshälfte kündige?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Scheiden Arbeitnehmer/innen vor dem 30. Juni (erste Jahreshälfte) aus dem Unternehmen aus, haben sie nach § 5 Abs. 1c BUrlG Anspruch auf ein Zwölftel des Jahresurlaubs für jeden vollen Monat des Bestehens des Arbeitsverhältnisses.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Habe ich bei Austritt in der zweiten Jahreshälfte Anspruch auf den vollen Urlaub?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Ja. Scheiden Arbeitnehmer/innen nach dem 30. Juni aus und haben die sechsmonatige Wartezeit erfüllt, steht ihnen der volle gesetzliche Mindesturlaub (20 Tage bei einer 5-Tage-Woche) zu.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Wie werden halbe Urlaubstage gerundet?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Gemäß § 5 Abs. 2 BUrlG sind Bruchteile von Urlaubstagen, die mindestens einen halben Tag ergeben (also >= 0,5), auf volle Urlaubstage aufzurunden. Kleinere Bruchteile dürfen nicht abgerundet, müssen aber gewährt oder abgegolten werden.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Kann Resturlaub verfallen?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Ja, jedoch nur, wenn der Arbeitgeber die Arbeitnehmer/innen nachweislich aufgefordert hat, den Urlaub zu nehmen, und auf den Verfall hingewiesen hat. Ohne diese Mitwirkung bleibt der Anspruch bestehen.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Wie hoch ist der gesetzliche Mindesturlaub?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Der gesetzliche Mindesturlaub beträgt 24 Werktage bei einer 6-Tage-Woche, was umgerechnet exakt 20 Urlaubstagen bei einer 5-Tage-Woche entspricht.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>10. Fazit: Urlaubsanspruch präzise dokumentieren</h2>
+            <p>
+              Die Berechnung des Urlaubs bei unterjährigem Stellenwechsel ist komplex und hängt stark vom Austrittsmonat ab. Schützen Sie Ihre Ansprüche durch Nutzung unseres gesetzeskonformen Urlaubsrechners.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // Vacation calculator script
+  document.getElementById('calc-urlaub-btn').addEventListener('click', () => {
+    const jahresurlaub = parseInt(document.getElementById('jahresurlaub').value) || 0;
+    const wochentage = parseInt(document.getElementById('wochentage').value) || 5;
+    const austritt = document.getElementById('austritt-zeitpunkt').value;
+    const monate = parseInt(document.getElementById('volle-monate').value) || 0;
+    const wartezeit = document.getElementById('wartezeit-erfuellt').checked;
+    
+    // Gesetzlicher Mindesturlaub
+    // 24 bei 6-Tage-Woche, also 4 Tage pro Wochentag
+    const gesetzlicherMindest = wochentage * 4;
+    
+    let rechnerisch = 0;
+    let gerundet = 0;
+    
+    if (austritt === 'full') {
+      rechnerisch = jahresurlaub;
+      gerundet = jahresurlaub;
+    } else if (austritt === 'h1' || !wartezeit) {
+      // Pro-rata (Zwölftelung)
+      rechnerisch = (monate / 12) * jahresurlaub;
+      
+      // Runden: ab 0,5 aufrunden, sonst exakt lassen
+      const integerPart = Math.floor(rechnerisch);
+      const fractionPart = rechnerisch - integerPart;
+      if (fractionPart >= 0.5) {
+        gerundet = Math.ceil(rechnerisch);
+      } else {
+        gerundet = rechnerisch; // wird als float angezeigt
+      }
+    } else {
+      // Austritt in H2 und Wartezeit erfüllt -> Voller gesetzlicher Anspruch geschützt
+      // Zusatzurlaub kann vertraglich gekürzt werden. Falls gekürzt:
+      // In der Praxis gilt meist pro-rata Kürzung für den übergesetzlichen Teil
+      const gesetzlichProMonat = (monate / 12) * gesetzlicherMindest;
+      const uebergesetzlich = jahresurlaub - gesetzlicherMindest;
+      const uebergesetzlichProMonat = (monate / 12) * uebergesetzlich;
+      
+      // Entweder Vertrag erlaubt Kürzung (pro-rata) oder nicht (voller Anspruch)
+      // Wir berechnen den gesetzlich geschützten Mindesturlaub als Untergrenze,
+      // und zeigen pro-rata für den Rest
+      rechnerisch = gesetzlicherMindest + uebergesetzlichProMonat;
+      
+      const integerPart = Math.floor(rechnerisch);
+      const fractionPart = rechnerisch - integerPart;
+      if (fractionPart >= 0.5) {
+        gerundet = Math.ceil(rechnerisch);
+      } else {
+        gerundet = rechnerisch;
+      }
+      
+      document.getElementById('urlaub-warning').style.display = 'block';
+    }
+    
+    document.getElementById('res-rechnungen').textContent = rechnerisch.toFixed(2).replace('.', ',') + ' Tage';
+    document.getElementById('res-gerundet').textContent = (typeof gerundet === 'number' ? gerundet.toFixed(1).replace('.', ',') : gerundet) + ' Tage';
+    document.getElementById('res-mindest').textContent = gesetzlicherMindest + ' Tage';
+    
+    document.getElementById('urlaub-results').style.display = 'block';
+  });
+
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

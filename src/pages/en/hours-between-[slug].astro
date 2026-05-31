@@ -9,7 +9,7 @@ import {
   getTimeRangeUrl, getHubUrl, getWorkHoursUrl, shouldIndex
 } from '../../lib/seoEngine';
 import {
-  timeRangeIntros_en, contextBlocks_en, useCases_en, faqSets_en, variantIndex
+  timeRangeIntros_en, getContextClusterEN, useCases_en, faqSets_en, variantIndex
 } from '../../data/contentVariants';
 
 export async function getStaticPaths() {
@@ -49,12 +49,11 @@ const hreflang = [
 ];
 
 const vi = variantIndex(range.slug, timeRangeIntros_en.length);
-const ci = variantIndex(range.slug + 'ctx', contextBlocks_en.length);
 const ui = variantIndex(range.slug + 'use', useCases_en.length);
 const fi = variantIndex(range.slug + 'faq', faqSets_en.length);
 
 const introHtml = timeRangeIntros_en[vi](start24, end24, hours);
-const contextText = contextBlocks_en[ci](hours);
+const contextText = getContextClusterEN(range.start, range.end, hours);
 const useCaseList = useCases_en[ui];
 const faqs = faqSets_en[fi](start24, end24, hours);
 
@@ -194,10 +193,10 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         <h2>Use Cases</h2>
         <div class="use-cases">
           {useCaseList.map((uc, i) => (
-            <div class="use-case-item">
+            <a href={`#faq-${i % faqs.length}`} class="use-case-item">
               <span class="use-case-item__icon">{useCaseIcons[i % useCaseIcons.length]}</span>
               <span class="use-case-item__text">{uc}</span>
-            </div>
+            </a>
           ))}
         </div>
       </div>
@@ -220,18 +219,18 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
     </div>
   </section>
 
-  <section class="section" style="padding-top: 0;">
+  <section class="section" style="padding-top: 0;" id="faq-section">
     <div class="container container--narrow">
       <div class="content-section">
         <h2>Frequently Asked Questions</h2>
         <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
-          {faqs.map(faq => (
-            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-              <button class="faq-item__question" aria-expanded="false" itemprop="name">
+          {faqs.map((faq, idx) => (
+            <div class="faq-item" id={`faq-${idx}`} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name" aria-controls={`faq-answer-${idx}`}>
                 {faq.q}
                 <span class="faq-arrow" aria-hidden="true">▾</span>
               </button>
-              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <div class="faq-item__answer" id={`faq-answer-${idx}`} aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
                 <span itemprop="text">{faq.a}</span>
               </div>
             </div>

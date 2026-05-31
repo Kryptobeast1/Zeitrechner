@@ -1,0 +1,437 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
+
+const lang = 'de';
+const title = 'Überstunden berechnen: Rechner & gesetzliche Regeln 2026';
+const description = 'Berechnen Sie Ihre Überstunden und Ihren Auszahlungsanspruch mit unserem kostenlosen Rechner. Mit allen gesetzlichen Regelungen des ArbZG zu Auszahlung & Freizeitausgleich.';
+
+const canonical = getFullUrl('/ratgeber/ueberstunden-berechnen/');
+const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Überstunden berechnen: Rechner & gesetzliche Regeln 2026",
+        "description": "Erfahren Sie alles zur Berechnung von Überstunden, gesetzlichen Höchstarbeitszeiten nach ArbZG, Vergütung, Zeitausgleich und rechtlichen Vorgaben für Klauseln.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Was ist der Unterschied zwischen Überstunden und Mehrarbeit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Überstunden bezeichnen das Überschreiten der individuell vertraglich vereinbarten Arbeitszeit. Mehrarbeit hingegen ist das Überschreiten der gesetzlichen Höchstarbeitszeit nach dem Arbeitszeitgesetz (ArbZG), welche im Regelfall bei 8 Stunden pro Werktag liegt."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Müssen Überstunden ausgezahlt oder abgefeiert werden?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Grundsätzlich entscheidet der Arbeits- oder Tarifvertrag oder eine Betriebsvereinbarung darüber, ob Überstunden ausbezahlt werden oder durch Freizeit (Freizeitausgleich) ausgeglichen werden. Fehlt eine Regelung, gilt nach § 612 BGB eine Vergütung als stillschweigend vereinbart, wenn die Überstunden den Umständen nach nur gegen eine Vergütung zu erwarten waren."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Sind Klauseln wie 'Überstunden sind mit dem Gehalt abgegolten' rechtens?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pauschale Abgeltungsklauseln sind in Standard-Arbeitsverträgen meist unwirksam (Verstoß gegen AGB-Recht, § 307 BGB). Die Klausel ist nur zulässig, wenn eine konkrete Anzahl an Überstunden (z. B. 'bis zu 10 Überstunden pro Monat') explizit im Vertrag benannt ist oder es sich um Besserverdienende oberhalb der Beitragsbemessungsgrenze handelt."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie hoch ist der gesetzliche Zuschlag für Überstunden?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In Deutschland gibt es keinen gesetzlichen Mindestzuschlag für normale Überstunden. Eventuelle Überstundenzuschläge (häufig 25% oder 50%) ergeben sich primär aus Tarifverträgen, Betriebsvereinbarungen oder individuellen Vereinbarungen im Arbeitsvertrag."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie werden Überstunden versteuert?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ausgezahlte Überstunden werden steuerlich wie normaler Arbeitslohn behandelt. Sie erhöhen das Bruttoeinkommen im jeweiligen Monat und unterliegen der regulären Lohnsteuer und den Sozialabgaben, was oft zu einer hohen Progression führt. Ein Freizeitausgleich ist dagegen steuerneutral."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="guide"
+>
+
+  <section class="section landing-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={hubUrl}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/ratgeber/">Ratgeber</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">Überstunden berechnen</span>
+      </nav>
+
+      <div style="margin-top: 1.5rem;">
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Überstunden berechnen: Rechner & gesetzliche Regeln 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
+        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="guide-layout">
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
+          <div class="guide-toc__title">Inhaltsverzeichnis</div>
+          <ul class="guide-toc__list">
+            <li><a href="#rechner" class="guide-toc__link">1. Interaktiver Rechner</a></li>
+            <li><a href="#definition" class="guide-toc__link">2. Definition: Überstunden vs. Mehrarbeit</a></li>
+            <li><a href="#gesetz" class="guide-toc__link">3. Das Arbeitszeitgesetz (ArbZG)</a></li>
+            <li><a href="#vergutung" class="guide-toc__link">4. Auszahlung oder Freizeitausgleich</a></li>
+            <li><a href="#klauseln" class="guide-toc__link">5. Wirksamkeit von Abgeltungsklauseln</a></li>
+            <li><a href="#berechnung" class="guide-toc__link">6. Formel zur Berechnung</a></li>
+            <li><a href="#steuern" class="guide-toc__link">7. Steuern & Sozialabgaben</a></li>
+            <li><a href="#nachweis" class="guide-toc__link">8. Dokumentation & Nachweispflicht</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit & Handlungsempfehlung</a></li>
+          </ul>
+        </aside>
+
+        <!-- Main Editorial Content -->
+        <div class="guide-main content-prose">
+          
+          <section id="rechner" style="margin-bottom: var(--space-8);">
+            <h2>1. Interaktiver Überstunden- und Auszahlungsrechner</h2>
+            <p>
+              Nutzen Sie dieses Tool, um Ihre Überstunden (bzw. Minusstunden) sowie Ihren finanziellen Auszahlungsanspruch inklusive eventueller Zuschläge direkt zu kalkulieren.
+            </p>
+
+            <div class="glass" style="padding: 24px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--clr-border);">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Soll-Arbeitszeit (Stunden)</label>
+                    <input type="number" id="soll-stunden" value="160" step="0.5" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                    <span style="font-size: 0.75rem; color: var(--clr-text-3);">Ihre vertraglichen Sollstunden für den Zeitraum.</span>
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Ist-Arbeitszeit (Stunden)</label>
+                    <input type="number" id="ist-stunden" value="175" step="0.5" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                    <span style="font-size: 0.75rem; color: var(--clr-text-3);">Ihre tatsächlich geleistete Nettoarbeitszeit.</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Stundenlohn (€, optional)</label>
+                    <input type="number" id="stundenlohn" value="25.00" step="0.50" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--clr-text);">Überstundenzuschlag (%, optional)</label>
+                    <input type="number" id="zuschlag" value="25" step="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--clr-border); background: var(--clr-surface-2); color: var(--clr-text);" />
+                  </div>
+                </div>
+                
+                <button id="calc-overtime-btn" class="btn btn--primary" style="align-self: flex-start; margin-top: 10px;">Überstunden berechnen</button>
+                
+                <div id="overtime-results" class="glass" style="padding: 16px; border-radius: 8px; margin-top: 15px; display: none; background: rgba(0,0,0,0.2); border: 1px solid var(--clr-border);">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Überstunden gesamt:</span>
+                    <strong id="res-stunden" style="color: var(--clr-accent);">0,00 Std.</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Zuschlagssatz:</span>
+                    <strong id="res-zuschlag-prozent">0 %</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Finanzieller Auszahlungsanspruch (Brutto):</span>
+                    <strong id="res-payout" style="color: var(--clr-green);">0,00 €</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="definition" style="margin-bottom: var(--space-8);">
+            <h2>2. Definition: Überstunden vs. Mehrarbeit</h2>
+            <p>
+              In der juristischen Praxis und im allgemeinen Sprachgebrauch werden die Begriffe „Überstunden“ und „Mehrarbeit“ oft synonym verwendet. Arbeitsrechtlich handelt es sich jedoch um zwei völlig verschiedene Konzepte:
+            </p>
+            <ul>
+              <li><strong>Überstunden:</strong> Dies betrifft die Überschreitung der individuell im Arbeitsvertrag, im Tarifvertrag oder in einer Betriebsvereinbarung festgelegten regelmäßigen Arbeitszeit von Beschäftigten. Arbeiten Teilzeitbeschäftigte mit vertraglich vereinbarten 20,00 Wochenstunden in einer Woche 25,00 Stunden, leisten sie 5,00 Überstunden.</li>
+              <li><strong>Mehrarbeit:</strong> Dies ist ein öffentlich-rechtlicher Begriff aus dem Arbeitszeitgesetz (ArbZG). Mehrarbeit liegt vor, wenn die gesetzlich zulässige Höchstarbeitszeit überschritten wird. Werktags (Montag bis Samstag) liegt das gesetzliche Limit bei 8,00 Stunden (§ 3 ArbZG). Stunden darüber hinaus gelten als gesetzliche Mehrarbeit.</li>
+            </ul>
+            <p>
+              Der Unterschied ist wichtig: Während Überstunden primär vertraglich geregelt sind und ausgeglichen oder vergütet werden können, ist eine Überschreitung der gesetzlichen Mehrarbeitsgrenzen ohne entsprechenden Ausgleich strafbar für den Arbeitgeber.
+            </p>
+          </section>
+
+          <section id="gesetz" style="margin-bottom: var(--space-8);">
+            <h2>3. Das Arbeitszeitgesetz (ArbZG) und die Höchstgrenzen</h2>
+            <p>
+              Das deutsche Arbeitszeitgesetz dient dem Gesundheitsschutz der Arbeitnehmer/innen und setzt klare Grenzen für Überstunden und Schichten:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Tägliche Höchstarbeitszeit:</strong> Nach § 3 ArbZG darf die tägliche Arbeitszeit 8,00 Stunden nicht überschreiten. Sie kann auf bis zu 10,00 Stunden verlängert werden, wenn innerhalb von 6 Kalendermonaten oder 24 Wochen im Durchschnitt 8,00 Stunden werktäglich nicht überschritten werden.</li>
+              <li><strong>Ruhepausen:</strong> Ab 6,00 Stunden Arbeit ist eine Pause von 30 Minuten gesetzlich vorgeschrieben. Ab 9,00 Stunden erhöht sich diese Pflichtpause auf 45 Minuten (§ 4 ArbZG). Diese Pausen gelten nicht als Arbeitszeit.</li>
+              <li><strong>Ruhezeit:</strong> Nach Beendigung der täglichen Arbeitszeit müssen Arbeitnehmer/innen eine ununterbrochene Ruhezeit von mindestens 11,00 Stunden einhalten (§ 5 ArbZG).</li>
+            </ul>
+            <p>
+              Arbeitgeber müssen sicherstellen, dass Überstunden diese Grenzen nicht dauerhaft aushebeln. Verstöße gegen das ArbZG können als Ordnungswidrigkeiten mit Bußgeldern von bis zu 30.000 Euro geahndet oder bei Vorsatz sogar als Straftat gewertet werden.
+            </p>
+          </section>
+
+          <section id="vergutung" style="margin-bottom: var(--space-8);">
+            <h2>4. Auszahlung oder Freizeitausgleich: Was steht Ihnen zu?</h2>
+            <p>
+              Ob geleistete Überstunden ausbezahlt oder durch Freizeit abgefeiert werden müssen, richtet sich nach den getroffenen Vereinbarungen:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Vertragliche Regelungen:</strong> In den meisten Arbeitsverträgen, Betriebsvereinbarungen oder Tarifverträgen ist festgelegt, ob Überstunden auf ein Arbeitszeitkonto (Freizeitausgleich) fließen oder am Monatsende mit dem Lohn ausbezahlt werden.</li>
+              <li><strong>Fehlende vertragliche Regelung:</strong> Gibt es keine schriftliche Vereinbarung, greift § 612 BGB. Eine Vergütung gilt als stillschweigend vereinbart, wenn die Dienstleistung den Umständen nach nur gegen eine Vergütung zu erwarten ist. Für normale Angestellte ist dies in der Regel der Fall. Bei leitenden Angestellten oder Führungskräften mit einem Gehalt oberhalb der Beitragsbemessungsgrenze wird eine Vergütung von Überstunden hingegen rechtlich oft verneint.</li>
+              <li><strong>Zuschläge:</strong> Tarifverträge sehen für Überstunden oft Zuschläge vor (z. B. 25 % für die ersten Überstunden, 50 % für Sonntags- oder Feiertagsarbeit). Im normalen Arbeitsvertrag gibt es keinen automatischen gesetzlichen Anspruch auf Zuschläge – dieser muss explizit vereinbart sein.</li>
+            </ol>
+          </section>
+
+          <section id="klauseln" style="margin-bottom: var(--space-8);">
+            <h2>5. 'Überstunden mit dem Gehalt abgegolten': Ist das zulässig?</h2>
+            <p>
+              In vielen Arbeitsverträgen finden sich Klauseln wie: <em>„Eventuell anfallende Überstunden sind mit dem monatlichen Grundgehalt abgegolten.“</em>
+            </p>
+            <p>
+              Nach ständiger Rechtsprechung des Bundesarbeitsgerichts (BAG) sind solche pauschalen Klauseln in Standardverträgen wegen eines Verstoßes gegen das Transparenzgebot (§ 307 Abs. 1 BGB) fast immer **unwirksam**. Arbeitnehmer/innen können bei Vertragsunterzeichnung nicht erkennen, wie viele Überstunden sie tatsächlich ohne Gegenleistung erbringen müssen.
+            </p>
+            <p>
+              <strong>Wann ist eine Abgeltungsklausel wirksam?</strong>
+            </p>
+            <ul>
+              <li><strong>Präzise Angabe der Stundenzahl:</strong> Zulässig ist eine Formulierung, die eine konkrete Höchstzahl benennt. Beispiel: <em>„Mit dem monatlichen Gehalt sind bis zu 10 Überstunden pro Monat abgegolten.“</em> Alles darüber hinaus muss vergütet oder abgefeiert werden.</li>
+              <li><strong>Leitende Angestellte:</strong> Bei echten Führungskräften oder Beschäftigten mit einem Gehalt über der Beitragsbemessungsgrenze in der gesetzlichen Rentenversicherung sind solche Klauseln auch pauschal wirksam.</li>
+            </ul>
+          </section>
+
+          <section id="berechnung" style="margin-bottom: var(--space-8);">
+            <h2>6. Formel zur manuellen Überstundenberechnung</h2>
+            <p>
+              Um Überstunden manuell zu berechnen, vergleichen Sie Ihre monatlich geleistete Nettoarbeitszeit (Bruttoarbeitszeit minus gesetzliche Pausen) mit Ihren vertraglichen Sollstunden.
+            </p>
+            <p>
+              Haben Sie ein festes Monatsgehalt, müssen Sie zunächst Ihren rechnerischen Stundenlohn ermitteln, um den Wert der Überstunden zu bestimmen. Da Monate unterschiedlich viele Tage haben, rechnet man mit dem Faktor 4,35 (Durchschnittswochen pro Monat):
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Stundenlohn = Monatsbrutto / (Wochenarbeitszeit * 4,35)</code>
+            </div>
+            <p>
+              <strong>Beispiel:</strong> Monatsgehalt von 3.480 € brutto bei einer 40-Stunden-Woche:
+              <br />
+              <code>Stundenlohn = 3.480 € / (40 × 4,35) = 3.480 € / 174 = 20,00 €/Std.</code>
+            </p>
+            <p>
+              Leisten Beschäftigte in einem Monat 15,00 Überstunden, beträgt der finanzielle Bruttowert ohne Zuschläge:
+              <br />
+              <code>15,00 Std. × 20,00 € = 300,00 € Brutto-Auszahlungsanspruch.</code>
+            </p>
+          </section>
+
+          <section id="steuern" style="margin-bottom: var(--space-8);">
+            <h2>7. Steuern und Sozialabgaben bei der Auszahlung</h2>
+            <p>
+              Die Auszahlung von Überstunden birgt eine steuerliche Falle: Der Betrag wird als regulärer Arbeitslohn versteuert. Das bedeutet:
+            </p>
+            <ul>
+              <li><strong>Progressive Steuerwirkung:</strong> Durch die Auszahlung steigt das Bruttoeinkommen in dem entsprechenden Monat an. Dadurch greift ein höherer persönlicher Steuersatz (kalte Progression). Am Ende kommt netto oft spürbar weniger heraus, als Beschäftigte erwartet haben.</li>
+              <li><strong>Sozialabgaben:</strong> Auf den Überstundenlohn müssen die üblichen Beiträge zur Renten-, Kranken-, Pflege- und Arbeitslosenversicherung abgeführt werden.</li>
+              <li><strong>Alternative Freizeitausgleich:</strong> Das Abfeiern (Freizeitausgleich) ist steuerlich komplett neutral. Arbeitnehmer/innen erhalten bezahlten Urlaub und ihr reguläres Gehalt läuft weiter. Wirtschaftlich ist der Freizeitausgleich für viele Angestellte daher attraktiver.</li>
+            </ul>
+          </section>
+
+          <section id="nachweis" style="margin-bottom: var(--space-8);">
+            <h2>8. Dokumentationspflichten und Beweislast im Streitfall</h2>
+            <p>
+              Im Falle eines Rechtsstreits über nicht ausgezahlte Überstunden vor dem Arbeitsgericht trägt grundsätzlich der/die **Arbeitnehmer/in die volle Darlegungs- und Beweislast**. Die klagende Person muss minutengenau nachweisen, an welchen Tagen sie von wann bis wann gearbeitet hat, wer die Überstunden angeordnet oder geduldet hat und welche Pausen genommen wurden.
+            </p>
+            <p>
+              Durch das BAG-Urteil zur systematischen Zeiterfassungspflicht sind Arbeitgeber/innen zwar verpflichtet, ein Erfassungssystem anzubieten. Dennoch sollten Beschäftigte zur eigenen Sicherheit private Stundenaufzeichnungen führen.
+            </p>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Was ist der Unterschied zwischen Überstunden und Mehrarbeit?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Überstunden bezeichnen das Überschreiten der individuell vertraglich vereinbarten Arbeitszeit. Mehrarbeit hingegen ist das Überschreiten der gesetzlichen Höchstarbeitszeit nach dem Arbeitszeitgesetz (ArbZG), welche im Regelfall bei 8 Stunden pro Werktag liegt.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Müssen Überstunden ausgezahlt oder abgefeiert werden?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Grundsätzlich entscheidet der Arbeits- oder Tarifvertrag oder eine Betriebsvereinbarung darüber, ob Überstunden ausbezahlt werden oder durch Freizeit (Freizeitausgleich) ausgeglichen werden. Fehlt eine Regelung, gilt nach § 612 BGB eine Vergütung als stillschweigend vereinbart.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Sind Klauseln wie 'Überstunden sind mit dem Gehalt abgegolten' rechtens?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Pauschale Abgeltungsklauseln sind in Standard-Arbeitsverträgen meist unwirksam (Verstoß gegen AGB-Recht, § 307 BGB). Die Klausel ist nur zulässig, wenn eine konkrete Anzahl an Überstunden (z. B. 'bis zu 10 Überstunden pro Monat') explizit im Vertrag benannt ist.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Wie hoch ist der gesetzliche Zuschlag für Überstunden?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>In Deutschland gibt es keinen gesetzlichen Mindestzuschlag für normale Überstunden. Eventuelle Überstundenzuschläge (häufig 25% oder 50%) ergeben sich primär aus Tarifverträgen, Betriebsvereinbarungen oder individuellen Vereinbarungen im Arbeitsvertrag.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Wie werden Überstunden versteuert?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Ausgezahlte Überstunden werden steuerlich wie normaler Arbeitslohn behandelt. Sie erhöhen das Bruttoeinkommen im jeweiligen Monat und unterliegen der regulären Lohnsteuer und den Sozialabgaben, was oft zu einer hohen Progression führt. Ein Freizeitausgleich ist dagegen steuerneutral.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="fazit">
+            <h2>10. Fazit: Transparenz schützt vor Verlusten</h2>
+            <p>
+              Eine genaue Zeiterfassung und das präzise Berechnen der Soll-Ist-Differenzen schützt Sie als Arbeitnehmer/in vor unbezahlter Mehrarbeit und hilft Arbeitgeber/innen, rechtliche Risiken zu vermeiden. Mit unserem Rechner ermitteln Sie Ihre Überstundenwerte fehlerfrei und GoBD-konform.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Haupt-Zeitrechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  // Calculator script
+  document.getElementById('calc-overtime-btn').addEventListener('click', () => {
+    const soll = parseFloat(document.getElementById('soll-stunden').value) || 0;
+    const ist = parseFloat(document.getElementById('ist-stunden').value) || 0;
+    const lohn = parseFloat(document.getElementById('stundenlohn').value) || 0;
+    const zuschlag = parseFloat(document.getElementById('zuschlag').value) || 0;
+    
+    const diff = ist - soll;
+    
+    const resStunden = document.getElementById('res-stunden');
+    const resZuschlag = document.getElementById('res-zuschlag-prozent');
+    const resPayout = document.getElementById('res-payout');
+    
+    if (diff > 0) {
+      resStunden.textContent = '+' + diff.toFixed(2).replace('.', ',') + ' Std.';
+      resStunden.style.color = 'var(--clr-accent)';
+    } else if (diff < 0) {
+      resStunden.textContent = diff.toFixed(2).replace('.', ',') + ' Std. (Minus)';
+      resStunden.style.color = 'var(--clr-red)';
+    } else {
+      resStunden.textContent = '0,00 Std.';
+      resStunden.style.color = 'var(--clr-text)';
+    }
+    
+    resZuschlag.textContent = zuschlag + ' %';
+    
+    let payoutVal = 0;
+    if (diff > 0) {
+      const basePay = diff * lohn;
+      const zuschlagPay = basePay * (zuschlag / 100);
+      payoutVal = basePay + zuschlagPay;
+    }
+    
+    resPayout.textContent = payoutVal.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+    
+    document.getElementById('overtime-results').style.display = 'block';
+  });
+
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

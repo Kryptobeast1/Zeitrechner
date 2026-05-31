@@ -164,7 +164,7 @@ export default function NowBasedCalc({ lang = 'de' }: Props) {
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="now-copy-btn">
-              {copied ? '✓ Copied!' : `📋 ${L.copy}`}
+              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${L.copy}`}
             </button>
           </div>
         </div>

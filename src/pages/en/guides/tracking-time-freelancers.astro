@@ -1,29 +1,103 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+import { getHubUrl, getFullUrl } from '../../../lib/seoEngine';
 
 const lang = 'en';
-const title = 'Time Tracking for Freelancers: The Ultimate Guide 2026';
-const description = 'Maximize your billable hours. Learn how to track time efficiently as a freelancer, calculate hourly rates, and avoid common billing mistakes.';
+const title = 'Time Tracking for Freelancers: Methods, Tools & Compliance 2026';
+const description = 'Maximize your billable hours. Read our comprehensive guide on time-tracking methods, the 60/20/20 rule, day rates, and decimal hours calculation.';
 
-const seo = buildSEOMeta(
-  'hub',
-  lang,
-  {},
-  '/en/guides/tracking-time-freelancers/',
-  'de',
-  '/ratgeber/zeiterfassung-freelancer/'
-);
-
+const canonical = getFullUrl('/en/guides/tracking-time-freelancers/');
+const altUrl = getFullUrl('/ratgeber/zeiterfassung-freelancer/');
 const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: altUrl },
+  { lang: 'en', url: canonical },
+  { lang: 'x-default', url: altUrl },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Time Tracking for Freelancers: Methods, Tools & Compliance 2026",
+        "description": "An in-depth guide for freelancers, contractors, and independent professionals on time-tracking practices, hourly vs. day rate calculations, and billing compliance.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Time Calculator",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Are freelancers legally required to track their work hours?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Statutory labor laws (like the EU Working Time Directive) generally apply to employees, not independent contractors. However, freelancers must track hours to provide proof of service to clients, back up invoices for tax compliance, and defend against potential tax audits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you convert work hours into decimal values for invoicing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Divide the number of minutes by 60 and add that to the total hours. For example, 5 hours and 15 minutes equals 5.25 decimal hours (15 / 60 = 0.25). Always bill using decimal hours to ensure exact billing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the 60/20/20 rule in freelancing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The 60/20/20 rule is a time management framework: 60% of your time should be spent on directly billable client work, 20% on marketing, business development, and prospecting, and 20% on administration and invoicing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you calculate partial day rates for freelancers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A standard day rate is typically based on an 8-hour workday. If a freelancer works 2 hours for a client, they should bill 0.25 of their day rate (2 / 8 = 0.25). This ensures fair and precise billing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What records must freelancers keep for tax audits?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Freelancers must retain detailed timesheets, hourly records, contracts, and invoices. Depending on the country, these records must be kept for 6 to 10 years and must be tamper-proof and verifiable."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
 ---
 
-<BaseLayout 
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  hreflang={seo.hreflang}
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
   lang={lang}
+  jsonLd={jsonLd}
   theme="guide"
 >
 
@@ -38,8 +112,17 @@ const hubUrl = getHubUrl(lang);
       </nav>
 
       <div style="margin-top: 1.5rem;">
-        <span class="badge badge--violet">🚀 Freelancer</span>
-        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <span class="badge badge--violet">⚖️ Expert Reviewed</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Time Tracking for Freelancers: Methods, Tools & Compliance 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Author: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR & Employment Law Expert • Updated: May 31, 2026</div>
+          </div>
+        </div>
+
         <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
       </div>
     </div>
@@ -52,48 +135,259 @@ const hubUrl = getHubUrl(lang);
         <aside class="guide-toc" aria-label="Table of Contents">
           <div class="guide-toc__title">Table of Contents</div>
           <ul class="guide-toc__list">
-            <li><a href="#estimation" class="guide-toc__link">1. The Cost of Estimation</a></li>
-            <li><a href="#billing-units" class="guide-toc__link">2. Billing Units</a></li>
-            <li><a href="#productivity-rule" class="guide-toc__link">3. The 60/20/20 Rule</a></li>
-            <li><a href="#conclusion" class="guide-toc__link">4. Conclusion & Precision</a></li>
+            <li><a href="#introduction" class="guide-toc__link">1. Introduction</a></li>
+            <li><a href="#why-track" class="guide-toc__link">2. Why Time Tracking is Critical</a></li>
+            <li><a href="#methods" class="guide-toc__link">3. Time Tracking Methods</a></li>
+            <li><a href="#rule-60-20-20" class="guide-toc__link">4. The 60/20/20 Rule</a></li>
+            <li><a href="#rates" class="guide-toc__link">5. Hourly vs. Day Rates</a></li>
+            <li><a href="#compliance" class="guide-toc__link">6. Tax & Billing Compliance</a></li>
+            <li><a href="#decimals" class="guide-toc__link">7. Decimal Hour Conversion</a></li>
+            <li><a href="#mistakes" class="guide-toc__link">8. Common Mistakes to Avoid</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. FAQs</a></li>
+            <li><a href="#conclusion" class="guide-toc__link">10. Conclusion & Tools</a></li>
           </ul>
         </aside>
 
         <!-- Main Editorial Content -->
         <div class="guide-main content-prose">
-          <section id="estimation" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. The Cost of "Guess-timation"</h2>
-            <p style="margin-bottom: var(--space-4);">Many independent professionals wait until the end of the day or week to estimate their billable time. Studies show that "retroactive tracking" can miss up to 25% of actual billable work — such as quick client calls, urgent emails, or research phases.</p>
-            <div class="glass glass--accent" style="padding: var(--space-4); border-radius: var(--radius); margin-bottom: var(--space-4);">
-              <strong>💡 Expert Tip:</strong> Use our <a href={hubUrl}>Time Calculator</a> to instantly convert small time increments into billable decimals for your invoices.
-            </div>
+          
+          <section id="introduction" style="margin-bottom: var(--space-8);">
+            <h2>1. Introduction: Time as a Freelancer's Asset</h2>
+            <p>
+              As a freelancer, contractor, or solo-entrepreneur, your primary currency is your time. Unlike standard salaried employees who rely on consistent bi-weekly checks, your revenue is directly proportional to the hours you bill and the value you deliver. Despite this clear connection, studies show that a large portion of independent professionals fail to track their time accurately, relying instead on manual estimation at the end of the week or month.
+            </p>
+            <p>
+              This lack of system leads to significant "revenue leakage," where unpaid client support, minor revisions, and administrative overhead go unrecorded. This guide details the best time-tracking methods, hourly calculations, compliance practices, and tools for freelancers in 2026.
+            </p>
           </section>
 
-          <section id="billing-units" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Billing Units: Hours vs. Days</h2>
-            <p>Depending on your contract, you may bill by <strong>hourly rates</strong> or <strong>day rates</strong>. A standard day rate usually assumes 8 hours of work. If you work 10 hours, you should bill 1.25 units to ensure fairness.</p>
-          </section>
-
-          <section id="productivity-rule" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. The 60/20/20 Rule for Productivity</h2>
-            <p style="margin-bottom: var(--space-4);">A balanced freelancer day consists of more than just billable work:</p>
-            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
-              <li style="margin-bottom: var(--space-2);"><strong>60% Billable Work:</strong> Core project delivery.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>20% Marketing & Sales:</strong> Finding the next project.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>20% Admin & Overhead:</strong> Invoicing, learning, and emails.</li>
+          <section id="why-track" style="margin-bottom: var(--space-8);">
+            <h2>2. Why Precise Time Tracking is Critical for Freelancers</h2>
+            <p>
+              Implementing a structured tracking habit affects almost every area of your business operations:
+            </p>
+            <ul>
+              <li><strong>Eliminate Revenue Leakage:</strong> Quick client calls, Slack conversations, or feedback sessions add up. Without active tracking, freelancers lose an estimated 15% to 25% of their billable time.</li>
+              <li><strong>Inform Future Estimations:</strong> Having historical data on how long specific tasks (e.g., prototyping, copy drafting, QA testing) take allows you to price fixed-rate projects more profitably and avoid the "scope creep" trap.</li>
+              <li><strong>Strengthen Client Trust:</strong> Providing itemized timesheets that list exact activities down to the minute reduces invoice queries and reassures clients of your transparency.</li>
+              <li><strong>Improve Focus & Efficiency:</strong> Reviewing where your time goes helps highlight distractions, unprofitable tasks, and your most productive hours.</li>
             </ul>
           </section>
 
-          <section id="conclusion">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Conclusion: Precision Wins</h2>
-            <p>Regardless of the tool you use, track your time <em>in the moment</em>. Our tool helps you document start and end times precisely and deduct breaks correctly, ensuring every minute counts toward your revenue.</p>
-            <div style="margin-top: var(--space-6);">
-              <a href={hubUrl} class="btn btn--primary">Start Tracking Project Time</a>
+          <section id="methods" style="margin-bottom: var(--space-8);">
+            <h2>3. Time Tracking Methods: Finding Your Fit</h2>
+            <p>
+              The best tracking method is the one you actually use. Choose from the following options based on your workflow:
+            </p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                  <th style="padding: 8px;">Method</th>
+                  <th style="padding: 8px;">Pros</th>
+                  <th style="padding: 8px;">Cons</th>
+                  <th style="padding: 8px;">Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Paper Journals</strong></td>
+                  <td style="padding: 8px;">Tactile, zero distraction, no software required.</td>
+                  <td style="padding: 8px;">Easy to lose, manual calculations, no digital export.</td>
+                  <td style="padding: 8px;">Beginners with single, long-term clients.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Spreadsheets (Excel/Sheets)</strong></td>
+                  <td style="padding: 8px;">Free, highly customizable, familiar formulas.</td>
+                  <td style="padding: 8px;">Manual input required, prone to formulas errors.</td>
+                  <td style="padding: 8px;">Freelancers with low project volume.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Dedicated Time-Tracking Software</strong></td>
+                  <td style="padding: 8px;">One-click stopwatch, budgets, automatic reporting.</td>
+                  <td style="padding: 8px;">Monthly cost, requires discipline to start/stop.</td>
+                  <td style="padding: 8px;">Freelancers managing multiple active clients.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;"><strong>Automatic Background Trackers</strong></td>
+                  <td style="padding: 8px;">Runs in background, logs active applications.</td>
+                  <td style="padding: 8px;">Privacy concerns, manual categorization required later.</td>
+                  <td style="padding: 8px;">Creatives switching between multiple assets rapidly.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="glass glass--accent" style="padding: var(--space-4); border-radius: var(--radius); margin-bottom: var(--space-4);">
+              <strong>💡 Pro-Tip:</strong> Use our free, private online <a href={hubUrl}>Time Calculator</a> to quickly convert your tracking intervals into decimal values for invoicing.
             </div>
           </section>
+
+          <section id="rule-60-20-20" style="margin-bottom: var(--space-8);">
+            <h2>4. The 60/20/20 Rule: Time Budgeting for Freelancers</h2>
+            <p>
+              A common mistake among new freelancers is assuming that 8 hours at the desk translates to 8 billable hours. In reality, a sustainable freelance business requires allocating significant time to unbillable but essential activities.
+            </p>
+            <p>
+              The **60/20/20 rule** is an excellent framework for structuring your time:
+            </p>
+            <ul>
+              <li><strong>60% Billable Client Work:</strong> Directly compensable project work (e.g., coding, designing, copy writing). In a 40-hour week, this is roughly 24 hours.</li>
+              <li><strong>20% Sales, Marketing & Networking:</strong> Securing future work (e.g., writing proposals, updating portfolios, networking, responding to leads).</li>
+              <li><strong>20% Administration & Learning:</strong> Invoicing, bookkeeping, tax preparation, software updates, and professional development.</li>
+            </ul>
+            <p>
+              When setting your hourly rate, it is crucial to ensure that the 60% billable portion covers the cost of the other 40%, as well as overhead, vacations, and sick leave.
+            </p>
+          </section>
+
+          <section id="rates" style="margin-bottom: var(--space-8);">
+            <h2>5. Hourly Rates vs. Day Rates: Calculation & Conversion</h2>
+            <p>
+              Depending on your industry, you may contract with clients on an hourly rate or a day rate. Converting between these models requires a standardized baseline.
+            </p>
+            <p>
+              **The Day Rate:** In professional services, a day rate is traditionally based on an **8-hour workday**. For example, a day rate of $800 implies a theoretical hourly rate of $100.
+            </p>
+            <p>
+              If a client requires a partial day of work, you must calculate the fractional day rate based on the actual hours worked:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Fractional Day Rate = (Hours Worked / Standard Day Hours) * Day Rate</code>
+            </div>
+            <p>
+              For 3 hours of work at a standard 8-hour day baseline: <code>(3 / 8) = 0.375 days</code>. Billed at an $800 day rate: <code>0.375 * $800 = $300.00</code>. Accurate decimal tracking ensures you do not lose margins during fraction calculations.
+            </p>
+          </section>
+
+          <section id="compliance" style="margin-bottom: var(--space-8);">
+            <h2>6. Tax Compliance & Financial Audit Readiness</h2>
+            <p>
+              If your business is audited, timesheets and hourly logs serve as primary supporting documentation for your reported revenue. In jurisdictions like Germany (under **GoBD** guidelines) or the US (under IRS regulations), business records must follow three key rules:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Immutability:</strong> Historical logs should not be modified without audit trails. Export your monthly logs to PDFs to freeze them.</li>
+              <li><strong>Verifiability:</strong> Every line item on an invoice must trace back to a verifiable log entries showing the date, duration, and task details.</li>
+              <li><strong>Retention:</strong> Retain all timesheet data alongside your tax returns for the legally mandated period, which ranges from **6 to 10 years** depending on your location.</li>
+            </ol>
+          </section>
+
+          <section id="decimals" style="margin-bottom: var(--space-8);">
+            <h2>7. Decimal Hours: The Math Behind Accurate Billing</h2>
+            <p>
+              A frequent error in manual billing is mixing time formats. If you log 8 hours and 45 minutes of work, and multiply it by a $100 hourly rate, a common math mistake is calculating: <code>8.45 * $100 = $845.00</code>.
+            </p>
+            <p>
+              In reality, the 45 minutes must be divided by 60 to convert them to decimal hours: <code>45 / 60 = 0.75</code>. The correct total is 8.75 decimal hours.
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Correct Invoice: 8.75 hours * $100/hr = $875.00 (You save $30.00 that would have been lost in translation!)</code>
+            </div>
+            <p>
+              Always use decimal hours on your invoices to ensure mathematical consistency and avoid confusion in client accounting systems.
+            </p>
+          </section>
+
+          <section id="mistakes" style="margin-bottom: var(--space-8);">
+            <h2>8. Common Time Tracking Mistakes to Avoid</h2>
+            <p>
+              Avoid these typical time-tracking traps to keep your business profitable:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Mistake 1: Memory-Based Logging.</strong> Logging hours at the end of the week leads to estimation bias. Always track time synchronously.</li>
+              <li><strong>Mistake 2: Overly Broad Increments.</strong> Billing only in full hours hurts margins or makes clients feel overbilled. Track time in 15-minute (0.25h) or 6-minute (0.10h) intervals.</li>
+              <li><strong>Mistake 3: Poor Project Classification.</strong> Mixing client hours can result in invoicing disputes. Maintain clean separators in your tools.</li>
+            </ul>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Are freelancers legally required to track their work hours?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Statutory labor laws (like the EU Working Time Directive) generally apply to employees, not independent contractors. However, freelancers must track hours to provide proof of service to clients, back up invoices for tax compliance, and defend against potential tax audits.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  How do you convert work hours into decimal values for invoicing?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Divide the number of minutes by 60 and add that to the total hours. For example, 5 hours and 15 minutes equals 5.25 decimal hours (15 / 60 = 0.25). Always bill using decimal hours to ensure exact billing.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  What is the 60/20/20 rule in freelancing?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>The 60/20/20 rule is a time management framework: 60% of your time should be spent on directly billable client work, 20% on marketing, business development, and prospecting, and 20% on administration and invoicing.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  How do you calculate partial day rates for freelancers?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>A standard day rate is typically based on an 8-hour workday. If a freelancer works 2 hours for a client, they should bill 0.25 of their day rate (2 / 8 = 0.25). This ensures fair and precise billing.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  What records must freelancers keep for tax audits?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Freelancers must retain detailed timesheets, hourly records, contracts, and invoices. Depending on the country, these records must be kept for 6 to 10 years and must be tamper-proof and verifiable.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="conclusion">
+            <h2>10. Conclusion: Consistency Wins</h2>
+            <p>
+              The tool you select is secondary to your tracking consistency. Even a basic timer or spreadsheet works if used daily. By billing in decimal hours and budgeting for administrative time, you will protect your margins and grow a healthier business.
+            </p>
+            <div style="margin-top: var(--space-6);">
+              <a href={hubUrl} class="btn btn--primary">Calculate Project Hours Now</a>
+            </div>
+          </section>
+
         </div>
       </div>
     </div>
   </section>
 
 </BaseLayout>
+
+<script is:inline>
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      answer.setAttribute('aria-hidden', isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

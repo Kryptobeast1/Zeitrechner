@@ -1,29 +1,79 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../lib/seoEngine';
+import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
-const title = 'Arbeitszeit berechnen: Der komplette Ratgeber 2026';
-const description = 'Lerne, wie du deine Arbeitsstunden präzise berechnest, Pausen richtig abziehst und Überstunden rechtssicher dokumentierst.';
+const title = 'Arbeitszeit berechnen: Kompletter Guide 2026 | Zeit-Rechner';
+const description = 'So berechnen Sie Bruttoarbeitszeit, Pausen & Überstunden korrekt. Mit ArbZG-Regelungen, Dezimalstunden & kostenlosem Rechner. Jetzt lesen.';
 
-const seo = buildSEOMeta(
-  'hub',
-  lang,
-  {},
-  '/ratgeber/arbeitszeit-berechnen/',
-  'en',
-  '/en/guides/how-to-calculate-work-hours/'
-);
-
+const canonical = getFullUrl('/ratgeber/arbeitszeit-berechnen/');
+const altUrl = getFullUrl('/en/guides/how-to-calculate-work-hours/');
 const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: canonical },
+  { lang: 'en', url: altUrl },
+  { lang: 'x-default', url: canonical },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "Arbeitszeit berechnen: Kompletter Guide 2026",
+        "description": "Erfahren Sie, wie Sie Brutto- und Nettoarbeitszeit gesetzeskonform berechnen, Industrieminuten konvertieren und Zeiterfassungsprozesse rechtssicher gestalten.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zeit-Rechner.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wie berechnet man die Nettoarbeitszeit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Die Nettoarbeitszeit berechnet sich aus der Bruttoarbeitszeit (gesamte Anwesenheitszeit vom Arbeitsbeginn bis zum Arbeitsende) abzüglich der tatsächlich genommenen Pausen. Formel: Nettoarbeitszeit = Bruttoarbeitszeit - Pausenzeit."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Was ist die gesetzliche Mindestpause laut Arbeitszeitgesetz?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gemäß § 4 ArbZG ist ab einer Arbeitszeit von mehr als 6 Stunden eine Pause von mindestens 30 Minuten gesetzlich vorgeschrieben. Beträgt die Arbeitszeit mehr als 9 Stunden, erhöht sich die Pflichtpausenzeit auf mindestens 45 Minuten."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
 ---
 
-<BaseLayout 
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  hreflang={seo.hreflang}
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
   lang={lang}
+  jsonLd={jsonLd}
   theme="guide"
 >
 
@@ -38,8 +88,17 @@ const hubUrl = getHubUrl(lang);
       </nav>
 
       <div style="margin-top: 1.5rem;">
-        <span class="badge badge--violet">📚 Ratgeber</span>
-        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <span class="badge badge--violet">⚖️ Fachlich geprüft</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Arbeitszeit berechnen: Der komplette Guide 2026</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
+          </div>
+        </div>
+
         <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
       </div>
     </div>
@@ -52,45 +111,243 @@ const hubUrl = getHubUrl(lang);
         <aside class="guide-toc" aria-label="Inhaltsverzeichnis">
           <div class="guide-toc__title">Inhaltsverzeichnis</div>
           <ul class="guide-toc__list">
-            <li><a href="#brutto-netto" class="guide-toc__link">1. Brutto- vs. Nettoarbeitszeit</a></li>
-            <li><a href="#pausen" class="guide-toc__link">2. Gesetzliche Pausenregelungen</a></li>
-            <li><a href="#ueberstunden" class="guide-toc__link">3. Überstunden richtig erfassen</a></li>
-            <li><a href="#digitale-zeiterfassung" class="guide-toc__link">4. Digitale Zeiterfassung</a></li>
+            <li><a href="#einleitung" class="guide-toc__link">1. Einleitung</a></li>
+            <li><a href="#brutto-netto" class="guide-toc__link">2. Brutto- vs. Nettoarbeitszeit</a></li>
+            <li><a href="#pausen" class="guide-toc__link">3. Gesetzliche Pausenregelungen</a></li>
+            <li><a href="#ueberstunden" class="guide-toc__link">4. Überstunden berechnen</a></li>
+            <li><a href="#industrieminuten" class="guide-toc__link">5. Industrieminuten & Dezimalstunden</a></li>
+            <li><a href="#schichtarbeit" class="guide-toc__link">6. Schichtarbeit & Nachtarbeit</a></li>
+            <li><a href="#zeiterfassung" class="guide-toc__link">7. Digitale Zeiterfassungspflicht</a></li>
+            <li><a href="#fehler" class="guide-toc__link">8. Häufige Fehler</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. Häufig gestellte Fragen</a></li>
+            <li><a href="#fazit" class="guide-toc__link">10. Fazit & CTA</a></li>
           </ul>
         </aside>
 
         <!-- Main Editorial Content -->
         <div class="guide-main content-prose">
+          
+          <section id="einleitung" style="margin-bottom: var(--space-8);">
+            <h2>1. Einleitung: Warum die exakte Zeiterfassung unverzichtbar ist</h2>
+            <p>
+              In einer zunehmend flexibilisierten Arbeitswelt ist die präzise Berechnung der Arbeitszeit sowohl für Arbeitgeber/innen als auch für Arbeitnehmer/innen von fundamentaler Bedeutung. Eine exakte Zeiterfassung sichert die gesetzeskonforme Entlohnung, schützt Arbeitnehmer/innen vor gesundheitlicher Überlastung durch überlange Arbeitszeiten und bewahrt Arbeitgeber/innen vor rechtlichen Risiken und Bußgeldern. 
+            </p>
+            <p>
+              Ob Gleitzeit, Vertrauensarbeitszeit oder klassische Schichtarbeit: Die genaue Kenntnis der gesetzlichen Grundlagen und Umrechnungsformeln ist die Basis für eine reibungslose HR-Administration und Lohnabrechnung (Payroll). Dieser Guide bietet HR-Verantwortlichen, Arbeitnehmern und Freelancern eine verlässliche und fachlich geprüfte Orientierungshilfe nach dem aktuellen Rechtsstand 2026.
+            </p>
+          </section>
+
           <section id="brutto-netto" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Brutto- vs. Nettoarbeitszeit</h2>
-            <p style="margin-bottom: var(--space-4);">Die <strong>Bruttoarbeitszeit</strong> ist die gesamte Zeitspanne zwischen Arbeitsbeginn und Arbeitsende. Die <strong>Nettoarbeitszeit</strong> ist die tatsächliche Zeit, in der gearbeitet wird – also Bruttozeit minus Pausen.</p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: var(--space-4);">
-              <code style="background: transparent; padding: 0; color: var(--clr-text);">Nettozeit = (Ende - Beginn) - Pausendauer</code>
+            <h2>2. Bruttoarbeitszeit vs. Nettoarbeitszeit</h2>
+            <p>
+              Bei der Arbeitszeitberechnung müssen zwei Begriffe strikt voneinander unterschieden werden: Bruttoarbeitszeit und Nettoarbeitszeit.
+            </p>
+            <ul>
+              <li><strong>Bruttoarbeitszeit:</strong> Dies ist die gesamte Anwesenheitszeit von Beschäftigten im Betrieb bzw. im Homeoffice vom Beginn der Arbeit bis zum Feierabend. Sie enthält alle Pausen, Wegezeiten und Unterbrechungen.</li>
+              <li><strong>Nettoarbeitszeit:</strong> Dies ist die tatsächliche Arbeitszeit, die produktiv geleistet wird und für die Arbeitnehmer/innen entlohnt werden. Sie entspricht der Bruttoarbeitszeit abzüglich aller unbezahlten Pausen.</li>
+            </ul>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Nettoarbeitszeit = Bruttoarbeitszeit (Arbeitsende - Arbeitsbeginn) - Unbezahlte Pausenzeit</code>
             </div>
+            <p>
+              <strong>Ein konkretes Berechnungsbeispiel:</strong> Beschäftigte stempeln morgens um 09:00 Uhr ein und verlassen den Betrieb abends um 17:30 Uhr. Die Bruttozeit beträgt somit 8 Stunden und 30 Minuten (8,50 h). Es wird eine Mittagspause von 30 Minuten eingelegt. Die Nettoarbeitszeit beträgt demnach genau 8,00 Stunden. Diese 8,00 Nettostunden sind die Basis für den Lohnzettel.
+            </p>
           </section>
 
           <section id="pausen" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Gesetzliche Pausenregelungen (ArbZG)</h2>
-            <p style="margin-bottom: var(--space-4);">In Deutschland schreibt das Arbeitszeitgesetz (ArbZG) Mindestpausen vor:</p>
-            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
-              <li style="margin-bottom: var(--space-2);"><strong>Ab 6 Stunden Arbeit:</strong> Mindestens 30 Minuten Pause.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>Ab 9 Stunden Arbeit:</strong> Mindestens 45 Minuten Pause.</li>
+            <h2>3. Gesetzliche Pausenregelungen nach dem Arbeitszeitgesetz (ArbZG)</h2>
+            <p>
+              Das deutsche <a href="https://www.gesetze-im-internet.de/arbzg/" target="_blank" rel="noopener noreferrer" style="color: var(--clr-accent); text-decoration: underline;">Arbeitszeitgesetz (ArbZG)</a> regelt in § 4 detailliert, wie Pausen gestaltet sein müssen. Pausen sind Zeiten ohne Arbeitsleistung, in denen sich Arbeitnehmer/innen nicht zur Verfügung des Arbeitgebers halten müssen. Sie dienen der Erholung.
+            </p>
+            <p>
+              Folgende Pausenzeiten schreibt das Gesetz zwingend vor:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Bei einer Arbeitszeit von 6 bis 9 Stunden:</strong> Mindestens <strong>30 Minuten</strong> unbezahlte Pause.</li>
+              <li><strong>Bei einer Arbeitszeit von mehr als 9 Stunden:</strong> Mindestens <strong>45 Minuten</strong> unbezahlte Pause.</li>
+              <li>Unter 6 Stunden Arbeitszeit ist gesetzlich keine Pause vorgeschrieben (kann aber vereinbart werden).</li>
             </ul>
-            <p>Pausen dürfen in Zeiträume von jeweils mindestens 15 Minuten aufgeteilt werden.</p>
+            <p>
+              Wichtig ist, dass diese Pausen im Voraus feststehen müssen und die Arbeitszeit unterbrechen müssen. Eine Pause darf demnach nicht an den Anfang oder das Ende der Schicht gelegt werden (z.B. um 30 Minuten später anzufangen oder früher zu gehen). Pausen können in Zeitabschnitte von jeweils mindestens 15 Minuten aufgeteilt werden. Arbeitgeber müssen die Einhaltung dieser Vorgaben überwachen – im Streitfall drohen erhebliche Bußgelder nach § 22 ArbZG. Weitere offizielle Informationen bietet das <a href="https://www.bmas.de" target="_blank" rel="noopener">Bundesministerium für Arbeit und Soziales (BMAS)</a> sowie die <a href="https://www.baua.de" target="_blank" rel="noopener">Bundesanstalt für Arbeitsschutz (BAuA)</a>.
+            </p>
           </section>
 
           <section id="ueberstunden" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Überstunden richtig erfassen</h2>
-            <p style="margin-bottom: var(--space-4);">Überstunden entstehen, wenn die vertraglich vereinbarte tägliche oder wöchentliche Arbeitszeit überschritten wird. Eine präzise Dokumentation ist hierbei unerlässlich.</p>
-            <div style="margin-top: var(--space-6); margin-bottom: var(--space-6);">
-              <a href={hubUrl} class="btn btn--primary">Jetzt Arbeitsstunden berechnen</a>
+            <h2>4. Überstunden richtig berechnen und dokumentieren</h2>
+            <p>
+              Überstunden liegen vor, wenn die vertraglich vereinbarte tägliche oder wöchentliche Sollarbeitszeit überschritten wird. Nach § 3 ArbZG darf die tägliche Arbeitszeit der Arbeitnehmer/innen 8,00 Stunden grundsätzlich nicht überschreiten. Sie kann auf bis zu 10,00 Stunden verlängert werden, wenn innerhalb von 6 Kalendermonaten oder 24 Wochen im Durchschnitt 8,00 Stunden werktäglich nicht überschritten werden.
+            </p>
+            <p>
+              Für die Berechnung von Überstunden müssen Sie Ihre geleisteten Nettoarbeitsstunden mit Ihren Sollarbeitsstunden vergleichen. In modernen Gleitzeitmodellen (Gleitzeit) werden Überstunden auf einem Arbeitszeitkonto gutgeschrieben und können durch Freizeit (Freizeitausgleich) wieder abgebaut werden. 
+            </p>
+            <p>
+              Die Dokumentationspflicht für Überstunden war bereits vor den jüngsten Urteilen zur Zeiterfassung gesetzlich verankert (§ 16 Abs. 2 ArbZG). Jede Stunde Mehrarbeit über die tägliche Regelarbeitszeit hinaus muss erfasst und mindestens zwei Jahre aufbewahrt werden.
+            </p>
+          </section>
+
+          <section id="industrieminuten" style="margin-bottom: var(--space-8);">
+            <h2>5. Industrieminuten und Dezimalstunden in der Lohnabrechnung</h2>
+            <p>
+              Im Alltag rechnen wir in Stunden und Minuten (sexagesimales System, Basis 60). In der Lohnbuchhaltung und Zeiterfassung führt dies jedoch zu mathematischen Schwierigkeiten, da man Minutenwerte nicht direkt mit Stundensätzen multiplizieren kann. Daher rechnet man Arbeitszeiten in <strong>Dezimalstunden</strong> (auch bekannt als <strong>Industrieminuten</strong>) um.
+            </p>
+            <p>
+              Die Formel für die Umrechnung lautet:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Dezimalstunden = Stunden + (Minuten / 60)</code>
+            </div>
+            <p>
+              Hier ist eine kurze Umrechnungstabelle für typische Zeitintervalle:
+            </p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                  <th style="padding: 8px;">Minuten</th>
+                  <th style="padding: 8px;">Industrieminuten (Dezimal)</th>
+                  <th style="padding: 8px;">Beispiel (Arbeitszeit)</th>
+                  <th style="padding: 8px;">Dezimalwert</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">15 Min.</td>
+                  <td style="padding: 8px;">0,25</td>
+                  <td style="padding: 8px;">7 Std. 15 Min.</td>
+                  <td style="padding: 8px;">7,25h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">30 Min.</td>
+                  <td style="padding: 8px;">0,50</td>
+                  <td style="padding: 8px;">8 Std. 30 Min.</td>
+                  <td style="padding: 8px;">8,50h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">45 Min.</td>
+                  <td style="padding: 8px;">0,75</td>
+                  <td style="padding: 8px;">6 Std. 45 Min.</td>
+                  <td style="padding: 8px;">6,75h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">60 Min.</td>
+                  <td style="padding: 8px;">1,00</td>
+                  <td style="padding: 8px;">8 Std. 00 Min.</td>
+                  <td style="padding: 8px;">8,00h</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              Durch die Umrechnung lässt sich die Nettoarbeitszeit direkt mit dem Stundenlohn multiplizieren. Zum Beispiel: <code>8,25 Stunden × 15,00 €/Std. = 123,75 €</code> Bruttolohn. Ein sexagesimales Rechnen (8:15 × 15) in herkömmlichen Tabellenkalkulationen wie Excel führt ohne spezielle Formeln zu falschen Ergebnissen.
+            </p>
+          </section>
+
+          <section id="schichtarbeit" style="margin-bottom: var(--space-8);">
+            <h2>6. Schichtarbeit berechnen: Herausforderung Mitternachtsgrenze</h2>
+            <p>
+              Eine besondere Hürde bei der Zeiterfassung ist die Berechnung von Arbeitszeiten, die sich über zwei Kalendertage erstrecken (Nachtarbeit bzw. Schichtarbeit über Mitternacht). Wenn eine beschäftigte Person beispielsweise um 22:00 Uhr die Schicht beginnt und am Folgetag um 06:00 Uhr beendet, stufen Standardformeln dies oft als negative Differenz ein.
+            </p>
+            <p>
+              Für die Berechnung über die Datumsgrenze hinweg gilt folgende logische Formel:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Dauer = (Endzeit < Startzeit) ? (24 - Startzeit + Endzeit) : (Endzeit - Startzeit)</code>
+            </div>
+            <p>
+              In Deutschland gilt Arbeit in der Zeit von 23:00 bis 06:00 Uhr (in Bäckereien 22:00 bis 05:00 Uhr) als Nachtarbeit im Sinne des ArbZG, sofern sie mehr als 2,00 Stunden umfasst. Arbeitnehmer/innen haben nach § 6 ArbZG Anspruch auf einen angemessenen Zuschlag auf das Bruttogehalt (Schichtzuschläge) oder entsprechenden Freizeitausgleich.
+            </p>
+          </section>
+
+          <section id="zeiterfassung" style="margin-bottom: var(--space-8);">
+              Seit dem wegweisenden Urteil des Europäischen Gerichtshofs (EuGH, C-55/18) und dem Bestätigungsbeschluss des Bundesarbeitsgerichts (BAG, 1 ABR 22/21) sind Arbeitgeber in Deutschland gesetzlich verpflichtet, ein „objektives, verlässliches und zugängliches System“ zur Erfassung der täglichen Arbeitszeit einzurichten.
+            </p>
+            <p>
+              Diese Pflicht zur systematischen Zeiterfassung betrifft alle Branchen und Unternehmensgrößen. Stundenzettel auf Papier oder Vertrauensarbeitszeit ohne jegliche Dokumentation sind rechtlich nicht mehr zulässig. Die Erfassung muss den Beginn, das Ende und die Dauer der täglichen Arbeitszeit einschließlich der Pausen am Tag der Arbeitsleistung erfassen.
+            </p>
+          </section>
+
+          <section id="fehler" style="margin-bottom: var(--space-8);">
+            <h2>8. Häufige Fehler bei der Zeiterfassung</h2>
+            <p>
+              Sowohl HR-Abteilungen als auch Angestellte machen bei der täglichen Dokumentation häufig Fehler:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Rundungsfehler bei Pausen:</strong> Pausen werden pauschal eingetragen, anstatt die tatsächlichen Ruhezeiten zu dokumentieren. Das verzerrt die Nettoarbeitszeit.</li>
+              <li><strong>Ignorieren der Pflichtpausen:</strong> Mitarbeiter stempeln 8,5 Stunden durch, ohne die gesetzliche 30-minütige Pause abzuziehen. Im Falle eines Audits durch das Gewerbeaufsichtsamt haftet der Arbeitgeber.</li>
+              <li><strong>Fehlende Erfassung von Reisezeiten:</strong> Dienstreisen werden oft falsch bewertet. Ob Reisezeit als Arbeitszeit gilt, hängt davon ab, ob der Mitarbeiter währenddessen aktiv arbeitet oder z.B. selbst ein Fahrzeug lenken muss.</li>
+              <li><strong>Nachtarbeit falsch abgerechnet:</strong> Fehlende Zuschläge für Arbeitsstunden zwischen 23 Uhr und 6 Uhr führen zu arbeitsrechtlichen Nachforderungen.</li>
+              <li><strong>Excel-Rundungsfehler:</strong> Verwendung falscher Zellformate in Microsoft Excel, wodurch Dezimalzeiten falsch konvertiert und Löhne fehlerhaft berechnet werden.</li>
+            </ol>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Häufig gestellte Fragen (FAQ)</h2>
+            
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  Müssen Arbeitgeber die Zeiterfassung kontrollieren?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Ja. Arbeitgeber/innen sind gesetzlich verpflichtet, die Einhaltung des Arbeitszeitgesetzes, insbesondere der Höchstarbeitszeiten und Pausenregelungen, aktiv zu überwachen. Sie können die Pflicht zur täglichen Stempelung auf die Arbeitnehmer/innen delegieren, bleiben jedoch in der Kontroll- und Haftungspflicht.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  Zählen Rüstzeiten als Arbeitszeit?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Ja. Das Umziehen in vorgeschriebene Schutzkleidung im Betrieb, das Hochfahren des Arbeitsrechners oder das Vorbereiten von Maschinen (sogenannte Rüstzeiten) sind zwingende Bestandteile der geschuldeten Arbeitsleistung und müssen als Arbeitszeit bezahlt und erfasst werden.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  Was passiert, wenn ich die Pausenzeit nicht erfasse?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>Erfassen Arbeitnehmer/innen keine Pause, zieht das System bzw. der/die Arbeitgeber/in bei Überschreiten der 6-Stunden-Marke meist automatisch die gesetzliche Mindestpause von 30 Minuten ab. Dies dient dem Arbeitsschutz, kann jedoch bei wiederholter bewusster Verweigerung der Pause zu arbeitsrechtlichen Konsequenzen (Abmahnung) führen.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Sind Raucherpausen bezahlte Arbeitszeit?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Nein. Raucherpausen sind keine gesetzlichen Ruhepausen im Sinne des § 4 ArbZG. Sie gelten als Unterbrechung der Arbeitszeit und müssen in der Regel ausgestempelt werden, sodass sie nicht vergütet werden. Arbeitgeber können dies über Betriebsvereinbarungen individuell regeln.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Wie viele Stunden darf ich maximal pro Tag arbeiten?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Die maximale gesetzliche tägliche Arbeitszeit liegt laut § 3 ArbZG bei 10 Stunden netto (ohne Pausen). Um 10 Stunden arbeiten zu dürfen, muss die Bruttoanwesenheitszeit mindestens 10 Stunden und 45 Minuten betragen, da ab 9 Stunden Arbeitszeit eine Pflichtpause von 45 Minuten vorgeschrieben ist.</span>
+                </div>
+              </div>
             </div>
           </section>
 
-          <section id="digitale-zeiterfassung">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Warum digitale Zeiterfassung sinnvoll ist</h2>
-            <p>Manuelle Stundenzettel sind fehleranfällig. Digitale Tools wie unser <a href={hubUrl}>Zeitrechner</a> helfen dabei, Rundungsfehler zu vermeiden und die gesetzlichen Ruhezeiten im Blick zu behalten.</p>
+          <section id="fazit">
+            <h2>10. Fazit & Rechner nutzen</h2>
+            <p>
+              Die genaue Berechnung der Arbeitszeit erfordert mathematische Präzision und ein fundiertes Verständnis der arbeitsrechtlichen Rahmenbedingungen. Um Rundungsfehler und Compliance-Risiken zu minimieren, empfiehlt sich die Nutzung digitaler Zeitberechnungs-Tools.
+            </p>
+            <p>
+              Nutzen Sie unseren kostenlosen und DSGVO-konformen Stundenzettel-Rechner, um Ihre Arbeitsstunden schnell, einfach und präzise in Dezimalzeiten umzurechnen.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Zum Arbeitsstunden-Rechner</a>
+              <button class="btn btn--secondary" onClick="window.print()">Diesen Guide drucken</button>
+            </div>
           </section>
+
         </div>
       </div>
     </div>

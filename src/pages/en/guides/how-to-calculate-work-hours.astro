@@ -1,29 +1,103 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { buildSEOMeta, getHubUrl } from '../../../lib/seoEngine';
+import { getHubUrl, getFullUrl } from '../../../lib/seoEngine';
 
 const lang = 'en';
-const title = 'Work Hours Calculation Guide 2026';
-const description = 'Learn how to calculate your work hours accurately, deduct breaks, and maintain a precise timesheet for payroll and billing.';
+const title = 'How to Calculate Work Hours: Complete Guide 2026 | Time Calculator';
+const description = 'Learn to calculate gross & net work hours, deduct breaks, convert minutes to decimal hours, and understand overtime rules under FLSA. Free tools included.';
 
-const seo = buildSEOMeta(
-  'hub',
-  lang,
-  {},
-  '/en/guides/how-to-calculate-work-hours/',
-  'de',
-  '/ratgeber/arbeitszeit-berechnen/'
-);
-
+const canonical = getFullUrl('/en/guides/how-to-calculate-work-hours/');
+const altUrl = getFullUrl('/ratgeber/arbeitszeit-berechnen/');
 const hubUrl = getHubUrl(lang);
+
+const hreflang = [
+  { lang: 'de', url: altUrl },
+  { lang: 'en', url: canonical },
+  { lang: 'x-default', url: altUrl },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": "How to Calculate Work Hours: Complete Guide 2026",
+        "description": "A comprehensive guide on calculating gross and net hours, converting sexagesimal time into decimal hours, and understanding employee time-tracking and break compliance.",
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "mainEntityOfPage": canonical,
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Jan Müller",
+          "url": getFullUrl('/autor/dr-jan-mueller/')
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Time Calculator",
+          "logo": {
+            "@type": "ImageObject",
+            "url": getFullUrl('/favicon.svg')
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do you calculate net work hours?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Net work hours are calculated by taking your gross hours (the total time elapsed between starting and finishing work) and subtracting any unpaid breaks. Formula: Net Hours = Gross Hours - Unpaid Break Time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the rules for lunch breaks under labor laws?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Under the US Fair Labor Standards Act (FLSA), meal periods of 30 minutes or longer are generally unpaid and not counted as hours worked, provided the employee is completely relieved from duty. In Europe, EU directives mandate a rest break for workdays exceeding 6 hours, typically lasting 30 minutes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you convert minutes to decimal hours?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "To convert minutes to decimal format, divide the number of minutes by 60. For example, 45 minutes divided by 60 is 0.75 decimal hours. If you worked 8 hours and 45 minutes, your total decimal hours would be 8.75."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does shift work over midnight require special calculations?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, calculating hours that cross midnight requires handling the date boundary. If an employee starts at 10:00 PM and finishes at 6:00 AM, the duration is calculated as: (24 - Start Time) + End Time, resulting in 8 hours."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is travel time considered paid hours worked?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Under FLSA, ordinary home-to-work travel is not paid. However, travel during the workday (between job sites) or travel for special one-day assignments in another city is generally counted as paid hours worked."
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
 ---
 
-<BaseLayout 
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  hreflang={seo.hreflang}
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
   lang={lang}
+  jsonLd={jsonLd}
   theme="guide"
 >
 
@@ -34,12 +108,21 @@ const hubUrl = getHubUrl(lang);
         <span class="breadcrumb__sep">›</span>
         <a href="/en/guides/">Guides</a>
         <span class="breadcrumb__sep">›</span>
-        <span aria-current="page">Work Hours Calculation</span>
+        <span aria-current="page">How to Calculate Work Hours</span>
       </nav>
 
       <div style="margin-top: 1.5rem;">
-        <span class="badge badge--violet">📚 Guide</span>
-        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">{title}</h1>
+        <span class="badge badge--violet">⚖️ Expert Reviewed</span>
+        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">How to Calculate Work Hours: The Ultimate 2026 Guide</h1>
+        
+        <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
+          <span style="font-size: 1.5rem;">👨‍⚖️</span>
+          <div>
+            <div style="font-size: 0.95rem; font-weight: 600;">Author: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
+            <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR & Employment Law Expert • Updated: May 31, 2026</div>
+          </div>
+        </div>
+
         <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
       </div>
     </div>
@@ -52,48 +135,264 @@ const hubUrl = getHubUrl(lang);
         <aside class="guide-toc" aria-label="Table of Contents">
           <div class="guide-toc__title">Table of Contents</div>
           <ul class="guide-toc__list">
-            <li><a href="#gross-net" class="guide-toc__link">1. Gross vs. Net Work Hours</a></li>
-            <li><a href="#break-rules" class="guide-toc__link">2. Standard Break Rules</a></li>
-            <li><a href="#overtime" class="guide-toc__link">3. Calculating Overtime</a></li>
-            <li><a href="#automated" class="guide-toc__link">4. Why Automation Wins</a></li>
+            <li><a href="#introduction" class="guide-toc__link">1. Introduction</a></li>
+            <li><a href="#gross-net" class="guide-toc__link">2. Gross vs. Net Work Hours</a></li>
+            <li><a href="#break-compliance" class="guide-toc__link">3. Break Rules & Regulations</a></li>
+            <li><a href="#overtime-rules" class="guide-toc__link">4. Overtime Calculation</a></li>
+            <li><a href="#decimal-conversion" class="guide-toc__link">5. Decimal Hours & Billing</a></li>
+            <li><a href="#midnight-shifts" class="guide-toc__link">6. Overnight Shift Calculations</a></li>
+            <li><a href="#legal-obligations" class="guide-toc__link">7. Mandatory Time-Tracking</a></li>
+            <li><a href="#common-mistakes" class="guide-toc__link">8. Avoidable Timesheet Errors</a></li>
+            <li><a href="#faq" class="guide-toc__link">9. FAQs</a></li>
+            <li><a href="#conclusion" class="guide-toc__link">10. Conclusion & CTA</a></li>
           </ul>
         </aside>
 
         <!-- Main Editorial Content -->
         <div class="guide-main content-prose">
+          
+          <section id="introduction" style="margin-bottom: var(--space-8);">
+            <h2>1. Introduction: Why High-Precision Work Hour Calculation Matters</h2>
+            <p>
+              In today's global and flexible labor market, the accurate calculation of work hours is a core process for any successful business. For employers, precise timesheet tracking ensures compliance with federal and regional labor laws, protects margins, and forms the bedrock of accurate payroll processing. For employees and freelancers, it guarantees that every minute of hard work is fairly compensated.
+            </p>
+            <p>
+              Whether dealing with standard office hours, flexible scheduling, or complex 24/7 rotational shifts, understanding the underlying formulas and legal guidelines is critical. This guide provides a comprehensive overview of the rules, mathematical models, and legal constraints governing work hours, updated for 2026.
+            </p>
+          </section>
+
           <section id="gross-net" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">1. Gross vs. Net Work Hours</h2>
-            <p style="margin-bottom: var(--space-4);"><strong>Gross work hours</strong> represent the total time from start to finish. <strong>Net work hours</strong> are the actual productive hours after subtracting breaks.</p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: var(--space-4);">
-              <code style="background: transparent; padding: 0; color: var(--clr-text);">Net Hours = (End Time - Start Time) - Total Break Duration</code>
-            </div>
-          </section>
-
-          <section id="break-rules" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">2. Standard Work Break Rules</h2>
-            <p style="margin-bottom: var(--space-4);">While laws vary by region, most countries have minimum break requirements:</p>
-            <ul style="margin-bottom: var(--space-4); padding-left: var(--space-6); list-style-type: disc;">
-              <li style="margin-bottom: var(--space-2);"><strong>Over 6 hours:</strong> Minimum 30 minutes.</li>
-              <li style="margin-bottom: var(--space-2);"><strong>Over 8 hours:</strong> Minimum 45 to 60 minutes.</li>
+            <h2>2. Gross vs. Net Work Hours</h2>
+            <p>
+              To calculate work hours correctly, you must start by distinguishing between gross time and net time.
+            </p>
+            <ul>
+              <li><strong>Gross Work Hours:</strong> This refers to the total elapsed time between when an employee clock in (starts work) and clocks out (ends work). It represents the raw duration of presence at the workplace or logged into remote systems.</li>
+              <li><strong>Net Work Hours:</strong> This is the time actually spent working, which is eligible for compensation. It is calculated by taking the gross hours and subtracting all unpaid rest breaks, lunch periods, and personal time.</li>
             </ul>
-            <p>Maintaining these breaks isn't just a legal requirement — it's vital for maintaining productivity and reducing burnout.</p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Net Work Hours = Gross Hours (End Time - Start Time) - Unpaid Break Duration</code>
+            </div>
+            <p>
+              <strong>Example calculation:</strong> If an employee clocks in at 8:00 AM and clocks out at 5:00 PM, their gross duration is exactly 9 hours. If they take a 1-hour lunch break, their net work hours amount to 8 hours (9.0h - 1.0h = 8.0h). These 8 net hours are used to calculate their daily wage.
+            </p>
           </section>
 
-          <section id="overtime" style="margin-bottom: var(--space-8);">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">3. Calculating Overtime</h2>
-            <p style="margin-bottom: var(--space-4);">Overtime occurs when daily or weekly contracted hours are exceeded. To track it, you must first establish your baseline hours per period.</p>
-            <div style="margin-top: var(--space-6); margin-bottom: var(--space-6);">
-              <a href={hubUrl} class="btn btn--primary">Start Calculating Hours Now</a>
+          <section id="break-compliance" style="margin-bottom: var(--space-8);">
+            <h2>3. Work Break Regulations: Compliance & Standards</h2>
+            <p>
+              Labor standards worldwide regulate rest intervals to ensure worker health and safety. In the United States, the <strong>Fair Labor Standards Act (FLSA)</strong> does not mandate rest or meal breaks. However, if an employer chooses to offer short rest breaks (typically 5 to 20 minutes), federal law requires them to be paid and counted as hours worked. Meal periods (typically 30 minutes or longer) are not paid, provided the employee is completely relieved from duties.
+            </p>
+            <p>
+              In contrast, the European Union's **Working Time Directive** and national laws like the German *Arbeitszeitgesetz (ArbZG)* enforce strict mandatory rest periods:
+            </p>
+            <ul style="padding-left: var(--space-6); list-style-type: disc;">
+              <li><strong>Workdays between 6 and 9 hours:</strong> Minimum of <strong>30 minutes</strong> unpaid break.</li>
+              <li><strong>Workdays exceeding 9 hours:</strong> Minimum of <strong>45 minutes</strong> unpaid break.</li>
+              <li><strong>Rest periods between shifts:</strong> Minimum of 11 consecutive hours of rest in every 24-hour period.</li>
+            </ul>
+            <p>
+              Employers must monitor break compliance, as failing to deduct or document these breaks can lead to substantial fines and audit failures.
+            </p>
+          </section>
+
+          <section id="overtime-rules" style="margin-bottom: var(--space-8);">
+            <h2>4. Overtime Calculation under Labor Laws</h2>
+            <p>
+              Overtime represents hours worked beyond an employee’s standard contract or statutory limits. In the US, the FLSA establishes that non-exempt employees must receive overtime pay for hours worked over **40 hours per workweek** at a rate not less than **1.5 times** their regular rate of pay (commonly referred to as "time and a half").
+            </p>
+            <p>
+              In Europe, overtime is heavily regulated via collective bargaining agreements and statutory limits. In Germany, for example, daily work hours can be temporarily increased to 10 hours, provided the average daily work time does not exceed 8 hours over a 6-month period.
+            </p>
+            <p>
+              Calculating overtime requires summing the net weekly hours and applying the appropriate multiplier to any hours that exceed the statutory threshold.
+            </p>
+          </section>
+
+          <section id="decimal-conversion" style="margin-bottom: var(--space-8);">
+            <h2>5. Converting Minutes to Decimal Hours for Payroll and Billing</h2>
+            <p>
+              Because time is sexagesimal (based on 60 minutes) and accounting is decimal (base 100), you cannot multiply hours and minutes directly by a monetary rate. For instance, multiplying 8 hours 30 minutes by $20/hour in a spreadsheet like Excel as <code>8.30 * 20</code> yields an incorrect result of $166.00.
+            </p>
+            <p>
+              The time must first be converted into **decimal hours** using the formula:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Decimal Hours = Hours + (Minutes / 60)</code>
+            </div>
+            <p>
+              For 8 hours and 30 minutes, this yields <code>8 + (30 / 60) = 8.5 hours</code>. The correct payroll calculation is <code>8.5 * $20 = $170.00</code>.
+            </p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--clr-border-2);">
+                  <th style="padding: 8px;">Minutes</th>
+                  <th style="padding: 8px;">Decimal Conversion</th>
+                  <th style="padding: 8px;">Example (Time format)</th>
+                  <th style="padding: 8px;">Decimal Hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">15 min</td>
+                  <td style="padding: 8px;">0.25</td>
+                  <td style="padding: 8px;">7 hrs 15 min</td>
+                  <td style="padding: 8px;">7.25h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">30 min</td>
+                  <td style="padding: 8px;">0.50</td>
+                  <td style="padding: 8px;">8 hrs 30 min</td>
+                  <td style="padding: 8px;">8.50h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">45 min</td>
+                  <td style="padding: 8px;">0.75</td>
+                  <td style="padding: 8px;">6 hrs 45 min</td>
+                  <td style="padding: 8px;">6.75h</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--clr-border);">
+                  <td style="padding: 8px;">60 min</td>
+                  <td style="padding: 8px;">1.00</td>
+                  <td style="padding: 8px;">8 hrs 00 min</td>
+                  <td style="padding: 8px;">8.00h</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="midnight-shifts" style="margin-bottom: var(--space-8);">
+            <h2>6. Shift Work: Calculating Across Midnight</h2>
+            <p>
+              When a shift spans across midnight (e.g., beginning at 10:00 PM and ending at 6:00 AM the following day), simple subtraction leads to a negative value. To calculate the duration of overnight shifts, use this logic:
+            </p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+              <code>Duration = (End Time < Start Time) ? (24 - Start Time + End Time) : (End Time - Start Time)</code>
+            </div>
+            <p>
+              Applying this to the 10:00 PM (22:00) to 6:00 AM (6:00) shift: <code>24 - 22 + 6 = 8 hours</code> gross. Night shifts often attract special hourly premiums or tax-free nighttime bonuses depending on the jurisdiction.
+            </p>
+          </section>
+
+          <section id="legal-obligations" style="margin-bottom: var(--space-8);">
+            <h2>7. Mandatory Time-Tracking Regulations</h2>
+            <p>
+              Around the world, regulatory bodies are tightening the rules on time tracking to protect employee well-being and combat unpaid overtime. Following rulings by the **European Court of Justice (ECJ)**, EU member states must mandate employers to implement objective, reliable, and accessible systems for recording daily working time.
+            </p>
+            <p>
+              In the US, the Department of Labor requires employers of non-exempt staff to maintain accurate records of hours worked each day and total hours worked each workweek. Relying on estimates or informal agreements is no longer legally sufficient and leaves businesses open to litigation.
+            </p>
+          </section>
+
+          <section id="common-mistakes" style="margin-bottom: var(--space-8);">
+            <h2>8. Avoidable Timesheet Errors</h2>
+            <p>
+              Manual or paper-based systems are prone to human errors that can cost companies thousands in legal liabilities or payroll leakage:
+            </p>
+            <ol style="padding-left: var(--space-6); display: flex; flex-direction: column; gap: 8px;">
+              <li><strong>Pre-emptive Break Rounding:</strong> Standardizing break deductions instead of capturing the actual duration can lead to non-compliance when workers shorten their rest periods.</li>
+              <li><strong>Unpaid Preliminary Activities:</strong> Failing to track preparatory tasks (such as booting up computers, putting on protective gear, or organizing tools) which legal courts consistently rule as paid working time.</li>
+              <li><strong>Travel Time Classification:</strong> Classifying work-related travel as unpaid commute. Any travel performed for business purposes during normal working hours is compensable.</li>
+              <li><strong>Incorrect Spreadsheets Formulas:</strong> Excel rounding errors due to default time formatting, which can result in fractional cents being dropped across large workforces.</li>
+            </ol>
+          </section>
+
+          <section id="faq" style="margin-bottom: var(--space-8);">
+            <h2>9. Frequently Asked Questions (FAQ)</h2>
+            
+            <div class="faq-list">
+              <div class="faq-item" id="faq-guide-1">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-1">
+                  How do you calculate net work hours?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-1" aria-hidden="true">
+                  <span>Net work hours are calculated by taking your gross hours (the total time elapsed between starting and finishing work) and subtracting any unpaid breaks. Formula: Net Hours = Gross Hours - Unpaid Break Time.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-2">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-2">
+                  What are the rules for lunch breaks under labor laws?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-2" aria-hidden="true">
+                  <span>Under the US Fair Labor Standards Act (FLSA), meal periods of 30 minutes or longer are generally unpaid and not counted as hours worked, provided the employee is completely relieved from duty. In Europe, EU directives mandate a rest break for workdays exceeding 6 hours, typically lasting 30 minutes.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-3">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-3">
+                  How do you convert minutes to decimal hours?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-3" aria-hidden="true">
+                  <span>To convert minutes to decimal format, divide the number of minutes by 60. For example, 45 minutes divided by 60 is 0.75 decimal hours. If you worked 8 hours and 45 minutes, your total decimal hours would be 8.75.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-4">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-4">
+                  Does shift work over midnight require special calculations?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-4" aria-hidden="true">
+                  <span>Yes, calculating hours that cross midnight requires handling the date boundary. If an employee starts at 10:00 PM and finishes at 6:00 AM, the duration is calculated as: (24 - Start Time) + End Time, resulting in 8 hours.</span>
+                </div>
+              </div>
+
+              <div class="faq-item" id="faq-guide-5">
+                <button class="faq-item__question" aria-expanded="false" aria-controls="faq-ans-5">
+                  Is travel time considered paid hours worked?
+                  <span class="faq-arrow" aria-hidden="true">▾</span>
+                </button>
+                <div class="faq-item__answer" id="faq-ans-5" aria-hidden="true">
+                  <span>Under FLSA, ordinary home-to-work travel is not paid. However, travel during the workday (between job sites) or travel for special one-day assignments in another city is generally counted as paid hours worked.</span>
+                </div>
+              </div>
             </div>
           </section>
 
-          <section id="automated">
-            <h2 style="margin-bottom: var(--space-3); color: var(--clr-accent);">4. Why Automated Calculation Wins</h2>
-            <p>Manual tracking is prone to rounding errors. Digital tools like <a href={hubUrl}>Time Calculator</a> provide instant decimal conversions (e.g., 8 hours 15 minutes = 8.25 hours), which are essential for billing and payroll integrity.</p>
+          <section id="conclusion">
+            <h2>10. Conclusion & Use Our Calculator</h2>
+            <p>
+              Calculating work hours accurately is not just about keeping record; it is about building transparency and trust in business. To avoid errors, companies should transition to automated systems.
+            </p>
+            <p>
+              Try our free, private online Work Hours Calculator to instantly convert your timesheets into decimal hours and deduct break periods.
+            </p>
+            <div style="margin-top: var(--space-6); display: flex; gap: 12px; flex-wrap: wrap;">
+              <a href={hubUrl} class="btn btn--primary">Go to Work Hours Calculator</a>
+              <button class="btn btn--secondary" onClick="window.print()">Print This Guide</button>
+            </div>
           </section>
+
         </div>
       </div>
     </div>
   </section>
 
 </BaseLayout>
+
+<script is:inline>
+  // FAQ Accordion Handler
+  document.querySelectorAll('.faq-item__question').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-item__answer');
+      const arrow = button.querySelector('.faq-arrow');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      button.setAttribute('aria-expanded', !isExpanded);
+      answer.setAttribute('aria-hidden', isExpanded);
+      
+      if (!isExpanded) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.maxHeight = '0';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  });
+</script>

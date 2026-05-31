@@ -165,7 +165,10 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="td-copy-btn">
-              {copied ? '✓ Copied!' : `📋 ${labels.copy}`}
+              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${labels.copy}`}
+            </button>
+            <button className="btn btn--ghost" onClick={() => window.print()} id="td-print-btn">
+              🖨️ {lang === 'de' ? 'Drucken' : 'Print'}
             </button>
             <button className="btn btn--ghost" onClick={() => navigator.share?.({ title: 'Zeitrechner', url: window.location.href })} id="td-share-btn">
               🔗 {labels.share}

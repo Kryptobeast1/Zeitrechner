@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CountdownCalc from '../../components/calculator/CountdownCalc';
 import { ALL_EVENTS, INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../../data/dateEvents';
 import type { DateEvent } from '../../data/dateEvents';
-import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../../lib/seoEngine';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl, getFullUrl } from '../../lib/seoEngine';
 import { countdownIntros_en, variantIndex } from '../../data/contentVariants';
 
 export async function getStaticPaths() {
@@ -31,15 +31,19 @@ const lang = 'en';
 const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
 const days = Math.max(0, getDaysUntil(event.targetDate));
 
+// Past-year check for noindex
+const targetYear = parseInt(event.targetDate.split('-')[0]);
+const isPastYear = targetYear < 2026;
+const isPastEvent = new Date(event.targetDate).getTime() < new Date().getTime();
+const shouldNoindex = isPastYear || (isPastEvent && event.priority === 'low');
+
 // Dynamic display name if year shifted
 let displayName = event.name;
 const currentTargetYear = new Date(activeTargetDate).getFullYear();
 if (yearShift > 0) {
   if (/20\d{2}/.test(displayName)) {
-    // Replace old year with new year
     displayName = displayName.replace(/20\d{2}/, currentTargetYear.toString());
   } else {
-    // Append year if not present
     displayName = `${displayName} ${currentTargetYear}`;
   }
 }
@@ -60,6 +64,7 @@ const seoMeta = buildSEOMeta(
   'countdown', lang,
   { name: displayName, days: days.toString() },
   canonical, 'de', altUrl,
+  shouldNoindex
 );
 
 const faqs = [
@@ -74,9 +79,38 @@ const jsonLd = [
     { name: 'Home', url: getHubUrl(lang) },
     { name: `Days Until ${displayName}`, url: canonical },
   ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: displayName,
+    startDate: activeTargetDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: { '@type': 'VirtualLocation', url: getFullUrl(canonical) }
+  }
 ];
 
-const relatedEvents = INDEXED_EVENTS.filter(e => e.slug !== event.slug && e.category === event.category).slice(0, 6);
+// Related events — exclude past-year countdown pages
+const relatedEvents = INDEXED_EVENTS.filter(e => {
+  const tYr = parseInt(e.targetDate.split('-')[0]);
+  const isPast = tYr < 2026;
+  return e.slug !== event.slug && e.category === event.category && !isPast;
+}).slice(0, 6);
+
+// Secondary Content helper
+function getSecondaryContent(slug: string): string {
+  const content: Record<string, string> = {
+    'christmas': `Useful Christmas facts: The holiday season begins with Advent Sunday. If you are ordering gifts online, complete your purchases by December 19–21 to ensure on-time delivery. Most Christmas markets in Germany open in late November and close on Christmas Eve. The postal service recommends mailing letters and cards by December 21.`,
+    'new-year': `New Year's Eve & Day traditions: In Germany, Silvester is celebrated with fireworks, lead pouring (now wax or tin pouring for environmental reasons), and sparkling wine. Major countdown events take place at the Brandenburg Gate in Berlin. Most Christmas markets close before New Year's Eve.`,
+    'easter': `How Easter is calculated: Easter Sunday is the first Sunday after the first full moon of spring. Easter Monday is a nationwide public holiday in Germany. School spring holidays vary by federal state but generally cover one to two weeks around Easter.`,
+    'halloween': `Halloween history & facts: Though modern Halloween is heavily influenced by American culture, it has ancient Celtic roots. In Germany, Halloween has become popular over the last few decades, with major costume events at theme parks and historical castles. Pumpkin carving starts in mid-October.`,
+    'valentines-day': `Valentine's Day gift traditions: Celebrated on February 14, it is the day of romance. Traditional gifts in Germany include red roses and chocolates. To prevent delivery delays, order flowers online at least 3 to 5 days in advance.`
+  };
+  const normSlug = slug.toLowerCase().replace(/-\d{4}$/, '');
+  return content[normSlug] || '';
+}
+
+const secondaryContent = getSecondaryContent(event.slug);
+
 const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
@@ -133,15 +167,30 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         <p class="featured-snippet__sentence" set:html={introHtml} />
       </div>
 
+      {secondaryContent && (
+        <div class="glass" style="margin-top: 2rem; padding: var(--space-5); border-radius: var(--radius-lg); border: 1px solid var(--clr-border); text-align: left;">
+          <h3 style="margin-top: 0; margin-bottom: var(--space-2); font-size: 1.1rem; display: flex; align-items: center; gap: 8px; color: var(--clr-text);">
+            ℹ️ Useful Facts & Context
+          </h3>
+          <p style="font-size: 0.95rem; line-height: 1.7; color: var(--clr-text-2); margin: 0;">{secondaryContent}</p>
+        </div>
+      )}
+
       <div class="glass glass--raised animate-in" style="padding: var(--space-4); margin-top: var(--space-6); text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--clr-border);">
         <p style="margin-bottom: var(--space-3); font-weight: 600; color: var(--clr-text); font-size: 0.9rem;">
           🔗 Share this countdown:
         </p>
-        <div style="display: flex; gap: var(--space-2); max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
-          <input type="text" id="share-link-input" readonly value="" class="glass" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--clr-border-2); color: var(--clr-text-2); font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2);" />
-          <button id="copy-btn" class="btn btn--primary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-lang={lang}>
+        <div style="display: flex; gap: var(--space-2); max-width: 600px; margin: 0 auto; flex-wrap: wrap; justify-content: center; align-items: center;">
+          <input type="text" id="share-link-input" readonly value="" class="glass" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--clr-border-2); color: var(--clr-text-2); font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2); display: none;" />
+          <button id="native-share-btn" class="btn btn--primary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; display: none;">
+            Share
+          </button>
+          <button id="copy-btn" class="btn btn--secondary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-lang={lang}>
             Copy
           </button>
+          <a id="whatsapp-share-btn" class="btn btn--ghost" target="_blank" rel="noopener" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; color: #25d366; border-color: rgba(37, 211, 102, 0.3);">
+            WhatsApp
+          </a>
         </div>
       </div>
     </div>
@@ -150,21 +199,48 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('share-link-input');
-      const btn = document.getElementById('copy-btn');
-      if (input) {
-        input.value = window.location.href;
+      const copyBtn = document.getElementById('copy-btn');
+      const shareBtn = document.getElementById('native-share-btn');
+      const waBtn = document.getElementById('whatsapp-share-btn');
+      const currentUrl = window.location.href;
+      
+      if (input) input.value = currentUrl;
+      
+      const shareTitle = document.title;
+      const daysText = document.querySelector('.flip-card__number')?.textContent || '0';
+      const eventName = document.querySelector('h1')?.textContent?.replace('How Many Days Until ', '')?.replace('?', '') || '';
+      
+      const shareText = `Only ${daysText} days until ${eventName}! ⏱`;
+      
+      if (navigator.share) {
+        if (shareBtn) shareBtn.style.display = 'inline-flex';
+        shareBtn.addEventListener('click', () => {
+          navigator.share({
+            title: shareTitle,
+            text: `${shareText} ${currentUrl}`,
+            url: currentUrl
+          }).catch(console.error);
+        });
+      } else {
+        if (input) input.style.display = 'block';
       }
-      if (btn && input) {
-        btn.addEventListener('click', () => {
+      
+      if (waBtn) {
+        const waText = encodeURIComponent(`${shareText} ${currentUrl}`);
+        waBtn.href = `https://wa.me/?text=${waText}`;
+      }
+      
+      if (copyBtn && input) {
+        copyBtn.addEventListener('click', () => {
           navigator.clipboard.writeText(input.value).then(() => {
-            const origText = btn.textContent;
-            btn.textContent = btn.getAttribute('data-lang') === 'de' ? 'Kopiert!' : 'Copied!';
-            btn.style.background = 'linear-gradient(135deg, var(--clr-green), #059669)';
-            btn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+            const origText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.style.background = 'linear-gradient(135deg, var(--clr-green), #059669)';
+            copyBtn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
             setTimeout(() => {
-              btn.textContent = origText;
-              btn.style.background = '';
-              btn.style.boxShadow = '';
+              copyBtn.textContent = origText;
+              copyBtn.style.background = '';
+              copyBtn.style.boxShadow = '';
             }, 2000);
           });
         });
@@ -187,17 +263,19 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
     </div>
   </section>
 
-  <section class="section" style="padding-top: 0;">
+  <section class="section" style="padding-top: 0;" id="faq-section">
     <div class="container container--narrow">
       <h2 style="margin-bottom: 20px;">Frequently Asked Questions</h2>
-      <div class="faq-list">
-        {faqs.map(faq => (
-          <div class="faq-item">
-            <button class="faq-item__question" aria-expanded="false">
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((faq, idx) => (
+          <div class="faq-item" id={`faq-${idx}`} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button class="faq-item__question" aria-expanded="false" itemprop="name" aria-controls={`faq-answer-${idx}`}>
               {faq.q}
-              <span class="faq-arrow">▾</span>
+              <span class="faq-arrow" aria-hidden="true">▾</span>
             </button>
-            <div class="faq-item__answer">{faq.a}</div>
+            <div class="faq-item__answer" id={`faq-answer-${idx}`} aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <span itemprop="text">{faq.a}</span>
+            </div>
           </div>
         ))}
       </div>

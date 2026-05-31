@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CountdownCalc from '../components/calculator/CountdownCalc';
 import { ALL_EVENTS, INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../data/dateEvents';
 import type { DateEvent } from '../data/dateEvents';
-import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl } from '../lib/seoEngine';
+import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl, getFullUrl } from '../lib/seoEngine';
 import { countdownIntros_de, variantIndex } from '../data/contentVariants';
 
 export async function getStaticPaths() {
@@ -31,15 +31,19 @@ const lang = 'de';
 const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
 const days = Math.max(0, getDaysUntil(event.targetDate));
 
+// Past-year check for noindex
+const targetYear = parseInt(event.targetDate.split('-')[0]);
+const isPastYear = targetYear < 2026;
+const isPastEvent = new Date(event.targetDate).getTime() < new Date().getTime();
+const shouldNoindex = isPastYear || (isPastEvent && event.priority === 'low');
+
 // Dynamic display name if year shifted
 let displayName = event.deName;
 const currentTargetYear = new Date(activeTargetDate).getFullYear();
 if (yearShift > 0) {
   if (/20\d{2}/.test(displayName)) {
-    // Replace old year with new year
     displayName = displayName.replace(/20\d{2}/, currentTargetYear.toString());
   } else {
-    // Append year if not present
     displayName = `${displayName} ${currentTargetYear}`;
   }
 }
@@ -60,6 +64,7 @@ const seoMeta = buildSEOMeta(
   'countdown', lang,
   { name: displayName, days: days.toString() },
   canonical, 'en', altUrl,
+  shouldNoindex
 );
 
 const faqs = [
@@ -74,10 +79,37 @@ const jsonLd = [
     { name: 'Startseite', url: getHubUrl(lang) },
     { name: `Tage bis ${displayName}`, url: canonical },
   ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: displayName,
+    startDate: activeTargetDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: { '@type': 'VirtualLocation', url: getFullUrl(canonical) }
+  }
 ];
 
-// Related events
-const relatedEvents = INDEXED_EVENTS.filter(e => e.deSlug !== event.deSlug && e.category === event.category).slice(0, 6);
+// Related events — exclude past-year countdown pages
+const relatedEvents = INDEXED_EVENTS.filter(e => {
+  const tYr = parseInt(e.targetDate.split('-')[0]);
+  const isPast = tYr < 2026;
+  return e.deSlug !== event.deSlug && e.category === event.category && !isPast;
+}).slice(0, 6);
+
+// Secondary Content helper
+function getSecondaryContent(slug: string): string {
+  const content: Record<string, string> = {
+    'weihnachten': `Wissenswertes rund um das Weihnachtsfest: Die Adventszeit beginnt traditionell mit dem ersten Adventssonntag. Wenn Sie Geschenke online bestellen, sollten Sie dies bis spätestens 19. bis 21. Dezember tun, damit die Lieferung rechtzeitig ankommt. Die meisten Weihnachtsmärkte in Deutschland öffnen Ende November und schließen am 23. oder 24. Dezember. Die Deutsche Post empfiehlt, Briefe und Postkarten spätestens bis zum 21. Dezember einzuliefern.`,
+    'neujahr': `Silvester und Neujahr in Deutschland: Traditionell feiern die Deutschen Silvester mit Feuerwerk, Bleigießen (heute Zinn- oder Wachsgießen) und Sekt zum Anstoßen. Beliebte Orte für große Feuerwerke sind das Brandenburger Tor in Berlin sowie Aussichtspunkte in Großstädten wie Hamburg und München. Beachten Sie, dass die meisten Weihnachtsmärkte bereits vor Silvester schließen.`,
+    'ostersonntag': `Wie wird das Osterdatum berechnet? Ostern fällt immer auf den ersten Sonntag nach dem ersten Vollmond im Frühling. Der Ostermontag ist in ganz Deutschland ein gesetzlicher Feiertag. Die Osterferien der Schulen variieren je nach Bundesland, dauern aber meist ein bis zwei Wochen rund um das Osterwochenende.`,
+    'halloween': `Halloween hat keltische Wurzeln und wurde über die USA in Europa und Deutschland populär. Beliebte Events sind Gruselpartys in Freizeitparks und Burgen. Die Kürbisschnitz-Saison beginnt Mitte Oktober, und am Abend des 31. Oktober ziehen Kinder von Haus zu Haus für 'Süßes oder Saures'.`,
+    'valentinstag': `Der Valentinstag am 14. Februar ist der Tag der Liebenden. In Deutschland werden traditionell Blumen (vor allem rote Rosen) und Pralinen verschenkt. Floristen verzeichnen an diesem Tag Rekordumsätze. Um Lieferengpässe zu vermeiden, sollten Blumenbestellungen mindestens 3-5 Tage im Voraus getätigt werden.`
+  };
+  const normSlug = slug.toLowerCase().replace(/-\d{4}$/, '');
+  return content[normSlug] || '';
+}
+
+const secondaryContent = getSecondaryContent(event.deSlug);
 
 const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
@@ -135,15 +167,30 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <p class="featured-snippet__sentence" set:html={introHtml} />
       </div>
 
+      {secondaryContent && (
+        <div class="glass" style="margin-top: 2rem; padding: var(--space-5); border-radius: var(--radius-lg); border: 1px solid var(--clr-border); text-align: left;">
+          <h3 style="margin-top: 0; margin-bottom: var(--space-2); font-size: 1.1rem; display: flex; align-items: center; gap: 8px; color: var(--clr-text);">
+            ℹ️ Wissenswertes & Hintergründe
+          </h3>
+          <p style="font-size: 0.95rem; line-height: 1.7; color: var(--clr-text-2); margin: 0;">{secondaryContent}</p>
+        </div>
+      )}
+
       <div class="glass glass--raised animate-in" style="padding: var(--space-4); margin-top: var(--space-6); text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--clr-border);">
         <p style="margin-bottom: var(--space-3); font-weight: 600; color: var(--clr-text); font-size: 0.9rem;">
           🔗 Diesen Countdown teilen:
         </p>
-        <div style="display: flex; gap: var(--space-2); max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
-          <input type="text" id="share-link-input" readonly value="" class="glass" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--clr-border-2); color: var(--clr-text-2); font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2);" />
-          <button id="copy-btn" class="btn btn--primary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-lang={lang}>
+        <div style="display: flex; gap: var(--space-2); max-width: 600px; margin: 0 auto; flex-wrap: wrap; justify-content: center; align-items: center;">
+          <input type="text" id="share-link-input" readonly value="" class="glass" style="flex: 1; min-width: 200px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--clr-border-2); color: var(--clr-text-2); font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.2); display: none;" />
+          <button id="native-share-btn" class="btn btn--primary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; display: none;">
+            Teilen
+          </button>
+          <button id="copy-btn" class="btn btn--secondary" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-lang={lang}>
             Kopieren
           </button>
+          <a id="whatsapp-share-btn" class="btn btn--ghost" target="_blank" rel="noopener" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; color: #25d366; border-color: rgba(37, 211, 102, 0.3);">
+            WhatsApp
+          </a>
         </div>
       </div>
     </div>
@@ -152,21 +199,48 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById('share-link-input');
-      const btn = document.getElementById('copy-btn');
-      if (input) {
-        input.value = window.location.href;
+      const copyBtn = document.getElementById('copy-btn');
+      const shareBtn = document.getElementById('native-share-btn');
+      const waBtn = document.getElementById('whatsapp-share-btn');
+      const currentUrl = window.location.href;
+      
+      if (input) input.value = currentUrl;
+      
+      const shareTitle = document.title;
+      const daysText = document.querySelector('.flip-card__number')?.textContent || '0';
+      const eventName = document.querySelector('h1')?.textContent?.replace('Wie viele Tage bis ', '')?.replace('?', '') || '';
+      
+      const shareText = `Noch ${daysText} Tage bis ${eventName}! ⏱`;
+      
+      if (navigator.share) {
+        if (shareBtn) shareBtn.style.display = 'inline-flex';
+        shareBtn.addEventListener('click', () => {
+          navigator.share({
+            title: shareTitle,
+            text: `${shareText} ${currentUrl}`,
+            url: currentUrl
+          }).catch(console.error);
+        });
+      } else {
+        if (input) input.style.display = 'block';
       }
-      if (btn && input) {
-        btn.addEventListener('click', () => {
+      
+      if (waBtn) {
+        const waText = encodeURIComponent(`${shareText} ${currentUrl}`);
+        waBtn.href = `https://wa.me/?text=${waText}`;
+      }
+      
+      if (copyBtn && input) {
+        copyBtn.addEventListener('click', () => {
           navigator.clipboard.writeText(input.value).then(() => {
-            const origText = btn.textContent;
-            btn.textContent = btn.getAttribute('data-lang') === 'de' ? 'Kopiert!' : 'Copied!';
-            btn.style.background = 'linear-gradient(135deg, var(--clr-green), #059669)';
-            btn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+            const origText = copyBtn.textContent;
+            copyBtn.textContent = 'Kopiert';
+            copyBtn.style.background = 'linear-gradient(135deg, var(--clr-green), #059669)';
+            copyBtn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
             setTimeout(() => {
-              btn.textContent = origText;
-              btn.style.background = '';
-              btn.style.boxShadow = '';
+              copyBtn.textContent = origText;
+              copyBtn.style.background = '';
+              copyBtn.style.boxShadow = '';
             }, 2000);
           });
         });
@@ -190,17 +264,19 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     </div>
   </section>
 
-  <section class="section" style="padding-top: 0;">
+  <section class="section" style="padding-top: 0;" id="faq-section">
     <div class="container container--narrow">
       <h2 style="margin-bottom: 20px;">Häufig gestellte Fragen</h2>
-      <div class="faq-list">
-        {faqs.map(faq => (
-          <div class="faq-item">
-            <button class="faq-item__question" aria-expanded="false">
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((faq, idx) => (
+          <div class="faq-item" id={`faq-${idx}`} itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button class="faq-item__question" aria-expanded="false" itemprop="name" aria-controls={`faq-answer-${idx}`}>
               {faq.q}
-              <span class="faq-arrow">▾</span>
+              <span class="faq-arrow" aria-hidden="true">▾</span>
             </button>
-            <div class="faq-item__answer">{faq.a}</div>
+            <div class="faq-item__answer" id={`faq-answer-${idx}`} aria-hidden="true" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <span itemprop="text">{faq.a}</span>
+            </div>
           </div>
         ))}
       </div>

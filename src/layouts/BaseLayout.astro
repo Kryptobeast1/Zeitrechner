@@ -38,16 +38,14 @@ const altLang = lang === 'de' ? 'en' : 'de';
 const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
 
 const navLinks = lang === 'de' ? [
-  { href: '/', label: 'Zeitrechner' },
-  { href: '/#differenz', label: 'Differenz' },
-  { href: '/#arbeitsstunden', label: 'Arbeitsstunden' },
-  { href: '/#countdown', label: 'Countdown' },
+  { href: '/', label: 'Rechner' },
+  { href: '/alle-rechner/', label: 'Beliebte Zeiten' },
+  { href: '/ratgeber/', label: 'Ratgeber' },
   { href: '/ueber-uns/', label: 'Über uns' },
 ] : [
   { href: '/en/', label: 'Calculator' },
-  { href: '/en/#diff', label: 'Difference' },
-  { href: '/en/#work', label: 'Work Hours' },
-  { href: '/en/#countdown', label: 'Countdown' },
+  { href: '/en/all-calculators/', label: 'Popular Times' },
+  { href: '/en/guides/', label: 'Guides' },
   { href: '/en/about-us/', label: 'About Us' },
 ];
 
@@ -143,7 +141,12 @@ const currentYear = new Date().getFullYear();
   <nav class="navbar" role="navigation" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
     <div class="navbar__inner">
       <a href={hubUrl} class="navbar__logo" aria-label="Home">
-        ⏱ <span>Zeit{lang === 'de' ? 'rechner' : 'Calculator'}</span>
+        <svg class="navbar__logo-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--clr-accent); filter: drop-shadow(0 0 4px var(--clr-accent-glow));">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" />
+          <polyline points="12 7 12 12 15 15" stroke="currentColor" />
+          <path d="M12 2v2" stroke="currentColor" />
+        </svg>
+        <span>{lang === 'de' ? 'Zeit-Rechner' : 'Time Calculator'}</span>
       </a>
 
       <ul class="navbar__links" role="list">
@@ -182,10 +185,10 @@ const currentYear = new Date().getFullYear();
       <div class="footer__col">
         <h3>{lang === 'de' ? 'Beliebt' : 'Popular'}</h3>
         <ul>
-          <li><a href={lang === 'de' ? '/stunden-zwischen-8-und-17/' : '/en/hours-between-8-and-5/'}>8–17 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/stunden-zwischen-7-und-15/' : '/en/hours-between-7-and-3/'}>7–15 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/stunden-zwischen-10-und-18/' : '/en/hours-between-10-and-18/'}>10–18 Uhr</a></li>
-          <li><a href={lang === 'de' ? '/stunden-zwischen-9-und-12/' : '/en/hours-between-9-and-12/'}>9–12 Uhr</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-8-und-17/' : '/en/hours-between-8-and-5/'}>{lang === 'de' ? '8–17 Uhr' : '8 AM – 5 PM'}</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-7-und-15/' : '/en/hours-between-7-and-3/'}>{lang === 'de' ? '7–15 Uhr' : '7 AM – 3 PM'}</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-10-und-18/' : '/en/hours-between-10-and-18/'}>{lang === 'de' ? '10–18 Uhr' : '10 AM – 6 PM'}</a></li>
+          <li><a href={lang === 'de' ? '/stunden-zwischen-9-und-12/' : '/en/hours-between-9-and-12/'}>{lang === 'de' ? '9–12 Uhr' : '9 AM – 12 PM'}</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -236,7 +239,10 @@ const currentYear = new Date().getFullYear();
         const expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
         const answer = btn.nextElementSibling as HTMLElement;
-        if (answer) answer.classList.toggle('open', !expanded);
+        if (answer) {
+          answer.classList.toggle('open', !expanded);
+          answer.setAttribute('aria-hidden', String(expanded));
+        }
       });
     });
   </script>

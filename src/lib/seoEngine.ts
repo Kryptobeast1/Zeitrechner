@@ -152,7 +152,7 @@ export function buildSEOMeta(
     hreflang: [
       { lang, url: getFullUrl(canonical) },
       { lang: alternateLang, url: getFullUrl(alternateUrl) },
-      { lang: 'x-default', url: getFullUrl(lang === 'en' ? canonical : alternateUrl) },
+      { lang: 'x-default', url: getFullUrl(lang === 'de' ? canonical : alternateUrl) },
     ],
     noindex,
     ogImage: ogImage ? getFullUrl(ogImage) : getFullUrl('/og-image.png'),
