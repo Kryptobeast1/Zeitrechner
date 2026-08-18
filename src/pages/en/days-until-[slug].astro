@@ -8,24 +8,12 @@ import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, g
 import { countdownIntros_en, variantIndex } from '../../data/contentVariants';
 
 export async function getStaticPaths() {
-  const paths = [];
-  for (const event of ALL_EVENTS) {
-    paths.push({ params: { slug: event.slug }, props: { event } });
-    if (event.deSlug !== event.slug) {
-      paths.push({ params: { slug: event.deSlug }, props: { event } });
-    }
-  }
-  return paths;
+  // Canonical English slug only. Legacy slugs are 301'd via vercel.json.
+  return ALL_EVENTS.map(event => ({ params: { slug: event.slug }, props: { event } }));
 }
 
 interface Props { event: DateEvent; }
 const { event } = Astro.props as Props;
-const { slug } = Astro.params;
-
-// 301 Redirect to English slug if German slug is used on an English page
-if (slug === event.deSlug && event.deSlug !== event.slug) {
-  return Astro.redirect(getCountdownUrl('en', event.slug), 301);
-}
 
 const lang = 'en';
 const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);

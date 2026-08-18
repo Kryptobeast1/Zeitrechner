@@ -11,33 +11,23 @@ import {
 import {
   timeRangeIntros_en, getContextClusterEN, useCases_en, faqSets_en, variantIndex
 } from '../../data/contentVariants';
+import { computeShiftFromHours } from '../../lib/shift';
 
 export async function getStaticPaths() {
-  const paths = [];
-  for (const range of ALL_TIME_RANGES) {
-    // Add primary English slug
-    paths.push({ params: { slug: range.slug }, props: { range } });
-    // Add German slug for robustness
-    if (range.deSlug !== range.slug) {
-      paths.push({ params: { slug: range.deSlug }, props: { range } });
-    }
-  }
-  return paths;
+  // Canonical English slug only. Legacy slugs are 301'd via vercel.json.
+  return ALL_TIME_RANGES.map(range => ({ params: { slug: range.slug }, props: { range } }));
 }
 
 interface Props { range: TimeRange; }
 const { range } = Astro.props as Props;
-const { slug } = Astro.params;
-
-// 301 Redirect to English slug if German slug is used on an English page
-if (slug === range.deSlug && range.deSlug !== range.slug) {
-  return Astro.redirect(getTimeRangeUrl('en', range.slug), 301);
-}
 
 const lang = 'en';
 const hours = getRangeHours(range.start, range.end);
 const start24 = formatHour24(range.start);
 const end24 = formatHour24(range.end);
+
+// Single source of truth for the displayed result figures (Phase 1)
+const gross = computeShiftFromHours(range.start, range.end, 0, 'en');
 
 const canonical = getTimeRangeUrl(lang, range.slug);
 const altUrl = getTimeRangeUrl('de', range.deSlug);
@@ -133,9 +123,9 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
 
           <div class="featured-snippet" role="complementary" aria-label="Quick Answer" style="margin: 0;">
             <div class="featured-snippet__label">Quick Answer</div>
-            <div class="featured-snippet__answer">{hours} Hours</div>
+            <div class="featured-snippet__answer"><span data-result="gross-hours">{gross.grossDecimalStr}</span> Hours</div>
             <p class="featured-snippet__sentence" style="margin-top: var(--space-2); margin-bottom: 0;">
-              There are exactly <strong>{hours} hours</strong> between {start24} and {end24} ({hours * 60} minutes / {hours * 3600} seconds).
+              There are exactly <strong>{gross.grossDecimalStr} hours</strong> between {start24} and {end24} (<span data-result="gross-minutes">{gross.grossMin}</span> minutes / <span data-result="gross-seconds">{gross.grossMin * 60}</span> seconds).
             </p>
           </div>
         </div>
@@ -147,19 +137,19 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
     <div class="container">
       <div class="stat-grid">
         <div class="stat-card">
-          <span class="stat-card__value">{hours}</span>
-          <span class="stat-card__label">Hours</span>
+          <span class="stat-card__value" data-result="gross-hours-hhmm">{gross.grossHHMM}</span>
+          <span class="stat-card__label">Hrs:Min</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">{hours * 60}</span>
+          <span class="stat-card__value" data-result="gross-minutes">{gross.grossMin}</span>
           <span class="stat-card__label">Minutes</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">{hours * 3600}</span>
+          <span class="stat-card__value" data-result="gross-seconds">{gross.grossMin * 60}</span>
           <span class="stat-card__label">Seconds</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">{hours}.00</span>
+          <span class="stat-card__value" data-result="gross-decimal">{gross.grossDecimalStr}</span>
           <span class="stat-card__label">Decimal Hours</span>
         </div>
       </div>

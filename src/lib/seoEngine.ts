@@ -24,7 +24,7 @@ const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, stri
     de: ({ start, end }) => `Stunden von ${start} bis ${end} Uhr berechnen — Zeitrechner 2026`,
   },
   'work-hours': {
-    en: ({ start, end, net }) => `Work Hours Calculator: ${start} to ${end} (${net}h Netto) — 2026`,
+    en: ({ start, end, net }) => `Work Hours Calculator: ${start} to ${end} (${net}h net) — 2026`,
     de: ({ start, end, net }) => `Arbeitszeit von ${start} bis ${end} Uhr berechnen — ${net}h Netto`,
   },
   'add-time': {

@@ -4,6 +4,11 @@ import ModeTabbar from '../components/calculator/ModeTabbar';
 import { buildWebAppSchema, buildBreadcrumbSchema, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, getGuideUrl, getFullUrl } from '../lib/seoEngine';
 import { INDEXED_RANGES, formatHour24 } from '../data/timeRanges';
 import { INDEXED_EVENTS } from '../data/dateEvents';
+import { computeShiftFromHours } from '../lib/shift';
+
+// Worked example figures — derived, never hardcoded (Phase 1.2)
+const example = computeShiftFromHours(9, 17, 30, 'de'); // 09:00–17:00, 30 min break
+const fullDay = computeShiftFromHours(0, 0, 0, 'de');    // full 24h cycle
 
 const lang = 'de';
 const canonical = getHubUrl(lang); // "/"
@@ -97,19 +102,19 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
     <div class="container">
       <div class="stat-grid">
         <div class="stat-card">
-          <span class="stat-card__value">8h</span>
+          <span class="stat-card__value">{example.grossDecimal}h</span>
           <span class="stat-card__label">Stunden von 9 bis 17 Uhr</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">7.5h</span>
+          <span class="stat-card__value">{example.netDecimalStr}h</span>
           <span class="stat-card__label">Netto (30 Min Pause)</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">480</span>
+          <span class="stat-card__value">{example.grossMin}</span>
           <span class="stat-card__label">Minuten Standardarbeitstag</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">24h</span>
+          <span class="stat-card__value">{fullDay.grossDecimal}h</span>
           <span class="stat-card__label">Ein vollständiger Zyklus</span>
         </div>
       </div>
@@ -125,7 +130,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
         </div>
         <div class="link-grid">
           {popularRanges.map(r => (
-            <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
+            <a href={getTimeRangeUrl(lang, r.deSlug)} class="link-card">
               <span>Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)}</span>
               <span class="link-card__arrow">→</span>
             </a>
@@ -140,7 +145,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
         </div>
         <div class="link-grid">
           {INDEXED_RANGES.filter(r => r.workShift).map(r => (
-            <a href={getWorkHoursUrl(lang, r.slug)} class="link-card">
+            <a href={getWorkHoursUrl(lang, r.deSlug)} class="link-card">
               <span>Arbeitsstunden {formatHour24(r.start)} – {formatHour24(r.end)}</span>
               <span class="link-card__arrow">→</span>
             </a>

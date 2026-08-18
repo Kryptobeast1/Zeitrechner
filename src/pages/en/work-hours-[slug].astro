@@ -6,29 +6,15 @@ import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, getRangeHours, getSimila
 import type { TimeRange } from '../../data/timeRanges';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl, shouldIndex } from '../../lib/seoEngine';
 import { workHoursIntros_en, workHoursFaqSets_en, getContextClusterEN, variantIndex } from '../../data/contentVariants';
-import { calcWorkHours } from '../../lib/timeEngine';
+import { computeShiftFromHours } from '../../lib/shift';
 
 export async function getStaticPaths() {
-  const paths = [];
-  for (const range of ALL_TIME_RANGES) {
-    // Add primary English slug
-    paths.push({ params: { slug: range.slug }, props: { range } });
-    // Add German slug for robustness
-    if (range.deSlug !== range.slug) {
-      paths.push({ params: { slug: range.deSlug }, props: { range } });
-    }
-  }
-  return paths;
+  // Canonical English slug only. Legacy slugs are 301'd via vercel.json.
+  return ALL_TIME_RANGES.map(range => ({ params: { slug: range.slug }, props: { range } }));
 }
 
 interface Props { range: TimeRange; }
 const { range } = Astro.props as Props;
-const { slug } = Astro.params;
-
-// 301 Redirect to English slug if German slug is used on an English page
-if (slug === range.deSlug && range.deSlug !== range.slug) {
-  return Astro.redirect(getWorkHoursUrl('en', range.slug), 301);
-}
 
 const lang = 'en';
 const hours = getRangeHours(range.start, range.end);
@@ -38,8 +24,9 @@ const end24 = formatHour24(range.end);
 const BREAK_OPTIONS = [0, 30, 45, 60];
 const breakResults = BREAK_OPTIONS.map(b => ({
   break: b,
-  result: calcWorkHours(`${String(range.start).padStart(2,'0')}:00`, `${String(range.end).padStart(2,'0')}:00`, b),
+  result: computeShiftFromHours(range.start, range.end, b, 'en'),
 }));
+const net30 = breakResults[1].result; // canonical answer: 30-min break
 
 const canonical = getWorkHoursUrl(lang, range.slug);
 const altUrl = getWorkHoursUrl('de', range.deSlug);
@@ -51,17 +38,17 @@ const hreflang = [
 ];
 
 const vi = variantIndex(range.slug + 'work', workHoursIntros_en.length);
-const introHtml = workHoursIntros_en[vi](start24, end24, breakResults[1].result.netHours);
+const introHtml = workHoursIntros_en[vi](start24, end24, net30.netDecimalStr);
 const contextText = getContextClusterEN(range.start, range.end, hours);
 
-const faqs = workHoursFaqSets_en[0](start24, end24, breakResults[1].result.netDecimal);
+const faqs = workHoursFaqSets_en[0](start24, end24, net30.netDecimal);
 const similarRanges = getSimilarRanges(range, 6);
 
 const isIndexed = shouldIndex('work-hours', range.demandScore) || range.workShift;
 
 const seoMeta = buildSEOMeta(
   'work-hours', lang,
-  { start: start24, end: end24, net: breakResults[1].result.netDecimal },
+  { start: start24, end: end24, net: net30.netDecimalStr },
   canonical, 'de', altUrl,
   !isIndexed
 );
@@ -105,14 +92,16 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
               📊 Net Work Time Comparison
             </h3>
             {breakResults.map(br => {
-              const pct = hours > 0 ? (br.result.netDecimal / hours) * 100 : 0;
+              const pct = br.result.grossMin > 0 ? (br.result.netMin / br.result.grossMin) * 100 : 0;
               return (
                 <div class="payroll-row">
                   <div class="payroll-info">
                     <span class="payroll-label">
                       {br.break === 0 ? 'No break' : `${br.break} min break`}
                     </span>
-                    <span class="payroll-val">{br.result.formatted} ({br.result.netDecimal}h)</span>
+                    <span class="payroll-val">
+                      <span data-result={`net-hhmm-${br.break}`}>{br.result.netHHMM}</span> (<span data-result={`net-decimal-${br.break}`}>{br.result.netDecimalStr}</span>h)
+                    </span>
                   </div>
                   <div class="payroll-bar-track">
                     <div class="payroll-bar-fill" style={`width: ${pct}%`} />
@@ -137,9 +126,9 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
 
           <div class="featured-snippet" role="complementary" aria-label="Quick Answer" style="margin: 0;">
             <div class="featured-snippet__label">Quick Answer</div>
-            <div class="featured-snippet__answer">{breakResults[1].result.formatted} net</div>
+            <div class="featured-snippet__answer"><span data-result="net-hhmm-30">{net30.netHHMM}</span> net</div>
             <p class="featured-snippet__sentence" style="margin-top: var(--space-2); margin-bottom: 0;">
-              Working from {start24} to {end24} with a 30-minute break gives you <strong>{breakResults[1].result.netDecimal} net hours</strong>.
+              Working from {start24} to {end24} with a 30-minute break gives you <strong><span data-result="net-decimal-30">{net30.netDecimalStr}</span> net hours</strong>.
             </p>
           </div>
         </div>
@@ -157,9 +146,9 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           <p style="margin-top: 15px;">{contextText}</p>
           <br />
           <p>
-            For payroll purposes, the decimal format matters: <strong>{breakResults[1].result.netDecimal} hours</strong>
-            can be multiplied directly by your hourly rate. With a 45-minute break you get {breakResults[2].result.netDecimal} hours,
-            and with a full hour's break, {breakResults[3].result.netDecimal} net hours.
+            For payroll purposes, the decimal format matters: <strong>{net30.netDecimalStr} hours</strong>
+            can be multiplied directly by your hourly rate. With a 45-minute break you get {breakResults[2].result.netDecimalStr} hours,
+            and with a full hour's break, {breakResults[3].result.netDecimalStr} net hours.
           </p>
         </div>
 

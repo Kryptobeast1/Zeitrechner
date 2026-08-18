@@ -6,41 +6,28 @@ import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, getRangeHours, getSimila
 import type { TimeRange } from '../data/timeRanges';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getWorkHoursUrl, getTimeRangeUrl, getHubUrl, shouldIndex } from '../lib/seoEngine';
 import { workHoursIntros_de, workHoursFaqSets_de, getContextClusterDE, variantIndex } from '../data/contentVariants';
-import { calcWorkHours } from '../lib/timeEngine';
+import { computeShiftFromHours } from '../lib/shift';
 
 export async function getStaticPaths() {
-  const paths = [];
-  for (const range of ALL_TIME_RANGES) {
-    // Add primary German slug
-    paths.push({ params: { slug: range.deSlug }, props: { range } });
-    // Add English slug for redirection/robustness
-    if (range.slug !== range.deSlug) {
-      paths.push({ params: { slug: range.slug }, props: { range } });
-    }
-  }
-  return paths;
+  // Canonical German slug only. Legacy slugs are 301'd via vercel.json.
+  return ALL_TIME_RANGES.map(range => ({ params: { slug: range.deSlug }, props: { range } }));
 }
 
 interface Props { range: TimeRange; }
 const { range } = Astro.props as Props;
-const { slug } = Astro.params;
-
-// 301 Redirect to German slug if English slug is used on a German page
-if (slug === range.slug && range.slug !== range.deSlug) {
-  return Astro.redirect(getWorkHoursUrl('de', range.deSlug), 301);
-}
 
 const lang = 'de';
 const hours = getRangeHours(range.start, range.end);
 const start24 = formatHour24(range.start);
 const end24 = formatHour24(range.end);
 
-// Pre-calculate with common breaks
+// Pre-calculate with common breaks — single source of truth (Phase 1)
 const BREAK_OPTIONS = [0, 30, 45, 60];
 const breakResults = BREAK_OPTIONS.map(b => ({
   break: b,
-  result: calcWorkHours(`${String(range.start).padStart(2,'0')}:00`, `${String(range.end).padStart(2,'0')}:00`, b),
+  result: computeShiftFromHours(range.start, range.end, b, 'de'),
 }));
+const net30 = breakResults[1].result; // canonical answer: 30-min break
 
 const canonical = getWorkHoursUrl(lang, range.deSlug);
 const altUrl = getWorkHoursUrl('en', range.slug);
@@ -52,10 +39,10 @@ const hreflang = [
 ];
 
 const vi = variantIndex(range.deSlug + 'work', workHoursIntros_de.length);
-const introHtml = workHoursIntros_de[vi](start24, end24, breakResults[1].result.netHours);
+const introHtml = workHoursIntros_de[vi](start24, end24, net30.netDecimalStr);
 const contextText = getContextClusterDE(range.start, range.end, hours);
 
-const faqs = workHoursFaqSets_de[0](start24, end24, breakResults[1].result.netDecimal);
+const faqs = workHoursFaqSets_de[0](start24, end24, net30.netDecimal);
 
 const similarRanges = getSimilarRanges(range, 6);
 
@@ -63,7 +50,7 @@ const isIndexed = shouldIndex('work-hours', range.demandScore) || range.workShif
 
 const seoMeta = buildSEOMeta(
   'work-hours', lang,
-  { start: start24, end: end24, net: breakResults[1].result.netDecimal },
+  { start: start24, end: end24, net: net30.netDecimalStr },
   canonical, 'en', altUrl,
   !isIndexed
 );
@@ -107,14 +94,16 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
               📊 Nettoarbeitszeit-Vergleich
             </h3>
             {breakResults.map(br => {
-              const pct = hours > 0 ? (br.result.netDecimal / hours) * 100 : 0;
+              const pct = br.result.grossMin > 0 ? (br.result.netMin / br.result.grossMin) * 100 : 0;
               return (
                 <div class="payroll-row">
                   <div class="payroll-info">
                     <span class="payroll-label">
                       {br.break === 0 ? 'Ohne Pause' : `${br.break} Min. Pause`}
                     </span>
-                    <span class="payroll-val">{br.result.formatted} ({br.result.netDecimal}h)</span>
+                    <span class="payroll-val">
+                      <span data-result={`net-hhmm-${br.break}`}>{br.result.netHHMM}</span> (<span data-result={`net-decimal-${br.break}`}>{br.result.netDecimalStr}</span>h)
+                    </span>
                   </div>
                   <div class="payroll-bar-track">
                     <div class="payroll-bar-fill" style={`width: ${pct}%`} />
@@ -139,9 +128,9 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
 
           <div class="featured-snippet" role="complementary" aria-label="Schnellantwort" style="margin: 0;">
             <div class="featured-snippet__label">Schnellantwort</div>
-            <div class="featured-snippet__answer">{breakResults[1].result.formatted} netto</div>
+            <div class="featured-snippet__answer"><span data-result="net-hhmm-30">{net30.netHHMM}</span> netto</div>
             <p class="featured-snippet__sentence" style="margin-top: var(--space-2); margin-bottom: 0;">
-              Von {start24} bis {end24} Uhr mit 30 Minuten Pause sind es <strong>{breakResults[1].result.netDecimal} Stunden</strong> Nettoarbeitszeit.
+              Von {start24} bis {end24} Uhr mit 30 Minuten Pause sind es <strong><span data-result="net-decimal-30">{net30.netDecimalStr}</span> Stunden</strong> Nettoarbeitszeit.
             </p>
           </div>
         </div>
@@ -159,9 +148,9 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <p style="margin-top: 15px;">{contextText}</p>
           <br />
           <p>
-            Für Lohnabrechnungszwecke ist die Dezimaldarstellung wichtig: <strong>{breakResults[1].result.netDecimal} Stunden</strong>
-            lassen sich direkt mit dem Stundensatz multiplizieren. Bei {breakResults[2].result.netDecimal} Stunden (45 Min Pause)
-            oder {breakResults[3].result.netDecimal} Stunden (60 Min Pause) ändert sich die Bruttoarbeitszeit entsprechend.
+            Für Lohnabrechnungszwecke ist die Dezimaldarstellung wichtig: <strong>{net30.netDecimalStr} Stunden</strong>
+            lassen sich direkt mit dem Stundensatz multiplizieren. Bei {breakResults[2].result.netDecimalStr} Stunden (45 Min Pause)
+            oder {breakResults[3].result.netDecimalStr} Stunden (60 Min Pause) ändert sich die Nettoarbeitszeit entsprechend.
           </p>
         </div>
 

@@ -7,9 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/submit-indexnow.js",
+    "gen:redirects": "node --experimental-strip-types scripts/gen-redirects.ts",
+    "build": "npm run gen:redirects && astro build && node scripts/submit-indexnow.js",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "audit": "node --experimental-strip-types scripts/audit/01-correctness.ts && node --experimental-strip-types scripts/audit/02-crawl.ts",
+    "audit:build": "npm run gen:redirects && astro build && npm run audit"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.2",

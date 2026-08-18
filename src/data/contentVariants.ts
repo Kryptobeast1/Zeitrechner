@@ -326,7 +326,14 @@ export const workHoursFaqSets_de = [
       },
       {
         q: `Wie berechne ich Überstunden bei einer Schicht von ${start} bis ${end} Uhr?`,
-        a: `Vergleichen Sie Ihre Nettoarbeitszeit (${netVal.toFixed(2).replace('.', ',')} Stunden nach Abzug der Pause) mit Ihrer vertraglichen täglichen Arbeitszeit. Beträgt Ihre reguläre Arbeitszeit beispielsweise 8 Stunden, so beläuft sich Ihre Mehrarbeit bei einer Nettoarbeitszeit von ${netVal.toFixed(2).replace('.', ',')} Stunden auf ${(netVal - 8).toFixed(2).replace('.', ',')} Stunden.`
+        a: (() => {
+          const net = netVal.toFixed(2).replace('.', ',');
+          const diff = Math.abs(netVal - 8).toFixed(2).replace('.', ',');
+          const base = `Vergleichen Sie Ihre Nettoarbeitszeit (${net} Stunden nach Abzug der Pause) mit Ihrer vertraglichen täglichen Arbeitszeit von beispielsweise 8 Stunden. `;
+          if (netVal > 8) return base + `Bei ${net} Stunden Nettoarbeitszeit leisten Sie ${diff} Stunden Mehrarbeit (Überstunden).`;
+          if (netVal < 8) return base + `Bei ${net} Stunden Nettoarbeitszeit liegen Sie ${diff} Stunden unter einem 8-Stunden-Tag – es fallen keine Überstunden an.`;
+          return base + `Bei ${net} Stunden Nettoarbeitszeit entspricht dies exakt einem regulären 8-Stunden-Tag ohne Überstunden.`;
+        })()
       },
       {
         q: `Gilt diese Nettoarbeitszeit als Vollzeit oder Teilzeit?`,
@@ -354,7 +361,14 @@ export const workHoursFaqSets_en = [
       },
       {
         q: `How do I calculate overtime for a shift from ${start} to ${end}?`,
-        a: `Compare your net work hours (${netVal.toFixed(2)} hours after break deduction) against your contracted daily hours. If your contract specifies a standard 8-hour workday, working ${netVal.toFixed(2)} net hours results in ${(netVal - 8).toFixed(2)} hours of overtime.`
+        a: (() => {
+          const net = netVal.toFixed(2);
+          const diff = Math.abs(netVal - 8).toFixed(2);
+          const base = `Compare your net work hours (${net} hours after break deduction) against your contracted daily hours, e.g. a standard 8-hour workday. `;
+          if (netVal > 8) return base + `Working ${net} net hours means ${diff} hours of overtime.`;
+          if (netVal < 8) return base + `Working ${net} net hours leaves you ${diff} hours short of a standard 8-hour day, so no overtime applies.`;
+          return base + `Working ${net} net hours is exactly a standard 8-hour day with no overtime.`;
+        })()
       },
       {
         q: `Are the hours between ${start} and ${end} considered full-time or part-time?`,
