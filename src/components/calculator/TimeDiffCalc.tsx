@@ -1,192 +1,118 @@
 import { useState, useCallback } from 'react';
-import { calcTimeDiff } from '../../lib/timeEngine';
-import type { TimeDiffResult } from '../../lib/timeEngine';
 
-interface Props {
-  lang?: 'de' | 'en';
-  defaultStart?: string;
-  defaultEnd?: string;
-}
+interface Props { lang?: 'de' | 'en'; defaultStart?: string; defaultEnd?: string; }
 
-// Format a Date as a LOCAL datetime-local value (YYYY-MM-DDTHH:MM). Using
-// toISOString() here was a bug — it returns UTC, shifting every default by the
-// timezone offset.
-function toLocalInput(d: Date): string {
-  const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
-  return local.toISOString().slice(0, 16);
-}
-function now(): string { const d = new Date(); d.setSeconds(0, 0); return toLocalInput(d); }
-function atHour(h: number): string { const d = new Date(); d.setHours(h, 0, 0, 0); return toLocalInput(d); }
-function laterToday(h: number): string { const d = new Date(); d.setHours(d.getHours() + h, 0, 0, 0); return toLocalInput(d); }
+const pad = (n: number) => String(n).padStart(2, '0');
+function todayStr(): string { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 
-const MIN_DT = '2000-01-01T00:00';
-const MAX_DT = '2099-12-31T23:59';
+interface Res { days: number; h: number; m: number; s: number; totalHours: string; totalMin: number; totalSec: number; }
 
-const EXAMPLES = [
-  { label: '9:00 → 17:00', getStart: () => atHour(9), getEnd: () => atHour(17) },
-  { label: '8:00 → 16:00', getStart: () => atHour(8), getEnd: () => atHour(16) },
-  { label: '+8h from now', getStart: () => now(), getEnd: () => laterToday(8) },
-];
-
-export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: Props) {
-  const [start, setStart] = useState(defaultStart ?? now());
-  const [end, setEnd] = useState(defaultEnd ?? laterToday(8));
-  const [result, setResult] = useState<TimeDiffResult | null>(null);
+export default function TimeDiffCalc({ lang = 'de' }: Props) {
+  const [startTime, setStartTime] = useState('09:00');
+  const [endTime, setEndTime] = useState('17:00');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [result, setResult] = useState<Res | null>(null);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
-  const labels = lang === 'de' ? {
-    startDate: 'Startdatum & Zeit',
-    endDate: 'Enddatum & Zeit',
-    calc: 'Berechnen',
-    result: 'Zeitdifferenz',
-    days: 'Tage', hours: 'Stunden', mins: 'Minuten', secs: 'Sekunden',
-    totalMins: 'Total Minuten', totalSecs: 'Total Sekunden', decimal: 'Dezimalstunden',
-    copy: 'Kopieren', share: 'Teilen', examples: 'Beispiele',
+  const L = lang === 'de' ? {
+    start: 'Start', end: 'Ende', time: 'Uhrzeit', date: 'Datum', optional: 'optional', swap: 'Start und Ende tauschen',
+    hint: 'Optional — Datum hinzufügen, um über mehrere Tage zu rechnen.',
+    note: 'Kein Datum? Das Ende wird als später am selben Tag angenommen und läuft bei Bedarf über Mitternacht.',
+    calc: 'Berechnen', duration: 'Dauer', totalHours: 'Stunden gesamt', totalMins: 'Minuten gesamt', totalSecs: 'Sekunden gesamt',
+    copy: 'Ergebnis kopieren', copied: 'Kopiert', reset: 'Zurücksetzen', invalid: 'Bitte gültige Uhrzeiten eingeben.',
+    d: 'T', h: 'Std', m: 'Min', s: 'Sek',
   } : {
-    startDate: 'Start Date & Time',
-    endDate: 'End Date & Time',
-    calc: 'Calculate',
-    result: 'Time Difference',
-    days: 'Days', hours: 'Hours', mins: 'Minutes', secs: 'Seconds',
-    totalMins: 'Total Minutes', totalSecs: 'Total Seconds', decimal: 'Decimal Hours',
-    copy: 'Copy', share: 'Share', examples: 'Examples',
+    start: 'Start', end: 'End', time: 'Time', date: 'Date', optional: 'optional', swap: 'Swap start and end',
+    hint: 'Optional — add dates to measure across multiple days.',
+    note: 'No dates? The end is assumed to be later the same day, rolling past midnight if needed.',
+    calc: 'Calculate', duration: 'Duration', totalHours: 'Total hours', totalMins: 'Total minutes', totalSecs: 'Total seconds',
+    copy: 'Copy result', copied: 'Copied', reset: 'Reset', invalid: 'Please enter valid times.',
+    d: 'd', h: 'h', m: 'm', s: 's',
   };
 
-  const handleCalculate = useCallback(() => {
-    const invalid = lang === 'de' ? 'Bitte gültiges Start- und Enddatum eingeben.' : 'Please enter a valid start and end date.';
-    if (!start || !end) { setError(invalid); setResult(null); return; }
-    const s = new Date(start), e = new Date(end);
-    if (isNaN(s.getTime()) || isNaN(e.getTime())) { setError(invalid); setResult(null); return; }
-    setError('');
-    const r = calcTimeDiff(start, end);
-    setResult(r);
-    // Update URL params
-    const url = new URL(window.location.href);
-    url.searchParams.set('mode', 'diff');
-    url.searchParams.set('start', start);
-    url.searchParams.set('end', end);
-    window.history.replaceState({}, '', url.toString());
-  }, [start, end]);
-
-  const handleCopy = useCallback(() => {
-    if (!result) return;
-    const text = `${result.days}d ${result.hours}h ${result.minutes}m ${result.seconds}s (${result.decimalHours}h)`;
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+  const calc = useCallback(() => {
+    if (!startTime || !endTime) { setError(L.invalid); setResult(null); return; }
+    const sDate = startDate || todayStr();
+    const eDate = endDate || startDate || todayStr();
+    const start = new Date(`${sDate}T${startTime}:00`);
+    const end = new Date(`${eDate}T${endTime}:00`);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) { setError(L.invalid); setResult(null); return; }
+    // No dates + end not after start → roll end to the next day (past midnight).
+    if (!startDate && !endDate && end.getTime() <= start.getTime()) end.setDate(end.getDate() + 1);
+    const ms = Math.abs(end.getTime() - start.getTime());
+    const totalSec = Math.floor(ms / 1000);
+    setResult({
+      days: Math.floor(totalSec / 86400),
+      h: Math.floor((totalSec % 86400) / 3600),
+      m: Math.floor((totalSec % 3600) / 60),
+      s: totalSec % 60,
+      totalHours: (ms / 3600000).toFixed(2),
+      totalMin: Math.floor(ms / 60000),
+      totalSec,
     });
-  }, [result]);
+    setError('');
+  }, [startTime, endTime, startDate, endDate, L.invalid]);
 
-  const applyExample = (ex: typeof EXAMPLES[0]) => {
-    setStart(ex.getStart());
-    setEnd(ex.getEnd());
-    setResult(null);
+  const swap = () => { setStartTime(endTime); setEndTime(startTime); setStartDate(endDate); setEndDate(startDate); setResult(null); };
+  const reset = () => { setStartTime('09:00'); setEndTime('17:00'); setStartDate(''); setEndDate(''); setResult(null); setError(''); };
+  const copy = () => {
+    if (!result) return;
+    navigator.clipboard.writeText(`${result.h}${L.h} ${result.m}${L.m} ${result.s}${L.s} (${result.totalHours}h)`).then(() => {
+      setCopied(true); setTimeout(() => setCopied(false), 2000);
+    });
   };
 
-  // Timeline % — cap at 24h for display
-  const timelinePercent = result ? Math.min(100, (result.totalHours / 24) * 100) : 0;
+  const durationText = (result && result.days > 0 ? `${result.days}${L.d} ` : '') +
+    (result ? `${result.h}${L.h} ${result.m}${L.m} ${result.s}${L.s}` : '');
 
   return (
     <div className="calc-card" id="mode-diff">
-      {/* Example chips */}
-      <div className="examples-bar">
-        <span className="examples-label">{labels.examples}:</span>
-        {EXAMPLES.map(ex => (
-          <button key={ex.label} className="chip" onClick={() => applyExample(ex)}>
-            {ex.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="calc-grid">
-        <div className="field">
-          <label htmlFor="td-start">{labels.startDate}</label>
-          <input
-            id="td-start"
-            type="datetime-local"
-            value={start}
-            min={MIN_DT}
-            max={MAX_DT}
-            onChange={e => setStart(e.target.value)}
-          />
+      <div className="calc-io">
+        <div className="io-card">
+          <span className="io-badge io-badge--start">{L.start}</span>
+          <label className="field"><span>{L.time}</span>
+            <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} aria-label={`${L.start} ${L.time}`} />
+          </label>
+          <label className="field"><span>{L.date} <em>({L.optional})</em></span>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} aria-label={`${L.start} ${L.date}`} />
+          </label>
         </div>
-        <div className="field">
-          <label htmlFor="td-end">{labels.endDate}</label>
-          <input
-            id="td-end"
-            type="datetime-local"
-            value={end}
-            min={MIN_DT}
-            max={MAX_DT}
-            onChange={e => setEnd(e.target.value)}
-          />
+
+        <button className="swap-btn" type="button" onClick={swap} aria-label={L.swap} title={L.swap}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 16H21M7 16l3-3M7 16l3 3M17 8H3M17 8l-3-3M17 8l-3 3" /></svg>
+        </button>
+
+        <div className="io-card">
+          <span className="io-badge io-badge--end">{L.end}</span>
+          <label className="field"><span>{L.time}</span>
+            <input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} aria-label={`${L.end} ${L.time}`} />
+          </label>
+          <label className="field"><span>{L.date} <em>({L.optional})</em></span>
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} aria-label={`${L.end} ${L.date}`} />
+          </label>
         </div>
       </div>
 
-      <button className="calc-submit" onClick={handleCalculate} id="td-calc-btn">
-        {labels.calc}
-      </button>
-
-      {error && <p role="alert" style={{ color: 'var(--warn)', marginTop: '12px', fontWeight: 500 }}>{error}</p>}
+      <p className="calc-hint">{L.hint}</p>
+      <button className="calc-submit" type="button" onClick={calc} id="td-calc-btn">{L.calc}</button>
+      {error && <p role="alert" style={{ color: 'var(--warn)', marginTop: '12px', fontWeight: 500, textAlign: 'center' }}>{error}</p>}
 
       {result && (
-        <div className="result-panel" id="td-result">
-          <div className="result-headline">{labels.result}</div>
-
-          <div className="result-primary">
-            <span className="result-number">{result.decimalHours}</span>
-            <span className="result-unit">{labels.hours}</span>
+        <div className="result-hero" id="td-result">
+          <div className="result-hero__label">{L.duration}</div>
+          <div className="result-hero__duration">{durationText}</div>
+          <div className="result-hero__stats">
+            <div><strong>{result.totalHours}</strong><span>{L.totalHours}</span></div>
+            <div><strong>{result.totalMin.toLocaleString()}</strong><span>{L.totalMins}</span></div>
+            <div><strong>{result.totalSec.toLocaleString()}</strong><span>{L.totalSecs}</span></div>
           </div>
-
-          <div className="result-breakdown">
-            {result.days > 0 && (
-              <div className="result-stat">
-                <span className="stat-value">{result.days}</span>
-                <span className="stat-label">{labels.days}</span>
-              </div>
-            )}
-            <div className="result-stat">
-              <span className="stat-value">{result.hours}</span>
-              <span className="stat-label">{labels.hours}</span>
-            </div>
-            <div className="result-stat">
-              <span className="stat-value">{result.minutes}</span>
-              <span className="stat-label">{labels.mins}</span>
-            </div>
-            <div className="result-stat">
-              <span className="stat-value">{result.seconds}</span>
-              <span className="stat-label">{labels.secs}</span>
-            </div>
+          <div className="result-hero__actions">
+            <button type="button" onClick={copy}>{copied ? L.copied : L.copy}</button>
+            <button type="button" onClick={reset}>{L.reset}</button>
           </div>
-
-          {/* Extra stats */}
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
-            <span className="badge badge--accent">{result.totalMinutes.toLocaleString()} {labels.totalMins}</span>
-            <span className="badge badge--violet">{result.totalSeconds.toLocaleString()} {labels.totalSecs}</span>
-          </div>
-
-          {/* Timeline bar */}
-          <div className="timeline">
-            <div className="timeline__track">
-              <div className="timeline__fill" style={{ width: `${timelinePercent}%` }} />
-            </div>
-            <div className="timeline__hours">
-              <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
-            </div>
-          </div>
-
-          <div className="result-actions">
-            <button className="btn btn--secondary" onClick={handleCopy} id="td-copy-btn">
-              {copied ? (lang === 'de' ? 'Kopiert' : 'Copied!') : `${labels.copy}`}
-            </button>
-            <button className="btn btn--ghost" onClick={() => window.print()} id="td-print-btn">
-              {lang === 'de' ? 'Drucken' : 'Print'}
-            </button>
-            <button className="btn btn--ghost" onClick={() => navigator.share?.({ title: 'Zeitrechner', url: window.location.href })} id="td-share-btn">
-              {labels.share}
-            </button>
-          </div>
+          <p className="result-hero__note">{L.note}</p>
         </div>
       )}
     </div>
