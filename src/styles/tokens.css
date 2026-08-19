@@ -372,6 +372,27 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .badge--accent { background: var(--petrol-tint); color: var(--petrol); }
 .badge--violet { background: var(--surface-3); color: var(--ink-2); }
 
+/* Guide/resource cards (homepage) — were unstyled → plain underlined links. */
+.guides-section { margin-top: 32px; }
+.guides-section > h3 { font-size: 1.2rem; margin-bottom: 12px; color: var(--ink); }
+.glass-card.link-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; text-decoration: none; color: var(--ink);
+  border-radius: var(--radius, 12px);
+}
+.glass-card.link-item:hover { border-color: var(--petrol); }
+.link-item .icon { display: none; }             /* empty after emoji removal */
+.link-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.link-info .label { font-weight: 600; color: var(--ink); }
+.link-info .sub { font-size: 0.85rem; color: var(--ink-3); }
+
+/* Cleaner directory-link arrow — the circled tiny arrow read as a "−". */
+.link-card__arrow {
+  border: 0; width: auto; height: auto; font-size: 1.05rem;
+  opacity: 0.45; color: var(--ink-3);
+}
+.link-card:hover .link-card__arrow { opacity: 1; color: var(--petrol); transform: none; }
+
 /* ── Axis 2: accent bands (WCAG-AA vs --surface). Light values, dark lightened. */
 [data-band="dawn"]    { --band-accent: #1B6B5A; }
 [data-band="day"]     { --band-accent: #124559; }
