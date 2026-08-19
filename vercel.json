@@ -282,13 +282,23 @@
       "permanent": true
     },
     {
+      "source": "/tage-bis-weihnachten-2025/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
       "source": "/tage-bis-christmas-2025/",
-      "destination": "/tage-bis-weihnachten-2025/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-christmas-2025/",
+      "destination": "/en/days-until-christmas/",
       "permanent": true
     },
     {
       "source": "/en/days-until-weihnachten-2025/",
-      "destination": "/en/days-until-christmas-2025/",
+      "destination": "/en/days-until-christmas/",
       "permanent": true
     },
     {

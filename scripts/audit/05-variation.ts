@@ -25,8 +25,8 @@ const fail = (m: string) => failures.push(m);
 
 const byDeSlug = new Map(ALL_TIME_RANGES.map(r => [r.deSlug, r]));
 
-// Sitemap order → DE time-range slugs
-const sitemap = readFileSync(resolve(DIST, 'sitemap.xml'), 'utf8');
+// Sitemap order → DE time-range slugs (from the split child sitemap)
+const sitemap = readFileSync(resolve(DIST, 'sitemap-de-hours.xml'), 'utf8');
 const slugs: string[] = [];
 for (const m of sitemap.matchAll(/<loc>https:\/\/zeit-rechner\.com\/stunden-zwischen-(.+?)\/<\/loc>/g)) slugs.push(m[1]);
 

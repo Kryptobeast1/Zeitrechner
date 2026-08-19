@@ -20,6 +20,7 @@ interface Props {
   band?: string;       // Phase 5.2 accent band → data-band
   archetype?: string;  // Phase 5.1 layout archetype → data-archetype
   treatment?: string;  // Phase 5.3 result treatment → data-treatment
+  langAlternates?: { de?: string; en?: string }; // Phase 6.2 — drives the switcher
 }
 
 const {
@@ -37,11 +38,17 @@ const {
   band,
   archetype,
   treatment,
+  langAlternates,
 } = Astro.props;
 
 const hubUrlDe = '/';
 const hubUrlEn = '/en/';
 const hubUrl = lang === 'de' ? hubUrlDe : hubUrlEn;
+
+// Phase 6.2: the switcher points at the equivalent page in the other language,
+// not the homepage. Falls back to the hubs when a page has no counterpart.
+const deSwitchUrl = langAlternates?.de ?? hubUrlDe;
+const enSwitchUrl = langAlternates?.en ?? hubUrlEn;
 const altLang = lang === 'de' ? 'en' : 'de';
 const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
 
@@ -177,8 +184,8 @@ const currentYear = new Date().getFullYear();
           </button>
         </div>
         <div class="navbar__lang">
-          <a href={hubUrlDe} class:list={['lang-btn', { active: lang === 'de' }]} hreflang="de" aria-label="Deutsch">DE</a>
-          <a href={hubUrlEn} class:list={['lang-btn', { active: lang === 'en' }]} hreflang="en" aria-label="English">EN</a>
+          <a href={deSwitchUrl} class:list={['lang-btn', { active: lang === 'de' }]} hreflang="de" aria-label="Deutsch">DE</a>
+          <a href={enSwitchUrl} class:list={['lang-btn', { active: lang === 'en' }]} hreflang="en" aria-label="English">EN</a>
         </div>
       </div>
     </div>

@@ -51,7 +51,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
 ---
 
 <BaseLayout
-  title="Zeitrechner 2026 — Stunden, Arbeitszeit & Countdown online"
+  title={`Zeitrechner ${new Date().getFullYear()} — Stunden, Arbeitszeit & Countdown online`}
   description="Präziser Zeitrechner für 2026. Berechne Zeitdifferenzen, Arbeitsstunden mit Pausen und Live-Countdowns. Kostenlos & mobil-optimiert."
   canonical={getFullUrl(canonical)}
   hreflang={hreflang}
@@ -79,11 +79,10 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
             <strong>5 Modi, sofortige Ergebnisse, keine Registrierung.</strong>
           </p>
 
-          <!-- Live time -->
+          <!-- Live time (client-only; no build-time value is baked into the HTML) -->
           <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; background: var(--clr-surface-2); padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--clr-border); width: fit-content; flex-wrap: wrap;">
             <span style="font-size: 0.8rem; color: var(--clr-text-3);">Aktuelle Zeit:</span>
-            <span id="live-time" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);">{currentTime}</span>
-            <span class="last-updated" style="margin-left: 8px;">Aktualisiert: {lastUpdated}</span>
+            <span id="live-time" style="font-family: var(--font-data); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);" aria-live="off"></span>
           </div>
         </div>
 
@@ -250,11 +249,11 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
 </BaseLayout>
 
 <script>
-// Live clock update
+// Live clock update — client-only, filled immediately then ticked every second
 const liveTime = document.getElementById('live-time');
 if (liveTime) {
-  setInterval(() => {
-    liveTime.textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  }, 1000);
+  const tick = () => { liveTime.textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); };
+  tick();
+  setInterval(tick, 1000);
 }
 </script>

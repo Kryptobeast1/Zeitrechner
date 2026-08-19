@@ -8,11 +8,13 @@
   "scripts": {
     "dev": "astro dev",
     "gen:redirects": "node --experimental-strip-types scripts/gen-redirects.ts",
-    "build": "npm run gen:redirects && astro build && node scripts/submit-indexnow.js",
+    "gen:lastmod": "node --experimental-strip-types scripts/gen-lastmod.ts",
+    "prebuild": "npm run gen:redirects && npm run gen:lastmod",
+    "build": "npm run prebuild && astro build && node scripts/submit-indexnow.js",
     "preview": "astro preview",
     "astro": "astro",
-    "audit": "node --experimental-strip-types scripts/audit/01-correctness.ts && node --experimental-strip-types scripts/audit/02-crawl.ts && node --experimental-strip-types scripts/audit/03-urls.ts && node --experimental-strip-types scripts/audit/04-design.ts && node --experimental-strip-types scripts/audit/05-variation.ts",
-    "audit:build": "npm run gen:redirects && astro build && npm run audit"
+    "audit": "node --experimental-strip-types scripts/audit/01-correctness.ts && node --experimental-strip-types scripts/audit/02-crawl.ts && node --experimental-strip-types scripts/audit/03-urls.ts && node --experimental-strip-types scripts/audit/04-design.ts && node --experimental-strip-types scripts/audit/05-variation.ts && node --experimental-strip-types scripts/audit/06-indexing.ts",
+    "audit:build": "npm run prebuild && astro build && npm run audit"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.2",

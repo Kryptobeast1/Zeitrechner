@@ -1,117 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { INDEXED_RANGES, formatHour24 } from '../data/timeRanges';
-import { ALL_EVENTS } from '../data/dateEvents';
-import { buildSEOMeta, getHubUrl, getTimeRangeUrl, getWorkHoursUrl, getCountdownUrl, shouldIndex } from '../lib/seoEngine';
+import { HUBS, hubRanges } from '../lib/hubs';
+import { INDEXED_EVENTS } from '../data/dateEvents';
+import { buildSEOMeta, getHubUrl, getCountdownUrl, getFullUrl } from '../lib/seoEngine';
 
 const lang = 'de';
-const title = 'Alle Zeitrechner & Kombinationen (HTML Sitemap) — Zeit-Rechner.com';
-const description = 'Übersicht aller Zeitrechner, Arbeitsstundenrechner und Countdown-Timer auf Zeit-Rechner.com. Finden Sie schnell das passende Tool.';
+const title = 'Alle Rechner & Kategorien — Zeit-Rechner.com';
+const description = 'Übersicht der Zeit- und Arbeitsstunden-Rechner nach Kategorie: Frühschichten, 8-Stunden-Schichten, Nachtschichten, Teilzeit und Countdowns.';
 const canonical = '/alle-rechner/';
+const seo = buildSEOMeta('hub', lang, {}, canonical, 'en', '/en/all-calculators/', false);
+seo.title = title; seo.description = description;
 
-const seo = buildSEOMeta(
-  'hub', lang,
-  {},
-  canonical, 'en', '/en/all-calculators/',
-  false
-);
-
-seo.title = title;
-seo.description = description;
-
-const timeRanges = INDEXED_RANGES.filter(r => shouldIndex('time-range', r.demandScore));
-const workRanges = INDEXED_RANGES.filter(r => shouldIndex('work-hours', r.demandScore) || r.workShift);
-const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.targetDate.split('-')[0]) <= 2027);
+const currentYear = new Date().getFullYear();
+const countdowns = INDEXED_EVENTS
+  .filter(e => parseInt(e.targetDate.split('-')[0], 10) >= currentYear)
+  .slice(0, 24);
 ---
-
-<BaseLayout
-  title={seo.title}
-  description={seo.description}
-  canonical={seo.canonical}
-  hreflang={seo.hreflang}
-  lang={lang}
-  theme="info"
->
-  <section class="section landing-hero" style="padding-bottom: 2rem;">
+<BaseLayout title={seo.title} description={seo.description} canonical={getFullUrl(canonical)} hreflang={seo.hreflang} lang={lang} theme="info" langAlternates={{ de: canonical, en: '/en/all-calculators/' }}>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
+        <a href={getHubUrl(lang)}>Home</a>
         <span class="breadcrumb__sep">›</span>
         <span aria-current="page">Alle Rechner</span>
       </nav>
-
-      <div style="margin-top: 1.5rem;">
-        <span class="badge badge--accent">Sitemap</span>
-        <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Alle Rechner & Kombinationen</h1>
-        <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">Alle Rechner & Kategorien</h1>
+        <p class="landing-hero__lead">{description}</p>
       </div>
     </div>
   </section>
 
+  <!-- Tiered hubs — each is an independently rankable page of 20–40 links -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
-      
-      <!-- Tabs -->
-      <div class="directory-tabs">
-        <button class="directory-tab-btn active" data-tab="work">Arbeitsstunden</button>
-        <button class="directory-tab-btn" data-tab="time">Zeitdifferenzen</button>
-        <button class="directory-tab-btn" data-tab="countdown">Countdowns</button>
+      <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Schicht-Kategorien</h2>
+      <div class="link-grid">
+        {HUBS.map(hub => (
+          <a href={`/schichten/${hub.slug}/`} class="link-card">
+            <span><strong>{hub.deTitle}</strong> · {hubRanges(hub).length} Rechner</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+        ))}
       </div>
 
-      <!-- Tab Content: Work Hours -->
-      <div class="directory-section animate-in" id="tab-work">
-        <div class="directory-column-grid">
-          {workRanges.map(r => (
-            <a href={`${getTimeRangeUrl(lang, r.deSlug)}#arbeitszeit`} class="directory-link-item">
-              Arbeitszeit von {formatHour24(r.start)} bis {formatHour24(r.end)} Uhr
-            </a>
-          ))}
-        </div>
+      <h2 style="font-size: 1.3rem; margin: 2rem 0 1rem;">Countdowns</h2>
+      <div class="link-grid">
+        {countdowns.map(e => (
+          <a href={getCountdownUrl(lang, e.deSlug)} class="link-card">
+            <span>Tage bis {e.deName}</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+        ))}
       </div>
 
-      <!-- Tab Content: Time Range -->
-      <div class="directory-section animate-in" id="tab-time" style="display: none;">
-        <div class="directory-column-grid">
-          {timeRanges.map(r => (
-            <a href={getTimeRangeUrl(lang, r.deSlug)} class="directory-link-item">
-              Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)} Uhr
-            </a>
-          ))}
-        </div>
+      <h2 style="font-size: 1.3rem; margin: 2rem 0 1rem;">Ratgeber</h2>
+      <div class="link-grid">
+        <a href="/ratgeber/" class="link-card"><span>Alle Ratgeber-Artikel</span><span class="link-card__arrow">→</span></a>
+        <a href="/wochenarbeitszeit/" class="link-card"><span>Wochenarbeitszeit</span><span class="link-card__arrow">→</span></a>
+        <a href="/datum-in-x-tagen/" class="link-card"><span>Datum in X Tagen</span><span class="link-card__arrow">→</span></a>
       </div>
-
-      <!-- Tab Content: Countdown -->
-      <div class="directory-section animate-in" id="tab-countdown" style="display: none;">
-        <div class="directory-column-grid">
-          {countdowns.map(e => (
-            <a href={getCountdownUrl(lang, e.deSlug)} class="directory-link-item">
-              Tage bis {e.deName}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Vanilla JS Tab Swapping -->
-      <script is:inline>
-        document.addEventListener('DOMContentLoaded', () => {
-          const buttons = document.querySelectorAll('.directory-tab-btn');
-          const sections = document.querySelectorAll('.directory-section');
-          buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-              buttons.forEach(b => b.classList.remove('active'));
-              sections.forEach(s => s.style.display = 'none');
-              
-              btn.classList.add('active');
-              const tabId = 'tab-' + btn.getAttribute('data-tab');
-              const activeSection = document.getElementById(tabId);
-              if (activeSection) {
-                activeSection.style.display = 'block';
-              }
-            });
-          });
-        });
-      </script>
-
     </div>
   </section>
 </BaseLayout>

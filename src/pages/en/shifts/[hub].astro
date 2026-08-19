@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { HUBS, hubRanges } from '../../../lib/hubs';
+import { formatHour24, getRangeHours } from '../../../data/timeRanges';
+import { getHubUrl, getTimeRangeUrl, getFullUrl, buildBreadcrumbSchema } from '../../../lib/seoEngine';
+
+export async function getStaticPaths() {
+  return HUBS.map(hub => ({ params: { hub: hub.slug }, props: { hub } }));
+}
+const { hub } = Astro.props;
+const lang = 'en';
+const ranges = hubRanges(hub);
+const canonical = `/en/shifts/${hub.slug}/`;
+const deHub = `/schichten/${hub.slug}/`;
+
+const jsonLd = [buildBreadcrumbSchema([
+  { name: 'Home', url: getHubUrl(lang) },
+  { name: 'Popular Times', url: '/en/all-calculators/' },
+  { name: hub.enTitle, url: canonical },
+])];
+---
+<BaseLayout
+  title={`${hub.enTitle} — Time Calculator`}
+  description={hub.enDesc}
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'de', url: getFullUrl(deHub) }, { lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+  langAlternates={{ de: deHub, en: canonical }}
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={getHubUrl(lang)}>Home</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/en/all-calculators/">Popular Times</a>
+        <span class="breadcrumb__sep">›</span>
+        <span aria-current="page">{hub.enTitle}</span>
+      </nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">{hub.enTitle}</h1>
+        <p class="landing-hero__lead">{hub.enDesc} <strong>{ranges.length} calculators.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="link-grid">
+        {ranges.map(r => (
+          <a href={getTimeRangeUrl(lang, r.slug)} class="link-card">
+            <span>{formatHour24(r.start)}–{formatHour24(r.end)} ({getRangeHours(r.start, r.end)} h)</span>
+            <span class="link-card__arrow">→</span>
+          </a>
+        ))}
+      </div>
+      <p style="margin-top: 2rem;"><a href="/en/all-calculators/">← All categories</a></p>
+    </div>
+  </section>
+</BaseLayout>

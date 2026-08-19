@@ -61,9 +61,25 @@ for (const r of ALL_TIME_RANGES) {
   redirects.push(R(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`));
 }
 
-// 3b. explicit countdown redirects (event names are never a plain swap)
-let explicitEvents = 0;
+// 3b. countdown redirects — lifecycle (Phase 6.4) + slug normalisation.
+let explicitEvents = 0, pastEvents = 0;
+const currentYear = new Date().getFullYear();
+const stripYear = (s: string) => s.replace(/-\d{4}$/, '');
 for (const e of ALL_EVENTS) {
+  const y = parseInt(e.targetDate.split('-')[0], 10);
+  if (y < currentYear) {
+    // Past-year page → 301 to the evergreen parent (auto-jumps to next occurrence), else the hub.
+    const evDe = ALL_EVENTS.find(x => x.deSlug === stripYear(e.deSlug) && !/-\d{4}$/.test(x.deSlug));
+    const evEn = ALL_EVENTS.find(x => x.slug === stripYear(e.slug) && !/-\d{4}$/.test(x.slug));
+    const deTarget = evDe ? `/tage-bis-${evDe.deSlug}/` : '/';
+    const enTarget = evEn ? `/en/days-until-${evEn.slug}/` : '/en/';
+    redirects.push(R(`/tage-bis-${e.deSlug}/`, deTarget));
+    if (e.slug !== e.deSlug) redirects.push(R(`/tage-bis-${e.slug}/`, deTarget));
+    redirects.push(R(`/en/days-until-${e.slug}/`, enTarget));
+    if (e.slug !== e.deSlug) redirects.push(R(`/en/days-until-${e.deSlug}/`, enTarget));
+    pastEvents++;
+    continue;
+  }
   if (e.slug === e.deSlug) continue;
   explicitEvents++;
   redirects.push(R(`/tage-bis-${e.slug}/`, `/tage-bis-${e.deSlug}/`));
@@ -108,4 +124,5 @@ console.log(`[gen-redirects] wrote vercel.json`);
 console.log(`  total redirects        : ${redirects.length}`);
 console.log(`  legacy 12h EN slugs    : ${explicitLegacy} (x4 rules)`);
 console.log(`  explicit countdowns    : ${explicitEvents} (x2 rules)`);
+console.log(`  past-year countdowns   : ${pastEvents} (lifecycle → evergreen)`);
 console.log(`  merge/normalise regex  : 5`);

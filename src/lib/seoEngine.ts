@@ -16,15 +16,19 @@ export interface SEOMeta {
 
 const BASE_URL = 'https://zeit-rechner.com';
 
+// Year rolls automatically from the build date (Phase 6.4) — "Zeitrechner 2026"
+// becomes 2027 on the first build of next year, no code change needed.
+const YEAR = new Date().getFullYear();
+
 // ─── CTR-OPTIMIZED TITLE TEMPLATES ──────────────────────────────────────────
 // Goal: 50-60 characters, high relevance, includes year/primary brand
 const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, string>) => string>> = {
   'time-range': {
-    en: ({ start, end }) => `How Many Hours From ${start} To ${end}? — Calculator 2026`,
-    de: ({ start, end }) => `Stunden von ${start} bis ${end} Uhr berechnen — Zeitrechner 2026`,
+    en: ({ start, end }) => `How Many Hours From ${start} To ${end}? — Calculator ${YEAR}`,
+    de: ({ start, end }) => `Stunden von ${start} bis ${end} Uhr berechnen — Zeitrechner ${YEAR}`,
   },
   'work-hours': {
-    en: ({ start, end, net }) => `Work Hours Calculator: ${start} to ${end} (${net}h net) — 2026`,
+    en: ({ start, end, net }) => `Work Hours Calculator: ${start} to ${end} (${net}h net) — ${YEAR}`,
     de: ({ start, end, net }) => `Arbeitszeit von ${start} bis ${end} Uhr berechnen — ${net}h Netto`,
   },
   'add-time': {
@@ -32,8 +36,8 @@ const titleTemplates: Record<PageType, Record<Lang, (params: Record<string, stri
     de: ({ hours, base }) => `Wie viel Uhr ist ${hours} Stunden nach ${base}? — Zeit-Rechner`,
   },
   'countdown': {
-    en: ({ name }) => `Days Until ${name}: Live Countdown & Timer 2026`,
-    de: ({ name }) => `Tage bis ${name}: Live-Countdown & Zeitrechner 2026`,
+    en: ({ name }) => `Days Until ${name}: Live Countdown & Timer ${YEAR}`,
+    de: ({ name }) => `Tage bis ${name}: Live-Countdown & Zeitrechner ${YEAR}`,
   },
   'hub': {
     en: () => 'Time Calculator — Hours, Work Hours & Countdown | Quick & Precise',

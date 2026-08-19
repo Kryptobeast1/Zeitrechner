@@ -148,10 +148,16 @@ for (const r of rangeSample) {
     checkLegacy(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`);
   }
 }
-// countdown legacy slugs
-for (const e of ALL_EVENTS.filter(e => e.slug !== e.deSlug).slice(0, 15)) {
+// countdown legacy slugs — future events do a language-slug swap; past-year
+// pages follow the Phase 6.4 lifecycle to their evergreen parent.
+const nowYear = new Date().getFullYear();
+for (const e of ALL_EVENTS.filter(e => e.slug !== e.deSlug && parseInt(e.targetDate.split('-')[0], 10) >= nowYear).slice(0, 15)) {
   checkLegacy(`/tage-bis-${e.slug}/`, `/tage-bis-${e.deSlug}/`);
   checkLegacy(`/en/days-until-${e.deSlug}/`, `/en/days-until-${e.slug}/`);
+}
+for (const e of ALL_EVENTS.filter(e => parseInt(e.targetDate.split('-')[0], 10) < nowYear).slice(0, 10)) {
+  const evDe = ALL_EVENTS.find(x => x.deSlug === e.deSlug.replace(/-\d{4}$/, '') && !/-\d{4}$/.test(x.deSlug));
+  if (evDe) checkLegacy(`/tage-bis-${e.deSlug}/`, `/tage-bis-${evDe.deSlug}/`);
 }
 
 // ─── Report ──────────────────────────────────────────────────────────────────

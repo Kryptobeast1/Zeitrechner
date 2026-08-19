@@ -8,8 +8,12 @@ import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, g
 import { countdownIntros_de, variantIndex } from '../data/contentVariants';
 
 export async function getStaticPaths() {
-  // Canonical German slug only. Legacy slugs are 301'd via vercel.json.
-  return ALL_EVENTS.map(event => ({ params: { slug: event.deSlug }, props: { event } }));
+  // Canonical German slug only. Past-year event pages are not built — they are
+  // 301'd to their evergreen parent via vercel.json (Phase 6.4 lifecycle).
+  const year = new Date().getFullYear();
+  return ALL_EVENTS
+    .filter(e => parseInt(e.targetDate.split('-')[0], 10) >= year)
+    .map(event => ({ params: { slug: event.deSlug }, props: { event } }));
 }
 
 interface Props { event: DateEvent; }
@@ -21,7 +25,7 @@ const days = Math.max(0, getDaysUntil(event.targetDate));
 
 // Past-year check for noindex
 const targetYear = parseInt(event.targetDate.split('-')[0]);
-const isPastYear = targetYear < 2026;
+const isPastYear = targetYear < new Date().getFullYear();
 const isPastEvent = new Date(event.targetDate).getTime() < new Date().getTime();
 const shouldNoindex = isPastYear || (isPastEvent && event.priority === 'low');
 
@@ -112,6 +116,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
   ogImage={seoMeta.ogImage}
   ogImageAlt={seoMeta.ogImageAlt}
   theme="countdown"
+  langAlternates={{ de: canonical, en: altUrl }}
 >
 
   <section class="section landing-hero" style="padding-bottom: 2rem;">
@@ -125,7 +130,6 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
       <div class="landing-hero__meta" style="margin-bottom: 1.5rem;">
         <span class="badge badge--violet">Countdown</span>
         <span class="badge badge--accent">{days} Tage</span>
-        <span class="last-updated">Zuletzt aktualisiert: {lastUpdated}</span>
       </div>
 
       <h1 style="text-align: center; margin-bottom: 2rem;">Wie viele Tage bis {displayName}?</h1>
