@@ -63,7 +63,7 @@ const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.tar
         <div class="directory-column-grid">
           {workRanges.map(r => (
             <a href={`${getTimeRangeUrl(lang, r.deSlug)}#arbeitszeit`} class="directory-link-item">
-              💼 Arbeitszeit von {formatHour24(r.start)} bis {formatHour24(r.end)} Uhr
+              Arbeitszeit von {formatHour24(r.start)} bis {formatHour24(r.end)} Uhr
             </a>
           ))}
         </div>
@@ -74,7 +74,7 @@ const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.tar
         <div class="directory-column-grid">
           {timeRanges.map(r => (
             <a href={getTimeRangeUrl(lang, r.deSlug)} class="directory-link-item">
-              ⏱️ Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)} Uhr
+              Stunden zwischen {formatHour24(r.start)} und {formatHour24(r.end)} Uhr
             </a>
           ))}
         </div>
@@ -85,7 +85,7 @@ const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.tar
         <div class="directory-column-grid">
           {countdowns.map(e => (
             <a href={getCountdownUrl(lang, e.deSlug)} class="directory-link-item">
-              ⏳ Tage bis {e.deName}
+              Tage bis {e.deName}
             </a>
           ))}
         </div>

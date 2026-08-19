@@ -80,7 +80,7 @@ export default function WorkHoursCalc({ lang = 'de', defaultStart = '09:00', def
       </div>
 
       <button className="calc-submit" onClick={handleCalculate} id="wh-calc-btn">
-        ⚡ {L.calc}
+        {L.calc}
       </button>
 
       {result && (
@@ -129,10 +129,10 @@ export default function WorkHoursCalc({ lang = 'de', defaultStart = '09:00', def
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="wh-copy-btn">
-              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${L.copy}`}
+              {copied ? (lang === 'de' ? 'Kopiert' : 'Copied!') : `${L.copy}`}
             </button>
             <button className="btn btn--ghost" onClick={() => window.print()} id="wh-print-btn">
-              🖨️ {lang === 'de' ? 'Drucken' : 'Print'}
+              {lang === 'de' ? 'Drucken' : 'Print'}
             </button>
           </div>
         </div>

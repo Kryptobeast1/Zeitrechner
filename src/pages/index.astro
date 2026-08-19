@@ -67,9 +67,9 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
         <!-- Hero text column -->
         <div class="home-hero-content">
           <div class="landing-hero__meta">
-            <span class="badge badge--accent">⚡ Kostenlos</span>
-            <span class="badge badge--violet">🌍 Deutsch</span>
-            <span class="badge badge--green">✓ DST-sicher</span>
+            <span class="badge badge--accent">Kostenlos</span>
+            <span class="badge badge--violet">Deutsch</span>
+            <span class="badge badge--green">DST-sicher</span>
           </div>
 
           <h1 style="margin-bottom: 1.5rem;">Zeitrechner — Stunden, Zeiten & Countdowns</h1>
@@ -126,7 +126,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
     <div class="container">
       <div class="internal-links" id="zeiten">
         <div class="internal-links__header">
-          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏰ Beliebte Zeitspannen</h2>
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">Beliebte Zeitspannen</h2>
         </div>
         <div class="link-grid">
           {popularRanges.map(r => (
@@ -141,7 +141,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
       <!-- Arbeitsstunden Section -->
       <div class="internal-links" id="arbeitsstunden" style="margin-top: 32px;">
         <div class="internal-links__header">
-          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">💼 Arbeitsstunden-Rechner</h2>
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">Arbeitsstunden-Rechner</h2>
         </div>
         <div class="link-grid">
           {INDEXED_RANGES.filter(r => r.workShift).map(r => (
@@ -155,17 +155,17 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
 
       <!-- Guides Section -->
       <section class="guides-section">
-        <h3>📖 Ratgeber & Ressourcen</h3>
+        <h3>Ratgeber & Ressourcen</h3>
         <div class="link-grid">
           <a href={getGuideUrl(lang, 'arbeitszeit-berechnen')} class="glass-card link-item">
-            <span class="icon">💼</span>
+            <span class="icon"></span>
             <div class="link-info">
               <span class="label">Arbeitszeit berechnen</span>
               <span class="sub">Der komplette Guide 2026</span>
             </div>
           </a>
           <a href={getGuideUrl(lang, 'zeiterfassung-freelancer')} class="glass-card link-item">
-            <span class="icon">🚀</span>
+            <span class="icon"></span>
             <div class="link-info">
               <span class="label">Freelancer Zeiterfassung</span>
               <span class="sub">Tipps für produktive Arbeit</span>
@@ -177,7 +177,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
       <!-- Internal Link Mesh -->
       <div class="internal-links" style="margin-top: 32px;" id="countdown">
         <div class="internal-links__header">
-          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">⏳ Countdown-Timer</h2>
+          <h2 class="internal-links__title" style="font-size: 1.4rem; margin: 0;">Countdown-Timer</h2>
         </div>
         <div class="link-grid">
           {popularEvents.map(e => (
@@ -195,7 +195,7 @@ const currentTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', mi
   <article class="section semantic-guide" style="background-color: var(--clr-surf-1); border-top: 1px solid var(--clr-border);">
     <div class="container container--narrow">
       <div class="expert-badge" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 12px; background: rgba(50, 205, 50, 0.1); border-radius: 8px;">
-        <span style="font-size: 1.5rem;">✅</span>
+        <span style="font-size: 1.5rem;"></span>
         <div>
           <div style="font-size: 0.85rem; color: var(--clr-text-2); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Fachlich geprüft</div>
           <div style="font-size: 0.95rem; font-weight: 500;">Von HR- & Payroll-Experten verifiziert</div>

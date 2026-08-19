@@ -114,7 +114,7 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
       </div>
 
       <button className="calc-submit" onClick={handleCalculate} id="td-calc-btn">
-        ⚡ {labels.calc}
+        {labels.calc}
       </button>
 
       {result && (
@@ -149,8 +149,8 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
 
           {/* Extra stats */}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
-            <span className="badge badge--accent">⏱ {result.totalMinutes.toLocaleString()} {labels.totalMins}</span>
-            <span className="badge badge--violet">🔢 {result.totalSeconds.toLocaleString()} {labels.totalSecs}</span>
+            <span className="badge badge--accent">{result.totalMinutes.toLocaleString()} {labels.totalMins}</span>
+            <span className="badge badge--violet">{result.totalSeconds.toLocaleString()} {labels.totalSecs}</span>
           </div>
 
           {/* Timeline bar */}
@@ -165,13 +165,13 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="td-copy-btn">
-              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${labels.copy}`}
+              {copied ? (lang === 'de' ? 'Kopiert' : 'Copied!') : `${labels.copy}`}
             </button>
             <button className="btn btn--ghost" onClick={() => window.print()} id="td-print-btn">
-              🖨️ {lang === 'de' ? 'Drucken' : 'Print'}
+              {lang === 'de' ? 'Drucken' : 'Print'}
             </button>
             <button className="btn btn--ghost" onClick={() => navigator.share?.({ title: 'Zeitrechner', url: window.location.href })} id="td-share-btn">
-              🔗 {labels.share}
+              {labels.share}
             </button>
           </div>
         </div>

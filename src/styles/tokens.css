@@ -1,0 +1,346 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ZEITRECHNER — DESIGN TOKENS  (Phase 4.1)
+   Light is the default theme; dark is derived.
+
+   These tokens are the source of truth. The legacy --clr-* variables from
+   global.css are remapped onto them here (this file is imported LAST) so every
+   existing component adopts the new light system without being rewritten.
+   Theme resolution:
+     • bare :root                                      → light (default)
+     • @media (prefers-color-scheme: dark) :root:not([data-theme="light"]) → dark
+     • :root[data-theme="dark"]                        → dark (manual override)
+     • :root[data-theme="light"]                       → light (manual override, wins the media query)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Brand palette ───────────────────────────────────────────── */
+  --paper:   #F2F4F3;
+  --surface: #FFFFFF;
+  --ink:     #16191C;
+  --petrol:  #124559;
+  --amber:   #F0A202;
+  --warn:    #B3261E;
+  --rule:    #D5DAD8;
+
+  /* Derived neutrals + accent tints (light) */
+  --ink-2:      #3D4650;
+  --ink-3:      #5C6874;
+  --ink-muted:  #7A8590;
+  --surface-2:  #F7F9F8;
+  --surface-3:  #EDF0EF;
+  --petrol-2:   #0C3140;
+  --petrol-tint:rgba(18, 69, 89, 0.08);
+  --petrol-glow:rgba(18, 69, 89, 0.14);
+  --amber-tint: rgba(240, 162, 2, 0.14);
+  --success:    #1B6B5A;
+  --success-tint: rgba(27, 107, 90, 0.12);
+
+  /* Accent band overrides (Phase 5.2) default to petrol */
+  --band-accent: var(--petrol);
+
+  /* ── Type ────────────────────────────────────────────────────── */
+  --font-display: 'Archivo', system-ui, -apple-system, sans-serif;
+  --font-body:    'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-data:    'IBM Plex Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  /* ── Legacy → token remap (light) ────────────────────────────── */
+  --clr-bg:         var(--paper);
+  --clr-bg-2:       var(--surface-2);
+  --clr-bg-3:       var(--surface-3);
+  --clr-surf-1:     var(--surface-2);
+  --clr-surf-2:     var(--surface-3);
+  --clr-surface:    var(--surface);
+  --clr-surface-2:  var(--surface-2);
+  --clr-surface-3:  var(--surface-3);
+  --clr-border:     var(--rule);
+  --clr-border-2:   #C2C9C6;
+
+  --clr-accent:     var(--petrol);
+  --clr-accent-2:   var(--petrol-2);
+  --clr-accent-glow: var(--petrol-glow);
+  --clr-accent-dim: var(--petrol-tint);
+
+  --clr-violet:     var(--petrol);
+  --clr-violet-2:   var(--petrol-2);
+  --clr-violet-glow: var(--petrol-glow);
+
+  --clr-amber:      var(--amber);
+  --clr-amber-dim:  var(--amber-tint);
+
+  --clr-green:      var(--success);
+  --clr-green-dim:  var(--success-tint);
+
+  --clr-text:       var(--ink);
+  --clr-text-2:     var(--ink-2);
+  --clr-text-3:     var(--ink-3);
+  --clr-text-muted: var(--ink-muted);
+
+  --font-sans:   var(--font-body);
+  --font-mono:   var(--font-data);
+
+  /* Softer shadows for a light surface */
+  --shadow-sm:  0 1px 2px rgba(22, 25, 28, 0.06);
+  --shadow:     0 2px 8px rgba(22, 25, 28, 0.08);
+  --shadow-lg:  0 8px 28px rgba(22, 25, 28, 0.10);
+  --shadow-glow: 0 0 0 1px var(--petrol-tint);
+  --shadow-glow-violet: 0 0 0 1px var(--petrol-tint);
+}
+
+/* ── Dark derivation ─────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:   #0F1417;
+    --surface: #171D21;
+    --ink:     #ECEFEE;
+    --petrol:  #5AA9C4;
+    --amber:   #F5B93B;
+    --warn:    #F2635A;
+    --rule:    #2A3239;
+
+    --ink-2:      #B6BEC4;
+    --ink-3:      #8A939A;
+    --ink-muted:  #6B747B;
+    --surface-2:  #1D242A;
+    --surface-3:  #232B31;
+    --petrol-2:   #86C5DA;
+    --petrol-tint:rgba(90, 169, 196, 0.14);
+    --petrol-glow:rgba(90, 169, 196, 0.22);
+    --amber-tint: rgba(245, 185, 59, 0.16);
+    --success:    #4FBFA3;
+    --success-tint: rgba(79, 191, 163, 0.16);
+    --band-accent: var(--petrol);
+
+    --clr-border-2:   #37424A;
+    --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
+    --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* Manual dark (wins over the media query in both directions) */
+:root[data-theme="dark"] {
+  --paper:   #0F1417;
+  --surface: #171D21;
+  --ink:     #ECEFEE;
+  --petrol:  #5AA9C4;
+  --amber:   #F5B93B;
+  --warn:    #F2635A;
+  --rule:    #2A3239;
+
+  --ink-2:      #B6BEC4;
+  --ink-3:      #8A939A;
+  --ink-muted:  #6B747B;
+  --surface-2:  #1D242A;
+  --surface-3:  #232B31;
+  --petrol-2:   #86C5DA;
+  --petrol-tint:rgba(90, 169, 196, 0.14);
+  --petrol-glow:rgba(90, 169, 196, 0.22);
+  --amber-tint: rgba(245, 185, 59, 0.16);
+  --success:    #4FBFA3;
+  --success-tint: rgba(79, 191, 163, 0.16);
+  --band-accent: var(--petrol);
+
+  --clr-border-2:   #37424A;
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Base surface + typography overrides ─────────────────────────── */
+html { color-scheme: light dark; }
+
+body {
+  background-color: var(--paper);
+  background-image: none;               /* kill the dark glassmorphic glows */
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--ink);
+}
+
+/* Every clock time, duration and decimal figure is tabular monospace. */
+[data-result],
+.stat-card__value,
+.featured-snippet__answer,
+.time-arc-label,
+.payroll-val,
+.tabular,
+code, kbd, samp {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ── Accessibility floor (Phase 4.4) ─────────────────────────────── */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--petrol);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Theme switcher (Light / System / Dark) ──────────────────────── */
+.navbar__utils { display: flex; align-items: center; gap: 10px; }
+
+.theme-switch {
+  display: inline-flex;
+  gap: 1px;
+  padding: 2px;
+  border: 1px solid var(--rule);
+  border-radius: 9999px;
+  background: var(--surface);
+}
+.theme-switch__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-3);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: color var(--transition, .15s), background var(--transition, .15s);
+}
+.theme-switch__btn:hover { color: var(--ink); background: var(--surface-3); }
+.theme-switch__btn[aria-pressed="true"] { background: var(--petrol-tint); color: var(--petrol); }
+
+@media (max-width: 480px) {
+  .theme-switch__btn { width: 44px; height: 44px; } /* larger tap target on touch */
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── Tagesband + result triptych + copy buttons (Phase 4.2/4.3) ──── */
+.tagesband-figure {
+  margin: 0;
+  padding: 16px 18px 8px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--shadow-sm);
+}
+.tagesband { max-width: 100%; }
+
+.result-triptych { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 640px) { .result-triptych { grid-template-columns: 1fr; } }
+
+.result-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--shadow-sm);
+}
+.result-card__label {
+  font-family: var(--font-body);
+  font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+.result-card__hint {
+  display: block; text-transform: none; letter-spacing: 0;
+  font-weight: 400; font-size: 0.72rem; color: var(--ink-muted);
+}
+.result-card__value {
+  font-family: var(--font-data); font-variant-numeric: tabular-nums;
+  font-size: 1.9rem; font-weight: 600; color: var(--band-accent); line-height: 1.1;
+}
+.copy-btn {
+  position: absolute; top: 12px; right: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--surface-2); color: var(--ink-3); cursor: pointer;
+  transition: color var(--transition, .15s), border-color var(--transition, .15s);
+}
+.copy-btn:hover { color: var(--petrol); border-color: var(--petrol); }
+.copy-btn.is-copied { color: var(--success); border-color: var(--success); }
+.copy-btn.is-error  { color: var(--warn); border-color: var(--warn); }
+@media (max-width: 480px) { .copy-btn { width: 44px; height: 44px; } }
+
+/* Lucide-style nav icons inherit petrol at 1.5px stroke */
+.navbar__logo-icon { color: var(--petrol) !important; filter: none !important; }
+
+/* ── Light/dark surface fixes for components that hardcoded translucent-white
+      fills or heavy dark shadows/blur. All token-based, so they work in both
+      themes. (The bridge remap handles var-based rules; this covers the rest.) */
+.glass, .glass--raised, .glass--accent, .glass-card,
+.stat-card, .payroll-sheet, .embedded-calc, .expert-box,
+.internal-links, .link-card, .directory-link-item, .use-case-item,
+.faq-item, .mode-tab, .semantic-guide {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
+}
+.semantic-guide, .internal-links { box-shadow: none; }
+
+.featured-snippet {
+  background: var(--petrol-tint);
+  border: 1px solid var(--rule);
+}
+.featured-snippet__answer { color: var(--band-accent); }
+
+.chip { background: var(--surface-3); border: 1px solid var(--rule); color: var(--ink-2); }
+
+.badge { background: var(--surface-3); color: var(--ink-2); border: 1px solid var(--rule); }
+.badge--accent { background: var(--petrol-tint); color: var(--petrol); border-color: transparent; }
+.badge--green  { background: var(--success-tint); color: var(--success); border-color: transparent; }
+.badge--violet { background: var(--petrol-tint); color: var(--petrol); border-color: transparent; }
+
+.navbar { background: var(--surface); border-bottom: 1px solid var(--rule); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.footer { background: var(--surface-2); border-top: 1px solid var(--rule); color: var(--ink-2); }
+
+.link-card:hover, .directory-link-item:hover, .use-case-item:hover { border-color: var(--petrol); }
+.mode-tab.active { background: var(--petrol); color: #fff; border-color: var(--petrol); }
+
+.payroll-bar-track { background: var(--surface-3); }
+.payroll-bar-fill  { background: var(--band-accent); }
+
+.time-arc-bg { stroke: var(--surface-3); }
+.time-arc-active { stroke: var(--band-accent); }
+.time-arc-label > span:first-child { color: var(--band-accent); }
+
+/* ── Calculator components (drop the cyan/violet gradients + dark inputs) ── */
+.calc-submit {
+  background: var(--petrol);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.calc-submit:hover { background: var(--petrol-2); box-shadow: var(--shadow); }
+.result-panel { background: var(--petrol-tint); border: 1px solid var(--rule); }
+.field input, .field select, .field textarea,
+input[type="time"], input[type="datetime-local"], input[type="number"], input[type="date"] {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}
+.field input:focus { border-color: var(--petrol); background: var(--surface); }
+.timeline__fill { background: var(--band-accent); box-shadow: none; }
+.countdown-unit { background: var(--surface); border: 1px solid var(--rule); }
+.countdown-unit::before { background: var(--band-accent); }
+.mode-tabbar { background: var(--surface-2); border: 1px solid var(--rule); }
+.mode-tab { background: transparent; border: 0; box-shadow: none; color: var(--ink-2); }
+.mode-tab.active { background: var(--petrol); color: #fff; }

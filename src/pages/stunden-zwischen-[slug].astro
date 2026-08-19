@@ -2,6 +2,7 @@
 // Programmatic page: /stunden-zwischen-[slug]/
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkHoursCalc from '../components/calculator/WorkHoursCalc';
+import Tagesband from '../components/Tagesband.astro';
 import { ALL_TIME_RANGES, INDEXED_RANGES, formatHour24, formatHour12, getRangeHours, getSimilarRanges } from '../data/timeRanges';
 import type { TimeRange } from '../data/timeRanges';
 import {
@@ -37,6 +38,7 @@ const gross = computeShiftFromHours(range.start, range.end, 0, 'de');
 const BREAK_OPTIONS = [0, 30, 45, 60];
 const breakResults = BREAK_OPTIONS.map(b => ({ break: b, result: computeShiftFromHours(range.start, range.end, b, 'de') }));
 const net30 = breakResults[1].result;
+const bandBreak = gross.grossMin > 360 ? 30 : 0; // only show a break notch when one would legally apply
 
 const canonical = getTimeRangeUrl(lang, range.deSlug);
 const altUrl = getTimeRangeUrl('en', range.slug);
@@ -78,7 +80,7 @@ const jsonLd = [
   ]),
 ];
 
-const useCaseIcons = ['💼', '📋', '🕐', '📊', '🔄', '📅'];
+const useCaseIcons = ['', '', '', '', '', ''];
 
 const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
@@ -129,9 +131,8 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         <!-- Right: Text & Featured Snippet -->
         <div>
           <div class="landing-hero__meta" style="margin-bottom: 1rem;">
-            {range.workShift && <span class="badge badge--green">💼 Schichtzeit</span>}
-            <span class="badge badge--accent">{hours}h Ergebnis</span>
-            <span class="last-updated">Aktualisiert: {lastUpdated}</span>
+            {range.workShift && <span class="badge badge--green">Schichtzeit</span>}
+            <span class="badge badge--accent">{gross.grossDecimalStr}h Ergebnis</span>
           </div>
 
           <h1 style="font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 1.5rem; line-height: 1.3;">Wie viele Stunden von {start24} bis {end24} Uhr?</h1>
@@ -148,25 +149,39 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     </div>
   </section>
 
-  <!-- ─── STAT GRID ──────────────────────────────────────────────────────── -->
+  <!-- ─── TAGESBAND (signature element) ──────────────────────────────────── -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <span class="stat-card__value" data-result="gross-hours-hhmm">{gross.grossHHMM}</span>
-          <span class="stat-card__label">Std:Min</span>
+      <figure class="tagesband-figure">
+        <Tagesband start={range.start} end={range.end} breakMin={bandBreak} lang="de" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ─── RESULT TRIPTYCH ────────────────────────────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="result-triptych">
+        <div class="result-card">
+          <span class="result-card__label">Std:Min</span>
+          <span class="result-card__value" data-result="gross-hours-hhmm">{gross.grossHHMM}</span>
+          <button class="copy-btn" type="button" data-copy={gross.grossHHMM} aria-label="Std:Min kopieren">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
-        <div class="stat-card">
-          <span class="stat-card__value" data-result="gross-minutes">{gross.grossMin}</span>
-          <span class="stat-card__label">Minuten</span>
+        <div class="result-card">
+          <span class="result-card__label">Industriezeit <span class="result-card__hint">für Gehaltsabrechnungen</span></span>
+          <span class="result-card__value" data-result="gross-decimal">{gross.grossDecimalStr}</span>
+          <button class="copy-btn" type="button" data-copy={gross.grossDecimalStr} aria-label="Industriezeit kopieren">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
-        <div class="stat-card">
-          <span class="stat-card__value" data-result="gross-seconds">{gross.grossMin * 60}</span>
-          <span class="stat-card__label">Sekunden</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card__value" data-result="gross-decimal">{gross.grossDecimalStr}</span>
-          <span class="stat-card__label">Dezimalstunden</span>
+        <div class="result-card">
+          <span class="result-card__label">Minuten</span>
+          <span class="result-card__value" data-result="gross-minutes">{gross.grossMin}</span>
+          <button class="copy-btn" type="button" data-copy={String(gross.grossMin)} aria-label="Minuten kopieren">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -214,7 +229,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <p>{contextText}</p>
           
           <div class="expert-box" style="margin-top: 40px; padding: 24px; background: var(--clr-surf-2); border-radius: 12px; border: 1px solid var(--clr-border);">
-            <h3 style="margin-top: 0;">🔬 Technische Präzision & Zeitmessung</h3>
+            <h3 style="margin-top: 0;">Technische Präzision & Zeitmessung</h3>
             <p>
               In der modernen Zeitrechnung basiert die Bestimmung von Zeitdifferenzen auf dem <strong>sexagesimalen System</strong> (Basis 60). 
               Während wir im Alltag oft in Stunden und Minuten denken, rechnet unser System intern mit Millisekunden-Offsets, um auch 
@@ -287,7 +302,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     <div class="container">
       <div class="internal-links">
         <div class="internal-links__header">
-          <h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">🔗 Ähnliche Zeitspannen</h2>
+          <h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Ähnliche Zeitspannen</h2>
         </div>
         <div class="link-grid">
           {similarRanges.map(r => {

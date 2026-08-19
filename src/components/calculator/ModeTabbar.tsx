@@ -13,11 +13,11 @@ interface Props {
 type Mode = 'diff' | 'add' | 'work' | 'countdown' | 'now';
 
 const MODES: { id: Mode; icon: string; deLabel: string; enLabel: string }[] = [
-  { id: 'diff', icon: '⏱', deLabel: 'Differenz', enLabel: 'Difference' },
-  { id: 'add', icon: '➕', deLabel: 'Addieren', enLabel: 'Add/Subtract' },
-  { id: 'work', icon: '💼', deLabel: 'Arbeitsstunden', enLabel: 'Work Hours' },
-  { id: 'countdown', icon: '⏳', deLabel: 'Countdown', enLabel: 'Countdown' },
-  { id: 'now', icon: '🕐', deLabel: 'Ab jetzt', enLabel: 'From Now' },
+  { id: 'diff', icon: '', deLabel: 'Differenz', enLabel: 'Difference' },
+  { id: 'add', icon: '', deLabel: 'Addieren', enLabel: 'Add/Subtract' },
+  { id: 'work', icon: '', deLabel: 'Arbeitsstunden', enLabel: 'Work Hours' },
+  { id: 'countdown', icon: '', deLabel: 'Countdown', enLabel: 'Countdown' },
+  { id: 'now', icon: '', deLabel: 'Ab jetzt', enLabel: 'From Now' },
 ];
 
 export default function ModeTabbar({ lang = 'de', defaultMode = 'diff' }: Props) {

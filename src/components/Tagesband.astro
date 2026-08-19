@@ -1,0 +1,89 @@
+---
+// Tagesband (Phase 4.2) — the signature element.
+// An SVG strip of midnight → midnight showing a work shift:
+//   • filled segment  = worked span            (--petrol)
+//   • carved notch    = unpaid break            (--amber)
+//   • diagonal hatch  = night hours 23:00–06:00
+//   • wrap indicator  = shift crosses midnight
+//   • hour ticks at 00 / 06 / 12 / 18 / 24, tooltips per segment
+// Pure SVG, server-rendered, fixed aspect ratio (viewBox) → zero CLS.
+import { computeShiftFromHours, formatClockTime, hourToMin } from '../lib/shift';
+
+interface Props { start: number; end: number; breakMin?: number; lang?: 'de' | 'en'; }
+const { start, end, breakMin = 0, lang = 'de' } = Astro.props as Props;
+
+const W = 960, H = 118, PAD = 14, TOP = 30, BAND = 56, DAY = 1440;
+const INNER = W - PAD * 2;
+const xForMin = (min: number) => PAD + (min / DAY) * INNER;
+
+const r = computeShiftFromHours(start, end, breakMin, lang);
+const startMin = ((Math.round(hourToMin(start)) % DAY) + DAY) % DAY;
+const endMin = ((Math.round(hourToMin(end)) % DAY) + DAY) % DAY;
+const crosses = r.crossesMidnight;
+
+const segs: Array<[number, number]> = crosses ? [[startMin, DAY], [0, endMin]] : [[startMin, endMin]];
+
+function splitAcrossMidnight(from: number, to: number): Array<[number, number]> {
+  const out: Array<[number, number]> = [];
+  let f = from, tt = to;
+  if (f >= DAY) { f -= DAY; tt -= DAY; }
+  if (tt <= DAY) out.push([f, tt]);
+  else { out.push([f, DAY]); out.push([0, tt - DAY]); }
+  return out;
+}
+const breakStartAbs = startMin + Math.max(0, (r.grossMin - breakMin) / 2);
+const breakRects = breakMin > 0 ? splitAcrossMidnight(breakStartAbs, breakStartAbs + breakMin) : [];
+
+const t = lang === 'de'
+  ? { work: 'Arbeitszeit', brk: 'Pause', night: 'Nachtstunden 23:00–06:00', min: 'Min', wrap: 'Schicht über Mitternacht' }
+  : { work: 'Work', brk: 'Break', night: 'Night hours 23:00–06:00', min: 'min', wrap: 'Shift crosses midnight' };
+
+const label = lang === 'de'
+  ? `Schicht von ${formatClockTime(startMin)} bis ${formatClockTime(endMin)} Uhr, Dauer ${r.grossHHMM} Stunden${breakMin > 0 ? `, ${breakMin} Minuten Pause` : ''}${r.nightMinutes > 0 ? `, davon ${r.nightMinutes} Minuten Nachtarbeit` : ''}${crosses ? ', über Mitternacht' : ''}.`
+  : `Shift from ${formatClockTime(startMin)} to ${formatClockTime(endMin)}, duration ${r.grossHHMM}${breakMin > 0 ? `, ${breakMin} minute break` : ''}${r.nightMinutes > 0 ? `, including ${r.nightMinutes} minutes of night work` : ''}${crosses ? ', crossing midnight' : ''}.`;
+
+const ticks = [0, 6, 12, 18, 24];
+const nightX0 = xForMin(23 * 60), nightW0 = xForMin(24 * 60) - xForMin(23 * 60);
+const nightW1 = xForMin(6 * 60) - xForMin(0);
+const caption = `${formatClockTime(startMin)}–${formatClockTime(endMin)} · ${r.grossHHMM}` + (breakMin > 0 ? ` · −${breakMin}′ → ${r.netHHMM}` : '');
+---
+<svg class="tagesband" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block">
+  <defs>
+    <pattern id="tb-night" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="var(--petrol-tint)" />
+      <line x1="0" y1="0" x2="0" y2="8" stroke="var(--petrol)" stroke-width="1.5" opacity="0.35" />
+    </pattern>
+  </defs>
+
+  <rect x={PAD} y={TOP} width={INNER} height={BAND} rx="8" fill="var(--surface-3)" stroke="var(--rule)" stroke-width="1" />
+
+  <rect x={nightX0} y={TOP} width={nightW0} height={BAND} fill="url(#tb-night)"><title>{t.night}</title></rect>
+  <rect x={xForMin(0)} y={TOP} width={nightW1} height={BAND} fill="url(#tb-night)"><title>{t.night}</title></rect>
+
+  {segs.map(([a, b]) => (
+    <rect x={xForMin(a)} y={TOP} width={Math.max(2, xForMin(b) - xForMin(a))} height={BAND} rx="6" fill="var(--petrol)" opacity="0.9">
+      <title>{`${t.work} ${formatClockTime(startMin)}–${formatClockTime(endMin)} (${r.grossHHMM})`}</title>
+    </rect>
+  ))}
+
+  {breakRects.map(([a, b]) => (
+    <rect x={xForMin(a)} y={TOP} width={Math.max(2, xForMin(b) - xForMin(a))} height={BAND} fill="var(--amber)">
+      <title>{`${t.brk} ${breakMin} ${t.min}`}</title>
+    </rect>
+  ))}
+
+  {crosses && (
+    <path d={`M ${W - PAD + 2} ${TOP + BAND / 2 - 6} l 6 6 l -6 6`} fill="none" stroke="var(--petrol)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <title>{t.wrap}</title>
+    </path>
+  )}
+
+  {ticks.map((h) => (
+    <g>
+      <line x1={xForMin(h * 60)} y1={TOP - 6} x2={xForMin(h * 60)} y2={TOP} stroke="var(--ink-3)" stroke-width="1" />
+      <text x={xForMin(h * 60)} y={TOP - 12} text-anchor="middle" font-family="var(--font-data)" font-size="13" fill="var(--ink-3)">{String(h).padStart(2, '0')}</text>
+    </g>
+  ))}
+
+  <text x={PAD} y={H - 6} font-family="var(--font-data)" font-size="14" fill="var(--ink-2)">{caption}</text>
+</svg>

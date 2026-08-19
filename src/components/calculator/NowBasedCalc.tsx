@@ -90,7 +90,7 @@ export default function NowBasedCalc({ lang = 'de' }: Props) {
             {currentTime}
           </div>
         </div>
-        <div style={{ fontSize: '2rem' }}>🕐</div>
+        <div style={{ fontSize: '2rem' }}></div>
       </div>
 
       <div className="examples-bar">
@@ -105,10 +105,10 @@ export default function NowBasedCalc({ lang = 'de' }: Props) {
       {/* Operation toggle */}
       <div className="op-toggle" style={{ marginBottom: '16px' }}>
         <button className={op === 'add' ? 'active' : ''} onClick={() => setOp('add')} id="now-add-btn">
-          ➕ {L.add}
+          {L.add}
         </button>
         <button className={op === 'subtract' ? 'active' : ''} onClick={() => setOp('subtract')} id="now-sub-btn">
-          ➖ {L.subtract}
+          {L.subtract}
         </button>
       </div>
 
@@ -128,7 +128,7 @@ export default function NowBasedCalc({ lang = 'de' }: Props) {
       </div>
 
       <button className="calc-submit" onClick={handleCalculate} id="now-calc-btn">
-        ⚡ {L.calc}
+        {L.calc}
       </button>
 
       {result && (
@@ -158,13 +158,13 @@ export default function NowBasedCalc({ lang = 'de' }: Props) {
           </div>
 
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-            <span className="badge badge--accent">🕐 {result.resultTime12}</span>
-            <span className="badge badge--violet">📅 {result.resultDate}</span>
+            <span className="badge badge--accent">{result.resultTime12}</span>
+            <span className="badge badge--violet">{result.resultDate}</span>
           </div>
 
           <div className="result-actions">
             <button className="btn btn--secondary" onClick={handleCopy} id="now-copy-btn">
-              {copied ? (lang === 'de' ? '✓ Kopiert' : '✓ Copied!') : `📋 ${L.copy}`}
+              {copied ? (lang === 'de' ? 'Kopiert' : 'Copied!') : `${L.copy}`}
             </button>
           </div>
         </div>

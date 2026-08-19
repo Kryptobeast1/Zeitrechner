@@ -100,12 +100,12 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
       <div style={{ display: 'flex', gap: '12px' }}>
         <button className="calc-submit" onClick={handleStart} disabled={ticking} id="cd-start-btn"
           style={{ flex: 1 }}>
-          ▶ {L.calc}
+          {L.calc}
         </button>
         {ticking && (
           <button className="btn btn--ghost" onClick={handleStop} id="cd-stop-btn"
             style={{ minWidth: '100px' }}>
-            ⏹ {L.stop}
+            {L.stop}
           </button>
         )}
       </div>
@@ -115,7 +115,7 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
           {result.isPast ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <p style={{ color: 'var(--clr-amber)', fontSize: '1.1rem', marginBottom: '16px' }}>
-                ⚠ {L.passed} ({result.days} {L.days} ago)
+                {L.passed} ({result.days} {L.days} ago)
               </p>
               {result.nextOccurrence && (
                 <button 
@@ -128,7 +128,7 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
                     setResult(r);
                   }}
                 >
-                  🔄 {lang === 'de' ? 'Zum nächsten Termin springen' : 'Switch to next occurrence'}
+                  {lang === 'de' ? 'Zum nächsten Termin springen' : 'Switch to next occurrence'}
                 </button>
               )}
             </div>
@@ -139,7 +139,7 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
               )}
               {result.isJumped && (
                 <div style={{ color: 'var(--clr-text-3)', fontSize: '0.8rem', textAlign: 'center', marginBottom: '8px' }}>
-                  🕒 {lang === 'de' ? 'Countdown zum nächsten Termin' : 'Counting to next occurrence'}
+                  {lang === 'de' ? 'Countdown zum nächsten Termin' : 'Counting to next occurrence'}
                 </div>
               )}
               <div className="countdown-display">
@@ -163,8 +163,8 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <span className="badge badge--accent">📅 {result.totalDays.toLocaleString()} {L.days} {lang === 'de' ? 'insgesamt' : 'total'}</span>
-                <span className="badge badge--violet">⏰ {result.totalHours.toLocaleString()} {L.hours}</span>
+                <span className="badge badge--accent">{result.totalDays.toLocaleString()} {L.days} {lang === 'de' ? 'insgesamt' : 'total'}</span>
+                <span className="badge badge--violet">{result.totalHours.toLocaleString()} {L.hours}</span>
               </div>
             </>
           )}
