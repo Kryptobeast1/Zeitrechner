@@ -1,0 +1,71 @@
+---
+// Result treatment (Phase 5.3). Renders ONE primary visual — horizontal
+// Tagesband, a 24-hour radial dial, or split comparison cards — chosen by a
+// stable slug hash. All three present the identical numbers.
+import Tagesband from './Tagesband.astro';
+import { computeShiftFromHours, formatClockTime, hourToMin } from '../lib/shift';
+import type { Treatment } from '../lib/archetype';
+
+interface Props { treatment: Treatment; start: number; end: number; breakMin?: number; lang?: 'de' | 'en'; }
+const { treatment, start, end, breakMin = 0, lang = 'de' } = Astro.props as Props;
+
+const g = computeShiftFromHours(start, end, 0, lang);
+const net = computeShiftFromHours(start, end, 30, lang);
+const startMin = ((Math.round(hourToMin(start)) % 1440) + 1440) % 1440;
+const endMin = ((Math.round(hourToMin(end)) % 1440) + 1440) % 1440;
+
+const t = lang === 'de'
+  ? { brutto: 'Brutto', netto: 'Netto (30 Min Pause)', dur: 'Dauer', dialLabel: `Schicht von ${formatClockTime(startMin)} bis ${formatClockTime(endMin)} Uhr, Dauer ${g.grossHHMM}` }
+  : { brutto: 'Gross', netto: 'Net (30 min break)', dur: 'Duration', dialLabel: `Shift from ${formatClockTime(startMin)} to ${formatClockTime(endMin)}, duration ${g.grossHHMM}` };
+
+// Dial geometry (24-hour, 00:00 at top, clockwise)
+const R = 80, C = 2 * Math.PI * R;
+const arc = (g.grossMin / 1440) * C;
+const rot = (startMin / 1440) * 360 - 90;
+---
+{treatment === 'band' && (
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <figure class="tagesband-figure"><Tagesband start={start} end={end} breakMin={breakMin} lang={lang} /></figure>
+    </div>
+  </section>
+)}
+
+{treatment === 'dial' && (
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <figure class="dial-figure">
+        <svg class="shift-dial" viewBox="0 0 200 200" role="img" aria-label={t.dialLabel} style="width:200px;max-width:60%;height:auto">
+          <circle cx="100" cy="100" r={R} fill="none" stroke="var(--surface-3)" stroke-width="14" />
+          <circle cx="100" cy="100" r={R} fill="none" stroke="var(--band-accent)" stroke-width="14" stroke-linecap="round"
+            stroke-dasharray={`${arc} ${C}`} transform={`rotate(${rot} 100 100)`} />
+          {[0, 6, 12, 18].map((h) => {
+            const a = (h / 24) * 2 * Math.PI - Math.PI / 2;
+            return <text x={100 + Math.cos(a) * 62} y={100 + Math.sin(a) * 62 + 4} text-anchor="middle" font-family="var(--font-data)" font-size="11" fill="var(--ink-3)">{String(h).padStart(2, '0')}</text>;
+          })}
+          <text x="100" y="96" text-anchor="middle" font-family="var(--font-data)" font-size="30" font-weight="600" fill="var(--band-accent)">{g.grossHHMM}</text>
+          <text x="100" y="118" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-3)" style="text-transform:uppercase;letter-spacing:.08em">{t.dur}</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+)}
+
+{treatment === 'split' && (
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="split-compare">
+        <div class="split-card">
+          <span class="split-card__label">{t.brutto}</span>
+          <span class="split-card__value">{g.grossHHMM}</span>
+          <span class="split-card__sub">{g.grossDecimalStr} h · {g.grossMin} min</span>
+        </div>
+        <div class="split-card split-card--net">
+          <span class="split-card__label">{t.netto}</span>
+          <span class="split-card__value">{net.netHHMM}</span>
+          <span class="split-card__sub">{net.netDecimalStr} h · {net.netMin} min</span>
+        </div>
+      </div>
+    </div>
+  </section>
+)}

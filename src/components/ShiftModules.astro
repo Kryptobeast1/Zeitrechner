@@ -1,0 +1,50 @@
+---
+// Renders the conditional shift modules (Phase 5.4). Order is decided upstream
+// (archetype priority); every module here is already condition-verified.
+import type { ShiftModule } from '../lib/shiftModules';
+
+interface Props { modules: ShiftModule[]; lang?: 'de' | 'en'; }
+const { modules, lang = 'de' } = Astro.props as Props;
+
+function content(m: ShiftModule): { title: string; body: string } {
+  const d = m.data;
+  if (lang === 'de') {
+    switch (m.id) {
+      case 'nachtzuschlag': return { title: 'Nachtzuschlag', body: `${d.nightMinutes} Minuten dieser Schicht fallen in die Nachtzeit (23:00–06:00 Uhr). Für Nachtarbeit besteht nach § 6 ArbZG Anspruch auf einen angemessenen Zuschlag oder entsprechenden Freizeitausgleich.` };
+      case 'ruhezeit': return { title: 'Ruhezeit', body: `Nach Arbeitsende um ${d.endClock} Uhr ist eine ununterbrochene Ruhezeit von 11 Stunden vorgeschrieben (§ 5 ArbZG). Der früheste zulässige nächste Arbeitsbeginn ist ${d.nextStart} Uhr.` };
+      case 'pausenpflicht': return { title: 'Pausenpflicht', body: `Bei einer Anwesenheit von ${d.grossHHMM} Stunden sind mindestens ${d.requiredBreak} Minuten Pause abzuziehen (§ 4 ArbZG: 30 Minuten ab 6 Stunden, 45 Minuten ab 9 Stunden).` };
+      case 'mitternachtswechsel': return { title: 'Mitternachtswechsel', body: `Diese Schicht überschreitet Mitternacht. Für die Berechnung werden 24 Stunden addiert, sodass sich die korrekte Dauer von ${d.grossHHMM} Stunden ergibt.` };
+      case 'ueberstunden': return { title: 'Überstunden', body: `Die Nettoarbeitszeit übersteigt den regulären 8-Stunden-Tag um ${d.overHHMM} Stunden. Ob daraus Überstundenzuschläge entstehen, richtet sich nach Arbeits- oder Tarifvertrag.` };
+      case 'teilzeit': return { title: 'Teilzeit', body: `Mit ${d.netDecimalDe} Netto-Dezimalstunden (${d.netHHMM}) liegt diese Schicht unter 6 Stunden und fällt damit typischerweise in den Bereich von Teilzeit- oder Minijob-Modellen.` };
+    }
+  }
+  switch (m.id) {
+    case 'nachtzuschlag': return { title: 'Night premium', body: `${d.nightMinutes} minutes of this shift fall in the night window (23:00–06:00). Under German law (§ 6 ArbZG) night work entitles the worker to a reasonable premium or compensatory time off.` };
+    case 'ruhezeit': return { title: 'Daily rest', body: `After finishing at ${d.endClock}, an uninterrupted rest period of 11 hours is required (§ 5 ArbZG). The earliest permitted next start is ${d.nextStart}.` };
+    case 'pausenpflicht': return { title: 'Mandatory break', body: `For ${d.grossHHMM} hours of attendance, at least ${d.requiredBreak} minutes of break must be deducted (§ 4 ArbZG: 30 min over 6 h, 45 min over 9 h).` };
+    case 'mitternachtswechsel': return { title: 'Crosses midnight', body: `This shift crosses midnight. The calculation adds 24 hours so the duration resolves correctly to ${d.grossHHMM} hours.` };
+    case 'ueberstunden': return { title: 'Overtime', body: `Net working time exceeds a standard 8-hour day by ${d.overHHMM} hours. Whether this triggers an overtime premium depends on the employment or collective agreement.` };
+    case 'teilzeit': return { title: 'Part-time', body: `At ${d.netDecimalDe} net decimal hours (${d.netHHMM}) this shift is under 6 hours and typically falls into part-time or mini-job territory.` };
+  }
+}
+---
+{modules.length > 0 && (
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="shift-modules">
+        {modules.map((m) => {
+          const c = content(m);
+          return (
+            <div class="shift-module" data-module={m.id}>
+              <div class="shift-module__accent" aria-hidden="true"></div>
+              <div>
+                <h3 class="shift-module__title">{c.title}</h3>
+                <p class="shift-module__body">{c.body}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}

@@ -318,6 +318,7 @@ code, kbd, samp {
 
 .payroll-bar-track { background: var(--surface-3); }
 .payroll-bar-fill  { background: var(--band-accent); }
+.payroll-val { color: var(--band-accent); }
 
 .time-arc-bg { stroke: var(--surface-3); }
 .time-arc-active { stroke: var(--band-accent); }
@@ -344,3 +345,49 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .mode-tabbar { background: var(--surface-2); border: 1px solid var(--rule); }
 .mode-tab { background: transparent; border: 0; box-shadow: none; color: var(--ink-2); }
 .mode-tab.active { background: var(--petrol); color: #fff; }
+
+/* ── Axis 2: accent bands (WCAG-AA vs --surface). Light values, dark lightened. */
+[data-band="dawn"]    { --band-accent: #1B6B5A; }
+[data-band="day"]     { --band-accent: #124559; }
+[data-band="midday"]  { --band-accent: #3A6B35; }
+[data-band="evening"] { --band-accent: #8A4B08; }
+[data-band="night"]   { --band-accent: #2D3A6B; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"])[data-band="dawn"]    { --band-accent: #4FBFA3; }
+  :root:not([data-theme="light"])[data-band="day"]     { --band-accent: #5AA9C4; }
+  :root:not([data-theme="light"])[data-band="midday"]  { --band-accent: #7FB86F; }
+  :root:not([data-theme="light"])[data-band="evening"] { --band-accent: #E0A252; }
+  :root:not([data-theme="light"])[data-band="night"]   { --band-accent: #8B98D6; }
+}
+:root[data-theme="dark"][data-band="dawn"]    { --band-accent: #4FBFA3; }
+:root[data-theme="dark"][data-band="day"]     { --band-accent: #5AA9C4; }
+:root[data-theme="dark"][data-band="midday"]  { --band-accent: #7FB86F; }
+:root[data-theme="dark"][data-band="evening"] { --band-accent: #E0A252; }
+:root[data-theme="dark"][data-band="night"]   { --band-accent: #8B98D6; }
+
+/* ── Axis 4: conditional modules ─────────────────────────────────── */
+.shift-modules { display: grid; gap: 12px; }
+.shift-module {
+  display: flex; gap: 14px; padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: var(--radius, 12px); box-shadow: var(--shadow-sm);
+}
+.shift-module__accent { flex: 0 0 4px; border-radius: 4px; background: var(--band-accent); }
+.shift-module__title { margin: 0 0 4px; font-size: 1rem; color: var(--band-accent); }
+.shift-module__body { margin: 0; font-size: 0.92rem; color: var(--ink-2); line-height: 1.55; }
+
+/* ── Axis 3: split + dial treatments ─────────────────────────────── */
+.split-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .split-compare { grid-template-columns: 1fr; } }
+.split-card {
+  display: flex; flex-direction: column; gap: 6px; padding: 22px 24px;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: var(--radius, 12px); box-shadow: var(--shadow-sm);
+}
+.split-card--net { border-color: var(--band-accent); }
+.split-card__label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3); }
+.split-card__value { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: 2.4rem; font-weight: 600; color: var(--band-accent); line-height: 1; }
+.split-card__sub { font-family: var(--font-data); font-size: 0.85rem; color: var(--ink-3); }
+
+.dial-figure { margin: 0; display: flex; justify-content: center; padding: 8px 0 16px; }

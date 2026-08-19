@@ -17,6 +17,9 @@ interface Props {
   ogImage?: string;
   ogImageAlt?: string;
   theme?: 'home' | 'time-range' | 'work-hours' | 'countdown' | 'guide' | 'info';
+  band?: string;       // Phase 5.2 accent band → data-band
+  archetype?: string;  // Phase 5.1 layout archetype → data-archetype
+  treatment?: string;  // Phase 5.3 result treatment → data-treatment
 }
 
 const {
@@ -31,6 +34,9 @@ const {
   ogImage = 'https://zeit-rechner.com/og-image.png',
   ogImageAlt = lang === 'de' ? 'Zeit-Rechner.com — Präzise Online-Zeitrechner' : 'Zeit-Rechner.com — Precise Online Time Calculators',
   theme = 'home',
+  band,
+  archetype,
+  treatment,
 } = Astro.props;
 
 const hubUrlDe = '/';
@@ -54,7 +60,7 @@ const navLinks = lang === 'de' ? [
 const currentYear = new Date().getFullYear();
 ---
 <!DOCTYPE html>
-<html lang={lang} dir="ltr">
+<html lang={lang} dir="ltr" data-band={band} data-archetype={archetype} data-treatment={treatment}>
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BMGKJ52S0M"></script>
