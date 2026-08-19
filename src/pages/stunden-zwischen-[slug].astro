@@ -9,9 +9,11 @@ import {
   getTimeRangeUrl, getHubUrl, getWorkHoursUrl, shouldIndex
 } from '../lib/seoEngine';
 import {
-  timeRangeIntros_de, getContextClusterDE, useCases_de, faqSets_de, variantIndex
+  timeRangeIntros_de, getContextClusterDE, useCases_de, faqSets_de,
+  workHoursFaqSets_de, variantIndex
 } from '../data/contentVariants';
 import { computeShiftFromHours } from '../lib/shift';
+import { shouldNoindexByDemand } from '../lib/keepList';
 
 export async function getStaticPaths() {
   // Only the canonical German slug is built. Legacy English-convention slugs
@@ -31,6 +33,11 @@ const end24 = formatHour24(range.end);
 // Single source of truth for the displayed result figures (Phase 1)
 const gross = computeShiftFromHours(range.start, range.end, 0, 'de');
 
+// Phase 3.3: this page now also answers net-after-break (merged work-hours content)
+const BREAK_OPTIONS = [0, 30, 45, 60];
+const breakResults = BREAK_OPTIONS.map(b => ({ break: b, result: computeShiftFromHours(range.start, range.end, b, 'de') }));
+const net30 = breakResults[1].result;
+
 const canonical = getTimeRangeUrl(lang, range.deSlug);
 const altUrl = getTimeRangeUrl('en', range.slug);
 
@@ -48,7 +55,11 @@ const fi = variantIndex(range.deSlug + 'faq', faqSets_de.length);
 const introHtml = timeRangeIntros_de[vi](start24, end24, hours);
 const contextText = getContextClusterDE(range.start, range.end, hours);
 const useCaseList = useCases_de[ui];
-const faqs = faqSets_de[fi](start24, end24, hours);
+// Merged FAQ: time-range questions + net-after-break (ArbZG) questions
+const faqs = [
+  ...faqSets_de[fi](start24, end24, hours),
+  ...workHoursFaqSets_de[0](start24, end24, net30.netDecimal),
+];
 
 const similarRanges = getSimilarRanges(range, 8);
 
@@ -56,7 +67,7 @@ const seoMeta = buildSEOMeta(
   'time-range', lang,
   { start: start24, end: end24, hours: hours.toString() },
   canonical, 'en', altUrl,
-  !shouldIndex('time-range', range.demandScore),
+  !shouldIndex('time-range', range.demandScore) || shouldNoindexByDemand(canonical),
 );
 
 const jsonLd = [
@@ -161,6 +172,38 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
     </div>
   </section>
 
+  <!-- ─── NETTOARBEITSZEIT (merged work-hours content, Phase 3.3) ─────────── -->
+  <section class="section" style="padding-top: 0;" id="arbeitszeit">
+    <div class="container container--narrow">
+      <div class="payroll-sheet">
+        <h2 style="margin-top: 0; margin-bottom: 8px; font-size: 1.3rem;">Nettoarbeitszeit von {start24} bis {end24} Uhr (nach Pause)</h2>
+        <p style="margin-top: 0; margin-bottom: 20px; color: var(--clr-text-2); font-size: 0.95rem;">
+          Als Arbeitsschicht ergeben {start24}–{end24} Uhr <strong><span data-result="net-hhmm-30">{net30.netHHMM}</span></strong>
+          Nettoarbeitszeit mit 30 Minuten Pause — das sind <strong><span data-result="net-decimal-30">{net30.netDecimalStr}</span> Dezimalstunden</strong> für die Lohnabrechnung.
+        </p>
+        {breakResults.map(br => {
+          const pct = br.result.grossMin > 0 ? (br.result.netMin / br.result.grossMin) * 100 : 0;
+          return (
+            <div class="payroll-row">
+              <div class="payroll-info">
+                <span class="payroll-label">{br.break === 0 ? 'Ohne Pause' : `${br.break} Min. Pause`}</span>
+                <span class="payroll-val">
+                  <span data-result={`net-hhmm-${br.break}`}>{br.result.netHHMM}</span> (<span data-result={`net-decimal-${br.break}`}>{br.result.netDecimalStr}</span>h)
+                </span>
+              </div>
+              <div class="payroll-bar-track">
+                <div class="payroll-bar-fill" style={`width: ${pct}%`} />
+              </div>
+            </div>
+          );
+        })}
+        <p style="margin-top: 16px; margin-bottom: 0; font-size: 0.85rem; color: var(--clr-text-3);">
+          Gemäß Arbeitszeitgesetz (ArbZG) sind ab 6 Stunden mindestens 30 Minuten und ab 9 Stunden 45 Minuten Pause abzuziehen.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── CONTENT ────────────────────────────────────────────────────────── -->
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
@@ -256,8 +299,8 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
               </a>
             );
           })}
-          <a href={getWorkHoursUrl(lang, `${range.deSlug}`)} class="link-card">
-            <span>Arbeitsstunden {start24} – {end24}</span>
+          <a href="#arbeitszeit" class="link-card">
+            <span>Arbeitsstunden {start24} – {end24} (Netto nach Pause)</span>
             <span class="link-card__arrow">→</span>
           </a>
           <a href={getHubUrl(lang)} class="link-card">

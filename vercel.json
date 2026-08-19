@@ -32,23 +32,33 @@
       "permanent": true
     },
     {
+      "source": "/en/hours-between-8-and-4/",
+      "destination": "/en/hours-between-8-and-16/",
+      "permanent": true
+    },
+    {
+      "source": "/en/work-hours-8-and-4/",
+      "destination": "/en/hours-between-8-and-16/",
+      "permanent": true
+    },
+    {
       "source": "/stunden-zwischen-8-and-4/",
       "destination": "/stunden-zwischen-8-und-16/",
       "permanent": true
     },
     {
       "source": "/arbeitsstunden-8-and-4/",
-      "destination": "/arbeitsstunden-8-und-16/",
+      "destination": "/stunden-zwischen-8-und-16/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-8-und-16/",
-      "destination": "/en/hours-between-8-and-4/",
+      "source": "/en/hours-between-8-and-5/",
+      "destination": "/en/hours-between-8-and-17/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-8-und-16/",
-      "destination": "/en/work-hours-8-and-4/",
+      "source": "/en/work-hours-8-and-5/",
+      "destination": "/en/hours-between-8-and-17/",
       "permanent": true
     },
     {
@@ -58,17 +68,17 @@
     },
     {
       "source": "/arbeitsstunden-8-and-5/",
-      "destination": "/arbeitsstunden-8-und-17/",
+      "destination": "/stunden-zwischen-8-und-17/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-8-und-17/",
-      "destination": "/en/hours-between-8-and-5/",
+      "source": "/en/hours-between-8-30-and-5/",
+      "destination": "/en/hours-between-8-30-and-17/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-8-und-17/",
-      "destination": "/en/work-hours-8-and-5/",
+      "source": "/en/work-hours-8-30-and-5/",
+      "destination": "/en/hours-between-8-30-and-17/",
       "permanent": true
     },
     {
@@ -78,17 +88,17 @@
     },
     {
       "source": "/arbeitsstunden-8-30-and-5/",
-      "destination": "/arbeitsstunden-8-30-und-17/",
+      "destination": "/stunden-zwischen-8-30-und-17/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-8-30-und-17/",
-      "destination": "/en/hours-between-8-30-and-5/",
+      "source": "/en/hours-between-8-30-and-5-30/",
+      "destination": "/en/hours-between-8-30-and-17-30/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-8-30-und-17/",
-      "destination": "/en/work-hours-8-30-and-5/",
+      "source": "/en/work-hours-8-30-and-5-30/",
+      "destination": "/en/hours-between-8-30-and-17-30/",
       "permanent": true
     },
     {
@@ -98,17 +108,17 @@
     },
     {
       "source": "/arbeitsstunden-8-30-and-5-30/",
-      "destination": "/arbeitsstunden-8-30-und-17-30/",
+      "destination": "/stunden-zwischen-8-30-und-17-30/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-8-30-und-17-30/",
-      "destination": "/en/hours-between-8-30-and-5-30/",
+      "source": "/en/hours-between-9-and-5/",
+      "destination": "/en/hours-between-9-and-17/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-8-30-und-17-30/",
-      "destination": "/en/work-hours-8-30-and-5-30/",
+      "source": "/en/work-hours-9-and-5/",
+      "destination": "/en/hours-between-9-and-17/",
       "permanent": true
     },
     {
@@ -118,17 +128,17 @@
     },
     {
       "source": "/arbeitsstunden-9-and-5/",
-      "destination": "/arbeitsstunden-9-und-17/",
+      "destination": "/stunden-zwischen-9-und-17/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-9-und-17/",
-      "destination": "/en/hours-between-9-and-5/",
+      "source": "/en/hours-between-9-and-6/",
+      "destination": "/en/hours-between-9-and-18/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-9-und-17/",
-      "destination": "/en/work-hours-9-and-5/",
+      "source": "/en/work-hours-9-and-6/",
+      "destination": "/en/hours-between-9-and-18/",
       "permanent": true
     },
     {
@@ -138,17 +148,17 @@
     },
     {
       "source": "/arbeitsstunden-9-and-6/",
-      "destination": "/arbeitsstunden-9-und-18/",
+      "destination": "/stunden-zwischen-9-und-18/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-9-und-18/",
-      "destination": "/en/hours-between-9-and-6/",
+      "source": "/en/hours-between-9-30-and-6-30/",
+      "destination": "/en/hours-between-9-30-and-18-30/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-9-und-18/",
-      "destination": "/en/work-hours-9-and-6/",
+      "source": "/en/work-hours-9-30-and-6-30/",
+      "destination": "/en/hours-between-9-30-and-18-30/",
       "permanent": true
     },
     {
@@ -158,17 +168,17 @@
     },
     {
       "source": "/arbeitsstunden-9-30-and-6-30/",
-      "destination": "/arbeitsstunden-9-30-und-18-30/",
+      "destination": "/stunden-zwischen-9-30-und-18-30/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-9-30-und-18-30/",
-      "destination": "/en/hours-between-9-30-and-6-30/",
+      "source": "/en/hours-between-7-30-and-4/",
+      "destination": "/en/hours-between-7-30-and-16/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-9-30-und-18-30/",
-      "destination": "/en/work-hours-9-30-and-6-30/",
+      "source": "/en/work-hours-7-30-and-4/",
+      "destination": "/en/hours-between-7-30-and-16/",
       "permanent": true
     },
     {
@@ -178,17 +188,17 @@
     },
     {
       "source": "/arbeitsstunden-7-30-and-4/",
-      "destination": "/arbeitsstunden-7-30-und-16/",
+      "destination": "/stunden-zwischen-7-30-und-16/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-7-30-und-16/",
-      "destination": "/en/hours-between-7-30-and-4/",
+      "source": "/en/hours-between-7-and-3/",
+      "destination": "/en/hours-between-7-and-15/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-7-30-und-16/",
-      "destination": "/en/work-hours-7-30-and-4/",
+      "source": "/en/work-hours-7-and-3/",
+      "destination": "/en/hours-between-7-and-15/",
       "permanent": true
     },
     {
@@ -198,17 +208,17 @@
     },
     {
       "source": "/arbeitsstunden-7-and-3/",
-      "destination": "/arbeitsstunden-7-und-15/",
+      "destination": "/stunden-zwischen-7-und-15/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-7-und-15/",
-      "destination": "/en/hours-between-7-and-3/",
+      "source": "/en/hours-between-7-30-and-3-30/",
+      "destination": "/en/hours-between-7-30-and-15-30/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-7-und-15/",
-      "destination": "/en/work-hours-7-and-3/",
+      "source": "/en/work-hours-7-30-and-3-30/",
+      "destination": "/en/hours-between-7-30-and-15-30/",
       "permanent": true
     },
     {
@@ -218,17 +228,17 @@
     },
     {
       "source": "/arbeitsstunden-7-30-and-3-30/",
-      "destination": "/arbeitsstunden-7-30-und-15-30/",
+      "destination": "/stunden-zwischen-7-30-und-15-30/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-7-30-und-15-30/",
-      "destination": "/en/hours-between-7-30-and-3-30/",
+      "source": "/en/hours-between-6-and-2/",
+      "destination": "/en/hours-between-6-and-14/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-7-30-und-15-30/",
-      "destination": "/en/work-hours-7-30-and-3-30/",
+      "source": "/en/work-hours-6-and-2/",
+      "destination": "/en/hours-between-6-and-14/",
       "permanent": true
     },
     {
@@ -238,17 +248,17 @@
     },
     {
       "source": "/arbeitsstunden-6-and-2/",
-      "destination": "/arbeitsstunden-6-und-14/",
+      "destination": "/stunden-zwischen-6-und-14/",
       "permanent": true
     },
     {
-      "source": "/en/hours-between-6-und-14/",
-      "destination": "/en/hours-between-6-and-2/",
+      "source": "/en/hours-between-12pm-and-8pm/",
+      "destination": "/en/hours-between-12-and-20/",
       "permanent": true
     },
     {
-      "source": "/en/work-hours-6-und-14/",
-      "destination": "/en/work-hours-6-and-2/",
+      "source": "/en/work-hours-12pm-and-8pm/",
+      "destination": "/en/hours-between-12-and-20/",
       "permanent": true
     },
     {
@@ -258,17 +268,7 @@
     },
     {
       "source": "/arbeitsstunden-12pm-and-8pm/",
-      "destination": "/arbeitsstunden-12-und-20/",
-      "permanent": true
-    },
-    {
-      "source": "/en/hours-between-12-und-20/",
-      "destination": "/en/hours-between-12pm-and-8pm/",
-      "permanent": true
-    },
-    {
-      "source": "/en/work-hours-12-und-20/",
-      "destination": "/en/work-hours-12pm-and-8pm/",
+      "destination": "/stunden-zwischen-12-und-20/",
       "permanent": true
     },
     {
@@ -732,23 +732,28 @@
       "permanent": true
     },
     {
+      "source": "/arbeitsstunden-:a-and-:b/",
+      "destination": "/stunden-zwischen-:a-und-:b/",
+      "permanent": true
+    },
+    {
+      "source": "/arbeitsstunden-:rest/",
+      "destination": "/stunden-zwischen-:rest/",
+      "permanent": true
+    },
+    {
       "source": "/stunden-zwischen-:a-and-:b/",
       "destination": "/stunden-zwischen-:a-und-:b/",
       "permanent": true
     },
     {
-      "source": "/arbeitsstunden-:a-and-:b/",
-      "destination": "/arbeitsstunden-:a-und-:b/",
+      "source": "/en/work-hours-:rest/",
+      "destination": "/en/hours-between-:rest/",
       "permanent": true
     },
     {
       "source": "/en/hours-between-:a-und-:b/",
       "destination": "/en/hours-between-:a-and-:b/",
-      "permanent": true
-    },
-    {
-      "source": "/en/work-hours-:a-und-:b/",
-      "destination": "/en/work-hours-:a-and-:b/",
       "permanent": true
     },
     {

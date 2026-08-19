@@ -31,9 +31,6 @@ type Redirect = {
 
 const R = (source: string, destination: string): Redirect => ({ source, destination, permanent: true });
 
-// A DE/EN slug pair is a "plain swap" if replacing -and- with -und- yields the DE slug.
-const isPlainSwap = (slug: string, deSlug: string) => slug.replace('-and-', '-und-') === deSlug;
-
 const redirects: Redirect[] = [];
 
 // 1. www -> apex
@@ -50,15 +47,18 @@ redirects.push(R('/de/:path*', '/:path*'));
 redirects.push(R('/zeitrechner/', '/'));
 redirects.push(R('/en/time-calculator/', '/en/'));
 
-// 3a. explicit time-range redirects (only the non-plain-swap pairs, e.g. 8-and-4 -> 8-und-16)
-let explicitRanges = 0;
+// 3a. explicit legacy 12h EN slugs -> canonical 24h (Phase 3.1). Must precede the
+//     regex/merge rules so they resolve in a single hop (no dash-swap chain).
+let explicitLegacy = 0;
 for (const r of ALL_TIME_RANGES) {
-  if (isPlainSwap(r.slug, r.deSlug)) continue;
-  explicitRanges++;
-  redirects.push(R(`/stunden-zwischen-${r.slug}/`, `/stunden-zwischen-${r.deSlug}/`));
-  redirects.push(R(`/arbeitsstunden-${r.slug}/`, `/arbeitsstunden-${r.deSlug}/`));
-  redirects.push(R(`/en/hours-between-${r.deSlug}/`, `/en/hours-between-${r.slug}/`));
-  redirects.push(R(`/en/work-hours-${r.deSlug}/`, `/en/work-hours-${r.slug}/`));
+  if (!r.legacyEnSlug) continue;
+  explicitLegacy++;
+  // EN: legacy 12h hours-between AND merged work-hours -> canonical EN hours-between
+  redirects.push(R(`/en/hours-between-${r.legacyEnSlug}/`, `/en/hours-between-${r.slug}/`));
+  redirects.push(R(`/en/work-hours-${r.legacyEnSlug}/`, `/en/hours-between-${r.slug}/`));
+  // DE: the same legacy English-form on DE paths -> canonical DE stunden-zwischen
+  redirects.push(R(`/stunden-zwischen-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`));
+  redirects.push(R(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`));
 }
 
 // 3b. explicit countdown redirects (event names are never a plain swap)
@@ -70,11 +70,14 @@ for (const e of ALL_EVENTS) {
   redirects.push(R(`/en/days-until-${e.deSlug}/`, `/en/days-until-${e.slug}/`));
 }
 
-// 4. regex catch-alls for the plain-swap pairs
-redirects.push(R('/stunden-zwischen-:a-and-:b/', '/stunden-zwischen-:a-und-:b/'));
-redirects.push(R('/arbeitsstunden-:a-and-:b/', '/arbeitsstunden-:a-und-:b/'));
-redirects.push(R('/en/hours-between-:a-und-:b/', '/en/hours-between-:a-and-:b/'));
-redirects.push(R('/en/work-hours-:a-und-:b/', '/en/work-hours-:a-and-:b/'));
+// 4. regex rules: merge arbeitsstunden/work-hours into the time-range page (Phase 3.3)
+//    and normalise legacy English-form / German-form slugs to canonical.
+//    Order: more-specific (-and-/-und-) before the general :rest catch-all.
+redirects.push(R('/arbeitsstunden-:a-and-:b/', '/stunden-zwischen-:a-und-:b/')); // english-form arbeits -> DE canonical
+redirects.push(R('/arbeitsstunden-:rest/', '/stunden-zwischen-:rest/'));          // und-form arbeits -> DE canonical (merge)
+redirects.push(R('/stunden-zwischen-:a-and-:b/', '/stunden-zwischen-:a-und-:b/'));// english-form stunden -> DE canonical
+redirects.push(R('/en/work-hours-:rest/', '/en/hours-between-:rest/'));           // EN work-hours -> EN hours-between (merge)
+redirects.push(R('/en/hours-between-:a-und-:b/', '/en/hours-between-:a-and-:b/'));// stray und-form on EN -> EN canonical
 
 // 5. add trailing slash (last)
 redirects.push(R('/((?!.*\\.).*[^/])', '/$1/'));
@@ -103,6 +106,6 @@ writeFileSync(resolve(ROOT, 'vercel.json'), JSON.stringify(config, null, 2) + '\
 
 console.log(`[gen-redirects] wrote vercel.json`);
 console.log(`  total redirects        : ${redirects.length}`);
-console.log(`  explicit time-ranges   : ${explicitRanges} (x4 rules)`);
+console.log(`  legacy 12h EN slugs    : ${explicitLegacy} (x4 rules)`);
 console.log(`  explicit countdowns    : ${explicitEvents} (x2 rules)`);
-console.log(`  regex catch-alls       : 4`);
+console.log(`  merge/normalise regex  : 5`);

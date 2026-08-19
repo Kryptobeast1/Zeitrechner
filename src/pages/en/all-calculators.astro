@@ -62,7 +62,7 @@ const countdowns = ALL_EVENTS.filter(e => e.priority !== 'low' || parseInt(e.tar
       <div class="directory-section animate-in" id="tab-work">
         <div class="directory-column-grid">
           {workRanges.map(r => (
-            <a href={getWorkHoursUrl(lang, r.slug)} class="directory-link-item">
+            <a href={`${getTimeRangeUrl(lang, r.slug)}#work-hours`} class="directory-link-item">
               💼 Work Hours: {formatHour24(r.start)} to {formatHour24(r.end)}
             </a>
           ))}

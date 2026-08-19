@@ -22,12 +22,9 @@ export async function GET() {
     });
   });
 
-  // Work Hours (Exclude same-time ranges)
-  INDEXED_RANGES.filter(r => (shouldIndex('work-hours', r.demandScore) || r.workShift) && r.start !== r.end).forEach(range => {
-    languages.forEach(lang => {
-      urlSet.add(getFullUrl(getWorkHoursUrl(lang, lang === 'de' ? range.deSlug : range.slug)));
-    });
-  });
+  // Work-hours pages were merged into the time-range pages (Phase 3.3) —
+  // net-after-break now lives at #arbeitszeit / #work-hours on the same URL,
+  // so there are no separate work-hours URLs to list.
 
   // Countdowns (Exclude past-year countdowns)
   ALL_EVENTS.filter(e => {

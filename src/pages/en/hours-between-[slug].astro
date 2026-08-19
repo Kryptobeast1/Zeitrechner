@@ -9,9 +9,11 @@ import {
   getTimeRangeUrl, getHubUrl, getWorkHoursUrl, shouldIndex
 } from '../../lib/seoEngine';
 import {
-  timeRangeIntros_en, getContextClusterEN, useCases_en, faqSets_en, variantIndex
+  timeRangeIntros_en, getContextClusterEN, useCases_en, faqSets_en,
+  workHoursFaqSets_en, variantIndex
 } from '../../data/contentVariants';
 import { computeShiftFromHours } from '../../lib/shift';
+import { shouldNoindexByDemand } from '../../lib/keepList';
 
 export async function getStaticPaths() {
   // Canonical English slug only. Legacy slugs are 301'd via vercel.json.
@@ -29,6 +31,11 @@ const end24 = formatHour24(range.end);
 // Single source of truth for the displayed result figures (Phase 1)
 const gross = computeShiftFromHours(range.start, range.end, 0, 'en');
 
+// Phase 3.3: this page now also answers net-after-break (merged work-hours content)
+const BREAK_OPTIONS = [0, 30, 45, 60];
+const breakResults = BREAK_OPTIONS.map(b => ({ break: b, result: computeShiftFromHours(range.start, range.end, b, 'en') }));
+const net30 = breakResults[1].result;
+
 const canonical = getTimeRangeUrl(lang, range.slug);
 const altUrl = getTimeRangeUrl('de', range.deSlug);
 
@@ -45,7 +52,11 @@ const fi = variantIndex(range.slug + 'faq', faqSets_en.length);
 const introHtml = timeRangeIntros_en[vi](start24, end24, hours);
 const contextText = getContextClusterEN(range.start, range.end, hours);
 const useCaseList = useCases_en[ui];
-const faqs = faqSets_en[fi](start24, end24, hours);
+// Merged FAQ: time-range questions + net-after-break questions
+const faqs = [
+  ...faqSets_en[fi](start24, end24, hours),
+  ...workHoursFaqSets_en[0](start24, end24, net30.netDecimal),
+];
 
 const similarRanges = getSimilarRanges(range, 8);
 
@@ -53,7 +64,7 @@ const seoMeta = buildSEOMeta(
   'time-range', lang,
   { start: start24, end: end24, hours: hours.toString() },
   canonical, 'de', altUrl,
-  !shouldIndex('time-range', range.demandScore),
+  !shouldIndex('time-range', range.demandScore) || shouldNoindexByDemand(canonical),
 );
 
 const jsonLd = [
@@ -152,6 +163,38 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           <span class="stat-card__value" data-result="gross-decimal">{gross.grossDecimalStr}</span>
           <span class="stat-card__label">Decimal Hours</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NET WORK TIME (merged work-hours content, Phase 3.3) ────────────── -->
+  <section class="section" style="padding-top: 0;" id="work-hours">
+    <div class="container container--narrow">
+      <div class="payroll-sheet">
+        <h2 style="margin-top: 0; margin-bottom: 8px; font-size: 1.3rem;">Net Work Hours from {start24} to {end24} (after break)</h2>
+        <p style="margin-top: 0; margin-bottom: 20px; color: var(--clr-text-2); font-size: 0.95rem;">
+          As a work shift, {start24}–{end24} gives <strong><span data-result="net-hhmm-30">{net30.netHHMM}</span></strong>
+          net with a 30-minute break — that is <strong><span data-result="net-decimal-30">{net30.netDecimalStr}</span> decimal hours</strong> for payroll.
+        </p>
+        {breakResults.map(br => {
+          const pct = br.result.grossMin > 0 ? (br.result.netMin / br.result.grossMin) * 100 : 0;
+          return (
+            <div class="payroll-row">
+              <div class="payroll-info">
+                <span class="payroll-label">{br.break === 0 ? 'No break' : `${br.break} min break`}</span>
+                <span class="payroll-val">
+                  <span data-result={`net-hhmm-${br.break}`}>{br.result.netHHMM}</span> (<span data-result={`net-decimal-${br.break}`}>{br.result.netDecimalStr}</span>h)
+                </span>
+              </div>
+              <div class="payroll-bar-track">
+                <div class="payroll-bar-fill" style={`width: ${pct}%`} />
+              </div>
+            </div>
+          );
+        })}
+        <p style="margin-top: 16px; margin-bottom: 0; font-size: 0.85rem; color: var(--clr-text-3);">
+          Rest breaks are unpaid: a shift over 6 hours typically requires a 20–30 minute break that is deducted from paid time.
+        </p>
       </div>
     </div>
   </section>

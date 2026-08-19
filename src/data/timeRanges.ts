@@ -4,8 +4,9 @@
 export interface TimeRange {
   start: number;   // 0–23 (can be decimal 8.5 for 08:30)
   end: number;     // 0–23 (can be decimal 17.5 for 17:30)
-  slug: string;    // URL slug (e.g. 8-30-and-17)
-  deSlug: string;  // German slug (e.g. 8-30-und-17)
+  slug: string;    // Canonical EN URL slug, 24h (e.g. 8-30-and-17)
+  deSlug: string;  // Canonical DE URL slug, 24h (e.g. 8-30-und-17)
+  legacyEnSlug?: string; // Old ambiguous 12h EN slug to 301 from (e.g. 8-30-and-5)
   priority: 'high' | 'medium' | 'low';
   index: boolean;  // Should this page be indexed?
   workShift?: boolean;
@@ -32,20 +33,21 @@ function isValidPage(start: number, end: number, dur: number): boolean {
   return meaningfulDurs.includes(dur);
 }
 
-// Common work shifts (EXTREMELY HIGH demand)
+// Common work shifts (EXTREMELY HIGH demand).
+// EN slug is canonical zero-ambiguity 24h; legacyEnSlug is the old 12h form we 301 from.
 const workShifts: TimeRange[] = [
-  { start: 8, end: 16, slug: '8-and-4', deSlug: '8-und-16', priority: 'high', index: true, workShift: true, demandScore: 100 },
-  { start: 8, end: 17, slug: '8-and-5', deSlug: '8-und-17', priority: 'high', index: true, workShift: true, demandScore: 100 },
-  { start: 8.5, end: 17, slug: '8-30-and-5', deSlug: '8-30-und-17', priority: 'high', index: true, workShift: true, demandScore: 90 },
-  { start: 8.5, end: 17.5, slug: '8-30-and-5-30', deSlug: '8-30-und-17-30', priority: 'high', index: true, workShift: true, demandScore: 85 },
-  { start: 9, end: 17, slug: '9-and-5', deSlug: '9-und-17', priority: 'high', index: true, workShift: true, demandScore: 100 },
-  { start: 9, end: 18, slug: '9-and-6', deSlug: '9-und-18', priority: 'high', index: true, workShift: true, demandScore: 95 },
-  { start: 9.5, end: 18.5, slug: '9-30-and-6-30', deSlug: '9-30-und-18-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
-  { start: 7.5, end: 16, slug: '7-30-and-4', deSlug: '7-30-und-16', priority: 'high', index: true, workShift: true, demandScore: 85 },
-  { start: 7, end: 15, slug: '7-and-3', deSlug: '7-und-15', priority: 'high', index: true, workShift: true, demandScore: 95 },
-  { start: 7.5, end: 15.5, slug: '7-30-and-3-30', deSlug: '7-30-und-15-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
-  { start: 6, end: 14, slug: '6-and-2', deSlug: '6-und-14', priority: 'high', index: true, workShift: true, demandScore: 80 },
-  { start: 12, end: 20, slug: '12pm-and-8pm', deSlug: '12-und-20', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 8, end: 16, slug: '8-and-16', deSlug: '8-und-16', legacyEnSlug: '8-and-4', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 8, end: 17, slug: '8-and-17', deSlug: '8-und-17', legacyEnSlug: '8-and-5', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 8.5, end: 17, slug: '8-30-and-17', deSlug: '8-30-und-17', legacyEnSlug: '8-30-and-5', priority: 'high', index: true, workShift: true, demandScore: 90 },
+  { start: 8.5, end: 17.5, slug: '8-30-and-17-30', deSlug: '8-30-und-17-30', legacyEnSlug: '8-30-and-5-30', priority: 'high', index: true, workShift: true, demandScore: 85 },
+  { start: 9, end: 17, slug: '9-and-17', deSlug: '9-und-17', legacyEnSlug: '9-and-5', priority: 'high', index: true, workShift: true, demandScore: 100 },
+  { start: 9, end: 18, slug: '9-and-18', deSlug: '9-und-18', legacyEnSlug: '9-and-6', priority: 'high', index: true, workShift: true, demandScore: 95 },
+  { start: 9.5, end: 18.5, slug: '9-30-and-18-30', deSlug: '9-30-und-18-30', legacyEnSlug: '9-30-and-6-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 7.5, end: 16, slug: '7-30-and-16', deSlug: '7-30-und-16', legacyEnSlug: '7-30-and-4', priority: 'high', index: true, workShift: true, demandScore: 85 },
+  { start: 7, end: 15, slug: '7-and-15', deSlug: '7-und-15', legacyEnSlug: '7-and-3', priority: 'high', index: true, workShift: true, demandScore: 95 },
+  { start: 7.5, end: 15.5, slug: '7-30-and-15-30', deSlug: '7-30-und-15-30', legacyEnSlug: '7-30-and-3-30', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 6, end: 14, slug: '6-and-14', deSlug: '6-und-14', legacyEnSlug: '6-and-2', priority: 'high', index: true, workShift: true, demandScore: 80 },
+  { start: 12, end: 20, slug: '12-and-20', deSlug: '12-und-20', legacyEnSlug: '12pm-and-8pm', priority: 'high', index: true, workShift: true, demandScore: 80 },
 ];
 
 /**
@@ -61,10 +63,14 @@ function generatePhase3Ranges(): TimeRange[] {
     
     for (const dur of durations) {
       const end = (start + dur) % 24;
-      
+
+      // Phase 3.2: never generate zero-duration / full-day junk (start === end).
+      // e.g. "Stunden zwischen 08:00 und 08:00" — no search intent, should 410/404.
+      if (end === start) continue;
+
       // Skip if already in workShifts
       if (workShifts.some(w => w.start === start && w.end === end)) continue;
-      
+
       // Intent Check (Only index high-intent half-hour combos)
       if (!isValidPage(start, end, dur)) continue;
 

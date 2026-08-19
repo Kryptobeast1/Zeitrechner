@@ -75,13 +75,9 @@ function sampleMoneyPages(): string[] {
     for (let i = 0; i < arr.length && out.length < n; i += step) out.push(arr[i]);
     return out;
   };
-  const rr = pick(ALL_TIME_RANGES, 8);
   const pages: string[] = ['/', '/en/'];
-  for (const r of pick(ALL_TIME_RANGES, 8)) pages.push(`/stunden-zwischen-${r.deSlug}/`);
-  for (const r of pick(ALL_TIME_RANGES, 4)) pages.push(`/arbeitsstunden-${r.deSlug}/`);
-  for (const r of pick(ALL_TIME_RANGES, 4)) pages.push(`/en/hours-between-${r.slug}/`);
-  for (const r of pick(ALL_TIME_RANGES, 4)) pages.push(`/en/work-hours-${r.slug}/`);
-  void rr;
+  for (const r of pick(ALL_TIME_RANGES, 14)) pages.push(`/stunden-zwischen-${r.deSlug}/`);
+  for (const r of pick(ALL_TIME_RANGES, 6)) pages.push(`/en/hours-between-${r.slug}/`);
   return pages;
 }
 
@@ -97,9 +93,11 @@ for (const page of sampleMoneyPages()) {
     const href = m[1];
     if (!href.startsWith('/') || href.startsWith('//')) continue; // external / protocol-relative
     if (href.startsWith('#')) continue;
+    const path = href.split('#')[0].split('?')[0]; // strip fragment/query before matching
+    if (!path) continue; // pure in-page anchor
     linksChecked++;
-    if (redirectFor(href)) { fail(`internal link points at a redirect: ${href} (on ${page})`); continue; }
-    if (!exists200(href)) fail(`internal link 404 (no dist file): ${href} (on ${page})`);
+    if (redirectFor(path)) { fail(`internal link points at a redirect: ${href} (on ${page})`); continue; }
+    if (!exists200(path)) fail(`internal link 404 (no dist file): ${href} (on ${page})`);
   }
 }
 
@@ -134,13 +132,21 @@ function checkLegacy(legacy: string, expectedCanonical: string) {
   redirectsVerified++;
 }
 
-// time-range legacy slugs (both explicit 12h shifts and plain-swap generated ones)
+// time-range legacy slugs
 const rangeSample = [...ALL_TIME_RANGES.slice(0, 20), ...ALL_TIME_RANGES.filter(r => r.workShift)];
 for (const r of rangeSample) {
+  // English-form slug on DE path -> DE canonical (regex dash-swap)
   checkLegacy(`/stunden-zwischen-${r.slug}/`, `/stunden-zwischen-${r.deSlug}/`);
-  checkLegacy(`/arbeitsstunden-${r.slug}/`, `/arbeitsstunden-${r.deSlug}/`);
-  checkLegacy(`/en/hours-between-${r.deSlug}/`, `/en/hours-between-${r.slug}/`);
-  checkLegacy(`/en/work-hours-${r.deSlug}/`, `/en/work-hours-${r.slug}/`);
+  // Phase 3.3 merge: arbeitsstunden -> stunden-zwischen ; work-hours -> hours-between
+  checkLegacy(`/arbeitsstunden-${r.deSlug}/`, `/stunden-zwischen-${r.deSlug}/`);
+  checkLegacy(`/en/work-hours-${r.slug}/`, `/en/hours-between-${r.slug}/`);
+  // Legacy ambiguous 12h EN slugs (Phase 3.1) resolve in one hop to canonical
+  if (r.legacyEnSlug) {
+    checkLegacy(`/en/hours-between-${r.legacyEnSlug}/`, `/en/hours-between-${r.slug}/`);
+    checkLegacy(`/en/work-hours-${r.legacyEnSlug}/`, `/en/hours-between-${r.slug}/`);
+    checkLegacy(`/stunden-zwischen-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`);
+    checkLegacy(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`);
+  }
 }
 // countdown legacy slugs
 for (const e of ALL_EVENTS.filter(e => e.slug !== e.deSlug).slice(0, 15)) {

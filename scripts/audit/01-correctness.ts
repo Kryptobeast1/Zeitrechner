@@ -128,39 +128,26 @@ function checkTimeRangePage(page: string, startH: number, endH: number, locale: 
   if (results.has('gross-hours-hhmm') && results.get('gross-hours-hhmm') !== formatDurationHHMM(g.grossMin)) {
     fail(page, 5, `duration slot "${results.get('gross-hours-hhmm')}" not from formatDurationHHMM`);
   }
-  if (locale === 'en') checkBlocklist(page, html);
-  return true;
-}
 
-function checkWorkHoursPage(page: string, startH: number, endH: number, locale: 'de' | 'en') {
-  const html = readPage(page);
-  if (!html) return false;
-  if (html.includes('Redirecting to')) { pagesSkipped++; return false; }
-  pagesChecked++;
-
-  const results = extractResults(html);
+  // Merged net-after-break figures (Phase 3.3): validate every break on the same page
   for (const b of BREAKS) {
     const r = computeShiftFromHours(startH, endH, b, locale);
-    // Assertion 3
     if (results.has(`net-hhmm-${b}`) && results.get(`net-hhmm-${b}`) !== r.netHHMM) {
       fail(page, 3, `[net-hhmm-${b}] "${results.get(`net-hhmm-${b}`)}" !== "${r.netHHMM}"`);
     }
     if (results.has(`net-decimal-${b}`) && results.get(`net-decimal-${b}`) !== r.netDecimalStr) {
       fail(page, 3, `[net-decimal-${b}] "${results.get(`net-decimal-${b}`)}" !== "${r.netDecimalStr}"`);
     }
-    // Assertion 4 — HH:MM and decimal agree for the same break
     if (results.has(`net-hhmm-${b}`) && results.has(`net-decimal-${b}`)) {
       const fromHHMM = hhmmToMin(results.get(`net-hhmm-${b}`)!);
       const fromDec = Math.round(parseDecimal(results.get(`net-decimal-${b}`)!) * 60);
-      if (fromHHMM !== fromDec) {
-        fail(page, 4, `net break=${b}: HH:MM (${fromHHMM}m) contradicts decimal (${fromDec}m)`);
-      }
+      if (fromHHMM !== fromDec) fail(page, 4, `net break=${b}: HH:MM (${fromHHMM}m) contradicts decimal (${fromDec}m)`);
     }
-    // Assertion 5
     if (results.has(`net-hhmm-${b}`) && results.get(`net-hhmm-${b}`) !== formatDurationHHMM(r.netMin)) {
       fail(page, 5, `net-hhmm-${b} "${results.get(`net-hhmm-${b}`)}" not from formatDurationHHMM`);
     }
   }
+
   if (locale === 'en') checkBlocklist(page, html);
   return true;
 }
@@ -175,13 +162,12 @@ function checkBlocklist(page: string, html: string) {
   }
 }
 
-// ─── Run over every range on all four page families ──────────────────────────
+// ─── Run over every range on both (merged) page families ─────────────────────
+// Post Phase 3.3 each time-pair is a single page carrying both gross and net figures.
 for (const r of ALL_TIME_RANGES) {
   checkExpectedMath(`data:${r.deSlug}`, r.start, r.end);
   checkTimeRangePage(`stunden-zwischen-${r.deSlug}`, r.start, r.end, 'de');
-  checkWorkHoursPage(`arbeitsstunden-${r.deSlug}`, r.start, r.end, 'de');
   checkTimeRangePage(`en/hours-between-${r.slug}`, r.start, r.end, 'en');
-  checkWorkHoursPage(`en/work-hours-${r.slug}`, r.start, r.end, 'en');
 }
 
 // ─── Report ──────────────────────────────────────────────────────────────────
