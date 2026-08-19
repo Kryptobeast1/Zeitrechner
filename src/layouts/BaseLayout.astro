@@ -49,6 +49,41 @@ const hubUrl = lang === 'de' ? hubUrlDe : hubUrlEn;
 // not the homepage. Falls back to the hubs when a page has no counterpart.
 const deSwitchUrl = langAlternates?.de ?? hubUrlDe;
 const enSwitchUrl = langAlternates?.en ?? hubUrlEn;
+
+// Baseline structured data emitted on EVERY page: Organization + WebSite +
+// WebPage. Page-specific schema (FAQPage, WebApplication, Event, BreadcrumbList)
+// is added on top via the `jsonLd` prop.
+const SITE = 'https://zeit-rechner.com';
+const canonicalUrl = canonical.startsWith('http') ? canonical : SITE + canonical;
+const baseSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE}/#org`,
+      name: 'Zeit-Rechner.com',
+      url: `${SITE}/`,
+      logo: { '@type': 'ImageObject', url: `${SITE}/favicon.svg` },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}/#website`,
+      url: `${SITE}/`,
+      name: 'Zeit-Rechner.com',
+      inLanguage: lang === 'de' ? 'de-DE' : 'en-US',
+      publisher: { '@id': `${SITE}/#org` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: lang === 'de' ? 'de-DE' : 'en-US',
+      isPartOf: { '@id': `${SITE}/#website` },
+    },
+  ],
+};
 const altLang = lang === 'de' ? 'en' : 'de';
 const altHubUrl = lang === 'de' ? hubUrlEn : hubUrlDe;
 
@@ -142,7 +177,8 @@ const currentYear = new Date().getFullYear();
     })();
   </script>
 
-  <!-- JSON-LD -->
+  <!-- JSON-LD — baseline (every page) + page-specific -->
+  <script type="application/ld+json" set:html={JSON.stringify(baseSchema)} />
   {jsonLd.map(schema => (
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   ))}
@@ -167,7 +203,7 @@ const currentYear = new Date().getFullYear();
   <!-- ─── NAVBAR ──────────────────────────────────────────────────────────── -->
   <nav class="navbar" role="navigation" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
     <div class="navbar__inner">
-      <a href={hubUrl} class="navbar__logo" aria-label="Home">
+      <a href={hubUrl} class="navbar__logo" aria-label={lang === 'de' ? 'Zeit-Rechner, Startseite' : 'Time Calculator, Home'}>
         <svg class="navbar__logo-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--clr-accent); filter: drop-shadow(0 0 4px var(--clr-accent-glow));">
           <circle cx="12" cy="12" r="9" stroke="currentColor" />
           <polyline points="12 7 12 12 15 15" stroke="currentColor" />
@@ -200,6 +236,20 @@ const currentYear = new Date().getFullYear();
           <a href={deSwitchUrl} class:list={['lang-btn', { active: lang === 'de' }]} hreflang="de" aria-label="Deutsch">DE</a>
           <a href={enSwitchUrl} class:list={['lang-btn', { active: lang === 'en' }]} hreflang="en" aria-label="English">EN</a>
         </div>
+        <button type="button" class="navbar__toggle" id="nav-toggle" aria-label={lang === 'de' ? 'Menü' : 'Menu'} aria-expanded="false" aria-controls="navbar-mobile">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile dropdown (nav links + language) -->
+    <div class="navbar__mobile" id="navbar-mobile">
+      <ul role="list">
+        {navLinks.map(link => (<li><a href={link.href}>{link.label}</a></li>))}
+      </ul>
+      <div class="navbar__mobile-lang">
+        <a href={deSwitchUrl} class:list={['lang-btn', { active: lang === 'de' }]} hreflang="de">Deutsch</a>
+        <a href={enSwitchUrl} class:list={['lang-btn', { active: lang === 'en' }]} hreflang="en">English</a>
       </div>
     </div>
   </nav>
@@ -299,6 +349,15 @@ const currentYear = new Date().getFullYear();
         var b = e.target && e.target.closest ? e.target.closest('[data-print]') : null;
         if (b) window.print();
       });
+      // Mobile nav toggle
+      var navToggle = document.getElementById('nav-toggle');
+      var navMobile = document.getElementById('navbar-mobile');
+      if (navToggle && navMobile) {
+        navToggle.addEventListener('click', function () {
+          var open = navMobile.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', String(open));
+        });
+      }
     })();
   </script>
 

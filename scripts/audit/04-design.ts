@@ -54,6 +54,11 @@ walk(DIST, (full) => {
     if (/fonts\.(googleapis|gstatic)\.com/.test(css)) fail(`external font host referenced in bundled CSS ${full.replace(DIST, 'dist')}`);
     const refs = css.match(/url\((?:'|")?\/fonts\/[^)]+\.woff2/g);
     if (refs) fontRefs += refs.length;
+    // Emoji hidden in CSS content: '...' — rendered on the page but invisible to
+    // the HTML scan above, so check the stylesheet too.
+    for (const m of css.matchAll(/content\s*:\s*(['"])(.*?)\1/g)) {
+      if (EMOJI.test(m[2])) { emojiHits++; if (failures.length < 25) fail(`emoji in CSS content ${JSON.stringify(m[2])} in ${full.replace(DIST, 'dist')}`); }
+    }
   }
 });
 

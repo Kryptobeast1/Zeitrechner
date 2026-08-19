@@ -31,6 +31,7 @@ function content(m: ShiftModule): { title: string; body: string } {
 {modules.length > 0 && (
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
+      <h2 style="font-size: 1.3rem; margin: 0 0 1rem;">{lang === 'de' ? 'Rechtliche Hinweise zur Schicht' : 'Legal notes for this shift'}</h2>
       <div class="shift-modules">
         {modules.map((m) => {
           const c = content(m);

@@ -22,10 +22,11 @@
   --warn:    #B3261E;
   --rule:    #D5DAD8;
 
-  /* Derived neutrals + accent tints (light) */
-  --ink-2:      #3D4650;
-  --ink-3:      #5C6874;
-  --ink-muted:  #7A8590;
+  /* Derived neutrals + accent tints (light). Darkened for stronger, WCAG-AA
+     contrast on white — even the "muted" tone clears 4.5:1. */
+  --ink-2:      #2F3843;
+  --ink-3:      #48525D;
+  --ink-muted:  #5A646F;
   --surface-2:  #F7F9F8;
   --surface-3:  #EDF0EF;
   --petrol-2:   #0C3140;
@@ -97,9 +98,9 @@
     --warn:    #F2635A;
     --rule:    #2A3239;
 
-    --ink-2:      #B6BEC4;
-    --ink-3:      #8A939A;
-    --ink-muted:  #6B747B;
+    --ink-2:      #C2CACF;
+    --ink-3:      #99A2A9;
+    --ink-muted:  #8B949B;
     --surface-2:  #1D242A;
     --surface-3:  #232B31;
     --petrol-2:   #86C5DA;
@@ -127,9 +128,9 @@
   --warn:    #F2635A;
   --rule:    #2A3239;
 
-  --ink-2:      #B6BEC4;
-  --ink-3:      #8A939A;
-  --ink-muted:  #6B747B;
+  --ink-2:      #C2CACF;
+  --ink-3:      #99A2A9;
+  --ink-muted:  #8B949B;
   --surface-2:  #1D242A;
   --surface-3:  #232B31;
   --petrol-2:   #86C5DA;
@@ -217,6 +218,11 @@ code, kbd, samp {
 }
 .theme-switch__btn:hover { color: var(--ink); background: var(--surface-3); }
 .theme-switch__btn[aria-pressed="true"] { background: var(--petrol-tint); color: var(--petrol); }
+
+/* Language pill — solid petrol when active (clear contrast + clearer state). */
+.lang-btn { color: var(--ink-2); border: 1px solid var(--rule); background: var(--surface); }
+.lang-btn:hover { border-color: var(--petrol); color: var(--petrol); background: var(--surface-2); }
+.lang-btn.active { background: var(--petrol); color: #fff; border-color: var(--petrol); }
 
 @media (max-width: 480px) {
   .theme-switch__btn { width: 44px; height: 44px; } /* larger tap target on touch */
@@ -433,6 +439,63 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 
 .acc-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .acc-list .chip { display: inline-flex; align-items: center; }
+
+/* ── Mobile navigation (hamburger + dropdown) ────────────────────── */
+.navbar__toggle {
+  display: none; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0;
+  border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--surface); color: var(--ink); cursor: pointer;
+}
+.navbar__mobile {
+  display: none; border-top: 1px solid var(--rule);
+  background: var(--surface); padding: 8px 16px 16px;
+}
+.navbar__mobile.open { display: block; }
+.navbar__mobile ul { list-style: none; margin: 0; padding: 0; }
+.navbar__mobile li a {
+  display: block; padding: 13px 6px; color: var(--ink);
+  text-decoration: none; border-bottom: 1px solid var(--rule); font-weight: 500;
+}
+.navbar__mobile-lang { display: flex; gap: 8px; margin-top: 12px; }
+.navbar__mobile-lang .lang-btn { flex: 1; text-align: center; padding: 11px; font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .navbar__toggle { display: inline-flex; }
+  .navbar__lang { display: none; }        /* desktop DE/EN moves into the dropdown */
+  .theme-switch__btn { width: 36px; height: 36px; }
+  .theme-switch__btn[data-theme-set="system"] { display: none; } /* light/dark is enough on mobile */
+  .navbar__logo span { font-size: 1rem; }
+  .navbar__utils { gap: 8px; }
+  .navbar__inner { gap: 8px; min-width: 0; }
+  .navbar__logo { min-width: 0; }
+}
+@media (min-width: 769px) {
+  .navbar__toggle, .navbar__mobile { display: none !important; }
+}
+
+/* Never scroll the page sideways; let long tokens (times, slugs) wrap. */
+body { overflow-x: clip; }
+h1, h2, h3, .featured-snippet__answer, .result-card__value, .split-card__value { overflow-wrap: break-word; }
+
+/* Featured-snippet label follows the page accent (no stray bright colour). */
+.featured-snippet__label { color: var(--band-accent); }
+
+/* Remove the leftover 600px dark-theme cyan glow — it overflowed small
+   viewports (horizontal scroll) and clashed with the light design. */
+.landing-hero::before { display: none !important; }
+.landing-hero { overflow: hidden; }
+
+/* Homepage hero: let the grid tracks shrink below the calculator's min-content
+   width (minmax(0,1fr)) so the two-column layout collapses cleanly on mobile. */
+.home-hero-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+@media (max-width: 992px) {
+  .home-hero-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.home-hero-content, .home-hero-calc { min-width: 0; max-width: 100%; }
+.calc-card { max-width: 100%; }
+.mode-tabbar { max-width: 100%; overflow-x: auto; }
+.field input, .field select, .field textarea { max-width: 100%; }
 
 @media print {
   /* Hide everything chrome-y; show only the Stundenzettel */
