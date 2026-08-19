@@ -69,14 +69,27 @@ const currentYear = new Date().getFullYear();
 <!DOCTYPE html>
 <html lang={lang} dir="ltr" data-band={band} data-archetype={archetype} data-treatment={treatment}>
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BMGKJ52S0M"></script>
+  <!-- Google Analytics — deferred off the critical path (loads on first
+       interaction or after 4s) so it doesn't inflate mobile TBT/LCP. -->
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-BMGKJ52S0M');
+    (function () {
+      var loaded = false;
+      function loadGA() {
+        if (loaded) return; loaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-BMGKJ52S0M';
+        document.head.appendChild(s);
+      }
+      ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function (e) {
+        window.addEventListener(e, loadGA, { once: true, passive: true });
+      });
+      setTimeout(loadGA, 4000);
+    })();
   </script>
   <meta charset="UTF-8" />
   <meta name="google-site-verification" content="ghfewf_0IMFfKQGEg7-ClBv5fEuPeJjTxAHEKcc4_YY" />

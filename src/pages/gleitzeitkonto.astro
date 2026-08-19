@@ -20,7 +20,7 @@ const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite
       </div>
     </div>
   </section>
-  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><GleitzeitTool client:load /></div></div></section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><GleitzeitTool client:idle /></div></div></section>
   <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
     {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
   </div></div></section>

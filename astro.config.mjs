@@ -18,4 +18,11 @@ export default defineConfig({
     format: 'directory',
   },
   trailingSlash: 'always',
+  vite: {
+    build: {
+      // Modern browsers only — drops legacy polyfills/transforms (smaller JS).
+      target: 'es2020',
+      cssTarget: 'chrome100',
+    },
+  },
 });

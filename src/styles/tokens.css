@@ -288,13 +288,15 @@ code, kbd, samp {
 .glass, .glass--raised, .glass--accent, .glass-card,
 .stat-card, .payroll-sheet, .embedded-calc, .expert-box,
 .internal-links, .link-card, .directory-link-item, .use-case-item,
-.faq-item, .mode-tab, .semantic-guide {
+.faq-item, .mode-tab, .semantic-guide, .calc-card, .guide-toc {
   background: var(--surface);
   border: 1px solid var(--rule);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: var(--shadow-sm);
 }
+/* Belt-and-braces: the flat light design never uses blur — it's a costly paint. */
+* { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 .semantic-guide, .internal-links { box-shadow: none; }
 
 .featured-snippet {
