@@ -49,9 +49,9 @@ export function getTreatment(slug: string): Treatment {
 /** WCAG-AA-verified accents (against --surface #FFFFFF). Kept in one place so the
  *  audit and the CSS reference the same source values. */
 export const BAND_ACCENTS: Record<Band, string> = {
-  dawn: '#1B6B5A',
-  day: '#124559',
-  midday: '#3A6B35',
-  evening: '#8A4B08',
-  night: '#2D3A6B',
+  dawn: '#7C3AED',
+  day: '#6D28D9',
+  midday: '#9333EA',
+  evening: '#A21CAF',
+  night: '#4C1D95',
 };

@@ -13,31 +13,31 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Brand palette (teal system) ─────────────────────────────── */
-  --paper:   #EDF6F5;   /* soft mint page background */
-  --surface: #FEFFFF;   /* white cards */
-  --ink:     #17252A;   /* near-black navy — high contrast */
-  --petrol:  #21716E;   /* primary teal — deep enough for AA text on mint */
-  --cta:     #3AAFA9;   /* bright teal — accents / glows */
-  --cta-hover:#2B7A78;
+  /* ── Brand palette (violet system) ───────────────────────────── */
+  --paper:   #F5F3FB;   /* soft lavender page background */
+  --surface: #FFFFFF;   /* white cards */
+  --ink:     #1C1830;   /* near-black violet-navy — high contrast */
+  --petrol:  #6D28D9;   /* primary violet (accents, figures, links, buttons) */
+  --cta:     #7C3AED;   /* bright violet — CTAs / gradients (AA with white) */
+  --cta-hover:#6D28D9;
   --amber:   #E08A00;   /* semantic: breaks / warnings (Tagesband notch) */
   --warn:    #C23A2E;
-  --rule:    #CBE5E3;   /* mint-tinted borders */
+  --rule:    #E4DEF5;   /* lavender-tinted borders */
 
-  /* Derived neutrals + accent tints (light). All clear WCAG-AA on white/mint. */
-  --ink-2:      #2C3E44;
-  --ink-3:      #45575E;
-  --ink-muted:  #5A6C72;
-  --surface-2:  #E7F2F1;
-  --surface-3:  #D8ECEA;
-  --petrol-2:   #164E4B;
-  --petrol-tint:rgba(33, 113, 110, 0.10);
-  --petrol-glow:rgba(33, 113, 110, 0.18);
+  /* Derived neutrals + accent tints (light). All clear WCAG-AA on white/lavender. */
+  --ink-2:      #322E48;
+  --ink-3:      #4B4766;
+  --ink-muted:  #605C7A;
+  --surface-2:  #EFEBF9;
+  --surface-3:  #E4DDF5;
+  --petrol-2:   #5B21B6;
+  --petrol-tint:rgba(109, 40, 217, 0.10);
+  --petrol-glow:rgba(124, 58, 237, 0.22);
   --amber-tint: rgba(224, 138, 0, 0.14);
   --success:    #1E8E6E;
   --success-tint: rgba(30, 142, 110, 0.12);
 
-  /* Accent band overrides (Phase 5.2) default to the primary teal */
+  /* Accent band overrides (Phase 5.2) default to the primary violet */
   --band-accent: var(--petrol);
 
   /* ── Type ────────────────────────────────────────────────────── */
@@ -91,30 +91,30 @@
 /* ── Dark derivation ─────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:   #0E1E1D;
-    --surface: #16302E;
-    --ink:     #EAF6F5;
-    --petrol:  #4FC3BD;
-    --cta:     #3AAFA9;
-    --cta-hover:#4FC3BD;
+    --paper:   #17131F;
+    --surface: #201A2E;
+    --ink:     #EDEAF7;
+    --petrol:  #A78BFA;
+    --cta:     #8B5CF6;
+    --cta-hover:#A78BFA;
     --amber:   #F0A83B;
     --warn:    #F2635A;
-    --rule:    #29524E;
+    --rule:    #352C4A;
 
-    --ink-2:      #C6D6D3;
-    --ink-3:      #9BB0AC;
-    --ink-muted:  #8AA09C;
-    --surface-2:  #1B3B38;
-    --surface-3:  #224842;
-    --petrol-2:   #86D8D2;
-    --petrol-tint:rgba(79, 195, 189, 0.14);
-    --petrol-glow:rgba(79, 195, 189, 0.22);
+    --ink-2:      #C9C3DE;
+    --ink-3:      #9E97B8;
+    --ink-muted:  #8B84A6;
+    --surface-2:  #281F3A;
+    --surface-3:  #302545;
+    --petrol-2:   #C4B5FD;
+    --petrol-tint:rgba(167, 139, 250, 0.14);
+    --petrol-glow:rgba(139, 92, 246, 0.24);
     --amber-tint: rgba(240, 168, 59, 0.16);
     --success:    #4FD1B0;
     --success-tint: rgba(79, 209, 176, 0.16);
     --band-accent: var(--petrol);
 
-    --clr-border-2:   #345E59;
+    --clr-border-2:   #43385C;
     --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
     --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
@@ -123,30 +123,30 @@
 
 /* Manual dark (wins over the media query in both directions) */
 :root[data-theme="dark"] {
-  --paper:   #0E1E1D;
-  --surface: #16302E;
-  --ink:     #EAF6F5;
-  --petrol:  #4FC3BD;
-  --cta:     #3AAFA9;
-  --cta-hover:#4FC3BD;
+  --paper:   #17131F;
+  --surface: #201A2E;
+  --ink:     #EDEAF7;
+  --petrol:  #A78BFA;
+  --cta:     #8B5CF6;
+  --cta-hover:#A78BFA;
   --amber:   #F0A83B;
   --warn:    #F2635A;
-  --rule:    #29524E;
+  --rule:    #352C4A;
 
-  --ink-2:      #C6D6D3;
-  --ink-3:      #9BB0AC;
-  --ink-muted:  #8AA09C;
-  --surface-2:  #1B3B38;
-  --surface-3:  #224842;
-  --petrol-2:   #86D8D2;
-  --petrol-tint:rgba(79, 195, 189, 0.14);
-  --petrol-glow:rgba(79, 195, 189, 0.22);
+  --ink-2:      #C9C3DE;
+  --ink-3:      #9E97B8;
+  --ink-muted:  #8B84A6;
+  --surface-2:  #281F3A;
+  --surface-3:  #302545;
+  --petrol-2:   #C4B5FD;
+  --petrol-tint:rgba(167, 139, 250, 0.14);
+  --petrol-glow:rgba(139, 92, 246, 0.24);
   --amber-tint: rgba(240, 168, 59, 0.16);
   --success:    #4FD1B0;
   --success-tint: rgba(79, 209, 176, 0.16);
   --band-accent: var(--petrol);
 
-  --clr-border-2:   #345E59;
+  --clr-border-2:   #43385C;
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
   --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
@@ -339,12 +339,12 @@ code, kbd, samp {
 
 /* ── Calculator components (drop the cyan/violet gradients + dark inputs) ── */
 .calc-submit {
-  background: var(--petrol);   /* white text on this passes AA (~5:1) */
+  background: linear-gradient(135deg, var(--petrol), var(--cta));  /* white text passes AA on both */
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 2px 12px var(--petrol-glow);
+  box-shadow: 0 2px 14px var(--petrol-glow);
 }
-.calc-submit:hover { background: var(--petrol-2); box-shadow: 0 4px 18px var(--petrol-glow); }
+.calc-submit:hover { background: linear-gradient(135deg, var(--petrol-2), var(--petrol)); box-shadow: 0 5px 20px var(--petrol-glow); }
 .result-panel { background: var(--petrol-tint); border: 1px solid var(--rule); }
 .field input, .field select, .field textarea,
 input[type="time"], input[type="datetime-local"], input[type="number"], input[type="date"] {
@@ -448,24 +448,24 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .link-card:hover .link-card__arrow { opacity: 1; color: var(--petrol); transform: none; }
 
 /* ── Axis 2: accent bands (WCAG-AA vs --surface). Light values, dark lightened. */
-[data-band="dawn"]    { --band-accent: #1B6B5A; }
-[data-band="day"]     { --band-accent: #124559; }
-[data-band="midday"]  { --band-accent: #3A6B35; }
-[data-band="evening"] { --band-accent: #8A4B08; }
-[data-band="night"]   { --band-accent: #2D3A6B; }
+[data-band="dawn"]    { --band-accent: #7C3AED; }
+[data-band="day"]     { --band-accent: #6D28D9; }
+[data-band="midday"]  { --band-accent: #9333EA; }
+[data-band="evening"] { --band-accent: #A21CAF; }
+[data-band="night"]   { --band-accent: #4C1D95; }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"])[data-band="dawn"]    { --band-accent: #4FBFA3; }
-  :root:not([data-theme="light"])[data-band="day"]     { --band-accent: #5AA9C4; }
-  :root:not([data-theme="light"])[data-band="midday"]  { --band-accent: #7FB86F; }
-  :root:not([data-theme="light"])[data-band="evening"] { --band-accent: #E0A252; }
-  :root:not([data-theme="light"])[data-band="night"]   { --band-accent: #8B98D6; }
+  :root:not([data-theme="light"])[data-band="dawn"]    { --band-accent: #A78BFA; }
+  :root:not([data-theme="light"])[data-band="day"]     { --band-accent: #9B7BF7; }
+  :root:not([data-theme="light"])[data-band="midday"]  { --band-accent: #B794F6; }
+  :root:not([data-theme="light"])[data-band="evening"] { --band-accent: #D08BE8; }
+  :root:not([data-theme="light"])[data-band="night"]   { --band-accent: #A78BFA; }
 }
-:root[data-theme="dark"][data-band="dawn"]    { --band-accent: #4FBFA3; }
-:root[data-theme="dark"][data-band="day"]     { --band-accent: #5AA9C4; }
-:root[data-theme="dark"][data-band="midday"]  { --band-accent: #7FB86F; }
-:root[data-theme="dark"][data-band="evening"] { --band-accent: #E0A252; }
-:root[data-theme="dark"][data-band="night"]   { --band-accent: #8B98D6; }
+:root[data-theme="dark"][data-band="dawn"]    { --band-accent: #A78BFA; }
+:root[data-theme="dark"][data-band="day"]     { --band-accent: #9B7BF7; }
+:root[data-theme="dark"][data-band="midday"]  { --band-accent: #B794F6; }
+:root[data-theme="dark"][data-band="evening"] { --band-accent: #D08BE8; }
+:root[data-theme="dark"][data-band="night"]   { --band-accent: #A78BFA; }
 
 /* ── Axis 4: conditional modules ─────────────────────────────────── */
 .shift-modules { display: grid; gap: 12px; }
