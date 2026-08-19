@@ -13,30 +13,31 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Brand palette ───────────────────────────────────────────── */
-  --paper:   #F2F4F3;
-  --surface: #FFFFFF;
-  --ink:     #16191C;
-  --petrol:  #124559;
-  --amber:   #F0A202;
-  --warn:    #B3261E;
-  --rule:    #D5DAD8;
+  /* ── Brand palette (teal system) ─────────────────────────────── */
+  --paper:   #EDF6F5;   /* soft mint page background */
+  --surface: #FEFFFF;   /* white cards */
+  --ink:     #17252A;   /* near-black navy — high contrast */
+  --petrol:  #21716E;   /* primary teal — deep enough for AA text on mint */
+  --cta:     #3AAFA9;   /* bright teal — accents / glows */
+  --cta-hover:#2B7A78;
+  --amber:   #E08A00;   /* semantic: breaks / warnings (Tagesband notch) */
+  --warn:    #C23A2E;
+  --rule:    #CBE5E3;   /* mint-tinted borders */
 
-  /* Derived neutrals + accent tints (light). Darkened for stronger, WCAG-AA
-     contrast on white — even the "muted" tone clears 4.5:1. */
-  --ink-2:      #2F3843;
-  --ink-3:      #48525D;
-  --ink-muted:  #5A646F;
-  --surface-2:  #F7F9F8;
-  --surface-3:  #EDF0EF;
-  --petrol-2:   #0C3140;
-  --petrol-tint:rgba(18, 69, 89, 0.08);
-  --petrol-glow:rgba(18, 69, 89, 0.14);
-  --amber-tint: rgba(240, 162, 2, 0.14);
-  --success:    #1B6B5A;
-  --success-tint: rgba(27, 107, 90, 0.12);
+  /* Derived neutrals + accent tints (light). All clear WCAG-AA on white/mint. */
+  --ink-2:      #2C3E44;
+  --ink-3:      #45575E;
+  --ink-muted:  #5A6C72;
+  --surface-2:  #E7F2F1;
+  --surface-3:  #D8ECEA;
+  --petrol-2:   #164E4B;
+  --petrol-tint:rgba(33, 113, 110, 0.10);
+  --petrol-glow:rgba(33, 113, 110, 0.18);
+  --amber-tint: rgba(224, 138, 0, 0.14);
+  --success:    #1E8E6E;
+  --success-tint: rgba(30, 142, 110, 0.12);
 
-  /* Accent band overrides (Phase 5.2) default to petrol */
+  /* Accent band overrides (Phase 5.2) default to the primary teal */
   --band-accent: var(--petrol);
 
   /* ── Type ────────────────────────────────────────────────────── */
@@ -90,28 +91,30 @@
 /* ── Dark derivation ─────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:   #0F1417;
-    --surface: #171D21;
-    --ink:     #ECEFEE;
-    --petrol:  #5AA9C4;
-    --amber:   #F5B93B;
+    --paper:   #0E1E1D;
+    --surface: #16302E;
+    --ink:     #EAF6F5;
+    --petrol:  #4FC3BD;
+    --cta:     #3AAFA9;
+    --cta-hover:#4FC3BD;
+    --amber:   #F0A83B;
     --warn:    #F2635A;
-    --rule:    #2A3239;
+    --rule:    #29524E;
 
-    --ink-2:      #C2CACF;
-    --ink-3:      #99A2A9;
-    --ink-muted:  #8B949B;
-    --surface-2:  #1D242A;
-    --surface-3:  #232B31;
-    --petrol-2:   #86C5DA;
-    --petrol-tint:rgba(90, 169, 196, 0.14);
-    --petrol-glow:rgba(90, 169, 196, 0.22);
-    --amber-tint: rgba(245, 185, 59, 0.16);
-    --success:    #4FBFA3;
-    --success-tint: rgba(79, 191, 163, 0.16);
+    --ink-2:      #C6D6D3;
+    --ink-3:      #9BB0AC;
+    --ink-muted:  #8AA09C;
+    --surface-2:  #1B3B38;
+    --surface-3:  #224842;
+    --petrol-2:   #86D8D2;
+    --petrol-tint:rgba(79, 195, 189, 0.14);
+    --petrol-glow:rgba(79, 195, 189, 0.22);
+    --amber-tint: rgba(240, 168, 59, 0.16);
+    --success:    #4FD1B0;
+    --success-tint: rgba(79, 209, 176, 0.16);
     --band-accent: var(--petrol);
 
-    --clr-border-2:   #37424A;
+    --clr-border-2:   #345E59;
     --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
     --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
@@ -120,28 +123,30 @@
 
 /* Manual dark (wins over the media query in both directions) */
 :root[data-theme="dark"] {
-  --paper:   #0F1417;
-  --surface: #171D21;
-  --ink:     #ECEFEE;
-  --petrol:  #5AA9C4;
-  --amber:   #F5B93B;
+  --paper:   #0E1E1D;
+  --surface: #16302E;
+  --ink:     #EAF6F5;
+  --petrol:  #4FC3BD;
+  --cta:     #3AAFA9;
+  --cta-hover:#4FC3BD;
+  --amber:   #F0A83B;
   --warn:    #F2635A;
-  --rule:    #2A3239;
+  --rule:    #29524E;
 
-  --ink-2:      #C2CACF;
-  --ink-3:      #99A2A9;
-  --ink-muted:  #8B949B;
-  --surface-2:  #1D242A;
-  --surface-3:  #232B31;
-  --petrol-2:   #86C5DA;
-  --petrol-tint:rgba(90, 169, 196, 0.14);
-  --petrol-glow:rgba(90, 169, 196, 0.22);
-  --amber-tint: rgba(245, 185, 59, 0.16);
-  --success:    #4FBFA3;
-  --success-tint: rgba(79, 191, 163, 0.16);
+  --ink-2:      #C6D6D3;
+  --ink-3:      #9BB0AC;
+  --ink-muted:  #8AA09C;
+  --surface-2:  #1B3B38;
+  --surface-3:  #224842;
+  --petrol-2:   #86D8D2;
+  --petrol-tint:rgba(79, 195, 189, 0.14);
+  --petrol-glow:rgba(79, 195, 189, 0.22);
+  --amber-tint: rgba(240, 168, 59, 0.16);
+  --success:    #4FD1B0;
+  --success-tint: rgba(79, 209, 176, 0.16);
   --band-accent: var(--petrol);
 
-  --clr-border-2:   #37424A;
+  --clr-border-2:   #345E59;
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow:     0 2px 10px rgba(0, 0, 0, 0.45);
   --shadow-lg:  0 10px 32px rgba(0, 0, 0, 0.55);
@@ -334,11 +339,12 @@ code, kbd, samp {
 
 /* ── Calculator components (drop the cyan/violet gradients + dark inputs) ── */
 .calc-submit {
-  background: var(--petrol);
+  background: var(--petrol);   /* white text on this passes AA (~5:1) */
   color: #fff;
-  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+  box-shadow: 0 2px 12px var(--petrol-glow);
 }
-.calc-submit:hover { background: var(--petrol-2); box-shadow: var(--shadow); }
+.calc-submit:hover { background: var(--petrol-2); box-shadow: 0 4px 18px var(--petrol-glow); }
 .result-panel { background: var(--petrol-tint); border: 1px solid var(--rule); }
 .field input, .field select, .field textarea,
 input[type="time"], input[type="datetime-local"], input[type="number"], input[type="date"] {
@@ -353,6 +359,18 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .mode-tabbar { background: var(--surface-2); border: 1px solid var(--rule); }
 .mode-tab { background: transparent; border: 0; box-shadow: none; color: var(--ink-2); }
 .mode-tab.active { background: var(--petrol); color: #fff; }
+
+/* Calculator inputs: full-width, never overflow, stack on narrow screens. */
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.calc-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+.calc-grid .field { min-width: 0; }
+.calc-grid .field input { width: 100%; min-width: 0; box-sizing: border-box; }
+@media (max-width: 560px) {
+  .calc-grid, .calc-grid--3 { grid-template-columns: 1fr; }
+}
+.result-panel .result-number { color: var(--band-accent); }
+.badge--accent { background: var(--petrol-tint); color: var(--petrol); }
+.badge--violet { background: var(--surface-3); color: var(--ink-2); }
 
 /* ── Axis 2: accent bands (WCAG-AA vs --surface). Light values, dark lightened. */
 [data-band="dawn"]    { --band-accent: #1B6B5A; }

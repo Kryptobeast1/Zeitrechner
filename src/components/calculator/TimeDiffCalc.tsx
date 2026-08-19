@@ -8,21 +8,23 @@ interface Props {
   defaultEnd?: string;
 }
 
-function now(): string {
-  const d = new Date();
-  d.setSeconds(0, 0);
-  return d.toISOString().slice(0, 16);
+// Format a Date as a LOCAL datetime-local value (YYYY-MM-DDTHH:MM). Using
+// toISOString() here was a bug — it returns UTC, shifting every default by the
+// timezone offset.
+function toLocalInput(d: Date): string {
+  const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 16);
 }
+function now(): string { const d = new Date(); d.setSeconds(0, 0); return toLocalInput(d); }
+function atHour(h: number): string { const d = new Date(); d.setHours(h, 0, 0, 0); return toLocalInput(d); }
+function laterToday(h: number): string { const d = new Date(); d.setHours(d.getHours() + h, 0, 0, 0); return toLocalInput(d); }
 
-function laterToday(h: number): string {
-  const d = new Date();
-  d.setHours(d.getHours() + h, 0, 0, 0);
-  return d.toISOString().slice(0, 16);
-}
+const MIN_DT = '2000-01-01T00:00';
+const MAX_DT = '2099-12-31T23:59';
 
 const EXAMPLES = [
-  { label: '9:00 → 17:00', getStart: () => { const d = new Date(); d.setHours(9,0,0,0); return d.toISOString().slice(0,16); }, getEnd: () => { const d = new Date(); d.setHours(17,0,0,0); return d.toISOString().slice(0,16); } },
-  { label: '8:00 → 16:00', getStart: () => { const d = new Date(); d.setHours(8,0,0,0); return d.toISOString().slice(0,16); }, getEnd: () => { const d = new Date(); d.setHours(16,0,0,0); return d.toISOString().slice(0,16); } },
+  { label: '9:00 → 17:00', getStart: () => atHour(9), getEnd: () => atHour(17) },
+  { label: '8:00 → 16:00', getStart: () => atHour(8), getEnd: () => atHour(16) },
   { label: '+8h from now', getStart: () => now(), getEnd: () => laterToday(8) },
 ];
 
@@ -30,6 +32,7 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
   const [start, setStart] = useState(defaultStart ?? now());
   const [end, setEnd] = useState(defaultEnd ?? laterToday(8));
   const [result, setResult] = useState<TimeDiffResult | null>(null);
+  const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
   const labels = lang === 'de' ? {
@@ -51,7 +54,11 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
   };
 
   const handleCalculate = useCallback(() => {
-    if (!start || !end) return;
+    const invalid = lang === 'de' ? 'Bitte gültiges Start- und Enddatum eingeben.' : 'Please enter a valid start and end date.';
+    if (!start || !end) { setError(invalid); setResult(null); return; }
+    const s = new Date(start), e = new Date(end);
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) { setError(invalid); setResult(null); return; }
+    setError('');
     const r = calcTimeDiff(start, end);
     setResult(r);
     // Update URL params
@@ -99,6 +106,8 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
             id="td-start"
             type="datetime-local"
             value={start}
+            min={MIN_DT}
+            max={MAX_DT}
             onChange={e => setStart(e.target.value)}
           />
         </div>
@@ -108,6 +117,8 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
             id="td-end"
             type="datetime-local"
             value={end}
+            min={MIN_DT}
+            max={MAX_DT}
             onChange={e => setEnd(e.target.value)}
           />
         </div>
@@ -116,6 +127,8 @@ export default function TimeDiffCalc({ lang = 'de', defaultStart, defaultEnd }: 
       <button className="calc-submit" onClick={handleCalculate} id="td-calc-btn">
         {labels.calc}
       </button>
+
+      {error && <p role="alert" style={{ color: 'var(--warn)', marginTop: '12px', fontWeight: 500 }}>{error}</p>}
 
       {result && (
         <div className="result-panel" id="td-result">
