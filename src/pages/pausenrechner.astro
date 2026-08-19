@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArbZGTool from '../components/tools/ArbZGTool';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
+const lang = 'de';
+const canonical = '/pausenrechner/';
+const faqs = [
+  { q: 'Wie viel Pause ist gesetzlich vorgeschrieben?', a: 'Nach § 4 Arbeitszeitgesetz (ArbZG) sind bei mehr als 6 Stunden Arbeit mindestens 30 Minuten und bei mehr als 9 Stunden mindestens 45 Minuten Pause vorgeschrieben. Bis 6 Stunden besteht keine Pausenpflicht.' },
+  { q: 'Zählt die Pause zur Arbeitszeit?', a: 'Nein. Ruhepausen sind unbezahlt und zählen nicht zur Arbeitszeit. Sie unterbrechen die Arbeitszeit und dürfen nicht an deren Anfang oder Ende liegen.' },
+];
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Pausenrechner', url: canonical }])];
+---
+<BaseLayout title="Pausenrechner (ArbZG) — gesetzliche Pause & Nettozeit berechnen" description="Berechne die gesetzlich vorgeschriebene Pause nach § 4 ArbZG (30 Min ab 6 Std, 45 Min ab 9 Std) und die korrigierte Nettoarbeitszeit." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Pausenrechner</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">Pausenrechner nach ArbZG</h1>
+        <p class="landing-hero__lead">Wie viel Pause ist Pflicht — und wie viel Nettoarbeitszeit bleibt? Der Rechner wendet § 4 Arbeitszeitgesetz an: 30 Minuten ab 6 Stunden, 45 Minuten ab 9 Stunden.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><ArbZGTool client:load mode="pause" /></div></div></section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
+    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
+  </div></div></section>
+</BaseLayout>

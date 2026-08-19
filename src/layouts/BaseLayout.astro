@@ -281,6 +281,11 @@ const currentYear = new Date().getFullYear();
           navigator.clipboard.writeText(val).then(function () { done(true); }, function () { done(false); });
         } else { done(false); }
       });
+      // Print / PDF timesheet
+      document.addEventListener('click', function (e) {
+        var b = e.target && e.target.closest ? e.target.closest('[data-print]') : null;
+        if (b) window.print();
+      });
     })();
   </script>
 

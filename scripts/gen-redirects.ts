@@ -102,7 +102,8 @@ const config = {
   redirects,
   headers: [
     {
-      source: '/(.*)',
+      // Everything except /embed/* — deny framing.
+      source: '/((?!embed/).*)',
       headers: [
         {
           key: 'Content-Security-Policy',
@@ -113,6 +114,19 @@ const config = {
         { key: 'X-Content-Type-Options', value: 'nosniff' },
         { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      ],
+    },
+    {
+      // Embed widgets — framable by any site (Phase 7.2).
+      source: '/embed/(.*)',
+      headers: [
+        {
+          key: 'Content-Security-Policy',
+          value:
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors *; upgrade-insecure-requests;",
+        },
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       ],
     },
   ],

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArbZGTool from '../components/tools/ArbZGTool';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
+const lang = 'de';
+const canonical = '/nachtzuschlag-rechner/';
+const faqs = [
+  { q: 'Was gilt als Nachtarbeit?', a: 'Nach § 2 Arbeitszeitgesetz (ArbZG) ist Nachtzeit die Zeit von 23:00 bis 6:00 Uhr. Wer in diesem Zeitraum mehr als zwei Stunden arbeitet, gilt als Nachtarbeitnehmer.' },
+  { q: 'Wie hoch ist der Nachtzuschlag?', a: 'Das Gesetz nennt keine feste Prozentzahl, sondern verlangt einen „angemessenen“ Ausgleich (§ 6 ArbZG) — entweder als Zuschlag oder als Freizeit. In der Praxis sind rund 25 % üblich; Tarifverträge können höhere Sätze festlegen.' },
+];
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Nachtzuschlag-Rechner', url: canonical }])];
+---
+<BaseLayout title="Nachtzuschlag-Rechner — Nachtstunden (23–06 Uhr) & Zuschlag berechnen" description="Berechne die Nachtarbeitsstunden zwischen 23:00 und 06:00 Uhr und den Nachtzuschlag nach § 6 ArbZG anhand deines Stundenlohns." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Nachtzuschlag-Rechner</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">Nachtzuschlag-Rechner</h1>
+        <p class="landing-hero__lead">Wie viele deiner Stunden fallen in die Nachtzeit (23:00–06:00 Uhr) und was bringt der Zuschlag? Gib Schicht, Stundenlohn und Zuschlagssatz ein.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><ArbZGTool client:load mode="nachtzuschlag" /></div></div></section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
+    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
+  </div></div></section>
+</BaseLayout>

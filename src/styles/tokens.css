@@ -391,3 +391,63 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .split-card__sub { font-family: var(--font-data); font-size: 0.85rem; color: var(--ink-3); }
 
 .dial-figure { margin: 0; display: flex; justify-content: center; padding: 8px 0 16px; }
+
+/* ── Print / PDF timesheet (Phase 7.1) ───────────────────────────── */
+.print-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; min-height: 44px;
+  border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--surface); color: var(--ink); font: inherit; cursor: pointer;
+}
+.print-btn:hover { border-color: var(--petrol); color: var(--petrol); }
+
+.print-sheet { display: none; }
+
+/* ── Embed / share panel (Phase 7.2) ─────────────────────────────── */
+.embed-panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius, 12px); padding: 20px; box-shadow: var(--shadow-sm); }
+.embed-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--rule); }
+.embed-row:first-of-type { border-top: 0; }
+.embed-row__label { flex: 0 0 90px; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-3); }
+.embed-row__value { flex: 1; min-width: 0; font-family: var(--font-data); font-size: 0.78rem; color: var(--ink-2); background: var(--surface-2); padding: 8px 10px; border-radius: 6px; overflow-x: auto; white-space: nowrap; }
+.embed-row .copy-btn { position: static; flex: 0 0 auto; }
+
+/* ── German-law tools (Phase 7.3) ────────────────────────────────── */
+.tool .field-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.tool .field { flex: 1 1 140px; display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; color: var(--ink-2); }
+.tool .result-panel p { margin: 0 0 8px; }
+.tarif-table { width: 100%; border-collapse: collapse; }
+.tarif-table th, .tarif-table td { border: 1px solid var(--rule); padding: 10px 12px; text-align: left; }
+.tarif-table th { background: var(--surface-2); font-family: var(--font-body); }
+.tarif-table td.tabular { font-family: var(--font-data); }
+
+/* Quick-fill buttons on time inputs (Phase 7.1) */
+.quick-fill { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 4px; }
+.quick-fill button {
+  padding: 5px 10px; min-height: 32px; font-size: 0.78rem;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface-2); color: var(--ink-2); cursor: pointer;
+}
+.quick-fill button:hover { border-color: var(--petrol); color: var(--petrol); }
+
+.acc-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.acc-list .chip { display: inline-flex; align-items: center; }
+
+@media print {
+  /* Hide everything chrome-y; show only the Stundenzettel */
+  .navbar, .footer, .theme-switch, .navbar__utils, .copy-btn, .print-btn,
+  .reading-progress, .embedded-calc, .internal-links, .use-cases,
+  .shift-modules, .tagesband-figure, .dial-figure, .split-compare,
+  .semantic-guide, .faq-list, .expert-box, script { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .print-sheet {
+    display: block !important;
+    padding: 0; margin: 0; color: #000;
+    font-family: var(--font-body);
+  }
+  .print-sheet table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .print-sheet th, .print-sheet td { border: 1px solid #999; padding: 8px 10px; text-align: left; font-family: var(--font-data); }
+  .print-sheet th { background: #f0f0f0; font-family: var(--font-body); }
+  .print-sheet .sign-row { margin-top: 48px; display: flex; gap: 48px; }
+  .print-sheet .sign-line { flex: 1; border-top: 1px solid #000; padding-top: 6px; font-size: 0.85rem; }
+  @page { margin: 18mm; }
+}

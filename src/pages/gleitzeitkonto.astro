@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GleitzeitTool from '../components/tools/GleitzeitTool';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
+const lang = 'de';
+const canonical = '/gleitzeitkonto/';
+const faqs = [
+  { q: 'Wie wird der Gleitzeitsaldo berechnet?', a: 'Der Saldo ist die Summe aus (Ist-Stunden − Soll-Stunden) über alle Tage, zuzüglich des Übertrags aus der Vorperiode. Ein positiver Saldo bedeutet Zeitguthaben, ein negativer Zeitschuld.' },
+  { q: 'Verfällt Gleitzeit am Jahresende?', a: 'Das hängt von der Betriebs- oder Tarifvereinbarung ab. Viele Gleitzeitkonten haben Kappungsgrenzen und Übertragsregeln; verbindlich ist die jeweilige Vereinbarung im Betrieb.' },
+];
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Gleitzeitkonto', url: canonical }])];
+---
+<BaseLayout title="Gleitzeitkonto-Rechner — Saldo & Übertrag berechnen" description="Berechne deinen Gleitzeitsaldo aus Soll- und Ist-Stunden je Tag inklusive Übertrag aus der Vorwoche. Zeitguthaben oder Zeitschuld auf einen Blick." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Gleitzeitkonto</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">Gleitzeitkonto-Rechner</h1>
+        <p class="landing-hero__lead">Trage Soll- und Ist-Stunden je Wochentag ein und übernimm den Übertrag aus der Vorwoche — der Rechner zeigt dein neues Zeitguthaben bzw. deine Zeitschuld.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><GleitzeitTool client:load /></div></div></section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
+    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
+  </div></div></section>
+</BaseLayout>

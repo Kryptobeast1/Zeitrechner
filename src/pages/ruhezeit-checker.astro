@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArbZGTool from '../components/tools/ArbZGTool';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
+const lang = 'de';
+const canonical = '/ruhezeit-checker/';
+const faqs = [
+  { q: 'Wie lange muss die Ruhezeit zwischen zwei Schichten sein?', a: 'Nach § 5 Arbeitszeitgesetz (ArbZG) müssen zwischen zwei Arbeitseinsätzen mindestens 11 Stunden ununterbrochene Ruhezeit liegen. In bestimmten Branchen (z. B. Krankenhaus, Gastronomie) sind Verkürzungen auf 10 Stunden mit Ausgleich möglich.' },
+  { q: 'Darf ich nach einer Spätschicht früh wieder anfangen?', a: 'Nur wenn zwischen Arbeitsende und dem nächsten Arbeitsbeginn 11 Stunden liegen. Endet die Schicht z. B. um 22:00 Uhr, ist der früheste nächste Beginn 09:00 Uhr.' },
+];
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Ruhezeit-Checker', url: canonical }])];
+---
+<BaseLayout title="Ruhezeit-Checker (§ 5 ArbZG) — 11 Stunden Ruhezeit berechnen" description="Prüfe die gesetzliche Ruhezeit von 11 Stunden nach § 5 ArbZG: Wann darfst du nach Arbeitsende frühestens wieder anfangen?" canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Ruhezeit-Checker</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <h1 style="margin-bottom: 0.75rem;">Ruhezeit-Checker</h1>
+        <p class="landing-hero__lead">„Darf ich morgen um X wieder anfangen?“ Nach § 5 ArbZG sind 11 Stunden ununterbrochene Ruhezeit vorgeschrieben. Gib dein Arbeitsende ein — der Checker nennt den frühesten zulässigen nächsten Beginn.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><ArbZGTool client:load mode="ruhezeit" /></div></div></section>
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
+    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
+  </div></div></section>
+</BaseLayout>

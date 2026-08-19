@@ -1,0 +1,51 @@
+---
+// Embeddable, ad-free, themeable iframe widget (Phase 7.2).
+// noindex + excluded from the sitemap. Framing is allowed for /embed/* only
+// (see the per-path headers in scripts/gen-redirects.ts).
+import '../../styles/global.css';
+import '../../styles/calculator.css';
+import '../../styles/landing.css';
+import '../../styles/fonts.css';
+import '../../styles/tokens.css';
+import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
+import TimeDiffCalc from '../../components/calculator/TimeDiffCalc';
+import CountdownCalc from '../../components/calculator/CountdownCalc';
+
+export async function getStaticPaths() {
+  return [
+    { params: { calc: 'arbeitszeit' }, props: { kind: 'work', title: 'Arbeitsstunden-Rechner' } },
+    { params: { calc: 'differenz' }, props: { kind: 'diff', title: 'Zeitdifferenz-Rechner' } },
+    { params: { calc: 'countdown' }, props: { kind: 'countdown', title: 'Countdown' } },
+  ];
+}
+const { kind, title } = Astro.props;
+const { calc } = Astro.params;
+const canonicalMap: Record<string, string> = {
+  arbeitszeit: 'https://zeit-rechner.com/stunden-zwischen-9-und-17/#arbeitszeit',
+  differenz: 'https://zeit-rechner.com/',
+  countdown: 'https://zeit-rechner.com/tage-bis-weihnachten/',
+};
+const attributionUrl = canonicalMap[calc] ?? 'https://zeit-rechner.com/';
+---
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{title} — Zeit-Rechner.com</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body style="background: var(--paper); padding: 12px; margin: 0;">
+  <div style="max-width: 560px; margin: 0 auto;">
+    <div class="glass" style="padding: 1.25rem; border-radius: var(--radius);">
+      {kind === 'work' && <WorkHoursCalc client:load lang="de" defaultStart="09:00" defaultEnd="17:00" defaultBreak={30} />}
+      {kind === 'diff' && <TimeDiffCalc client:load lang="de" />}
+      {kind === 'countdown' && <CountdownCalc client:load lang="de" defaultTarget="2026-12-25T00:00:00" eventName="Weihnachten" />}
+    </div>
+    <p style="text-align: center; font-size: 0.75rem; color: var(--ink-3); margin-top: 10px;">
+      <a href={attributionUrl} target="_blank" rel="noopener" style="color: var(--petrol);">Rechner von Zeit-Rechner.com</a>
+    </p>
+  </div>
+</body>
+</html>

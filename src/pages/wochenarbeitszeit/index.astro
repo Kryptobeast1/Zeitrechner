@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import WeeklyAccumulator from '../../components/tools/WeeklyAccumulator';
 import { getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'de';
@@ -120,6 +121,17 @@ const jsonLd = [
         </div>
 
         <p class="landing-hero__lead" style="max-width: var(--max-width-content);">{description}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly accumulator (Phase 7.1) -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="glass" style="padding: 1.5rem; border-radius: var(--radius);">
+        <h2 style="margin-top: 0; font-size: 1.2rem;">Wochenstunden addieren</h2>
+        <p style="color: var(--ink-2); margin-bottom: 1rem;">Füge die Stunden jedes Arbeitstags hinzu und sieh Wochensumme und Tagesdurchschnitt. Die Eingaben bleiben nur in diesem Browser-Tab.</p>
+        <WeeklyAccumulator client:visible lang="de" />
       </div>
     </div>
   </section>

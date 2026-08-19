@@ -27,13 +27,15 @@ export default function WorkHoursCalc({ lang = 'de', defaultStart = '09:00', def
     startTime: 'Arbeitsbeginn', endTime: 'Arbeitsende', breakDur: 'Pause (Minuten)',
     calc: 'Berechnen', headline: 'Nettoarbeitszeit', gross: 'Bruttozeit',
     net: 'Nettozeit', overtime: 'Überstunden', decimal: 'Dezimalstunden',
-    copy: 'Kopieren', minBreak: 'Min Pause',
+    copy: 'Kopieren', minBreak: 'Min Pause', now: 'Jetzt', midnight: 'Mitternacht', noon: 'Mittag',
   } : {
     startTime: 'Start Time', endTime: 'End Time', breakDur: 'Break (minutes)',
     calc: 'Calculate', headline: 'Net Work Hours', gross: 'Gross Time',
     net: 'Net Time', overtime: 'Overtime', decimal: 'Decimal Hours',
-    copy: 'Copy', minBreak: 'min break',
+    copy: 'Copy', minBreak: 'min break', now: 'Now', midnight: 'Midnight', noon: 'Noon',
   };
+
+  const nowHHMM = () => { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
 
   const handleCalculate = useCallback(() => {
     const r = calcWorkHours(startTime, endTime, breakMin);
@@ -67,10 +69,20 @@ export default function WorkHoursCalc({ lang = 'de', defaultStart = '09:00', def
         <div className="field">
           <label htmlFor="wh-start">{L.startTime}</label>
           <input id="wh-start" type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
+          <div className="quick-fill">
+            <button type="button" onClick={() => setStartTime(nowHHMM())}>{L.now}</button>
+            <button type="button" onClick={() => setStartTime('00:00')}>{L.midnight}</button>
+            <button type="button" onClick={() => setStartTime('12:00')}>{L.noon}</button>
+          </div>
         </div>
         <div className="field">
           <label htmlFor="wh-end">{L.endTime}</label>
           <input id="wh-end" type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
+          <div className="quick-fill">
+            <button type="button" onClick={() => setEndTime(nowHHMM())}>{L.now}</button>
+            <button type="button" onClick={() => setEndTime('00:00')}>{L.midnight}</button>
+            <button type="button" onClick={() => setEndTime('12:00')}>{L.noon}</button>
+          </div>
         </div>
         <div className="field">
           <label htmlFor="wh-break">{L.breakDur}</label>
