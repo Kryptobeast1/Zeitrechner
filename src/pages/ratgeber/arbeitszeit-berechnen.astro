@@ -92,7 +92,6 @@ const jsonLd = [
         <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">Arbeitszeit berechnen: Der komplette Guide 2026</h1>
         
         <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
-          <span style="font-size: 1.5rem;"></span>
           <div>
             <div style="font-size: 0.95rem; font-weight: 600;">Autor: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
             <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR- & Arbeitsrecht-Experte • Stand: 31. Mai 2026</div>
@@ -146,7 +145,7 @@ const jsonLd = [
               <li><strong>Bruttoarbeitszeit:</strong> Dies ist die gesamte Anwesenheitszeit von Beschäftigten im Betrieb bzw. im Homeoffice vom Beginn der Arbeit bis zum Feierabend. Sie enthält alle Pausen, Wegezeiten und Unterbrechungen.</li>
               <li><strong>Nettoarbeitszeit:</strong> Dies ist die tatsächliche Arbeitszeit, die produktiv geleistet wird und für die Arbeitnehmer/innen entlohnt werden. Sie entspricht der Bruttoarbeitszeit abzüglich aller unbezahlten Pausen.</li>
             </ul>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Nettoarbeitszeit = Bruttoarbeitszeit (Arbeitsende - Arbeitsbeginn) - Unbezahlte Pausenzeit</code>
             </div>
             <p>
@@ -193,7 +192,7 @@ const jsonLd = [
             <p>
               Die Formel für die Umrechnung lautet:
             </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Dezimalstunden = Stunden + (Minuten / 60)</code>
             </div>
             <p>
@@ -248,7 +247,7 @@ const jsonLd = [
             <p>
               Für die Berechnung über die Datumsgrenze hinweg gilt folgende logische Formel:
             </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Dauer = (Endzeit < Startzeit) ? (24 - Startzeit + Endzeit) : (Endzeit - Startzeit)</code>
             </div>
             <p>
@@ -257,6 +256,8 @@ const jsonLd = [
           </section>
 
           <section id="zeiterfassung" style="margin-bottom: var(--space-8);">
+            <h2>7. Digitale Zeiterfassungspflicht seit dem BAG-Urteil</h2>
+            <p>
               Seit dem wegweisenden Urteil des Europäischen Gerichtshofs (EuGH, C-55/18) und dem Bestätigungsbeschluss des Bundesarbeitsgerichts (BAG, 1 ABR 22/21) sind Arbeitgeber in Deutschland gesetzlich verpflichtet, ein „objektives, verlässliches und zugängliches System“ zur Erfassung der täglichen Arbeitszeit einzurichten.
             </p>
             <p>

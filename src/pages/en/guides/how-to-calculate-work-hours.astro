@@ -116,7 +116,6 @@ const jsonLd = [
         <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-4);">How to Calculate Work Hours: The Ultimate 2026 Guide</h1>
         
         <div class="author-byline" style="display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 12px; background: var(--clr-surface-2); border-radius: 8px; border: 1px solid var(--clr-border); width: fit-content;">
-          <span style="font-size: 1.5rem;"></span>
           <div>
             <div style="font-size: 0.95rem; font-weight: 600;">Author: <a href="/autor/dr-jan-mueller/" style="color: var(--clr-accent); text-decoration: underline;">Dr. Jan Müller</a></div>
             <div style="font-size: 0.8rem; color: var(--clr-text-3);">HR & Employment Law Expert • Updated: May 31, 2026</div>
@@ -170,7 +169,7 @@ const jsonLd = [
               <li><strong>Gross Work Hours:</strong> This refers to the total elapsed time between when an employee clock in (starts work) and clocks out (ends work). It represents the raw duration of presence at the workplace or logged into remote systems.</li>
               <li><strong>Net Work Hours:</strong> This is the time actually spent working, which is eligible for compensation. It is calculated by taking the gross hours and subtracting all unpaid rest breaks, lunch periods, and personal time.</li>
             </ul>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Net Work Hours = Gross Hours (End Time - Start Time) - Unpaid Break Duration</code>
             </div>
             <p>
@@ -217,7 +216,7 @@ const jsonLd = [
             <p>
               The time must first be converted into **decimal hours** using the formula:
             </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Decimal Hours = Hours + (Minutes / 60)</code>
             </div>
             <p>
@@ -266,7 +265,7 @@ const jsonLd = [
             <p>
               When a shift spans across midnight (e.g., beginning at 10:00 PM and ending at 6:00 AM the following day), simple subtraction leads to a negative value. To calculate the duration of overnight shifts, use this logic:
             </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+            <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--clr-accent); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
               <code>Duration = (End Time < Start Time) ? (24 - Start Time + End Time) : (End Time - Start Time)</code>
             </div>
             <p>
