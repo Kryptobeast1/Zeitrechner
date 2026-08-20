@@ -237,16 +237,8 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <p set:html={introHtml} />
 
           <div class="expert-box" style="margin-top: 40px; padding: 24px; background: var(--clr-surf-2); border-radius: 12px; border: 1px solid var(--clr-border);">
-            <h3 style="margin-top: 0;">Technische Präzision & Zeitmessung</h3>
-            <p>
-              In der modernen Zeitrechnung basiert die Bestimmung von Zeitdifferenzen auf dem <strong>sexagesimalen System</strong> (Basis 60). 
-              Während wir im Alltag oft in Stunden und Minuten denken, rechnet unser System intern mit Millisekunden-Offsets, um auch 
-              komplexe Szenarien wie den Übergang von 23:59 auf 00:00 Uhr (Mitternacht) fehlerfrei abzubilden.
-            </p>
-            <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: var(--clr-text-3);">
-              <em>Wussten Sie schon? Eine präzise Zeitmessung ist nicht nur für die Astronomie, sondern auch für die Synchronisation 
-              von Servernetzwerken und die moderne Logistik unerlässlich.</em>
-            </p>
+            <h3 style="margin-top: 0;">Rechtlicher & praktischer Kontext von {start24} bis {end24} Uhr</h3>
+            <p style="margin-bottom: 0;">{contextText}</p>
           </div>
         </div>
       </div>

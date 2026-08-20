@@ -1,212 +1,120 @@
 // Content Variation Engine
-// Ensures no two pages are structurally identical
-// Uses a deterministic hash of the slug to pick variation sets
+// One deterministic hash of the slug picks a variant set, so a given page
+// always renders the same copy while no two pages read identically.
+// Every string is evergreen (no baked dates/years) and answer-first: the
+// direct result leads, followed by one distinct information-gain nugget so
+// each variant teaches something the others don't.
 
-export interface ContentVariant {
-  intro: string;
-  explanation: string;
-  contextBlock: string;
-  useCaseTitle: string;
-  useCases: string[];
-  callToAction: string;
-}
+// Helpers shared by the German variants (decimal + industrial minutes).
+const dec = (h: number) => h.toFixed(2).replace('.', ',');
+const decEn = (h: number) => h.toFixed(2);
+const pctDay = (h: number) => Math.round((h / 8) * 100);
+const industrieMin = (h: number) => Math.round(h * 100);
 
-/**
- * Categorizes a duration to provide more relevant context.
- */
-function getDurationCategory(hours: number): 'micro' | 'short' | 'half' | 'full' | 'long' | 'over' {
-  if (hours <= 0.5) return 'micro';
-  if (hours <= 3) return 'short';
-  if (hours <= 5) return 'half';
-  if (hours <= 8.5) return 'full';
-  if (hours <= 12) return 'long';
-  return 'over';
-}
-
-// ─── TIME RANGE VARIANTS ────────────────────────────────────────────────────
+// ─── TIME RANGE INTROS ──────────────────────────────────────────────────────
+// (start, end) are 24h clock strings ("09:00"); hours is the gross duration.
 
 export const timeRangeIntros_en = [
   (start: string, end: string, hours: number) =>
-    `There are exactly <strong>${hours} hours</strong> between ${start} and ${end}. This duration is a common interval used in both professional scheduling and daily planning.`,
+    `Between <strong>${start}</strong> and <strong>${end}</strong> there are exactly <strong>${hours} hours</strong>. That equals ${hours * 60} minutes or ${hours * 3600} seconds of elapsed time — the gross duration, measured before any break is deducted.`,
   (start: string, end: string, hours: number) =>
-    `The time span from ${start} to ${end} covers <strong>${hours} hours</strong> — which is equivalent to ${hours * 60} minutes or exactly ${hours * 3600} seconds.`,
+    `From ${start} to ${end} is <strong>${hours} hours</strong>. In decimal form — the format payroll and billing systems use — that is <strong>${decEn(hours)} hours</strong>, ready to multiply directly by an hourly rate.`,
   (start: string, end: string, hours: number) =>
-    `Calculating the hours between ${start} and ${end} results in <strong>${hours} hours</strong>. Tracking these precise intervals is key for accurate timesheets and project management.`,
+    `The span from ${start} to ${end} lasts <strong>${hours} hours</strong>. The duration is the same whether you read the clock in 24-hour or 12-hour (AM/PM) format — to convert a PM time you simply add 12 (1 PM = 13:00).`,
   (start: string, end: string, hours: number) =>
-    `From ${start} to ${end} totals <strong>${hours} hours</strong>. For many, this represents ${Math.floor(hours / 8) >= 1 ? `${Math.floor(hours / 8)} full workday(s)` : 'a significant portion of a standard workday'}.`,
+    `${start} to ${end} is <strong>${hours} gross hours</strong>. Treated as a work shift, you subtract the unpaid break: a rest break of at least 20–30 minutes is standard — and legally required in many regions — once a shift passes 6 hours.`,
   (start: string, end: string, hours: number) =>
-    `The exact difference between ${start} and ${end} is <strong>${hours} hours</strong>. In decimal format, this is recorded as ${hours.toFixed(2)} hours for payroll purposes.`,
+    `<strong>${hours} hours</strong> separate ${start} from ${end} — roughly ${pctDay(hours)}% of a standard 8-hour workday.`,
   (start: string, end: string, hours: number) =>
-    `<strong>${hours} hours</strong> separate ${start} from ${end}. This time block can be divided into ${hours * 2} thirty-minute sessions or ${hours * 4} fifteen-minute sprints.`,
+    `The <strong>${hours} hours</strong> between ${start} and ${end} break down into ${hours * 2} half-hour blocks or ${hours * 4} fifteen-minute slots — useful when your timesheet is tracked in quarter-hour increments.`,
   (start: string, end: string, hours: number) =>
-    `Between the timestamps of ${start} and ${end}, a total of <strong>${hours} hours</strong> elapse. Accuracy in these calculations ensures fair billing and efficient time use.`,
+    `From ${start} to ${end} totals <strong>${hours} hours</strong>. When a span runs past midnight the time is simply carried into the next day — for example, 22:00 to 06:00 is 8 hours, not a negative result.`,
   (start: string, end: string, hours: number) =>
-    `A period starting at ${start} and ending at ${end} lasts <strong>${hours} hours</strong>. This data point is essential for logistics, shift handovers, and personal time-tracking.`,
+    `There are <strong>${hours} hours</strong> from ${start} to ${end}. After a shift of this length many labour codes require a minimum consecutive rest period — 11 hours in the EU and UK — before the next shift may begin.`,
   (start: string, end: string, hours: number) =>
-    `The duration from ${start} until ${end} is measured at <strong>${hours} hours</strong>. Understanding this gap helps in managing expectations and optimizing daily workflows.`,
+    `Exactly <strong>${hours} hours</strong> — ${hours * 60} minutes — pass between ${start} and ${end}. To-the-minute accuracy is what makes a timesheet audit-proof and keeps client invoices defensible.`,
   (start: string, end: string, hours: number) =>
-    `A span of <strong>${hours} hours</strong> occurs between ${start} and ${end}. Whether it's for a flight, a shift, or a meeting, knowing the exact duration is vital.`,
-  // Phase 3 Additions
+    `A daily window of <strong>${hours} hours</strong> (${start}–${end}) sits near the boundary between part-time and full-time work; a regular five-day week of 35–40 hours is the usual full-time threshold.`,
   (start: string, end: string, hours: number) =>
-    `From a start time of ${start} to ${end}, you have a total of <strong>${hours} hours</strong>. This window is often the foundation for standard operating procedures in many business environments.`,
+    `Under the US Fair Labor Standards Act (FLSA), the <strong>${hours} hours</strong> from ${start} to ${end} count toward the 40-hour weekly limit — any hours above 40 in a workweek are paid at 1.5× the regular rate.`,
   (start: string, end: string, hours: number) =>
-    `The delta between ${start} and ${end} is <strong>${hours} hours</strong>. Precision down to the minute is required when these intervals are used for payroll or billing compliance.`,
-  (start: string, end: string, hours: number) =>
-    `A total of <strong>${hours} hours</strong> pass between ${start} and ${end}. In today's flex-time world, these specific intervals are increasingly common for shift-based employees.`,
-  (start: string, end: string, hours: number) =>
-    `From the start point of ${start} to the conclusion at ${end}, the duration is exactly <strong>${hours} hours</strong>. This measurable gap is a fundamental building block for many logistics and time-sensitive operations.`,
-  (start: string, end: string, hours: number) =>
-    `Exactly <strong>${hours} hours</strong> are contained within the span of ${start} to ${end}. Accurate calculation of these periods is a critical step for maintaining correct digital logs and historical data.`,
-  (start: string, end: string, hours: number) =>
-    `Spanning from ${start} until ${end}, we find a period of <strong>${hours} hours</strong>. Such precise time-tracking is often mandated by specific industry standards and quality control protocols.`,
+    `The <strong>${hours} hours</strong> from ${start} to ${end} equal ${decEn(hours)} decimal hours. Note that "industrial minutes" are hundredths of an hour, so 30 minutes is 50 industrial minutes (0.50 h), never 30.`,
 ];
 
 export const timeRangeIntros_de = [
   (start: string, end: string, hours: number) =>
-    `Zwischen ${start} und ${end} Uhr liegen genau <strong>${hours} Stunden</strong>. Das entspricht ${hours * 60} Minuten oder exakt ${hours * 3600} Sekunden.`,
+    `Zwischen <strong>${start}</strong> und <strong>${end} Uhr</strong> liegen genau <strong>${hours} Stunden</strong>. Das sind ${hours * 60} Minuten oder exakt ${hours * 3600} Sekunden – gemessen als reine Zeitspanne (Bruttozeit), also noch ohne Abzug von Pausen.`,
   (start: string, end: string, hours: number) =>
-    `Von ${start} bis ${end} Uhr beträgt der Zeitunterschied <strong>${hours} Stunden</strong> – eine wichtige Kennzahl für die tägliche Zeitplanung und Arbeitszeiterfassung.`,
+    `Von ${start} bis ${end} Uhr vergehen <strong>${hours} Stunden</strong>. Für die Lohnabrechnung entspricht das <strong>${dec(hours)} Dezimalstunden</strong> (Industriezeit), die sich direkt mit dem Stundenlohn multiplizieren lassen.`,
   (start: string, end: string, hours: number) =>
-    `Die Zeitspanne von ${start} bis ${end} Uhr umfasst <strong>${hours} Stunden</strong>. Ob für das Zeit-Management oder die Lohnabrechnung – dieses Intervall ist alltagsrelevant.`,
+    `Die Zeitspanne von ${start} bis ${end} Uhr beträgt <strong>${hours} Stunden</strong>. Die Dauer bleibt gleich, egal ob im 24-Stunden- oder im 12-Stunden-Format (AM/PM) abgelesen – für PM-Zeiten addiert man einfach 12 (1 PM = 13:00 Uhr).`,
   (start: string, end: string, hours: number) =>
-    `Von ${start} Uhr bis ${end} Uhr vergehen <strong>${hours} Stunden</strong>. In Dezimalform ausgedrückt sind dies ${hours.toFixed(2).replace('.', ',')} Stunden.`,
+    `${start} bis ${end} Uhr ergibt <strong>${hours} Stunden Bruttozeit</strong>. Als Arbeitsschicht ziehen Sie davon die gesetzliche Pause ab: bei mehr als 6 Stunden mindestens 30 Minuten, bei mehr als 9 Stunden 45 Minuten (§ 4 ArbZG).`,
   (start: string, end: string, hours: number) =>
-    `<strong>${hours} Stunden</strong> – so groß ist die Zeitspanne zwischen ${start} und ${end} Uhr. Dies entspricht ${hours * 60} Minuten reiner Zeitdauer.`,
+    `<strong>${hours} Stunden</strong> trennen ${start} von ${end} Uhr – das entspricht rund ${pctDay(hours)}% eines klassischen 8-Stunden-Arbeitstages.`,
   (start: string, end: string, hours: number) =>
-    `Die Zeitdifferenz zwischen ${start} und ${end} beträgt <strong>${hours} Stunden</strong>. In vielen Branchen ist dies ein standardmäßiges Abrechnungsintervall.`,
+    `Die <strong>${hours} Stunden</strong> zwischen ${start} und ${end} Uhr lassen sich in ${hours * 2} halbe Stunden oder ${hours * 4} 15-Minuten-Blöcke einteilen – praktisch für die Zeiterfassung im Viertelstunden-Takt.`,
   (start: string, end: string, hours: number) =>
-    `Vom Zeitpunkt ${start} bis zum Ende um ${end} zählen wir <strong>${hours} Stunden</strong>. Präzision bei dieser Berechnung verhindert Fehler in der Dokumentation.`,
+    `Von ${start} bis ${end} Uhr summieren sich <strong>${hours} Stunden</strong>. Reicht eine Spanne über Mitternacht hinaus, wird die Zeit einfach in den Folgetag weitergezählt – 22:00 bis 06:00 Uhr sind zum Beispiel 8 Stunden, kein negativer Wert.`,
   (start: string, end: string, hours: number) =>
-    `Zwischen ${start} und ${end} Uhr liegen <strong>${hours} Stunden</strong>. Das entspricht ${Math.floor(hours / 0.5)} halbstündigen Zeitblöcken.`,
+    `Zwischen ${start} und ${end} Uhr liegen <strong>${hours} Stunden</strong>. Nach einer Schicht dieser Länge schreibt § 5 ArbZG eine ununterbrochene Ruhezeit von mindestens 11 Stunden bis zum nächsten Arbeitsbeginn vor.`,
   (start: string, end: string, hours: number) =>
-    `Ein Zeitraum von ${start} bis ${end} Uhr summiert sich auf <strong>${hours} Stunden</strong>. Perfekt für die Planung von Dienstplänen und Meetings.`,
+    `Exakt <strong>${hours} Stunden</strong> – also ${hours * 60} Minuten – vergehen zwischen ${start} und ${end} Uhr. Eine minutengenaue Erfassung ist die Grundlage für einen prüfsicheren Stundenzettel.`,
   (start: string, end: string, hours: number) =>
-    `Es sind exakt <strong>${hours} Stunden</strong> von ${start} bis ${end} Uhr. Diese Zeitspanne ist oft entscheidend für die Einhaltung von Ruhezeiten.`,
-  // Phase 3 Additions
+    `Ein tägliches Fenster von <strong>${hours} Stunden</strong> (${start}–${end} Uhr) liegt nahe der Grenze zwischen Teilzeit und Vollzeit; als Vollzeit gilt meist eine 5-Tage-Woche mit 35 bis 40 Wochenstunden.`,
   (start: string, end: string, hours: number) =>
-    `Die Zeitspanne von ${start} bis ${end} Uhr ergibt exakt <strong>${hours} Stunden</strong>. Für Gleitzeitmodelle ist die korrekte Erfassung solcher Zeitfenster unerlässlich.`,
+    `Die Zeitspanne von ${start} bis ${end} Uhr beläuft sich auf <strong>${hours} Stunden</strong>. Wichtig für Gleitzeitmodelle: Nach § 3 ArbZG sind werktäglich maximal 8 Stunden erlaubt, ausnahmsweise bis zu 10 Stunden, wenn im Schnitt über 6 Monate 8 Stunden nicht überschritten werden.`,
   (start: string, end: string, hours: number) =>
-    `Von ${start} bis ${end} Uhr verstreichen insgesamt <strong>${hours} Stunden</strong>. Diese Berechnung hilft Ihnen dabei, den Überblick über Ihre Tageskapazität zu behalten.`,
-  (start: string, end: string, hours: number) =>
-    `Zwischen dem Beginn um ${start} und dem Ende um ${end} Uhr liegen exakt <strong>${hours} Stunden</strong>. In der modernen Arbeitswelt ist die minutengenaue Erfassung solcher Intervalle für die Fairness am Arbeitsplatz zentral.`,
-  (start: string, end: string, hours: number) =>
-    `Die Zeitspanne von ${start} bis ${end} Uhr beläuft sich auf <strong>${hours} Stunden</strong>. Ob für Projektphasen oder Dienstübergaben – die genaue Kenntnis dieser Dauer optimiert jeden Prozess.`,
-  (start: string, end: string, hours: number) =>
-    `Vom Startzeitpunkt ${start} bis zum Ziel um ${end} Uhr messen wir <strong>${hours} Stunden</strong>. Dieser Wert ist ein verlässlicher Ankerpunkt für Ihre persönliche Zeitplanung und Dokumentation.`,
+    `Die <strong>${hours} Stunden</strong> von ${start} bis ${end} Uhr entsprechen ${dec(hours)} Dezimalstunden. Streng genommen sind Industrieminuten Hundertstel einer Stunde: 30 echte Minuten sind also 50 Industrieminuten (0,50 h), nicht 30.`,
 ];
 
-export const contextBlocks_en = [
-  (hours: number) => {
-    const cat = getDurationCategory(hours);
-    const textMap: Record<string, string> = {
-      micro: `A ${hours}-hour interval is extremely brief, often used for tasks like short breaks, system reboots, or quick transitions.`,
-      short: `A span of ${hours} hours is ideal for deep-focus sprints or focused meetings. Productivity techniques like Pomodoro work well within this timeframe.`,
-      half: `With ${hours} hours, you have a solid half-day block. This is often the time between a start and a lunch break, or a mid-day to afternoon shift.`,
-      full: `A ${hours}-hour window represents a standard full-time shift. In many countries, ${hours} hours is the maximum allowed before a mandatory rest period.`,
-      long: `At ${hours} hours, this is a long-duration shift. Proper break management is crucial here to maintain focus and safety.`,
-      over: `A duration of ${hours} hours is an extended period, often spanning multiple days or involving overtime. Large-scale logistics and travel often use these blocks.`
-    };
-    return textMap[cat] + ` For professional use, this represents ${Math.round((hours / 8) * 100)}% of a standard 8-hour workday. Accurate time math here ensures fair pay and efficient resource allocation.`;
-  },
-  (hours: number) =>
-    `In payroll and billing systems, ${hours}-hour blocks are basic units of measure. Whether you are a consultant invoicing a client or a manager approving a timesheet, precise decimal conversions (like ${hours.toFixed(2)}) are necessary for audit-trailed accounting.`,
-  (hours: number) =>
-    `From a project management view, ${hours} hours provides ${hours >= 4 ? 'substantial time for complex deliverables' : 'a window for tactical execution'}. Using ${hours} hours effectively requires setting clear milestones to avoid Parkinson's Law (work expanding to fill the time).`,
-  (hours: number) =>
-    `Safety and compliance standards often center on ${hours}-hour durations. Driving limits, pilot rest requirements, and industrial safety protocols all rely on the exact delta between ${hours} or more hours. Accuracy saves more than just money — it saves lives.`,
-  (hours: number) =>
-    `Modern productivity frameworks often partition the day into ${hours}-hour "buckets" for better task management. If you allot ${hours} hours to a specific goal, tracking the start and end precisely helps you measure your velocity over time.`,
-  // Phase 3 Additions
-  (hours: number) =>
-    `Half-hour accuracy in a ${hours}-hour window is the new standard for modern workplaces. As work becomes more flexible, the ability to calculate ${hours} hours instantly across different start and end times is a key productivity booster.`,
-  (hours: number) =>
-    `When calculating a span of ${hours} hours, it's important to consider "hidden" time sinks. Even in a ${hours}-hour period, small interruptions can add up, making exact start-to-finish tracking essential for true awareness of your time.`,
-];
-
-export const contextBlocks_de = [
-  (hours: number) => {
-    const cat = getDurationCategory(hours);
-    const textMap: Record<string, string> = {
-      micro: `Ein Intervall von ${hours} Stunden ist sehr kurz und wird oft für kurze Pausen, Systemneustarts oder schnelle Übergaben genutzt.`,
-      short: `Eine Zeitspanne von ${hours} Stunden eignet sich hervorragend für konzentrierte Sprints oder produktive Besprechungen.`,
-      half: `Mit ${hours} Stunden haben Sie einen soliden halbtägigen Arbeitsblock. Dies entspricht oft der Zeit bis zur Mittagspause.`,
-      full: `Ein ${hours}-Stunden-Fenster repräsentiert eine klassische Ganztagsschicht. In vielen Ländern ist dies die Grenze vor einer längeren Ruhepause.`,
-      long: `Bei ${hours} Stunden handelt es sich um eine Langschicht. Hier ist ein gutes Pausenmanagement entscheidend für die Sicherheit.`,
-      over: `Eine Dauer von ${hours} Stunden ist ein ausgedehnter Zeitraum, der oft Überstunden oder mehrtägige Einsätze umfasst.`
-    };
-    return textMap[cat] + ` Fachlich gesehen entspricht dies ${Math.round((hours / 8) * 100)}% eines Standard-8-Stunden-Arbeitstages. Präzise Zeitrechnung sichert faire Bezahlung.`;
-  },
-  (hours: number) =>
-    `In der Lohnabrechnung sind ${hours}-Stunden-Einheiten das Fundament der Kalkulation. Ob Freiberufler mit Stundensatz oder Angestellter mit Zeiterfassungsbogen – die Umrechnung in Dezimalstunden (hier: ${hours.toFixed(2).replace('.', ',')}) ist Standard.`,
-  (hours: number) =>
-    `Aus Sicht des Projektmanagements bieten ${hours} Stunden ${hours >= 4 ? 'viel Raum für komplexe Aufgaben' : 'ein Fenster für operative Aufgaben'}. Eine klare Strukturierung dieses ${hours}-Stunden-Blocks verhindert Zeitverluste.`,
-  (hours: number) =>
-    `Compliance-Regeln und gesetzliche Ruhezeiten basieren oft auf exakten ${hours}-Stunden-Vorgaben. Die Einhaltung dieser Grenzen ist für Arbeitgeber und Arbeitnehmer gleichermaßen wichtig.`,
-  // Phase 3 Additions
-  (hours: number) =>
-    `Die Genauigkeit auf die halbe Stunde genau ist bei einem ${hours}-Stunden-FENSTER heute die Norm. Flexible Arbeitszeiten erfordern Tools, die ${hours} Stunden schnell und fehlerfrei über verschiedene Start- und Endzeiten hinweg berechnen.`,
-];
+// ─── USE CASES (chips linking to the FAQ) ────────────────────────────────────
 
 export const useCases_en = [
-  ['Payroll processing', 'Shift turnover planning', 'Event duration estimation', 'Client billing accuracy'],
-  ['Tracking billable hours', 'Timesheet validation', 'Meeting scheduling', 'Overtime eligibility check'],
-  ['Logistics routing', 'Flight duration planning', 'Project sprint tracking', 'Study time management'],
-  ['Compliance auditing', 'Shift-work safety check', 'Resource allocation', 'Service SLA tracking'],
-  ['Daily routine planning', 'Task partitioning', 'Time-blocking accuracy', 'Delivery window tracking'],
-  ['Freelance project estimation', 'Flex-time tracking', 'Hourly wage calculation', 'Billable time auditing'],
+  ['Payroll processing', 'Shift handover planning', 'Event duration estimates', 'Client billing accuracy'],
+  ['Billable-hour tracking', 'Timesheet validation', 'Meeting scheduling', 'Overtime eligibility'],
+  ['Logistics routing', 'Flight duration planning', 'Project sprint tracking', 'Study-time management'],
+  ['Compliance auditing', 'Shift-work rest checks', 'Resource allocation', 'Service-SLA tracking'],
+  ['Daily routine planning', 'Task time-blocking', 'Quarter-hour accuracy', 'Delivery-window tracking'],
+  ['Freelance estimating', 'Flex-time tracking', 'Hourly-wage calculation', 'Invoice reconciliation'],
 ];
 
 export const useCases_de = [
   ['Lohnabrechnung', 'Schichtübergabe-Planung', 'Veranstaltungsdauer', 'Kundenabrechnung'],
   ['Arbeitszeitprüfung', 'Freiberufler-Abrechnung', 'Besprechungsplanung', 'Überstundenkontrolle'],
   ['Logistik-Planung', 'Flugdauer-Berechnung', 'Projekt-Sprint-Tracking', 'Lernzeit-Management'],
-  ['Compliance-Prüfung', 'Arbeitsschutz-Check', 'Ressourcen-Allokation', 'Service-Level-Tracking'],
-  ['Gleitzeit-Erfassung', 'Kalkulation von Honorarsätzen', 'Projektzeit-Budgets', 'Stundenzettel-Abgleich'],
+  ['Compliance-Prüfung', 'Ruhezeiten-Check', 'Ressourcen-Allokation', 'Service-Level-Tracking'],
+  ['Gleitzeit-Erfassung', 'Honorarsatz-Kalkulation', 'Projektzeit-Budgets', 'Stundenzettel-Abgleich'],
 ];
 
-// ─── WORK HOURS VARIANTS ─────────────────────────────────────────────────────
-
-export const workHoursIntros_en = [
-  (start: string, end: string, net: number) =>
-    `Working from <strong>${start} to ${end}</strong> results in <strong>${net} hours</strong> of net billable work time. Our calculator automatically handles mandatory break deductions, ensuring your timesheet complies with standard labor regulations.`,
-  (start: string, end: string, net: number) =>
-    `A total of <strong>${net} productive hours</strong> are earned between ${start} and ${end}. By subtracting statutory rest periods, this result provides an audit-proof decimal figure ready for HR and payroll processing.`,
-  (start: string, end: string, net: number) =>
-    `Your net working time from ${start} until ${end} equals exactly <strong>${net} hours</strong>. Maintaining to-the-minute precision in this calculation helps you avoid FLSA overtime disputes and ensures fair compensation.`,
-];
-
-export const workHoursIntros_de = [
-  (start: string, end: string, net: number) =>
-    `Die Arbeitsschicht von <strong>${start} bis ${end} Uhr</strong> ergibt exakt <strong>${net} Stunden</strong> Nettoabrechnungszeit. Gesetzliche Pausenabzüge gemäß Arbeitszeitgesetz (ArbZG) lassen sich hierbei direkt berücksichtigen.`,
-  (start: string, end: string, net: number) =>
-    `Zwischen ${start} und ${end} Uhr erreichen Sie <strong>${net} fakturierbare Stunden</strong> – nach Abzug der vorgeschriebenen Ruhepausen. Dieser manipulationssichere Wert ist ideal für Ihren Stundenzettel.`,
-  (start: string, end: string, net: number) =>
-    `Ihre Netto-Arbeitszeit von ${start} bis ${end} Uhr beträgt exakt <strong>${net} Industriestunden (Dezimal)</strong>. Diese Genauigkeit ist essenziell für die Lohnbuchhaltung und schützt vor Compliance-Verstößen.`,
-];
-
-// ─── COUNTDOWN VARIANTS ──────────────────────────────────────────────────────
+// ─── COUNTDOWN INTROS ────────────────────────────────────────────────────────
+// (name, days) — days is the whole-day count from today to the event.
 
 export const countdownIntros_en = [
   (name: string, days: number) =>
-    `There are <strong>${days} days</strong> remaining until ${name}. That represents approximately ${Math.floor(days / 7)} weeks of anticipation.`,
+    `There are <strong>${days} days</strong> until ${name} — roughly ${Math.floor(days / 7)} weeks, or ${days * 24} hours.`,
   (name: string, days: number) =>
-    `The countdown for ${name} is currently at <strong>${days} days</strong>. In terms of hours, that is ${days * 24} hours until the event begins.`,
+    `The countdown to ${name} stands at <strong>${days} days</strong>. This counts the full days from today up to the event date; today itself is not included in the total.`,
   (name: string, days: number) =>
-    `${name} is exactly <strong>${days} days away</strong>. Track the time to ensure your preparations are finished before the deadline.`,
+    `${name} is <strong>${days} days away</strong>. The count accounts for leap years and daylight-saving changes, so the number of days stays exact.`,
+  (name: string, days: number) =>
+    `Only <strong>${days} days</strong> remain until ${name}. Divide by 7 for weeks (${Math.floor(days / 7)}) or multiply by 24 for hours (${days * 24}) to plan your preparations.`,
 ];
 
 export const countdownIntros_de = [
   (name: string, days: number) =>
-    `Es verbleiben noch <strong>${days} Tage</strong> bis ${name}. Das entspricht in etwa ${Math.floor(days / 7)} Wochen voller Vorfreude.`,
+    `Bis ${name} sind es noch <strong>${days} Tage</strong> – das entspricht etwa ${Math.floor(days / 7)} Wochen oder ${days * 24} Stunden.`,
   (name: string, days: number) =>
-    `Der Countdown für ${name} steht aktuell bei <strong>${days} Tagen</strong>. Umgerechnet sind dies ${days * 24} Stunden bis zum Ereignis.`,
+    `Der Countdown bis ${name} steht bei <strong>${days} Tagen</strong>. Gezählt werden die vollen Tage ab heute bis zum Ereignistag; der heutige Tag zählt dabei nicht mit.`,
   (name: string, days: number) =>
-    `${name} ist noch genau <strong>${days} Tage entfernt</strong>. Behalten Sie die Zeit im Auge, um optimal vorbereitet zu sein.`,
+    `${name} ist noch <strong>${days} Tage entfernt</strong>. Die Berechnung berücksichtigt Schaltjahre sowie die Sommer-/Winterzeit-Umstellung, sodass die Tageszahl stets exakt bleibt.`,
+  (name: string, days: number) =>
+    `Es verbleiben <strong>${days} Tage</strong> bis ${name}. Geteilt durch 7 ergeben sich rund ${Math.floor(days / 7)} Wochen, mal 24 sind es ${days * 24} Stunden Vorbereitungszeit.`,
 ];
 
 // ─── UTILITY ─────────────────────────────────────────────────────────────────
 
-// Deterministic index from slug (so same page always gets same variant)
+// Deterministic index from slug (so the same page always gets the same variant)
 export function variantIndex(slug: string, max: number): number {
   let hash = 0;
   for (let i = 0; i < slug.length; i++) {
@@ -216,50 +124,51 @@ export function variantIndex(slug: string, max: number): number {
   return Math.abs(hash) % max;
 }
 
-// FAQ sets for time range pages (Stunden)
+// ─── FAQ SETS — TIME RANGE PAGES ─────────────────────────────────────────────
+
 export const faqSets_en = [
   (start: string, end: string, hours: number) => [
     {
       q: `How many minutes and seconds are between ${start} and ${end}?`,
-      a: `Exactly ${hours * 60} minutes or ${hours * 3600} seconds elapse during a ${hours}-hour time block. This high-precision calculation is critical for shift logging, airline schedules, and server synchronization across international network configurations.`
+      a: `Exactly ${hours * 60} minutes, or ${hours * 3600} seconds. This is the gross span between start and end — the raw elapsed time before any unpaid break is deducted.`
     },
     {
-      q: `Is a ${hours}-hour shift considered full-time or part-time work?`,
-      a: `A daily duration of ${hours} hours can represent either full-time or part-time work depending on your weekly contract. Typically, full-time employment ranges from 35 to 40 hours per week (averaging 7 to 8 hours daily). Daily shifts shorter than 6 hours are generally classified as part-time.`
+      q: `How do I convert ${hours} hours to decimal?`,
+      a: `Use the formula decimal hours = hours + (minutes ÷ 60). ${hours} hours is ${decEn(hours)} decimal hours. Payroll systems rely on this format because it multiplies cleanly by an hourly wage, unlike hours-and-minutes.`
     },
     {
-      q: `How do I calculate overtime for a ${hours}-hour duration?`,
-      a: `Overtime is determined by comparing your actual working hours against your contract. If your contract defines a standard 8-hour workday, working ${hours} hours results in ${hours > 8 ? (hours - 8).toFixed(2) : 0} hours of potential overtime. Remember that unpaid rest breaks must be deducted to find your true working hours.`
+      q: `Is a ${hours}-hour day full-time or part-time?`,
+      a: `It depends on the weekly total, not a single day. Full-time employment is generally 35–40 hours a week (about 7–8 hours across five days). A regular daily schedule under roughly 6 hours usually indicates part-time work.`
     },
     {
-      q: `Does a break count as working time during a ${hours}-hour shift?`,
-      a: `No, standard labor regulations (such as the UK Working Time Regulations or US FLSA) state that rest breaks do not count as paid working hours. If your shift exceeds 6 hours, a minimum rest break of 20 to 30 minutes is legally required and must be subtracted from the total elapsed hours.`
+      q: `Does a break have to be deducted from ${hours} hours?`,
+      a: `As a raw time span, no. As working time, most labour rules (UK Working Time Regulations, and US FLSA practice for unpaid meal breaks) require a rest break of 20–30 minutes once a shift exceeds 6 hours, and that break is not paid working time.`
     },
     {
-      q: `How should I log ${hours} hours on my timesheet?`,
-      a: `Record your starting time at ${start} and your ending time at ${end}. If you took any breaks during this time, enter them separately to calculate your net decimal hours. Use our online Time Calculator to automate the conversion of hours and minutes for billing.`
+      q: `What rest is required after a ${hours}-hour shift?`,
+      a: `EU and UK rules require at least 11 consecutive hours of rest in each 24-hour period before the next shift. In the US the FLSA sets no federal minimum rest between shifts, though some states and union contracts do.`
     }
   ],
   (start: string, end: string, hours: number) => [
     {
-      q: `How do I convert ${hours} hours between ${start} and ${end} into decimal?`,
-      a: `The decimal value is simply ${hours.toFixed(2)} hours. Converting to decimal format (like multiplying by an hourly wage) is the standard method for billing and payroll processing to prevent rounding discrepancies.`
+      q: `What percentage of a workday is ${hours} hours?`,
+      a: `About ${pctDay(hours)}% of a standard 8-hour workday. Framing hours as a share of the day helps with capacity planning and project budgeting.`
     },
     {
-      q: `Is ${hours} hours considered overtime?`,
-      a: hours > 8 ? `Yes, it exceeds the standard 8-hour shift by ${(hours - 8).toFixed(2)} hour(s). Most employment agreements require overtime pay or comp time for hours worked beyond 8 hours a day.` : `No, it falls within or below the standard 8-hour workday, meaning it is usually logged as standard operating hours.`
+      q: `What is ${hours} hours in industrial minutes?`,
+      a: `${hours} hours equals ${industrieMin(hours)} industrial minutes — hundredths of an hour — which is the same as ${decEn(hours)} decimal hours. Remember that 30 real minutes equal 50 industrial minutes, not 30.`
     },
     {
-      q: `How many minutes is ${hours} hours?`,
-      a: `It is exactly ${hours * 60} minutes. Knowing the minutes breakdown is useful for tracking shorter billable increments or logging client consulting calls.`
+      q: `How many half-hours are in ${hours} hours?`,
+      a: `Exactly ${hours * 2} half-hours, or ${hours * 4} fifteen-minute blocks. This matters when your system rounds and bills in 15- or 30-minute increments.`
     },
     {
-      q: `What is the rest requirement after a ${hours}-hour shift?`,
-      a: `Generally, labor laws dictate a minimum of 11 consecutive hours of rest in any 24-hour period. If you complete a ${hours}-hour shift, you must ensure this mandatory rest period is taken before starting your next shift.`
+      q: `When does a shift count as overtime?`,
+      a: `Under the US FLSA, overtime applies to hours worked beyond 40 in a workweek, paid at 1.5× the regular rate. Overtime is a weekly threshold, so ${hours} hours on a single day is not automatically overtime unless the week exceeds 40 hours.`
     },
     {
-      q: `Can I automate my timesheet for ${hours} hours?`,
-      a: `Yes, you can use our built-in timesheet calculator to enter your exact start, end, and break times. It will output your total gross hours, net hours, and decimal values, which you can easily copy or print.`
+      q: `Can I print or save this result?`,
+      a: `Yes. Below the calculator you'll find buttons to copy the value or print it as a PDF. The print view hides navigation and shows the figures in high contrast, so it works as a simple timesheet record.`
     }
   ]
 ];
@@ -267,68 +176,69 @@ export const faqSets_en = [
 export const faqSets_de = [
   (start: string, end: string, hours: number) => [
     {
-      q: `Wie viele Minuten sind ${hours} Stunden von ${start} bis ${end} Uhr?`,
-      a: `Es sind exakt ${hours * 60} Minuten beziehungsweise ${hours * 3600} Sekunden. Diese präzise Umrechnung ist besonders in der industriellen Fertigung und Logistik wichtig, wo Zeitspannen minutengenau dokumentiert werden müssen.`
+      q: `Wie viele Minuten und Sekunden sind ${hours} Stunden (von ${start} bis ${end} Uhr)?`,
+      a: `Es sind exakt ${hours * 60} Minuten beziehungsweise ${hours * 3600} Sekunden. Das ist die Bruttozeit – die reine Spanne zwischen Start und Ende, noch ohne Abzug von Pausen.`
+    },
+    {
+      q: `Wie rechne ich ${hours} Stunden in Dezimalstunden um?`,
+      a: `Die Formel lautet: Dezimalstunden = Stunden + (Minuten ÷ 60). ${hours} Stunden entsprechen ${dec(hours)} Dezimalstunden. Die Lohnbuchhaltung nutzt diesen Wert, weil er sich – anders als das Format Stunden:Minuten – direkt mit dem Stundenlohn multiplizieren lässt.`
     },
     {
       q: `Gilt eine Zeitspanne von ${hours} Stunden als Vollzeit oder Teilzeit?`,
-      a: `Eine tägliche Arbeitszeit von ${hours} Stunden kann je nach wöchentlicher Vereinbarung Teilzeit oder Vollzeit sein. In Deutschland gilt eine 5-Tage-Woche mit 35 bis 40 Stunden als Vollzeit (durchschnittlich 7 bis 8 Stunden pro Tag). Kürzere tägliche Arbeitszeiten deuten meist auf ein Teilzeitverhältnis hin.`
+      a: `Das hängt von der Wochenarbeitszeit ab, nicht von einem einzelnen Tag. In Deutschland gilt eine 5-Tage-Woche mit 35 bis 40 Stunden als Vollzeit (durchschnittlich 7 bis 8 Stunden pro Tag). Eine regelmäßige Tagesarbeitszeit unter rund 6 Stunden deutet meist auf Teilzeit oder einen Minijob hin.`
     },
     {
-      q: `Wie berechne ich Überstunden für eine Schicht von ${hours} Stunden?`,
-      a: `Überstunden hängen von Ihrer vertraglichen Arbeitszeit ab. Wenn Ihr Arbeitsvertrag beispielsweise 8 Stunden pro Tag vorsieht und Sie regulär arbeiten, haben Sie bei ${hours} Stunden Anwesenheit eventuell Mehrarbeit geleistet. Bitte beachten Sie, dass gesetzliche Pausenzeiten nach dem Arbeitszeitgesetz (ArbZG) von der reinen Arbeitszeit abgezogen werden müssen.`
+      q: `Muss bei ${hours} Stunden eine Pause abgezogen werden?`,
+      a: `Als reine Zeitspanne nein. Als Arbeitszeit gilt § 4 ArbZG: Bei mehr als 6 Stunden sind mindestens 30 Minuten, bei mehr als 9 Stunden 45 Minuten unbezahlte Pause vorgeschrieben. Die Pause muss die Arbeit unterbrechen und darf nicht an den Anfang oder das Ende gelegt werden.`
     },
     {
-      q: `Zählt die Pause bei einer Schicht von ${hours} Stunden zur Arbeitszeit?`,
-      a: `Nein, gemäß § 4 des deutschen Arbeitszeitgesetzes (ArbZG) zählen Ruhepausen nicht zur Arbeitszeit und werden daher nicht bezahlt. Bei einer Gesamtdauer von mehr als 6 Stunden ist eine Pause von mindestens 30 Minuten gesetzlich vorgeschrieben. Bei mehr als 9 Stunden Arbeit erhöht sich die Pflichtpause auf 45 Minuten.`
-    },
-    {
-      q: `Wie trage ich ${hours} Stunden in meinen Stundenzettel oder die Zeiterfassung ein?`,
-      a: `Sie tragen die Startzeit um ${start} Uhr und die Endzeit um ${end} Uhr in Ihren Stundenzettel ein. Sollten Sie in dieser Zeit gearbeitet und Pausen gemacht haben, müssen Sie die Pausenzeit abziehen. Nutzen Sie unseren kostenlosen Arbeitsstunden-Rechner, um die Nettoarbeitszeit exakt in Dezimalstunden für die Lohnabrechnung umzurechnen.`
+      q: `Welche Ruhezeit gilt nach einer Schicht von ${hours} Stunden?`,
+      a: `Nach § 5 ArbZG sind mindestens 11 Stunden ununterbrochene Ruhezeit bis zum nächsten Arbeitsbeginn einzuhalten. In Bereichen wie Krankenhäusern, Gaststätten oder der Landwirtschaft ist eine Verkürzung auf 10 Stunden zulässig, sofern ein Ausgleich innerhalb von vier Wochen erfolgt.`
     }
   ],
   (start: string, end: string, hours: number) => [
     {
-      q: `Wie viel Prozent der Arbeitszeit sind ${hours} Stunden?`,
-      a: `Bei einer Basis von 8 Stunden Arbeitszeit entspricht das ${Math.round((hours / 8) * 100)}% des Standardarbeitstages. Dies hilft Projektmanagern bei der Ressourcenallokation und Budgetierung von Projektstunden.`
+      q: `Wie viel Prozent eines Arbeitstages sind ${hours} Stunden?`,
+      a: `Bei einer Basis von 8 Stunden entspricht das rund ${pctDay(hours)}% eines Standardarbeitstages. Diese Sichtweise hilft bei der Ressourcenplanung und der Budgetierung von Projektstunden.`
     },
     {
-      q: `Was ist der Dezimalwert von ${hours} Stunden?`,
-      a: `Der Dezimalwert ist ${hours.toFixed(2).replace('.', ',')} Stunden. Die Lohnbuchhaltung benötigt diesen Wert zur direkten Multiplikation mit dem Stundenlohn.`
+      q: `Was sind ${hours} Stunden in Industrieminuten?`,
+      a: `${hours} Stunden entsprechen ${industrieMin(hours)} Industrieminuten – also Hundertstel einer Stunde – bzw. ${dec(hours)} Dezimalstunden. Zur Einordnung: 30 echte Minuten sind 50 Industrieminuten, nicht 30.`
     },
     {
       q: `Wie viele halbe Stunden stecken in ${hours} Stunden?`,
-      a: `Es sind genau ${hours * 2} halbe Stunden. Dies ist nützlich, wenn Ihre Zeiterfassung in 30-Minuten-Schritten abrechnet.`
+      a: `Es sind genau ${hours * 2} halbe Stunden bzw. ${hours * 4} Viertelstunden. Das ist relevant, wenn Ihre Zeiterfassung in 15- oder 30-Minuten-Schritten rundet und abrechnet.`
     },
     {
-      q: `Welche Ruhezeiten gelten nach einer Schicht von ${hours} Stunden?`,
-      a: `Nach Beendigung der täglichen Arbeitszeit müssen Arbeitnehmer in Deutschland eine ununterbrochene Ruhezeit von mindestens 11 Stunden einhalten (§ 5 ArbZG). Bei Krankenhäusern, Gaststätten oder Verkehrsbetrieben gibt es gesetzliche Ausnahmen.`
+      q: `Gilt Arbeit zwischen 23 und 6 Uhr als Nachtarbeit?`,
+      a: `Ja. Nach § 2 ArbZG ist Arbeit von mehr als 2 Stunden in der Zeit von 23:00 bis 6:00 Uhr Nachtarbeit. Dafür steht ein angemessener Zuschlag auf das Bruttoarbeitsentgelt oder eine entsprechende Zahl bezahlter freier Tage zu (§ 6 ArbZG).`
     },
     {
       q: `Kann ich das Ergebnis dieser Berechnung ausdrucken oder speichern?`,
-      a: `Ja. Unter dem Ergebnis der Berechnung finden Sie eine Schaltfläche zum Ausdrucken oder Speichern als PDF. Die Druckansicht blendet Navigation und Werbung aus und stellt die Ergebnisse kontrastreich dar.`
+      a: `Ja. Unter dem Ergebnis finden Sie Schaltflächen zum Kopieren oder zum Drucken als PDF. Die Druckansicht blendet Navigation und Menüs aus und stellt die Werte kontrastreich dar – so eignet sie sich als einfacher Stundenzettel-Beleg.`
     }
   ]
 ];
 
-// Dedicated FAQ sets for Work Hours (Arbeitsstunden) pages, resolving the accuracy bug
+// ─── FAQ SETS — WORK HOURS (net-after-break) ─────────────────────────────────
+
 export const workHoursFaqSets_de = [
   (start: string, end: string, netDecimal: string | number) => {
     const netVal = typeof netDecimal === 'string' ? parseFloat(netDecimal) : netDecimal;
     return [
       {
         q: `Was ist der Dezimalwert von ${start} bis ${end} Uhr mit 30 Minuten Pause?`,
-        a: `Der Dezimalwert der Nettoarbeitszeit (mit 30 Minuten Pause) beträgt ${netVal.toFixed(2).replace('.', ',')} Dezimalstunden. Lohnabrechnungssysteme benötigen diesen Dezimalwert, da er direkt mit dem Stundenlohn multipliziert werden kann, um den Bruttoverdienst ohne Rundungsfehler zu ermitteln.`
+        a: `Die Nettoarbeitszeit mit 30 Minuten Pause beträgt ${dec(netVal)} Dezimalstunden (${industrieMin(netVal)} Industrieminuten). Lohnabrechnungssysteme benötigen diesen Dezimalwert, weil er sich direkt mit dem Stundenlohn multiplizieren lässt und so Rundungsfehler vermeidet.`
       },
       {
         q: `Zählt die Pause zur Arbeitszeit bei dieser Arbeitszeitspanne?`,
-        a: `Nein, laut § 4 des Arbeitszeitgesetzes (ArbZG) in Deutschland sind Ruhepausen keine Arbeitszeit. Bei einer Gesamtanwesenheit von über 6 Stunden müssen mindestens 30 Minuten Pause genommen und abgezogen werden. Diese Pause darf nicht am Anfang oder Ende der Arbeitszeit liegen, sondern muss die Arbeitszeit unterbrechen.`
+        a: `Nein. Nach § 4 ArbZG sind Ruhepausen keine Arbeitszeit. Bei einer Gesamtanwesenheit von mehr als 6 Stunden müssen mindestens 30 Minuten Pause genommen und abgezogen werden; ab mehr als 9 Stunden sind es 45 Minuten. Die Pause muss die Arbeitszeit unterbrechen und darf nicht an Anfang oder Ende liegen.`
       },
       {
         q: `Wie berechne ich Überstunden bei einer Schicht von ${start} bis ${end} Uhr?`,
         a: (() => {
-          const net = netVal.toFixed(2).replace('.', ',');
-          const diff = Math.abs(netVal - 8).toFixed(2).replace('.', ',');
+          const net = dec(netVal);
+          const diff = dec(Math.abs(netVal - 8));
           const base = `Vergleichen Sie Ihre Nettoarbeitszeit (${net} Stunden nach Abzug der Pause) mit Ihrer vertraglichen täglichen Arbeitszeit von beispielsweise 8 Stunden. `;
           if (netVal > 8) return base + `Bei ${net} Stunden Nettoarbeitszeit leisten Sie ${diff} Stunden Mehrarbeit (Überstunden).`;
           if (netVal < 8) return base + `Bei ${net} Stunden Nettoarbeitszeit liegen Sie ${diff} Stunden unter einem 8-Stunden-Tag – es fallen keine Überstunden an.`;
@@ -337,11 +247,11 @@ export const workHoursFaqSets_de = [
       },
       {
         q: `Gilt diese Nettoarbeitszeit als Vollzeit oder Teilzeit?`,
-        a: `Eine regelmäßige Nettoarbeitszeit von ${netVal.toFixed(2).replace('.', ',')} Stunden pro Tag liegt bei einer 5-Tage-Woche (ca. ${Math.round(netVal * 5)} Wochenstunden) im Vollzeitbereich. Arbeitszeiten unter 6 Stunden pro Tag werden meist als Teilzeit oder Minijob eingestuft.`
+        a: `Eine regelmäßige Nettoarbeitszeit von ${dec(netVal)} Stunden pro Tag ergibt bei einer 5-Tage-Woche rund ${Math.round(netVal * 5)} Wochenstunden und liegt damit im Vollzeitbereich (35 bis 40 Stunden). Arbeitszeiten unter etwa 6 Stunden pro Tag werden meist als Teilzeit oder Minijob eingestuft.`
       },
       {
         q: `Wie erfasse ich diese Zeit korrekt im Stundenzettel?`,
-        a: `Tragen Sie ${start} Uhr als Beginn und ${end} Uhr als Ende ein. Vermerken Sie die 30-minütige Pflichtpause separat. Die Nettoarbeitszeit beträgt somit ${netVal.toFixed(2).replace('.', ',')} Stunden. Nutzen Sie unseren Arbeitsstunden-Rechner, um die genaue Nettoarbeitszeit auch für andere Pausenzeiten (wie 45 oder 60 Minuten) präzise zu ermitteln.`
+        a: `Tragen Sie ${start} Uhr als Beginn und ${end} Uhr als Ende ein und vermerken Sie die 30-minütige Pflichtpause separat. Die Nettoarbeitszeit beträgt somit ${dec(netVal)} Stunden. Mit unserem Arbeitsstunden-Rechner ermitteln Sie die Nettozeit auch für andere Pausen (45 oder 60 Minuten) exakt.`
       }
     ];
   }
@@ -353,72 +263,75 @@ export const workHoursFaqSets_en = [
     return [
       {
         q: `What is the decimal value of work from ${start} to ${end} with a 30-minute break?`,
-        a: `The decimal value of your net work hours (with a 30-minute break deducted) is ${netVal.toFixed(2)} decimal hours. Payroll departments require decimal format (e.g., 7.50 instead of 7h 30m) to multiply directly by your hourly pay rate for error-free wage calculation.`
+        a: `Your net work time with a 30-minute break deducted is ${decEn(netVal)} decimal hours (${industrieMin(netVal)} industrial minutes). Payroll needs decimal format — e.g. 7.50 rather than 7h 30m — so it multiplies cleanly by your hourly pay rate without rounding errors.`
       },
       {
         q: `Does the break count as working time for this shift?`,
-        a: `No, standard labor laws like the UK Working Time Regulations or the US Fair Labor Standards Act (FLSA) specify that rest breaks of 30 minutes or more are unpaid and do not count toward your active working hours. They must be deducted from your total attendance time.`
+        a: `No. Under standard labour rules — the UK Working Time Regulations, and US FLSA practice for unpaid meal breaks — a rest break of 20–30 minutes or more is unpaid and does not count toward active working hours. It must be subtracted from total attendance time.`
       },
       {
         q: `How do I calculate overtime for a shift from ${start} to ${end}?`,
         a: (() => {
-          const net = netVal.toFixed(2);
-          const diff = Math.abs(netVal - 8).toFixed(2);
-          const base = `Compare your net work hours (${net} hours after break deduction) against your contracted daily hours, e.g. a standard 8-hour workday. `;
-          if (netVal > 8) return base + `Working ${net} net hours means ${diff} hours of overtime.`;
-          if (netVal < 8) return base + `Working ${net} net hours leaves you ${diff} hours short of a standard 8-hour day, so no overtime applies.`;
-          return base + `Working ${net} net hours is exactly a standard 8-hour day with no overtime.`;
+          const net = decEn(netVal);
+          const diff = decEn(Math.abs(netVal - 8));
+          const base = `Compare your net work hours (${net} hours after the break) against your contracted daily hours, e.g. a standard 8-hour day. `;
+          if (netVal > 8) return base + `Working ${net} net hours means ${diff} hours over a standard day; under the FLSA, weekly overtime applies once the week passes 40 hours.`;
+          if (netVal < 8) return base + `Working ${net} net hours leaves you ${diff} hours short of a standard 8-hour day, so no daily overtime applies.`;
+          return base + `Working ${net} net hours is exactly a standard 8-hour day.`;
         })()
       },
       {
-        q: `Are the hours between ${start} and ${end} considered full-time or part-time?`,
-        a: `A daily shift yielding ${netVal.toFixed(2)} net hours is generally considered a full-time workday when performed on a regular 5-day schedule. Weekly hours totaling 35 to 40 hours represent standard full-time employment in most English-speaking markets.`
+        q: `Are the hours between ${start} and ${end} full-time or part-time?`,
+        a: `A daily shift of ${decEn(netVal)} net hours is typically full-time on a regular five-day schedule — about ${Math.round(netVal * 5)} hours a week, within the usual 35–40 hour full-time range. Regular days under roughly 6 hours are generally classed as part-time.`
       },
       {
-        q: `How do I record this shift on my daily timesheet?`,
-        a: `Log your start time at ${start} and your end time at ${end}, listing the 30-minute break separately. This yields a net total of ${netVal.toFixed(2)} hours. Use our online Work Hours Calculator to easily adjust start, end, and break durations.`
+        q: `How do I record this shift on my timesheet?`,
+        a: `Log the start at ${start} and the end at ${end}, listing the 30-minute break separately. That yields ${decEn(netVal)} net hours. Use our Work Hours Calculator to adjust start, end and break lengths (45 or 60 minutes) and get the exact decimal total.`
       }
     ];
   }
 ];
 
+// ─── CONTEXT CLUSTER — shift-specific legal & practical context ───────────────
+// Rendered on every time-range page, so each URL carries genuinely unique,
+// entity-rich context tied to the actual start time and shift length.
+
 export function getContextClusterDE(start: number, end: number, hours: number): string {
   if (hours >= 4 && hours <= 6) {
-    return `Ein tägliches Arbeitszeitfenster von ${hours} Stunden fällt typischerweise in den Bereich der Teilzeitbeschäftigung. Für viele Arbeitnehmer in Deutschland, insbesondere im Rahmen von Minijobs oder Gleitzeit-Teilzeitverträgen, ist dies die vertraglich geregelte tägliche Arbeitszeit. Bei solchen Modellen gelten dieselben gesetzlichen Bestimmungen des Arbeitszeitgesetzes (ArbZG) bezüglich Mindestlohn und anteiligen Urlaubsansprüchen. Beträgt die Arbeitszeit exakt 6 Stunden, ist gesetzlich noch keine Ruhepause vorgeschrieben; erst ab einer Überschreitung von 6 Stunden muss eine 30-minütige Pause eingelegt werden.`;
+    return `Ein tägliches Arbeitszeitfenster von ${hours} Stunden fällt typischerweise in den Bereich der Teilzeitbeschäftigung. Für viele Beschäftigte in Deutschland – etwa im Rahmen von Minijobs oder Gleitzeit-Teilzeitverträgen – ist dies die vertraglich geregelte tägliche Arbeitszeit. Es gelten dieselben Bestimmungen des Arbeitszeitgesetzes (ArbZG) zu Mindestlohn und anteiligem Urlaubsanspruch wie in Vollzeit. Beträgt die Arbeitszeit genau 6 Stunden, ist noch keine Ruhepause vorgeschrieben; erst bei einer Überschreitung von 6 Stunden muss eine 30-minütige Pause eingelegt werden (§ 4 ArbZG).`;
   }
   if ((start >= 5 && start <= 7.5) && (hours >= 6 && hours <= 9)) {
-    return `Diese Zeitspanne entspricht einer klassischen Frühschicht, wie sie in der Industrie, Logistik, im Handwerk oder im Gesundheitswesen üblich ist. Frühschichten erfordern eine präzise Taktung und haben besondere gesetzliche Rahmenbedingungen: Falls die Schicht vor 6:00 Uhr beginnt, gilt der Teil davor gesetzlich als Nachtarbeit, wofür ggf. Schichtzuschläge anfallen. Nach Beendigung dieser Frühschicht müssen Arbeitgeber die gesetzlich vorgeschriebene ununterbrochene Ruhezeit von 11 Stunden gemäß § 5 des Arbeitszeitgesetzes (ArbZG) strikt einhalten, bevor der Arbeitnehmer wieder eingesetzt werden darf.`;
+    return `Diese Zeitspanne entspricht einer klassischen Frühschicht, wie sie in Industrie, Logistik, Handwerk und Gesundheitswesen üblich ist. Frühschichten erfordern eine präzise Taktung und haben besondere Rahmenbedingungen: Beginnt die Schicht vor 6:00 Uhr, kann der Teil davor als Nachtarbeit gelten und Schichtzuschläge auslösen. Nach der Schicht ist die ununterbrochene Ruhezeit von mindestens 11 Stunden gemäß § 5 ArbZG einzuhalten, bevor der nächste Einsatz beginnen darf – in einzelnen Branchen auf 10 Stunden verkürzbar, wenn ein Ausgleich innerhalb von vier Wochen erfolgt.`;
   }
   if ((start >= 8 && start <= 9.5) && (hours >= 7 && hours <= 9.5)) {
-    return `Dieser Zeitraum repräsentiert die klassische Normalarbeitszeit oder Büroarbeitszeit in Deutschland. Eine typische 5-Tage-Woche mit wöchentlich 38,5 bis 40 Stunden basiert meist auf diesem Tagesrhythmus (z. B. von 8:00 bis 17:00 Uhr). Im Rahmen von modernen Gleitzeitmodellen (Gleitzeit) können Arbeitnehmer Beginn und Ende flexibel gestalten. Da die Anwesenheit hierbei über 6 Stunden liegt, ist gemäß § 4 ArbZG ein Abzug einer Ruhepause von mindestens 30 Minuten zwingend vorgeschrieben, um die rechtssichere Nettoarbeitszeit zu ermitteln.`;
+    return `Dieser Zeitraum repräsentiert die klassische Normal- oder Büroarbeitszeit in Deutschland. Eine 5-Tage-Woche mit 38,5 bis 40 Wochenstunden baut meist auf diesem Tagesrhythmus auf (z. B. 8:00 bis 17:00 Uhr). In Gleitzeitmodellen lassen sich Beginn und Ende flexibel gestalten. Da die Anwesenheit über 6 Stunden liegt, ist nach § 4 ArbZG eine Ruhepause von mindestens 30 Minuten abzuziehen, um die rechtssichere Nettoarbeitszeit zu ermitteln. Die werktägliche Höchstarbeitszeit von 8 Stunden (bis 10 Stunden mit Ausgleich) nach § 3 ArbZG bleibt dabei zu beachten.`;
   }
   if ((start >= 13 && start <= 15.5) && (hours >= 6 && hours <= 9)) {
-    return `Diese Arbeitszeit fällt in den Bereich der Spätschicht, welche häufig im Einzelhandel, in der Gastronomie, im Kundenservice oder im medizinischen Bereich anzutreffen ist. Da Spätschichten oft bis in die späten Abendstunden hineinreichen, sind sie mit logistischen Herausforderungen wie der Nutzung des öffentlichen Nahverkehrs verbunden. Gesetzlich ist darauf zu achten, dass bei einer Arbeitszeit von mehr als 6 Stunden eine Pause von 30 Minuten und bei mehr als 9 Stunden eine Pause von 45 Minuten eingeplant und vom Stundenzettel abgezogen werden muss.`;
+    return `Diese Arbeitszeit fällt in den Bereich der Spätschicht, häufig im Einzelhandel, in der Gastronomie, im Kundenservice oder im medizinischen Bereich. Da Spätschichten oft bis in die späten Abendstunden reichen, sind sie mit logistischen Fragen wie der Anbindung an den öffentlichen Nahverkehr verbunden. Gesetzlich gilt: Bei mehr als 6 Stunden ist eine Pause von 30 Minuten, bei mehr als 9 Stunden von 45 Minuten einzuplanen und vom Stundenzettel abzuziehen (§ 4 ArbZG).`;
   }
   const crossesMidnight = end < start;
   if (crossesMidnight || (start >= 20 || start < 5)) {
-    return `Diese Konstellation umfasst eine klassische Nachtschicht oder Nachtarbeit nach deutschem Recht (§ 2 ArbZG). Arbeit zwischen 23:00 und 6:00 Uhr gilt als Nachtarbeit und begründet für Arbeitnehmer Anspruch auf einen angemessenen finanziellen Ausgleich (Nachtschichtzuschlag) oder entsprechenden Freizeitausgleich. Aufgrund der erhöhten körperlichen Belastung sieht das Arbeitszeitgesetz für Nachtarbeiter besondere Schutzrechte vor, einschließlich des Rechts auf regelmäßige arbeitsmedizinische Untersuchungen und strengerer Höchstarbeitszeitgrenzen.`;
+    return `Diese Konstellation umfasst eine klassische Nachtschicht. Nachtarbeit im Sinne des § 2 ArbZG ist Arbeit von mehr als 2 Stunden in der Zeit von 23:00 bis 6:00 Uhr. Sie begründet Anspruch auf einen angemessenen Zuschlag auf das Bruttoarbeitsentgelt oder eine entsprechende Zahl bezahlter freier Tage (§ 6 ArbZG). Wegen der erhöhten Belastung sieht das Gesetz besondere Schutzrechte für Nachtarbeitnehmer vor – darunter regelmäßige arbeitsmedizinische Untersuchungen und die Begrenzung der werktäglichen Arbeitszeit auf 8 Stunden (im Durchschnitt).`;
   }
-  return `Die Erfassung und Berechnung dieses spezifischen Zeitraums von ${hours} Stunden ist für eine transparente Zeitwirtschaft unerlässlich. Unabhängig davon, ob es sich um ein flexibles Arbeitszeitmodell, ein Projektzeitbudget oder eine private Planung handelt, sorgt die exakte Berechnung der Stunden und Minuten für maximale Nachvollziehbarkeit. Bitte beachten Sie bei der Aufzeichnung in Ihrem Stundenzettel stets die gesetzlichen Vorgaben zur Pausenregelung und Mindestruhezeit nach dem Arbeitszeitgesetz (ArbZG).`;
+  return `Die genaue Erfassung dieses Zeitraums von ${hours} Stunden ist für eine transparente Zeitwirtschaft unerlässlich. Ob flexibles Arbeitszeitmodell, Projektzeitbudget oder private Planung – die exakte Berechnung von Stunden und Minuten sorgt für Nachvollziehbarkeit. Beachten Sie bei der Aufzeichnung im Stundenzettel stets die Vorgaben zu Pausen (§ 4 ArbZG) und zur Mindestruhezeit von 11 Stunden (§ 5 ArbZG).`;
 }
 
 export function getContextClusterEN(start: number, end: number, hours: number): string {
   if (hours >= 4 && hours <= 6) {
-    return `A daily work window of ${hours} hours is typical for part-time employment, flexible schedules, or student internships. Under standard labor guidelines (such as the UK Working Time Regulations or US FLSA), part-time employees are entitled to proportional benefits and minimum wage protections. If your shift is exactly 6 hours, note that UK regulations require a mandatory 20-minute rest break once a shift exceeds 6 hours. Logging these hours accurately on your timesheet prevents compliance issues and ensures correct compensation.`;
+    return `A daily work window of ${hours} hours is typical for part-time roles, flexible schedules or student internships. Under standard labour guidelines — the UK Working Time Regulations or the US FLSA — part-time employees are entitled to proportional benefits and minimum-wage protection. Note that once a shift exceeds 6 hours, UK rules require a 20-minute rest break; a shift of exactly 6 hours does not yet trigger it. Logging these hours accurately prevents compliance issues and ensures correct pay.`;
   }
   if ((start >= 5 && start <= 7.5) && (hours >= 6 && hours <= 9)) {
-    return `This time span covers a standard early morning shift, commonly scheduled in manufacturing, logistics, healthcare, and construction sectors. Early shifts require precise coordination and have unique compliance rules: in many jurisdictions, work starting before 6:00 AM qualifies for night shift premiums or special transport provisions. Furthermore, after completing this shift, a minimum consecutive rest period (e.g., 11 hours in the EU/UK) must be observed before the employee can safely return to work.`;
+    return `This span covers a standard early-morning shift, common in manufacturing, logistics, healthcare and construction. Early shifts need precise coordination and carry specific rules: in many jurisdictions work starting before 6:00 AM qualifies for a night-shift premium. After the shift, a minimum consecutive rest period — 11 hours in the EU and UK — must be observed before the next shift begins. Accurate start-and-end logging keeps the record defensible.`;
   }
   if ((start >= 8 && start <= 9.5) && (hours >= 7 && hours <= 9.5)) {
-    return `This period represents the classic 9-to-5 office hours pattern widely adopted across corporate, financial, and administrative sectors. A standard 40-hour workweek is built on this daily schedule. With modern flex-time policies, employees can adjust their exact start and end times. Since this shift exceeds 6 hours, labor regulations require deducting a rest break (typically 30 minutes) from total elapsed hours to calculate net work hours for payroll processing.`;
+    return `This period is the classic 9-to-5 office pattern used across corporate, financial and administrative sectors, and the basis of a standard 40-hour week. With flex-time policies, employees can shift their exact start and end. Because the shift exceeds 6 hours, labour rules require deducting a rest break (typically 30 minutes) from elapsed time to reach net work hours for payroll. Under the FLSA, remember that overtime is a weekly threshold — hours beyond 40 in a week, not beyond 8 in a day.`;
   }
   if ((start >= 13 && start <= 15.5) && (hours >= 6 && hours <= 9)) {
-    return `This duration aligns with a typical afternoon or late shift, standard in retail, hospitality, customer support, and medical fields. Late shifts often run into the evening, requiring careful coordination around break schedules and transportation. Under standard employment regulations, a rest break of at least 20 to 30 minutes must be allocated and recorded on timesheets for any shift exceeding 6 hours to ensure compliance.`;
+    return `This duration aligns with a typical afternoon or late shift, standard in retail, hospitality, customer support and healthcare. Late shifts often run into the evening, so break scheduling and transport need planning. Under standard regulations, a rest break of at least 20–30 minutes must be allocated and recorded for any shift exceeding 6 hours, and that break is unpaid.`;
   }
   const crossesMidnight = end < start;
   if (crossesMidnight || (start >= 20 || start < 5)) {
-    return `This shift pattern covers night work or overnight shifts. Under most international labor standards (such as the US FLSA or UK Working Time Regulations), hours worked between 11:00 PM and 6:00 AM trigger night shift differentials, premium pay rates, or compensatory rest requirements. Due to the health impacts of overnight labor, regulations mandate strict compliance with maximum shift lengths and regular medical assessments.`;
+    return `This pattern covers night or overnight work. Under most labour standards — the US FLSA or the UK Working Time Regulations — hours worked between roughly 11:00 PM and 6:00 AM can trigger night-shift differentials, premium pay or compensatory rest. Because overnight work carries health impacts, regulations mandate strict compliance with maximum shift lengths and, in the EU/UK, free health assessments for regular night workers.`;
   }
-  return `Accurately tracking this duration of ${hours} hours is essential for billing clients, validating employee timesheets, and project resource scheduling. Whether managing flexible flextime systems or billing hourly consulting contracts, using an automated calculator ensures zero rounding errors. Always remember to subtract unpaid rest breaks to remain compliant with local labor guidelines.`;
+  return `Accurately tracking this ${hours}-hour duration is essential for billing clients, validating timesheets and scheduling project resources. Whether you run flexible flextime or bill hourly consulting work, an automated calculator removes rounding errors. Always subtract unpaid rest breaks to stay compliant with local labour rules.`;
 }
-
