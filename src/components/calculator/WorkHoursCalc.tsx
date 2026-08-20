@@ -1,152 +1,102 @@
 import { useState, useCallback } from 'react';
-import { calcWorkHours } from '../../lib/timeEngine';
-import type { WorkHoursResult } from '../../lib/timeEngine';
+import { computeShift, type ShiftResult } from '../../lib/shift';
 
-interface Props {
-  lang?: 'de' | 'en';
-  defaultStart?: string;
-  defaultEnd?: string;
-  defaultBreak?: number;
-}
+interface Props { lang?: 'de' | 'en'; defaultStart?: string; defaultEnd?: string; defaultBreak?: number; }
 
-const WORK_EXAMPLES = [
-  { label: '9:00–17:00, 30min', start: '09:00', end: '17:00', breakMin: 30 },
-  { label: '8:00–17:00, 60min', start: '08:00', end: '17:00', breakMin: 60 },
-  { label: '7:00–15:00, 30min', start: '07:00', end: '15:00', breakMin: 30 },
-  { label: '10:00–18:00, 45min', start: '10:00', end: '18:00', breakMin: 45 },
-];
+const toMin = (t: string) => { const [h, m] = t.split(':').map(Number); return (h || 0) * 60 + (m || 0); };
+const pad = (n: number) => String(n).padStart(2, '0');
 
 export default function WorkHoursCalc({ lang = 'de', defaultStart = '09:00', defaultEnd = '17:00', defaultBreak = 30 }: Props) {
-  const [startTime, setStartTime] = useState(defaultStart);
-  const [endTime, setEndTime] = useState(defaultEnd);
-  const [breakMin, setBreakMin] = useState(defaultBreak);
-  const [result, setResult] = useState<WorkHoursResult | null>(null);
+  const [start, setStart] = useState(defaultStart);
+  const [end, setEnd] = useState(defaultEnd);
+  const [brk, setBrk] = useState(defaultBreak);
+  const [result, setResult] = useState<ShiftResult | null>(null);
   const [copied, setCopied] = useState(false);
 
   const L = lang === 'de' ? {
-    startTime: 'Arbeitsbeginn', endTime: 'Arbeitsende', breakDur: 'Pause (Minuten)',
-    calc: 'Berechnen', headline: 'Nettoarbeitszeit', gross: 'Bruttozeit',
-    net: 'Nettozeit', overtime: 'Überstunden', decimal: 'Dezimalstunden',
-    copy: 'Kopieren', minBreak: 'Min Pause', now: 'Jetzt', midnight: 'Mitternacht', noon: 'Mittag',
+    start: 'Start', end: 'Ende', startTime: 'Arbeitsbeginn', endTime: 'Arbeitsende', break: 'Pause (Minuten)',
+    swap: 'Start und Ende tauschen', calc: 'Berechnen', net: 'Nettoarbeitszeit',
+    decimal: 'Dezimalstunden', gross: 'Bruttozeit', breakMin: 'Min Pause',
+    copy: 'Ergebnis kopieren', copied: 'Kopiert', reset: 'Zurücksetzen',
+    note: 'ArbZG: ab 6 Std sind 30 Min, ab 9 Std 45 Min Pause vorgeschrieben.',
+    now: 'Jetzt', midnight: 'Mitternacht', noon: 'Mittag',
   } : {
-    startTime: 'Start Time', endTime: 'End Time', breakDur: 'Break (minutes)',
-    calc: 'Calculate', headline: 'Net Work Hours', gross: 'Gross Time',
-    net: 'Net Time', overtime: 'Overtime', decimal: 'Decimal Hours',
-    copy: 'Copy', minBreak: 'min break', now: 'Now', midnight: 'Midnight', noon: 'Noon',
+    start: 'Start', end: 'End', startTime: 'Start time', endTime: 'End time', break: 'Break (minutes)',
+    swap: 'Swap start and end', calc: 'Calculate', net: 'Net work time',
+    decimal: 'Decimal hours', gross: 'Gross time', breakMin: 'min break',
+    copy: 'Copy result', copied: 'Copied', reset: 'Reset',
+    note: 'A shift over 6 hours usually requires a 20–30 minute unpaid break.',
+    now: 'Now', midnight: 'Midnight', noon: 'Noon',
   };
 
-  const nowHHMM = () => { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
+  const nowHHMM = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
 
-  const handleCalculate = useCallback(() => {
-    const r = calcWorkHours(startTime, endTime, breakMin);
-    setResult(r);
-  }, [startTime, endTime, breakMin]);
+  const calc = useCallback(() => {
+    setResult(computeShift({ startMin: toMin(start), endMin: toMin(end), breakMin: Number(brk) || 0 }, lang));
+  }, [start, end, brk, lang]);
 
-  const handleCopy = useCallback(() => {
+  const swap = () => { setStart(end); setEnd(start); setResult(null); };
+  const reset = () => { setStart('09:00'); setEnd('17:00'); setBrk(30); setResult(null); };
+  const copy = () => {
     if (!result) return;
-    navigator.clipboard.writeText(`Net: ${result.netHours}h ${result.netMinutes % 60}m (${result.netDecimal}h)`).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(`${result.netHHMM} (${result.netDecimalStr}h)`).then(() => {
+      setCopied(true); setTimeout(() => setCopied(false), 2000);
     });
-  }, [result]);
-
-  // Net % of an 8-hour workday
-  const netPercent = result ? Math.min(100, (result.netMinutes / 480) * 100) : 0;
+  };
 
   return (
     <div className="calc-card" id="mode-work">
-      <div className="examples-bar">
-        <span className="examples-label">{lang === 'de' ? 'Beispiele' : 'Examples'}:</span>
-        {WORK_EXAMPLES.map(ex => (
-          <button key={ex.label} className="chip"
-            onClick={() => { setStartTime(ex.start); setEndTime(ex.end); setBreakMin(ex.breakMin); setResult(null); }}>
-            {ex.label}
-          </button>
-        ))}
-      </div>
+      <div className="calc-io">
+        <div className="io-card">
+          <span className="io-badge io-badge--start">{L.start}</span>
+          <label className="field"><span>{L.startTime}</span>
+            <input type="time" value={start} onChange={e => setStart(e.target.value)} aria-label={L.startTime} />
+          </label>
+          <div className="quick-fill">
+            <button type="button" onClick={() => setStart(nowHHMM())}>{L.now}</button>
+            <button type="button" onClick={() => setStart('00:00')}>{L.midnight}</button>
+            <button type="button" onClick={() => setStart('12:00')}>{L.noon}</button>
+          </div>
+        </div>
 
-      <div className="calc-grid calc-grid--3">
-        <div className="field">
-          <label htmlFor="wh-start">{L.startTime}</label>
-          <input id="wh-start" type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
+        <button className="swap-btn" type="button" onClick={swap} aria-label={L.swap} title={L.swap}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 16H21M7 16l3-3M7 16l3 3M17 8H3M17 8l-3-3M17 8l-3 3" /></svg>
+        </button>
+
+        <div className="io-card">
+          <span className="io-badge io-badge--end">{L.end}</span>
+          <label className="field"><span>{L.endTime}</span>
+            <input type="time" value={end} onChange={e => setEnd(e.target.value)} aria-label={L.endTime} />
+          </label>
           <div className="quick-fill">
-            <button type="button" onClick={() => setStartTime(nowHHMM())}>{L.now}</button>
-            <button type="button" onClick={() => setStartTime('00:00')}>{L.midnight}</button>
-            <button type="button" onClick={() => setStartTime('12:00')}>{L.noon}</button>
+            <button type="button" onClick={() => setEnd(nowHHMM())}>{L.now}</button>
+            <button type="button" onClick={() => setEnd('00:00')}>{L.midnight}</button>
+            <button type="button" onClick={() => setEnd('12:00')}>{L.noon}</button>
           </div>
-        </div>
-        <div className="field">
-          <label htmlFor="wh-end">{L.endTime}</label>
-          <input id="wh-end" type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
-          <div className="quick-fill">
-            <button type="button" onClick={() => setEndTime(nowHHMM())}>{L.now}</button>
-            <button type="button" onClick={() => setEndTime('00:00')}>{L.midnight}</button>
-            <button type="button" onClick={() => setEndTime('12:00')}>{L.noon}</button>
-          </div>
-        </div>
-        <div className="field">
-          <label htmlFor="wh-break">{L.breakDur}</label>
-          <input id="wh-break" type="number" min={0} max={480} value={breakMin}
-            onChange={e => setBreakMin(Number(e.target.value))} />
         </div>
       </div>
 
-      <button className="calc-submit" onClick={handleCalculate} id="wh-calc-btn">
-        {L.calc}
-      </button>
+      <label className="field field--break">
+        <span>{L.break}</span>
+        <input type="number" min={0} max={480} value={brk} onChange={e => setBrk(Number(e.target.value))} />
+      </label>
+
+      <button className="calc-submit" type="button" onClick={calc} id="wh-calc-btn">{L.calc}</button>
 
       {result && (
-        <div className="result-panel" id="wh-result">
-          <div className="result-headline">{L.headline}</div>
-
-          <div className="result-primary">
-            <span className="result-number">{result.formatted}</span>
-            <span className="result-unit">{L.net}</span>
+        <div className="result-hero" id="wh-result">
+          <div className="result-hero__label">{L.net}</div>
+          <div className="result-hero__duration">{result.netHHMM}</div>
+          <div className="result-hero__stats">
+            <div><strong>{result.netDecimalStr}</strong><span>{L.decimal}</span></div>
+            <div><strong>{result.grossHHMM}</strong><span>{L.gross}</span></div>
+            <div><strong>{brk}</strong><span>{L.breakMin}</span></div>
           </div>
-
-          <div className="result-breakdown">
-            <div className="result-stat">
-              <span className="stat-value">{result.grossHours}h {result.grossMinutes % 60}m</span>
-              <span className="stat-label">{L.gross}</span>
-            </div>
-            <div className="result-stat">
-              <span className="stat-value">{breakMin}</span>
-              <span className="stat-label">{L.minBreak}</span>
-            </div>
-            <div className="result-stat">
-              <span className="stat-value">{result.netDecimal}</span>
-              <span className="stat-label">{L.decimal}</span>
-            </div>
-            {result.overtimeHours > 0 && (
-              <div className="result-stat">
-                <span className="stat-value" style={{ color: '#f59e0b' }}>+{result.overtimeHours.toFixed(2)}h</span>
-                <span className="stat-label">{L.overtime}</span>
-              </div>
-            )}
+          <div className="result-hero__actions">
+            <button type="button" onClick={copy}>{copied ? L.copied : L.copy}</button>
+            <button type="button" onClick={reset}>{L.reset}</button>
           </div>
-
-          {/* Timeline: day 0–8h */}
-          <div className="timeline">
-            <div className="timeline__labels">
-              <span>{startTime}</span>
-              <span>{endTime}</span>
-            </div>
-            <div className="timeline__track">
-              <div className="timeline__fill" style={{ width: `${netPercent}%` }} />
-            </div>
-            <div className="timeline__hours">
-              <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
-            </div>
-          </div>
-
-          <div className="result-actions">
-            <button className="btn btn--secondary" onClick={handleCopy} id="wh-copy-btn">
-              {copied ? (lang === 'de' ? 'Kopiert' : 'Copied!') : `${L.copy}`}
-            </button>
-            <button className="btn btn--ghost" onClick={() => window.print()} id="wh-print-btn">
-              {lang === 'de' ? 'Drucken' : 'Print'}
-            </button>
-          </div>
+          <p className="result-hero__note">{L.note}</p>
         </div>
       )}
     </div>

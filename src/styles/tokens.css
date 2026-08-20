@@ -419,12 +419,16 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 }
 .swap-btn:hover { border-color: var(--petrol); background: var(--petrol-tint); }
 .calc-hint { text-align: center; font-size: 0.82rem; color: var(--ink-3); margin: 14px 0; }
+.field--break { margin: 16px auto 0; display: flex; flex-direction: column; gap: 4px; max-width: 260px; }
+.field--break > span { font-size: 0.78rem; color: var(--ink-3); font-weight: 500; }
+.field--break input { width: 100%; box-sizing: border-box; }
 
 .result-hero {
   margin-top: 18px; border-radius: 16px; padding: 26px 22px; color: #fff; text-align: center;
   background: linear-gradient(135deg, var(--petrol-2) 0%, var(--petrol) 65%, var(--cta) 130%);
   box-shadow: 0 8px 28px var(--petrol-glow);
 }
+.result-hero, .result-hero strong, .result-hero span, .result-hero p { color: #fff; }
 .result-hero__label { text-transform: uppercase; letter-spacing: 0.09em; font-size: 0.75rem; opacity: 0.85; }
 .result-hero__duration {
   font-family: var(--font-data); font-variant-numeric: tabular-nums;
