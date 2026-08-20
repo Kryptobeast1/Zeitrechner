@@ -372,6 +372,29 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .badge--accent { background: var(--petrol-tint); color: var(--petrol); }
 .badge--violet { background: var(--surface-3); color: var(--ink-2); }
 
+/* ── Centered, calculator-first hero ─────────────────────────────── */
+.hero-centered { max-width: 780px; margin: 0 auto; text-align: center; }
+.hero-centered .landing-hero__meta { justify-content: center; }
+.hero-centered > h1 { text-align: center; }
+.hero-centered .landing-hero__lead { max-width: 640px; margin: 0 auto; }
+.calc-shell { margin-top: 32px; text-align: left; }
+.calc-shell > .glass {
+  position: relative; overflow: hidden;
+  padding: 1.75rem 1.5rem 1.5rem;
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: var(--shadow-lg);
+}
+.calc-shell > .glass::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--petrol), var(--cta));
+}
+.live-chip {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 22px;
+  padding: 9px 16px; background: var(--surface-2); border: 1px solid var(--rule); border-radius: 999px;
+}
+.live-chip > span:first-child { font-size: 0.8rem; color: var(--ink-3); }
+.live-chip [id^="live-time"] { font-family: var(--font-data); font-weight: 700; color: var(--petrol); font-size: 1.05rem; }
+
 /* ── Duration calculator: START/END cards + swap + gradient result ─── */
 .calc-io { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
 .io-card {

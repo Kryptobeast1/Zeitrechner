@@ -53,37 +53,34 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
   theme="home"
 >
 
-  <!-- ─── HERO & CALCULATOR GRID ─────────────────────────────────────────── -->
+  <!-- ─── HERO (centered, calculator-first) ──────────────────────────────── -->
   <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container">
-      <div class="home-hero-grid">
-        <!-- Hero text column -->
-        <div class="home-hero-content">
-          <div class="landing-hero__meta">
-            <span class="badge badge--accent">Free</span>
-            <span class="badge badge--violet">English</span>
-            <span class="badge badge--green">DST-safe</span>
-          </div>
+      <div class="hero-centered">
+        <div class="landing-hero__meta">
+          <span class="badge badge--accent">Free</span>
+          <span class="badge badge--violet">English</span>
+          <span class="badge badge--green">DST-safe</span>
+        </div>
 
-          <h1 style="margin-bottom: 1.5rem;">Time Calculator — Hours, Work Hours & Countdowns</h1>
+        <h1 style="margin-bottom: 1.25rem;">Time Calculator — Hours, Work Hours & Countdowns</h1>
 
-          <p class="landing-hero__lead" style="margin-bottom: 2rem;">
-            Calculate time differences, add or subtract hours, track net work hours, and count days until any event.
-            <strong>5 modes, instant results, no sign-up required.</strong>
-          </p>
+        <p class="landing-hero__lead">
+          Calculate time differences, add or subtract hours, track net work hours, and count days until any event.
+          <strong>5 modes, instant results, no sign-up required.</strong>
+        </p>
 
-          <!-- Live time (client-only; no build-time value is baked into the HTML) -->
-          <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px; background: var(--clr-surface-2); padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--clr-border); width: fit-content; flex-wrap: wrap;">
-            <span style="font-size: 0.8rem; color: var(--clr-text-3);">Current time:</span>
-            <span id="live-time-en" style="font-family: var(--font-data); font-size: 1.1rem; font-weight: 700; color: var(--clr-accent);" aria-live="off"></span>
+        <!-- Calculator -->
+        <div class="home-hero-calc calc-shell" id="diff">
+          <div class="glass glass--raised">
+            <ModeTabbar client:visible lang="en" />
           </div>
         </div>
 
-        <!-- Calculator column -->
-        <div class="home-hero-calc" id="diff" style="margin-top: 1rem;">
-          <div class="glass glass--raised" style="padding: 1.5rem; border-radius: var(--radius-xl); box-shadow: 0 0 30px var(--clr-violet-glow);">
-            <ModeTabbar client:visible lang="en" />
-          </div>
+        <!-- Live time (client-only; no build-time value is baked into the HTML) -->
+        <div class="live-chip">
+          <span>Current time:</span>
+          <span id="live-time-en" aria-live="off"></span>
         </div>
       </div>
     </div>
