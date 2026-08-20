@@ -446,6 +446,29 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .result-hero__actions button:hover { background: rgba(255, 255, 255, 0.24); }
 .result-hero__note { font-size: 0.75rem; opacity: 0.8; margin: 16px 0 0; }
 
+/* Single full-width input card (Add/Subtract base time, Countdown target) */
+.io-card--wide { width: 100%; box-sizing: border-box; }
+.io-card--wide .calc-grid { width: 100%; }
+
+/* Operation toggle — retuned to the violet/light theme (was a dark rgba pill) */
+.op-toggle { background: var(--surface-2); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+.op-toggle button { color: var(--ink-2); font-weight: 600; }
+.op-toggle button.active { background: var(--petrol); color: #fff; }
+
+/* Countdown result on the gradient hero — translucent white tiles */
+.result-hero--countdown .countdown-display { margin: 4px 0 18px; }
+.result-hero--countdown .countdown-unit {
+  background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.28);
+}
+.result-hero--countdown .countdown-unit::before { display: none; }
+.result-hero--countdown .countdown-value { color: #fff; }
+.result-hero--countdown .countdown-label { color: rgba(255, 255, 255, 0.85); }
+.result-hero__cta {
+  padding: 11px 20px; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.16); color: #fff;
+}
+.result-hero__cta:hover { background: rgba(255, 255, 255, 0.26); }
+
 @media (max-width: 560px) {
   .calc-io { grid-template-columns: 1fr; }
   .swap-btn { justify-self: center; transform: rotate(90deg); }

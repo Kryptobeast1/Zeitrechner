@@ -85,19 +85,20 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
         ))}
       </div>
 
-      <div className="calc-grid calc-grid--full">
-        <div className="field">
-          <label htmlFor="cd-date">{L.targetDate}</label>
+      <div className="io-card io-card--wide">
+        <span className="io-badge io-badge--start">{L.targetDate}</span>
+        <label className="field"><span>{L.targetDate}</span>
           <input
             id="cd-date"
             type="date"
             value={targetDate}
+            aria-label={L.targetDate}
             onChange={e => { setTargetDate(e.target.value); handleStop(); setResult(null); }}
           />
-        </div>
+        </label>
       </div>
 
-      <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
         <button className="calc-submit" onClick={handleStart} disabled={ticking} id="cd-start-btn"
           style={{ flex: 1 }}>
           {L.calc}
@@ -111,15 +112,15 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
       </div>
 
       {result && (
-        <div className="result-panel" id="cd-result">
+        <div className="result-hero result-hero--countdown" id="cd-result">
           {result.isPast ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
-              <p style={{ color: 'var(--clr-amber)', fontSize: '1.1rem', marginBottom: '16px' }}>
+              <p style={{ color: '#fff', fontSize: '1.1rem', marginBottom: '16px' }}>
                 {L.passed} ({result.days} {L.days} ago)
               </p>
               {result.nextOccurrence && (
-                <button 
-                  className="btn btn--accent" 
+                <button
+                  className="result-hero__cta"
                   onClick={() => {
                     const nextDate = result.nextOccurrence?.split('T')[0] ?? '';
                     setTargetDate(nextDate);
@@ -138,7 +139,7 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
                 <div className="result-headline">{eventName}</div>
               )}
               {result.isJumped && (
-                <div style={{ color: 'var(--clr-text-3)', fontSize: '0.8rem', textAlign: 'center', marginBottom: '8px' }}>
+                <div style={{ opacity: 0.85, fontSize: '0.8rem', textAlign: 'center', marginBottom: '8px' }}>
                   {lang === 'de' ? 'Countdown zum nächsten Termin' : 'Counting to next occurrence'}
                 </div>
               )}
@@ -156,13 +157,11 @@ export default function CountdownCalc({ lang = 'de', defaultTarget, eventName }:
                   <span className="countdown-label">{L.mins}</span>
                 </div>
                 <div className="countdown-unit">
-                  <span className="countdown-value" style={{ color: ticking ? 'var(--clr-accent)' : 'var(--clr-text)' }}>
-                    {pad2(result.seconds)}
-                  </span>
+                  <span className="countdown-value">{pad2(result.seconds)}</span>
                   <span className="countdown-label">{L.secs}</span>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <span className="badge badge--accent">{result.totalDays.toLocaleString()} {L.days} {lang === 'de' ? 'insgesamt' : 'total'}</span>
                 <span className="badge badge--violet">{result.totalHours.toLocaleString()} {L.hours}</span>
               </div>
