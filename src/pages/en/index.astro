@@ -11,9 +11,12 @@ const altUrl = getHubUrl('de'); // "/"
 const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 
 const homeFaqsEn = [
-  { q: 'How do I convert hours and minutes to decimal hours for payroll?', a: 'Divide the minutes by 60. For example, 45 minutes is 0.75 decimal hours. Our working hours calculator does this automatically to ensure your timesheet is ready for billing.' },
-  { q: 'Does this calculator handle military time and AM/PM?', a: 'Yes. You can input time in either the 24-hour format (military time) or the standard 12-hour AM/PM format. The calculator seamlessly processes both.' },
-  { q: 'Is the time difference calculator safe for Daylight Saving Time (DST)?', a: 'Absolutely. It uses your device\'s local timezone offset to safely compute durations that cross DST boundaries or leap years.' }
+  { q: 'How do I calculate the time between two times?', a: 'Subtract the start time from the end time. If the start minutes are larger than the end minutes, borrow 60 minutes from the hours column. For example, 09:15 to 17:45 is 8 hours 30 minutes. If the end is earlier than the start, the span runs past midnight, so add 24 hours (22:00 to 06:00 is 8 hours). The calculator handles all of this automatically.' },
+  { q: 'How do I convert hours and minutes to decimal hours?', a: 'Divide the minutes by 60 and add them to the whole hours: decimal hours = hours + (minutes ÷ 60). So 8 hours 15 minutes is 8.25 decimal hours. Note that "industrial minutes" are hundredths of an hour, so 30 minutes equals 50 industrial minutes (0.50 h), not 30. Payroll uses decimal hours because they multiply cleanly by an hourly rate.' },
+  { q: 'Does the calculator handle 24-hour and 12-hour (AM/PM) time?', a: 'Yes. You can enter time in either the 24-hour format (military time) or the standard 12-hour AM/PM format. To convert a PM time to 24-hour, add 12 to the hour (1 PM = 13:00). The duration is identical in both formats.' },
+  { q: 'Is the calculator safe for Daylight Saving Time (DST) and leap years?', a: 'Yes. It uses your device\'s local timezone offset to compute durations and countdowns that safely cross DST changes, leap years, and date boundaries.' },
+  { q: 'What is the difference between gross and net work hours?', a: 'Gross hours are the total time from clock-in to clock-out. Net hours are what remain after deducting unpaid breaks, and they are the basis for pay. For example, 09:00 to 17:30 is 8.5 gross hours; with a 30-minute break, 8.0 net hours remain. Under the US FLSA, unpaid meal breaks do not count as working time.' },
+  { q: 'Is the time calculator free and does it require sign-up?', a: 'Yes. Every mode — time difference, work hours, add/subtract, and countdown — is free, requires no registration, and runs entirely in your browser. Your inputs are processed locally on your device and are never sent to a server.' }
 ];
 
 const hreflang = [
@@ -184,27 +187,38 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
   <article class="section semantic-guide" style="background-color: var(--clr-surf-1); border-top: 1px solid var(--clr-border);">
     <div class="container container--narrow">
       <div class="content-section">
-        <h2>Precise Time Tracking for Payroll and Project Management</h2>
+        <h2>How to Calculate Duration, Work Hours, and Countdowns</h2>
         <div class="content-prose">
           <p>
-            Accurate <strong>time tracking</strong> is the backbone of reliable payroll processing and fair labor compliance. 
-            Whether you are a freelancer logging <em>billable hours</em> or an HR manager verifying Fair Labor Standards Act (FLSA) compliance, 
-            our timesheet calculator provides exact, to-the-minute reports.
+            Accurate <strong>time calculation</strong> is the backbone of fair pay, correct invoices, and reliable planning.
+            Whether you are a freelancer logging <em>billable hours</em>, an HR manager checking Fair Labor Standards Act (FLSA)
+            compliance, or simply counting the days to an event, this calculator gives exact, to-the-minute results — free,
+            with no sign-up, right in your browser.
           </p>
 
-          <h3>Military Time vs. Decimal Hours</h3>
+          <h3>Calculating the hours between two times</h3>
           <p>
-            Standard payroll software doesn't use the typical 60-minute clock; it requires <strong>decimal hours</strong>. 
-            For instance, a shift lasting 8 hours and 15 minutes must be recorded as <code>8.25 decimal hours</code>. 
-            Our tool automatically translates standard time and military time into this decimal format, ensuring 
-            you can multiply your net hours directly by your hourly wage.
+            Subtract the start time from the end time. If the start minutes are larger than the end minutes, borrow 60 minutes
+            from the hours column. For example, <strong>09:15 to 17:45</strong> is <code>8 hours 30 minutes</code>. If the end is
+            earlier than the start, the span runs past midnight — just carry the count into the next day (22:00 to 06:00 is 8 hours).
+            This <strong>gross duration</strong> is the raw span before any break is deducted.
           </p>
 
-          <h3>Daylight Saving Time (DST) and Time Zones</h3>
+          <h3>Gross vs. net hours and converting to decimal</h3>
           <p>
-            Calculating duration across multiple days can be tricky when dealing with celestial and geopolitical anomalies. 
-            Our time difference calculator natively supports <strong>leap years</strong> and dynamically reads your 
-            browser's <em>timezone offset</em> to effortlessly adjust for Daylight Saving Time (DST) changes.
+            <strong>Net work time</strong> is what remains after you subtract unpaid breaks from the gross span. Payroll records it
+            in <strong>decimal hours</strong> rather than hours-and-minutes: decimal hours = hours + (minutes ÷ 60), so 8 hours
+            15 minutes is <code>8.25 decimal hours</code>. <em>Industrial minutes</em> are hundredths of an hour — 30 real minutes
+            equal 50 industrial minutes (0.50 h), not 30. The calculator returns gross, net, and the decimal value in one step,
+            so you can multiply directly by your hourly wage.
+          </p>
+
+          <h3>Breaks, overtime, and time zones</h3>
+          <p>
+            Most labour rules require an unpaid rest break — typically 20–30 minutes — once a shift passes 6 hours, and that break
+            is not paid working time. Under the US FLSA, <strong>overtime</strong> is a weekly threshold: hours worked beyond 40 in
+            a workweek are paid at 1.5× the regular rate, not simply anything over 8 in a day. All calculations also account for
+            <strong>leap years</strong> and Daylight Saving Time (DST) by reading your browser's local timezone offset.
           </p>
         </div>
       </div>
