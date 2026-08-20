@@ -308,7 +308,16 @@ code, kbd, samp {
 }
 /* Belt-and-braces: the flat light design never uses blur — it's a costly paint. */
 * { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
-.semantic-guide, .internal-links { box-shadow: none; }
+.semantic-guide { box-shadow: none; }
+/* Internal-link sections: titled groups on the page, not nested white panels.
+   (White cards on the lavender page bg read far cleaner than white-on-white.) */
+.internal-links { background: transparent; border: 0; box-shadow: none; padding: 0; }
+.internal-links__header { margin-bottom: 16px; }
+.internal-links__title { position: relative; padding-left: 14px; color: var(--ink); }
+.internal-links__title::before {
+  content: ''; position: absolute; left: 0; top: 0.14em; bottom: 0.14em;
+  width: 4px; border-radius: 2px; background: linear-gradient(var(--petrol), var(--cta));
+}
 
 .featured-snippet {
   background: var(--petrol-tint);
@@ -326,7 +335,18 @@ code, kbd, samp {
 .navbar { background: var(--surface); border-bottom: 1px solid var(--rule); -webkit-backdrop-filter: none; backdrop-filter: none; }
 .footer { background: var(--surface-2); border-top: 1px solid var(--rule); color: var(--ink-2); }
 
+.link-card {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+  padding: 14px 16px; gap: 12px; color: var(--ink-2); font-weight: 500;
+  box-shadow: 0 1px 2px rgba(28, 24, 48, 0.05);
+  transition: border-color .15s, transform .15s, box-shadow .15s, color .15s;
+}
 .link-card:hover, .directory-link-item:hover, .use-case-item:hover { border-color: var(--petrol); }
+.link-card:hover {
+  color: var(--petrol); background: var(--surface);
+  transform: translateY(-2px); box-shadow: 0 8px 22px var(--petrol-glow);
+}
+.link-card > span:first-child { line-height: 1.35; }
 .mode-tab.active { background: var(--petrol); color: #fff; border-color: var(--petrol); }
 
 .payroll-bar-track { background: var(--surface-3); }
@@ -478,24 +498,31 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 
 /* Guide/resource cards (homepage) — were unstyled → plain underlined links. */
 .guides-section { margin-top: 32px; }
-.guides-section > h3 { font-size: 1.2rem; margin-bottom: 12px; color: var(--ink); }
+.guides-section > h3 { position: relative; padding-left: 14px; font-size: 1.2rem; margin-bottom: 16px; color: var(--ink); }
+.guides-section > h3::before {
+  content: ''; position: absolute; left: 0; top: 0.14em; bottom: 0.14em;
+  width: 4px; border-radius: 2px; background: linear-gradient(var(--petrol), var(--cta));
+}
 .glass-card.link-item {
   display: flex; align-items: center; gap: 12px;
   padding: 16px 18px; text-decoration: none; color: var(--ink);
-  border-radius: var(--radius, 12px);
+  border-radius: 12px; box-shadow: 0 1px 2px rgba(28, 24, 48, 0.05);
+  transition: border-color .15s, transform .15s, box-shadow .15s;
 }
-.glass-card.link-item:hover { border-color: var(--petrol); }
+.glass-card.link-item:hover { border-color: var(--petrol); transform: translateY(-2px); box-shadow: 0 8px 22px var(--petrol-glow); }
 .link-item .icon { display: none; }             /* empty after emoji removal */
 .link-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .link-info .label { font-weight: 600; color: var(--ink); }
 .link-info .sub { font-size: 0.85rem; color: var(--ink-3); }
 
-/* Cleaner directory-link arrow — the circled tiny arrow read as a "−". */
+/* Arrow as a small circular chip that fills violet on hover. */
 .link-card__arrow {
-  border: 0; width: auto; height: auto; font-size: 1.05rem;
-  opacity: 0.45; color: var(--ink-3);
+  width: 28px; height: 28px; border: 0; border-radius: 999px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--petrol-tint); color: var(--petrol); font-size: 0.95rem; opacity: 1;
+  transition: background .15s, color .15s, transform .15s;
 }
-.link-card:hover .link-card__arrow { opacity: 1; color: var(--petrol); transform: none; }
+.link-card:hover .link-card__arrow { background: var(--petrol); color: #fff; transform: translateX(3px); }
 
 /* ── Axis 2: accent bands (WCAG-AA vs --surface). Light values, dark lightened. */
 [data-band="dawn"]    { --band-accent: #7C3AED; }
