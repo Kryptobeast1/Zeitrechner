@@ -11,6 +11,7 @@ const hubUrl = getHubUrl(lang);
 
 const hreflang = [
   { lang: 'de', url: canonical },
+  { lang: 'en', url: getFullUrl('/en/overtime-in-germany/') },
   { lang: 'x-default', url: canonical },
 ];
 
@@ -96,6 +97,7 @@ const jsonLd = [
   hreflang={hreflang}
   lang={lang}
   jsonLd={jsonLd}
+  langAlternates={{ de: '/ratgeber/ueberstunden-berechnen/', en: '/en/overtime-in-germany/' }}
   theme="guide"
 >
 

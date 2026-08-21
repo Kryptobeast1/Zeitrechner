@@ -11,6 +11,7 @@ const hubUrl = getHubUrl(lang);
 
 const hreflang = [
   { lang: 'de', url: canonical },
+  { lang: 'en', url: getFullUrl('/en/vacation-entitlement-germany/') },
   { lang: 'x-default', url: canonical },
 ];
 
@@ -96,6 +97,7 @@ const jsonLd = [
   hreflang={hreflang}
   lang={lang}
   jsonLd={jsonLd}
+  langAlternates={{ de: '/ratgeber/urlaubstage-berechnen/', en: '/en/vacation-entitlement-germany/' }}
   theme="guide"
 >
 

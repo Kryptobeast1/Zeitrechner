@@ -14,7 +14,7 @@ const faqs = [
 ];
 const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Ruhezeit-Checker', url: canonical }])];
 ---
-<BaseLayout title="Ruhezeit-Checker (§ 5 ArbZG) — 11 Stunden Ruhezeit berechnen" description="Prüfe die gesetzliche Ruhezeit von 11 Stunden nach § 5 ArbZG: Wann darfst du nach Arbeitsende frühestens wieder anfangen? Mit Ausnahmen, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+<BaseLayout title="Ruhezeit-Checker (§ 5 ArbZG) — 11 Stunden Ruhezeit berechnen" description="Prüfe die gesetzliche Ruhezeit von 11 Stunden nach § 5 ArbZG: Wann darfst du nach Arbeitsende frühestens wieder anfangen? Mit Ausnahmen, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'en', url: getFullUrl('/en/rest-period-germany/') }, { lang: 'x-default', url: getFullUrl(canonical) }]} langAlternates={{ de: canonical, en: '/en/rest-period-germany/' }} lang={lang} jsonLd={jsonLd} theme="info">
   <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Ruhezeit-Checker</span></nav>

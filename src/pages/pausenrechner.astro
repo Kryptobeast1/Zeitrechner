@@ -14,7 +14,7 @@ const faqs = [
 ];
 const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Pausenrechner', url: canonical }])];
 ---
-<BaseLayout title="Pausenrechner (ArbZG) — gesetzliche Pause & Nettozeit berechnen" description="Berechne die gesetzlich vorgeschriebene Pause nach § 4 ArbZG (30 Min ab 6 Std, 45 Min ab 9 Std) und die korrigierte Nettoarbeitszeit. Mit Pausentabelle, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+<BaseLayout title="Pausenrechner (ArbZG) — gesetzliche Pause & Nettozeit berechnen" description="Berechne die gesetzlich vorgeschriebene Pause nach § 4 ArbZG (30 Min ab 6 Std, 45 Min ab 9 Std) und die korrigierte Nettoarbeitszeit. Mit Pausentabelle, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'en', url: getFullUrl('/en/break-rules-germany/') }, { lang: 'x-default', url: getFullUrl(canonical) }]} langAlternates={{ de: canonical, en: '/en/break-rules-germany/' }} lang={lang} jsonLd={jsonLd} theme="info">
   <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Pausenrechner</span></nav>
