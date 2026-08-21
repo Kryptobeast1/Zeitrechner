@@ -28,7 +28,7 @@ export function pagePaths(): string[] {
     '/ratgeber/urlaubstage-berechnen/', '/ratgeber/monatsarbeitszeit/',
     '/ratgeber/zeiterfassung-freelancer/', '/ratgeber/zeiterfassung-pflicht/',
     '/en/guides/', '/en/guides/how-to-calculate-work-hours/', '/en/guides/tracking-time-freelancers/',
-    '/wochenarbeitszeit/', '/datum-in-x-tagen/', '/autor/dr-jan-mueller/',
+    '/wochenarbeitszeit/', '/datum-in-x-tagen/',
     '/impressum/', '/datenschutz/', '/nutzungsbedingungen/', '/ueber-uns/',
     '/en/imprint/', '/en/privacy-policy/', '/en/terms-of-service/', '/en/about-us/',
   ];

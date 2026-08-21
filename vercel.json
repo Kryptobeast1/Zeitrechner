@@ -32,6 +32,11 @@
       "permanent": true
     },
     {
+      "source": "/autor/dr-jan-mueller/",
+      "destination": "/ueber-uns/",
+      "permanent": true
+    },
+    {
       "source": "/en/hours-between-8-and-4/",
       "destination": "/en/hours-between-8-and-16/",
       "permanent": true

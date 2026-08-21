@@ -46,6 +46,7 @@ redirects.push(R('/de', '/'));
 redirects.push(R('/de/:path*', '/:path*'));
 redirects.push(R('/zeitrechner/', '/'));
 redirects.push(R('/en/time-calculator/', '/en/'));
+redirects.push(R('/autor/dr-jan-mueller/', '/ueber-uns/')); // retired fabricated author → editorial about page
 
 // 3a. explicit legacy 12h EN slugs -> canonical 24h (Phase 3.1). Must precede the
 //     regex/merge rules so they resolve in a single hop (no dash-swap chain).
