@@ -1,35 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getHubUrl, getFullUrl, buildBreadcrumbSchema } from '../lib/seoEngine';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
 import { formatDecimal } from '../lib/shift';
 const lang = 'de';
 const canonical = '/tarifmodelle/';
 
 const models = [
-  { name: 'TVöD (öffentlicher Dienst)', weekly: 39 },
-  { name: 'IG Metall (Tarif West)', weekly: 35 },
-  { name: 'Standard-Vollzeit', weekly: 40 },
+  { name: 'Standard-Vollzeit', weekly: 40, note: 'häufigste Vollzeit-Regelung' },
+  { name: 'TVöD (öffentlicher Dienst, West)', weekly: 39, note: 'Bund & Kommunen' },
+  { name: '38,5-Stunden-Woche', weekly: 38.5, note: 'z. B. Chemie, viele Tarife' },
+  { name: 'IG Metall (Tarifgebiet West)', weekly: 35, note: 'Metall- & Elektroindustrie' },
+  { name: 'Teilzeit (Beispiel)', weekly: 30, note: '4-Tage- oder Kurzwoche' },
+  { name: 'Teilzeit (Beispiel)', weekly: 20, note: 'halbe Stelle' },
 ];
 const dec = (n: number) => formatDecimal(n, 'de');
-const jsonLd = [buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Tarif-Wochenmodelle', url: canonical }])];
+
+const faqs = [
+  { q: 'Wie rechne ich die Wochenarbeitszeit in Monatsstunden um?', a: 'Ein Monat hat im Durchschnitt 4,33 Wochen (52 Wochen ÷ 12 Monate). Multiplizieren Sie die Wochenstunden mit 4,33 – eine 40-Stunden-Woche ergibt rund 173 Monatsstunden. In der Lohnabrechnung wird häufig mit dem gerundeten Faktor 4,35 gerechnet (40 × 4,35 = 174 Stunden).' },
+  { q: 'Was ist der Unterschied zwischen tariflicher und gesetzlicher Arbeitszeit?', a: 'Die gesetzliche Höchstarbeitszeit nach ArbZG liegt bei 48 Stunden pro Woche (8 Stunden an 6 Werktagen). Die tarifliche Arbeitszeit ist die im Tarifvertrag vereinbarte Regelarbeitszeit – meist deutlich niedriger (z. B. 35 bis 40 Stunden) und für die betroffenen Beschäftigten verbindlich.' },
+  { q: 'Ab wann gilt man als Vollzeitbeschäftigt?', a: 'Es gibt keine feste gesetzliche Grenze. Als Vollzeit gilt in der Praxis die im Betrieb oder Tarifvertrag übliche regelmäßige Arbeitszeit – meist zwischen 35 und 40 Wochenstunden. Teilzeit ist nach dem Teilzeit- und Befristungsgesetz (TzBfG) jede Arbeitszeit, die darunter liegt.' },
+  { q: 'Sind die Jahresstunden in der Tabelle die tatsächliche Arbeitszeit?', a: 'Nein. Die Jahreswerte (Wochenstunden × 52) sind Bruttojahresstunden ohne Abzug von Urlaub und Feiertagen. Bei rund 30 Urlaubstagen und Feiertagen liegt die tatsächliche Jahresarbeitszeit deutlich niedriger – bei einer 40-Stunden-Woche etwa bei 1.700 bis 1.800 Stunden.' },
+];
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Tarif-Wochenmodelle', url: canonical }])];
 ---
-<BaseLayout title="Tarif-Wochenmodelle im Vergleich — TVöD 39h, IG Metall 35h, 40h" description="Vergleich der gängigen Wochenarbeitszeit-Modelle: TVöD 39 Stunden, IG Metall 35 Stunden und Standard-Vollzeit 40 Stunden — mit Tages-, Monats- und Jahreswerten." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+<BaseLayout title="Tarif-Wochenmodelle im Vergleich — TVöD 39h, IG Metall 35h, 40h" description="Vergleich der gängigen Wochenarbeitszeit-Modelle: TVöD 39 Stunden, IG Metall 35 Stunden, 38,5 und Standard-Vollzeit 40 Stunden — mit Tages-, Monats- und Jahreswerten und Umrechnung." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
   <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Tarif-Wochenmodelle</span></nav>
       <div style="margin-top: 1.5rem; max-width: 760px;">
         <h1 style="margin-bottom: 0.75rem;">Tarif-Wochenmodelle im Vergleich</h1>
-        <p class="landing-hero__lead">Wie viel bedeutet eine 35-, 39- oder 40-Stunden-Woche pro Tag, Monat und Jahr? Werte auf Basis einer 5-Tage-Woche (Monat = 4,33 Wochen).</p>
+        <p class="landing-hero__lead">Wie viel bedeutet eine 35-, 38,5-, 39- oder 40-Stunden-Woche pro Tag, Monat und Jahr? Werte auf Basis einer 5-Tage-Woche (Monat = 4,33 Wochen).</p>
       </div>
     </div>
   </section>
+
   <section class="section" style="padding-top: 0;"><div class="container container--narrow">
     <div style="overflow-x:auto;"><table class="tarif-table">
-      <thead><tr><th>Modell</th><th>Woche</th><th>Tag (5-Tage)</th><th>Monat (ø)</th><th>Jahr</th></tr></thead>
+      <thead><tr><th>Modell</th><th>Woche</th><th>Tag (5-Tage)</th><th>Monat (ø)</th><th>Jahr (brutto)</th></tr></thead>
       <tbody>
         {models.map(m => (
           <tr>
-            <td>{m.name}</td>
+            <td>{m.name}<br /><span style="font-size: 0.8rem; color: var(--ink-3);">{m.note}</span></td>
             <td class="tabular">{dec(m.weekly)} Std</td>
             <td class="tabular">{dec(m.weekly / 5)} Std</td>
             <td class="tabular">{dec(m.weekly * 4.33)} Std</td>
@@ -38,8 +49,41 @@ const jsonLd = [buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang
         ))}
       </tbody>
     </table></div>
-    <div class="content-section" style="margin-top: 2rem;">
-      <p style="color: var(--ink-2);">Die tatsächliche tarifliche Wochenarbeitszeit variiert je nach Tarifgebiet, Entgeltgruppe und Betriebsvereinbarung. Diese Tabelle dient der schnellen Orientierung; verbindlich ist stets der jeweils geltende Tarifvertrag.</p>
+
+    <div class="content-section content-prose" style="margin-top: 2rem;">
+      <h2>Wie die Werte berechnet werden</h2>
+      <p>
+        Die <strong>Tagesarbeitszeit</strong> ergibt sich aus den Wochenstunden geteilt durch 5 Arbeitstage. Für die
+        <strong>Monatsstunden</strong> gilt: Ein Monat hat im Schnitt 4,33 Wochen (52 ÷ 12), daher Wochenstunden × 4,33 – in der
+        Lohnabrechnung oft mit 4,35 gerundet. Die <strong>Jahresstunden</strong> (Wochenstunden × 52) sind Bruttowerte
+        <em>ohne</em> Abzug von Urlaub und Feiertagen und dienen nur der groben Orientierung.
+      </p>
+      <p>
+        Die gesetzliche Höchstarbeitszeit nach dem Arbeitszeitgesetz (ArbZG) liegt bei 48 Stunden pro Woche. Alle hier gezeigten
+        Tarifmodelle bleiben deutlich darunter. Die tatsächliche tarifliche Wochenarbeitszeit variiert je nach Tarifgebiet,
+        Entgeltgruppe und Betriebsvereinbarung – verbindlich ist stets der jeweils geltende Tarifvertrag.
+      </p>
+    </div>
+
+    <div class="internal-links" style="margin-top: 32px;">
+      <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Passende Rechner & Ratgeber</h2></div>
+      <div class="link-grid">
+        <a href="/wochenarbeitszeit/" class="link-card"><span>Wochenarbeitszeit berechnen</span><span class="link-card__arrow">→</span></a>
+        <a href="/ratgeber/monatsarbeitszeit/" class="link-card"><span>Guide: Monatsarbeitszeit</span><span class="link-card__arrow">→</span></a>
+        <a href="/gleitzeitkonto/" class="link-card"><span>Gleitzeitkonto-Rechner</span><span class="link-card__arrow">→</span></a>
+        <a href={getHubUrl(lang)} class="link-card"><span>Zum Zeitrechner</span><span class="link-card__arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="content-section"><h2>Häufig gestellte Fragen</h2>
+      <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map(f => (
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+            <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+          </div>
+        ))}
+      </div>
     </div>
   </div></section>
 </BaseLayout>

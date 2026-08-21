@@ -5,23 +5,93 @@ import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '..
 const lang = 'de';
 const canonical = '/ruhezeit-checker/';
 const faqs = [
-  { q: 'Wie lange muss die Ruhezeit zwischen zwei Schichten sein?', a: 'Nach § 5 Arbeitszeitgesetz (ArbZG) müssen zwischen zwei Arbeitseinsätzen mindestens 11 Stunden ununterbrochene Ruhezeit liegen. In bestimmten Branchen (z. B. Krankenhaus, Gastronomie) sind Verkürzungen auf 10 Stunden mit Ausgleich möglich.' },
-  { q: 'Darf ich nach einer Spätschicht früh wieder anfangen?', a: 'Nur wenn zwischen Arbeitsende und dem nächsten Arbeitsbeginn 11 Stunden liegen. Endet die Schicht z. B. um 22:00 Uhr, ist der früheste nächste Beginn 09:00 Uhr.' },
+  { q: 'Wie lange muss die Ruhezeit zwischen zwei Schichten sein?', a: 'Nach § 5 Arbeitszeitgesetz (ArbZG) müssen zwischen dem Ende eines Arbeitstags und dem Beginn des nächsten mindestens 11 Stunden ununterbrochene Ruhezeit liegen. Diese Ruhezeit dient der Erholung und darf nicht durch Arbeitseinsätze unterbrochen werden.' },
+  { q: 'Darf ich nach einer Spätschicht früh wieder anfangen?', a: 'Nur wenn zwischen Arbeitsende und dem nächsten Arbeitsbeginn 11 Stunden liegen. Endet die Schicht z. B. um 22:00 Uhr, ist der früheste zulässige Beginn am Folgetag 09:00 Uhr.' },
+  { q: 'In welchen Branchen darf die Ruhezeit verkürzt werden?', a: 'Nach § 5 Abs. 2 ArbZG kann die Ruhezeit in bestimmten Bereichen – etwa Krankenhäusern und Pflege, Gaststätten und Hotels, Verkehrsbetrieben, Landwirtschaft und Rundfunk – um bis zu eine Stunde auf 10 Stunden verkürzt werden. Voraussetzung ist ein Ausgleich: Jede Verkürzung muss durch eine andere Ruhezeit von mindestens 12 Stunden innerhalb eines Kalendermonats oder von vier Wochen ausgeglichen werden.' },
+  { q: 'Wird die Ruhezeit durch einen kurzen Anruf unterbrochen?', a: 'Ja. Die Ruhezeit muss ununterbrochen sein. Wird sie durch einen dienstlichen Einsatz – etwa einen Anruf im Rufbereitschaftsfall oder das Beantworten von E-Mails – unterbrochen, beginnt die 11-Stunden-Frist grundsätzlich neu zu laufen.' },
+  { q: 'Zählt Rufbereitschaft als Ruhezeit?', a: 'Reine Rufbereitschaft, bei der sich Beschäftigte an einem frei gewählten Ort aufhalten dürfen, gilt überwiegend als Ruhezeit – bis zu dem Moment, in dem tatsächlich ein Einsatz erfolgt. Bereitschaftsdienst am Arbeitsplatz gilt dagegen in vollem Umfang als Arbeitszeit und unterbricht die Ruhezeit.' },
+  { q: 'Gibt es auch eine wöchentliche Ruhezeit?', a: 'Ja. Neben der täglichen 11-Stunden-Ruhezeit ist der Sonntag grundsätzlich arbeitsfrei (§ 9 ArbZG). Zusammen mit der täglichen Ruhezeit ergibt sich am Wochenende eine zusammenhängende Ruhephase von mindestens 35 Stunden.' },
 ];
 const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Ruhezeit-Checker', url: canonical }])];
 ---
-<BaseLayout title="Ruhezeit-Checker (§ 5 ArbZG) — 11 Stunden Ruhezeit berechnen" description="Prüfe die gesetzliche Ruhezeit von 11 Stunden nach § 5 ArbZG: Wann darfst du nach Arbeitsende frühestens wieder anfangen?" canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+<BaseLayout title="Ruhezeit-Checker (§ 5 ArbZG) — 11 Stunden Ruhezeit berechnen" description="Prüfe die gesetzliche Ruhezeit von 11 Stunden nach § 5 ArbZG: Wann darfst du nach Arbeitsende frühestens wieder anfangen? Mit Ausnahmen, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
   <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Ruhezeit-Checker</span></nav>
       <div style="margin-top: 1.5rem; max-width: 760px;">
         <h1 style="margin-bottom: 0.75rem;">Ruhezeit-Checker</h1>
-        <p class="landing-hero__lead">„Darf ich morgen um X wieder anfangen?“ Nach § 5 ArbZG sind 11 Stunden ununterbrochene Ruhezeit vorgeschrieben. Gib dein Arbeitsende ein — der Checker nennt den frühesten zulässigen nächsten Beginn.</p>
+        <p class="landing-hero__lead">„Darf ich morgen um X wieder anfangen?“ Nach § 5 ArbZG sind 11 Stunden ununterbrochene Ruhezeit vorgeschrieben. Gib dein Arbeitsende ein – der Checker nennt den frühesten zulässigen nächsten Beginn.</p>
       </div>
     </div>
   </section>
+
   <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><ArbZGTool client:idle mode="ruhezeit" /></div></div></section>
-  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
-    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
-  </div></div></section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Was die 11-Stunden-Ruhezeit bedeutet</h2>
+        <p>
+          Die <strong>Ruhezeit</strong> ist die Zeit zwischen dem Ende eines Arbeitstags und dem Beginn des nächsten. Nach
+          <strong>§ 5 Arbeitszeitgesetz (ArbZG)</strong> muss sie mindestens <strong>11 Stunden ununterbrochen</strong> betragen.
+          Sie ist strikt von der Ruhepause (§ 4) zu unterscheiden: Die Pause unterbricht den Arbeitstag, die Ruhezeit trennt
+          zwei Arbeitstage. Der früheste zulässige Arbeitsbeginn ist einfach <em>Arbeitsende + 11 Stunden</em>.
+        </p>
+
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 420px;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--rule);">
+                <th style="padding: 10px;">Arbeitsende</th>
+                <th style="padding: 10px;">Frühester nächster Beginn (11 Std.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">18:00 Uhr</td><td style="padding: 10px;">05:00 Uhr</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">20:00 Uhr</td><td style="padding: 10px;">07:00 Uhr</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">22:00 Uhr</td><td style="padding: 10px;">09:00 Uhr</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">00:00 Uhr</td><td style="padding: 10px;">11:00 Uhr</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ausnahme: Verkürzung auf 10 Stunden</h3>
+        <p>
+          In bestimmten Branchen – Krankenhäusern und Pflege, Gastronomie und Hotellerie, Verkehrsbetrieben, Landwirtschaft und
+          Rundfunk – darf die Ruhezeit nach § 5 Abs. 2 ArbZG auf <strong>10 Stunden</strong> verkürzt werden. Die Verkürzung ist
+          jedoch <strong>auszugleichen</strong>: Innerhalb von einem Kalendermonat bzw. vier Wochen muss eine andere Ruhezeit auf
+          mindestens 12 Stunden verlängert werden. Endet eine Schicht im Krankenhaus um 22:00 Uhr, ist bei zulässiger Verkürzung
+          also frühestens um 08:00 Uhr wieder Dienstbeginn.
+        </p>
+
+        <h3>Wichtig: Die Ruhezeit muss ununterbrochen sein</h3>
+        <p>
+          Wird die Ruhezeit durch einen dienstlichen Einsatz unterbrochen – etwa einen Einsatz aus der Rufbereitschaft –, beginnt
+          die 11-Stunden-Frist grundsätzlich neu. Reine Rufbereitschaft ohne Einsatz zählt dagegen als Ruhezeit, Bereitschaftsdienst
+          am Arbeitsplatz hingegen vollständig als Arbeitszeit.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Passende Rechner & Ratgeber</h2></div>
+        <div class="link-grid">
+          <a href="/pausenrechner/" class="link-card"><span>Pausenrechner (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/nachtzuschlag-rechner/" class="link-card"><span>Nachtzuschlag-Rechner (23–06 Uhr)</span><span class="link-card__arrow">→</span></a>
+          <a href="/ratgeber/arbeitszeit-berechnen/" class="link-card"><span>Guide: Arbeitszeit berechnen</span><span class="link-card__arrow">→</span></a>
+          <a href={getHubUrl(lang)} class="link-card"><span>Zum Zeitrechner</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Häufig gestellte Fragen</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

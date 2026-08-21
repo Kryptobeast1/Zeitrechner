@@ -5,12 +5,16 @@ import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '..
 const lang = 'de';
 const canonical = '/nachtzuschlag-rechner/';
 const faqs = [
-  { q: 'Was gilt als Nachtarbeit?', a: 'Nach § 2 Arbeitszeitgesetz (ArbZG) ist Nachtzeit die Zeit von 23:00 bis 6:00 Uhr. Wer in diesem Zeitraum mehr als zwei Stunden arbeitet, gilt als Nachtarbeitnehmer.' },
-  { q: 'Wie hoch ist der Nachtzuschlag?', a: 'Das Gesetz nennt keine feste Prozentzahl, sondern verlangt einen „angemessenen“ Ausgleich (§ 6 ArbZG) — entweder als Zuschlag oder als Freizeit. In der Praxis sind rund 25 % üblich; Tarifverträge können höhere Sätze festlegen.' },
+  { q: 'Was gilt als Nachtarbeit?', a: 'Nach § 2 Arbeitszeitgesetz (ArbZG) ist die Nachtzeit die Zeit von 23:00 bis 6:00 Uhr (in Bäckereien und Konditoreien 22:00 bis 5:00 Uhr). Nachtarbeit ist Arbeit von mehr als zwei Stunden in diesem Zeitraum; wer sie regelmäßig leistet, gilt als Nachtarbeitnehmer.' },
+  { q: 'Wie hoch ist der Nachtzuschlag?', a: 'Das Gesetz nennt keine feste Prozentzahl, sondern verlangt einen „angemessenen“ Ausgleich (§ 6 ArbZG) – als Zuschlag oder als bezahlte freie Tage. Das Bundesarbeitsgericht (BAG, Urteil vom 9.12.2015) sieht rund 25 % des Bruttostundenlohns als angemessen an, bei Dauernachtarbeit etwa 30 %. Tarifverträge können höhere Sätze festlegen.' },
+  { q: 'Ist der Nachtzuschlag steuerfrei?', a: 'Ja, in Grenzen. Nach § 3b EStG sind Nachtarbeitszuschläge bis 25 % des Grundlohns steuer- und sozialabgabenfrei, wenn die Arbeit zwischen 20:00 und 6:00 Uhr geleistet wird. Für die Zeit von 0:00 bis 4:00 Uhr steigt der steuerfreie Rahmen auf 40 %, sofern die Nachtarbeit vor Mitternacht begonnen wurde. Der Grundlohn ist dabei auf 50 Euro pro Stunde gedeckelt.' },
+  { q: 'Kann ich Nacht-, Sonn- und Feiertagszuschlag kombinieren?', a: 'Ja. Die steuerfreien Zuschläge können nebeneinander gewährt werden. Sonntagsarbeit ist bis 50 %, Feiertagsarbeit bis 125 % und Arbeit an Weihnachten oder am 1. Mai bis 150 % steuerfrei – jeweils zusätzlich zum Nachtzuschlag von 25 % bzw. 40 %.' },
+  { q: 'Habe ich einen Rechtsanspruch auf den Zuschlag?', a: 'Besteht kein Tarifvertrag mit eigener Ausgleichsregelung, ergibt sich der Anspruch direkt aus § 6 Abs. 5 ArbZG. Der Arbeitgeber kann zwischen einem angemessenen Zuschlag auf das Bruttoentgelt und einer angemessenen Zahl bezahlter freier Tage wählen.' },
+  { q: 'Wie berechne ich meinen Nachtzuschlag?', a: 'Zuschlag = Nachtstunden × Stundenlohn × Zuschlagssatz. Beispiel: 6 Nachtstunden bei 18 € Stundenlohn und 25 % Zuschlag ergeben 6 × 18 € × 0,25 = 27 € zusätzlich. Der Rechner ermittelt automatisch, welcher Teil Ihrer Schicht in die Nachtzeit von 23:00 bis 6:00 Uhr fällt.' },
 ];
 const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Nachtzuschlag-Rechner', url: canonical }])];
 ---
-<BaseLayout title="Nachtzuschlag-Rechner — Nachtstunden (23–06 Uhr) & Zuschlag berechnen" description="Berechne die Nachtarbeitsstunden zwischen 23:00 und 06:00 Uhr und den Nachtzuschlag nach § 6 ArbZG anhand deines Stundenlohns." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
+<BaseLayout title="Nachtzuschlag-Rechner — Nachtstunden (23–06 Uhr) & Zuschlag berechnen" description="Berechne die Nachtarbeitsstunden zwischen 23:00 und 06:00 Uhr und den Nachtzuschlag nach § 6 ArbZG. Mit steuerfreien Sätzen nach § 3b EStG, Beispielen und FAQ." canonical={getFullUrl(canonical)} hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]} lang={lang} jsonLd={jsonLd} theme="info">
   <section class="section landing-hero" style="padding-bottom: 1.5rem;">
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Nachtzuschlag-Rechner</span></nav>
@@ -20,8 +24,73 @@ const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite
       </div>
     </div>
   </section>
+
   <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><ArbZGTool client:idle mode="nachtzuschlag" /></div></div></section>
-  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="content-section"><h2>Häufig gestellte Fragen</h2>
-    {faqs.map(f => (<div style="margin-bottom: 16px;"><h3 style="font-size: 1.05rem; margin-bottom: 4px;">{f.q}</h3><p style="color: var(--ink-2);">{f.a}</p></div>))}
-  </div></div></section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Nachtarbeit und Zuschlag – die Grundlagen</h2>
+        <p>
+          Als <strong>Nachtzeit</strong> gilt nach § 2 ArbZG die Zeit von <strong>23:00 bis 6:00 Uhr</strong> (in Bäckereien
+          22:00–5:00 Uhr). Wer dort mehr als zwei Stunden arbeitet, leistet <strong>Nachtarbeit</strong>. § 6 ArbZG verpflichtet
+          den Arbeitgeber zu einem „angemessenen“ Ausgleich – wahlweise als Zuschlag auf den Bruttolohn oder als bezahlte freie
+          Tage. Eine feste Prozentzahl schreibt das Gesetz nicht vor; das Bundesarbeitsgericht hat aber Maßstäbe gesetzt.
+        </p>
+
+        <h3>Üblicher und steuerfreier Zuschlag</h3>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 480px;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--rule);">
+                <th style="padding: 10px;">Art der Arbeit</th>
+                <th style="padding: 10px;">Üblicher / steuerfreier Satz</th>
+                <th style="padding: 10px;">Grundlage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Nachtarbeit (20–6 Uhr)</td><td style="padding: 10px;"><strong>bis 25 %</strong> steuerfrei</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Nacht 0–4 Uhr (Beginn vor 0 Uhr)</td><td style="padding: 10px;"><strong>bis 40 %</strong> steuerfrei</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Regelmäßige Nachtarbeit (Dauernacht)</td><td style="padding: 10px;">ca. 30 % angemessen</td><td style="padding: 10px;">BAG 9.12.2015</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Sonntagsarbeit</td><td style="padding: 10px;">bis 50 % steuerfrei</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Feiertagsarbeit</td><td style="padding: 10px;">bis 125 % steuerfrei</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--ink-3);">Der Grundlohn ist für die Steuerfreiheit auf 50 € pro Stunde begrenzt. Nacht-, Sonn- und Feiertagszuschläge können kumuliert steuerfrei bleiben.</p>
+
+        <h3>Rechenbeispiel: Nachtschicht 22:00 bis 06:00 Uhr</h3>
+        <p>
+          Eine Schicht von 22:00 bis 06:00 Uhr dauert 8 Stunden. In die Nachtzeit (23:00–6:00 Uhr) fallen davon
+          <strong>7 Stunden</strong>. Bei einem Stundenlohn von 18 € und 25 % Zuschlag ergibt das:
+          <code>7 × 18 € × 0,25 = 31,50 €</code> zusätzlicher, steuerfreier Nachtzuschlag – zusätzlich zum normalen Lohn.
+        </p>
+        <p>
+          Neben dem Zuschlag gilt der besondere Schutz für Nachtarbeitnehmer: Anspruch auf regelmäßige arbeitsmedizinische
+          Untersuchungen (§ 6 Abs. 3 ArbZG) und die Begrenzung der werktäglichen Arbeitszeit auf durchschnittlich 8 Stunden.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Passende Rechner & Ratgeber</h2></div>
+        <div class="link-grid">
+          <a href="/ruhezeit-checker/" class="link-card"><span>Ruhezeit-Checker (11 Stunden, § 5 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/pausenrechner/" class="link-card"><span>Pausenrechner (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/ratgeber/ueberstunden-berechnen/" class="link-card"><span>Guide: Überstunden berechnen</span><span class="link-card__arrow">→</span></a>
+          <a href={getHubUrl(lang)} class="link-card"><span>Zum Zeitrechner</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Häufig gestellte Fragen</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
