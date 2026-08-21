@@ -1,0 +1,1 @@
+All indexable pages are self-canonical.

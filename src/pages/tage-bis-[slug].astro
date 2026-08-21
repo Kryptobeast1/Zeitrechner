@@ -59,10 +59,22 @@ const seoMeta = buildSEOMeta(
   shouldNoindex
 );
 
+// Derived breakdown values (all evergreen — computed at build time from the date)
+const weeks = Math.floor(days / 7);
+const months = (days / 30.44).toFixed(1).replace('.', ',');
+const workingDays = Math.round(days * 5 / 7);
+const targetDateObj = new Date(activeTargetDate);
+const weekday = targetDateObj.toLocaleDateString('de-DE', { weekday: 'long' });
+const fullDate = targetDateObj.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const icsDate = activeTargetDate.replace(/-/g, '');
+
 const faqs = [
-  { q: `Wie viele Stunden bis ${displayName}?`, a: `Es sind noch ${days * 24} Stunden bis ${displayName} (${activeTargetDate}).` },
-  { q: `Wie viele Minuten bis ${displayName}?`, a: `Noch ${(days * 24 * 60).toLocaleString('de-DE')} Minuten bis ${displayName}.` },
-  { q: `Was ist das genaue Datum von ${displayName}?`, a: `${displayName} fällt auf den ${new Date(activeTargetDate).toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
+  { q: `Wie viele Stunden bis ${displayName}?`, a: `Es sind noch ${(days * 24).toLocaleString('de-DE')} Stunden bis ${displayName} (${fullDate}) – das entspricht ${(days * 24 * 60).toLocaleString('de-DE')} Minuten.` },
+  { q: `Wie viele Wochen und Monate sind es bis ${displayName}?`, a: `Die ${days} Tage bis ${displayName} entsprechen rund ${weeks} Wochen oder etwa ${months} Monaten. Als Werktage (Montag bis Freitag) gerechnet sind es ungefähr ${workingDays} Arbeitstage.` },
+  { q: `Auf welchen Wochentag fällt ${displayName}?`, a: `${displayName} fällt auf einen ${weekday} – genauer gesagt auf den ${fullDate}.` },
+  { q: `Zählt der heutige Tag beim Countdown mit?`, a: `Nein. Der Countdown zählt die vollen Tage ab morgen bis zum Ereignistag; der heute bereits angebrochene Tag wird nicht mitgezählt. Deshalb kann die angezeigte Zahl je nach Uhrzeit um einen Tag von anderen Rechnern abweichen.` },
+  { q: `Wird die Sommerzeit-Umstellung berücksichtigt?`, a: `Ja. Die Berechnung greift auf den lokalen Kalender zurück und berücksichtigt Schaltjahre sowie die Umstellung auf Sommer- und Winterzeit, sodass die Tageszahl bis ${displayName} stets exakt bleibt.` },
+  { q: `Was ist das genaue Datum von ${displayName}?`, a: `${displayName} fällt auf den ${fullDate}.` },
 ];
 
 const jsonLd = [
@@ -95,7 +107,13 @@ function getSecondaryContent(slug: string): string {
     'neujahr': `Silvester und Neujahr in Deutschland: Traditionell feiern die Deutschen Silvester mit Feuerwerk, Bleigießen (heute Zinn- oder Wachsgießen) und Sekt zum Anstoßen. Beliebte Orte für große Feuerwerke sind das Brandenburger Tor in Berlin sowie Aussichtspunkte in Großstädten wie Hamburg und München. Beachten Sie, dass die meisten Weihnachtsmärkte bereits vor Silvester schließen.`,
     'ostersonntag': `Wie wird das Osterdatum berechnet? Ostern fällt immer auf den ersten Sonntag nach dem ersten Vollmond im Frühling. Der Ostermontag ist in ganz Deutschland ein gesetzlicher Feiertag. Die Osterferien der Schulen variieren je nach Bundesland, dauern aber meist ein bis zwei Wochen rund um das Osterwochenende.`,
     'halloween': `Halloween hat keltische Wurzeln und wurde über die USA in Europa und Deutschland populär. Beliebte Events sind Gruselpartys in Freizeitparks und Burgen. Die Kürbisschnitz-Saison beginnt Mitte Oktober, und am Abend des 31. Oktober ziehen Kinder von Haus zu Haus für 'Süßes oder Saures'.`,
-    'valentinstag': `Der Valentinstag am 14. Februar ist der Tag der Liebenden. In Deutschland werden traditionell Blumen (vor allem rote Rosen) und Pralinen verschenkt. Floristen verzeichnen an diesem Tag Rekordumsätze. Um Lieferengpässe zu vermeiden, sollten Blumenbestellungen mindestens 3-5 Tage im Voraus getätigt werden.`
+    'valentinstag': `Der Valentinstag am 14. Februar ist der Tag der Liebenden. In Deutschland werden traditionell Blumen (vor allem rote Rosen) und Pralinen verschenkt. Floristen verzeichnen an diesem Tag Rekordumsätze. Um Lieferengpässe zu vermeiden, sollten Blumenbestellungen mindestens 3-5 Tage im Voraus getätigt werden.`,
+    'ramadan': `Der Ramadan ist der neunte Monat des islamischen Mondkalenders und die wichtigste Fastenzeit im Islam. Von Sonnenaufgang bis Sonnenuntergang wird auf Essen und Trinken verzichtet. Da sich der islamische Kalender am Mond orientiert, verschiebt sich der Beginn jedes Jahr um etwa elf Tage nach vorn. Den Abschluss bildet das Fest des Fastenbrechens (Eid al-Fitr).`,
+    'allerheiligen': `Allerheiligen am 1. November ist ein christlicher Feiertag zu Ehren aller Heiligen. In Baden-Württemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz und im Saarland ist es ein gesetzlicher Feiertag. Vielerorts werden an diesem sowie am folgenden Allerseelentag die Gräber geschmückt und Kerzen entzündet.`,
+    'sonnenfinsternis': `Bei einer Sonnenfinsternis schiebt sich der Mond zwischen Erde und Sonne und verdeckt sie ganz oder teilweise. Eine totale Sonnenfinsternis ist von einem festen Ort aus nur selten zu sehen. Zur Beobachtung ist unbedingt eine zertifizierte Sonnenfinsternis-Brille nötig – ein ungeschützter Blick kann die Augen dauerhaft schädigen.`,
+    'jahr': `Der Countdown bis zum Jahreswechsel zählt die verbleibenden Tage bis zum 1. Januar. Silvester wird traditionell mit Feuerwerk und Sekt gefeiert; um Mitternacht beginnt das neue Jahr. Viele nutzen den Jahresanfang für gute Vorsätze und die Planung der Feiertage und Brückentage des kommenden Jahres.`,
+    'thanksgiving': `Thanksgiving ist ein US-amerikanischer Feiertag am vierten Donnerstag im November. Traditionell kommt die Familie zu einem Festessen mit Truthahn, Süßkartoffeln und Kürbiskuchen zusammen. Der folgende Freitag ist als Black Friday der Auftakt der weihnachtlichen Shopping-Saison.`,
+    'tag-der-deutschen-einheit': `Der Tag der Deutschen Einheit am 3. Oktober erinnert an die Wiedervereinigung Deutschlands im Jahr 1990. Er ist der einzige bundesweite gesetzliche Feiertag, der auf einem staatlichen Ereignis beruht. Die zentralen Feierlichkeiten (das Bürgerfest) finden jedes Jahr in einem anderen Bundesland statt.`
   };
   const normSlug = slug.toLowerCase().replace(/-\d{4}$/, '');
   return content[normSlug] || '';
@@ -183,6 +201,9 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <a id="whatsapp-share-btn" class="btn btn--ghost" target="_blank" rel="noopener" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; color: #25d366; border-color: rgba(37, 211, 102, 0.3);">
             WhatsApp
           </a>
+          <button id="ics-btn" class="btn btn--ghost" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-name={displayName} data-date={icsDate}>
+            Zum Kalender
+          </button>
         </div>
       </div>
     </div>
@@ -222,6 +243,27 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
         waBtn.href = `https://wa.me/?text=${waText}`;
       }
       
+      const icsBtn = document.getElementById('ics-btn');
+      if (icsBtn) {
+        icsBtn.addEventListener('click', () => {
+          const name = icsBtn.dataset.name || 'Termin';
+          const d = icsBtn.dataset.date; // YYYYMMDD
+          const y = +d.slice(0,4), mo = +d.slice(4,6), day = +d.slice(6,8);
+          const pad = n => String(n).padStart(2,'0');
+          const end = new Date(Date.UTC(y, mo-1, day+1)); // all-day: DTEND = day after
+          const dend = `${end.getUTCFullYear()}${pad(end.getUTCMonth()+1)}${pad(end.getUTCDate())}`;
+          const stamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+          const uid = `${d}-${Math.random().toString(36).slice(2)}@zeit-rechner.com`;
+          const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//zeit-rechner.com//countdown//DE','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:${uid}`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${dend}`,`SUMMARY:${name}`,`URL:${currentUrl}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `${name.replace(/[^\w-]+/g,'-').toLowerCase()}.ics`;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        });
+      }
+
       if (copyBtn && input) {
         copyBtn.addEventListener('click', () => {
           navigator.clipboard.writeText(input.value).then(() => {
@@ -252,6 +294,26 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           defaultTarget={activeTargetDate}
           eventName={displayName}
         />
+      </div>
+    </div>
+  </section>
+
+  <!-- Countdown breakdown — evergreen, parameterized per event -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Der Countdown bis {displayName} im Detail</h2>
+        <p>
+          Bis <strong>{displayName}</strong> am {fullDate} sind es aktuell noch <strong>{days} Tage</strong>.
+          Umgerechnet sind das rund {weeks} Wochen, etwa {months} Monate oder {(days * 24).toLocaleString('de-DE')} Stunden.
+          Zählt man nur die Werktage von Montag bis Freitag, bleiben ungefähr {workingDays} Arbeitstage bis zum Termin.
+        </p>
+        <p>
+          Der Countdown zählt die vollen Tage ab morgen – der heute bereits angebrochene Tag wird nicht mitgezählt.
+          Die Berechnung berücksichtigt Schaltjahre und die Sommer-/Winterzeit-Umstellung, damit die Tageszahl bis
+          {displayName} stets exakt bleibt. Über die Schaltfläche „Zum Kalender“ lässt sich der Termin als
+          <code>.ics</code>-Datei in Google Kalender, Apple Kalender oder Outlook übernehmen.
+        </p>
       </div>
     </div>
   </section>

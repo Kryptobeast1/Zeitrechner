@@ -1,0 +1,70 @@
+Boilerplate strings: >50% within a template family (>=20 pages) or >50% of all 1329 pages.
+Normalised (digits -> #). Excluded from word_count_unique_body.
+
+[en-hours-between 588/588]  quick answer #.# hours there are exactly #.# hours between #:# and #:# ( # minutes / # seconds).
+[en-hours-between 588/588]  daily rest after finishing at #:#, an uninterrupted rest period of # hours is required (§ # arbzg).
+[en-hours-between 588/588]  the earliest permitted next start is #:#.
+[en-hours-between 588/588]  net work hours from #:# to #:# (after break) as a work shift, #:#–#:# gives #:# net with a #-minute break — that is #.# decimal hours for payroll.
+[en-hours-between 588/588]  no break #:# ( #.# h) # min break #:# ( #.# h) # min break #:# ( #.# h) # min break #:# ( #.# h) rest breaks are unpaid: a shift over # hours typically requires a #–# minute break that is deducted from paid time.
+[en-hours-between 588/588]  what is the decimal value of work from #:# to #:# with a #-minute break?
+[en-hours-between 588/588]  ▾ your net work time with a #-minute break deducted is #.# decimal hours (# industrial minutes).
+[en-hours-between 588/588]  #.# rather than #h #m — so it multiplies cleanly by your hourly pay rate without rounding errors.
+[en-hours-between 588/588]  does the break count as working time for this shift?
+[en-hours-between 588/588]  under standard labour rules — the uk working time regulations, and us flsa practice for unpaid meal breaks — a rest break of #–# minutes or more is unpaid and does not count toward active working hours.
+[en-hours-between 588/588]  it must be subtracted from total attendance time.
+[en-hours-between 588/588]  how do i calculate overtime for a shift from #:# to #:#?
+[en-hours-between 588/588]  ▾ compare your net work hours (#.# hours after the break) against your contracted daily hours, e.g.
+[en-hours-between 588/588]  are the hours between #:# and #:# full-time or part-time?
+[en-hours-between 588/588]  ▾ a daily shift of #.# net hours is typically full-time on a regular five-day schedule — about # hours a week, within the usual #–# hour full-time range.
+[en-hours-between 588/588]  regular days under roughly # hours are generally classed as part-time.
+[en-hours-between 588/588]  how do i record this shift on my timesheet?
+[en-hours-between 588/588]  ▾ log the start at #:# and the end at #:#, listing the #-minute break separately.
+[en-hours-between 588/588]  use our work hours calculator to adjust start, end and break lengths (# or # minutes) and get the exact decimal total.
+[stunden-zwischen 588/588]  schnellantwort #,# stunden von #:# bis #:# uhr sind es genau #,# stunden ( # minuten / # sekunden).
+[stunden-zwischen 588/588]  ruhezeit nach arbeitsende um #:# uhr ist eine ununterbrochene ruhezeit von # stunden vorgeschrieben (§ # arbzg).
+[stunden-zwischen 588/588]  der früheste zulässige nächste arbeitsbeginn ist #:# uhr.
+[stunden-zwischen 588/588]  nettoarbeitszeit von #:# bis #:# uhr (nach pause) als arbeitsschicht ergeben #:#–#:# uhr #:# nettoarbeitszeit mit # minuten pause — das sind #,# dezimalstunden für die lohnabrechnung.
+[stunden-zwischen 588/588]  pause #:# ( #,# h) gemäß arbeitszeitgesetz (arbzg) sind ab # stunden mindestens # minuten und ab # stunden # minuten pause abzuziehen.
+[stunden-zwischen 588/588]  was ist der dezimalwert von #:# bis #:# uhr mit # minuten pause?
+[stunden-zwischen 588/588]  ▾ die nettoarbeitszeit mit # minuten pause beträgt #,# dezimalstunden (# industrieminuten).
+[stunden-zwischen 588/588]  lohnabrechnungssysteme benötigen diesen dezimalwert, weil er sich direkt mit dem stundenlohn multiplizieren lässt und so rundungsfehler vermeidet.
+[stunden-zwischen 588/588]  zählt die pause zur arbeitszeit bei dieser arbeitszeitspanne?
+[stunden-zwischen 588/588]  nach § # arbzg sind ruhepausen keine arbeitszeit.
+[stunden-zwischen 588/588]  bei einer gesamtanwesenheit von mehr als # stunden müssen mindestens # minuten pause genommen und abgezogen werden; ab mehr als # stunden sind es # minuten.
+[stunden-zwischen 588/588]  die pause muss die arbeitszeit unterbrechen und darf nicht an anfang oder ende liegen.
+[stunden-zwischen 588/588]  wie berechne ich überstunden bei einer schicht von #:# bis #:# uhr?
+[stunden-zwischen 588/588]  ▾ vergleichen sie ihre nettoarbeitszeit (#,# stunden nach abzug der pause) mit ihrer vertraglichen täglichen arbeitszeit von beispielsweise # stunden.
+[stunden-zwischen 588/588]  gilt diese nettoarbeitszeit als vollzeit oder teilzeit?
+[stunden-zwischen 588/588]  ▾ eine regelmäßige nettoarbeitszeit von #,# stunden pro tag ergibt bei einer #-tage-woche rund # wochenstunden und liegt damit im vollzeitbereich (# bis # stunden).
+[stunden-zwischen 588/588]  arbeitszeiten unter etwa # stunden pro tag werden meist als teilzeit oder minijob eingestuft.
+[stunden-zwischen 588/588]  wie erfasse ich diese zeit korrekt im stundenzettel?
+[stunden-zwischen 588/588]  ▾ tragen sie #:# uhr als beginn und #:# uhr als ende ein und vermerken sie die #-minütige pflichtpause separat.
+[stunden-zwischen 588/588]  die nettoarbeitszeit beträgt somit #,# stunden.
+[stunden-zwischen 588/588]  mit unserem arbeitsstunden-rechner ermitteln sie die nettozeit auch für andere pausen (# oder # minuten) exakt.
+[en-hours-between 576/588]  — calculator # #.#h result how many hours between #:# and #:#?
+[stunden-zwischen 576/588]  stunden von #:# bis #:# uhr berechnen — zeitrechner # #,#h ergebnis wie viele stunden von #:# bis #:# uhr?
+[en-hours-between 428/588]  working #.# net hours leaves you #.# hours short of a standard #-hour day, so no daily overtime applies.
+[stunden-zwischen 428/588]  bei #,# stunden nettoarbeitszeit liegen sie #,# stunden unter einem #-stunden-tag – es fallen keine überstunden an.
+[en-hours-between 338/588]  this is the gross span between start and end — the raw elapsed time before any unpaid break is deducted.
+[en-hours-between 338/588]  ▾ use the formula decimal hours = hours + (minutes ÷ #).
+[en-hours-between 338/588]  payroll systems rely on this format because it multiplies cleanly by an hourly wage, unlike hours-and-minutes.
+[en-hours-between 338/588]  ▾ it depends on the weekly total, not a single day.
+[en-hours-between 338/588]  full-time employment is generally #–# hours a week (about #–# hours across five days).
+[en-hours-between 338/588]  a regular daily schedule under roughly # hours usually indicates part-time work.
+[en-hours-between 338/588]  as working time, most labour rules (uk working time regulations, and us flsa practice for unpaid meal breaks) require a rest break of #–# minutes once a shift exceeds # hours, and that break is not paid working time.
+[en-hours-between 338/588]  ▾ eu and uk rules require at least # consecutive hours of rest in each #-hour period before the next shift.
+[en-hours-between 338/588]  in the us the flsa sets no federal minimum rest between shifts, though some states and union contracts do.
+[stunden-zwischen 338/588]  ▾ es sind exakt # minuten beziehungsweise # sekunden.
+[stunden-zwischen 338/588]  das ist die bruttozeit – die reine spanne zwischen start und ende, noch ohne abzug von pausen.
+[stunden-zwischen 338/588]  ▾ die formel lautet: dezimalstunden = stunden + (minuten ÷ #).
+[stunden-zwischen 338/588]  die lohnbuchhaltung nutzt diesen wert, weil er sich – anders als das format stunden:minuten – direkt mit dem stundenlohn multiplizieren lässt.
+[stunden-zwischen 338/588]  ▾ das hängt von der wochenarbeitszeit ab, nicht von einem einzelnen tag.
+[stunden-zwischen 338/588]  in deutschland gilt eine #-tage-woche mit # bis # stunden als vollzeit (durchschnittlich # bis # stunden pro tag).
+[stunden-zwischen 338/588]  eine regelmäßige tagesarbeitszeit unter rund # stunden deutet meist auf teilzeit oder einen minijob hin.
+[stunden-zwischen 338/588]  als arbeitszeit gilt § # arbzg: bei mehr als # stunden sind mindestens # minuten, bei mehr als # stunden # minuten unbezahlte pause vorgeschrieben.
+[stunden-zwischen 338/588]  die pause muss die arbeit unterbrechen und darf nicht an den anfang oder das ende gelegt werden.
+[stunden-zwischen 338/588]  ▾ nach § # arbzg sind mindestens # stunden ununterbrochene ruhezeit bis zum nächsten arbeitsbeginn einzuhalten.
+[stunden-zwischen 338/588]  in bereichen wie krankenhäusern, gaststätten oder der landwirtschaft ist eine verkürzung auf # stunden zulässig, sofern ein ausgleich innerhalb von vier wochen erfolgt.
+[tage-bis 34/56]  ähnliche countdowns tage bis weihnachten (# tage) → tage bis weihnachten # (# tage) → tage bis #.
+[en-days-until 31/56]  related countdowns days until christmas (# days) → days until christmas # (# days) → days until #nd day of christmas (# days) → days until new year # (# days) → days until new year (# days) → days until valentine&##;s da
+[tage-bis 31/56]  weihnachtstag (# tage) → tage bis neujahr # (# tage) → tage bis neujahr (# tage) → tage bis valentinstag (# tage) → ← zurück zum zeitrechner →

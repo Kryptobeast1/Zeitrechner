@@ -59,10 +59,22 @@ const seoMeta = buildSEOMeta(
   shouldNoindex
 );
 
+// Derived breakdown values (evergreen — computed at build time from the date)
+const weeks = Math.floor(days / 7);
+const months = (days / 30.44).toFixed(1);
+const workingDays = Math.round(days * 5 / 7);
+const targetDateObj = new Date(activeTargetDate);
+const weekday = targetDateObj.toLocaleDateString('en-GB', { weekday: 'long' });
+const fullDate = targetDateObj.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const icsDate = activeTargetDate.replace(/-/g, '');
+
 const faqs = [
-  { q: `How many hours until ${displayName}?`, a: `There are ${days * 24} hours until ${displayName} (${activeTargetDate}).` },
-  { q: `How many minutes until ${displayName}?`, a: `There are ${(days * 24 * 60).toLocaleString()} minutes until ${displayName}.` },
-  { q: `What day is ${displayName}?`, a: `${displayName} falls on ${new Date(activeTargetDate).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.` },
+  { q: `How many hours until ${displayName}?`, a: `There are ${(days * 24).toLocaleString()} hours until ${displayName} (${fullDate}) — that is ${(days * 24 * 60).toLocaleString()} minutes.` },
+  { q: `How many weeks and months until ${displayName}?`, a: `The ${days} days until ${displayName} are about ${weeks} weeks or roughly ${months} months. Counting only working days (Monday to Friday), that is approximately ${workingDays} business days.` },
+  { q: `What day of the week is ${displayName}?`, a: `${displayName} falls on a ${weekday} — specifically ${fullDate}.` },
+  { q: `Does today count in the countdown?`, a: `No. The countdown counts the full days from tomorrow up to the event date; the current (already-started) day is not included. That is why the number can differ by one day from other calculators depending on the time of day.` },
+  { q: `Does it account for Daylight Saving Time?`, a: `Yes. The calculation uses your local calendar and accounts for leap years and the switch to and from Daylight Saving Time, so the day count to ${displayName} stays exact.` },
+  { q: `What is the exact date of ${displayName}?`, a: `${displayName} falls on ${fullDate}.` },
 ];
 
 const jsonLd = [
@@ -95,7 +107,13 @@ function getSecondaryContent(slug: string): string {
     'new-year': `New Year's Eve & Day traditions: In Germany, Silvester is celebrated with fireworks, lead pouring (now wax or tin pouring for environmental reasons), and sparkling wine. Major countdown events take place at the Brandenburg Gate in Berlin. Most Christmas markets close before New Year's Eve.`,
     'easter': `How Easter is calculated: Easter Sunday is the first Sunday after the first full moon of spring. Easter Monday is a nationwide public holiday in Germany. School spring holidays vary by federal state but generally cover one to two weeks around Easter.`,
     'halloween': `Halloween history & facts: Though modern Halloween is heavily influenced by American culture, it has ancient Celtic roots. In Germany, Halloween has become popular over the last few decades, with major costume events at theme parks and historical castles. Pumpkin carving starts in mid-October.`,
-    'valentines-day': `Valentine's Day gift traditions: Celebrated on February 14, it is the day of romance. Traditional gifts in Germany include red roses and chocolates. To prevent delivery delays, order flowers online at least 3 to 5 days in advance.`
+    'valentines-day': `Valentine's Day gift traditions: Celebrated on February 14, it is the day of romance. Traditional gifts in Germany include red roses and chocolates. To prevent delivery delays, order flowers online at least 3 to 5 days in advance.`,
+    'ramadan': `Ramadan is the ninth month of the Islamic lunar calendar and the most important period of fasting in Islam. From dawn to sunset, observers abstain from food and drink. Because the Islamic calendar follows the moon, the start of Ramadan moves about eleven days earlier each year. It ends with the festival of breaking the fast, Eid al-Fitr.`,
+    'all-saints-day': `All Saints' Day on November 1 is a Christian holiday honouring all saints. In the German states of Baden-Württemberg, Bavaria, North Rhine-Westphalia, Rhineland-Palatinate and Saarland it is a public holiday. Graves are often decorated and candles lit on this day and the following All Souls' Day.`,
+    'solar-eclipse': `During a solar eclipse, the Moon passes between the Earth and the Sun, blocking it fully or partially. A total solar eclipse is visible from any given location only rarely. Certified eclipse glasses are essential for viewing — looking at the Sun without protection can cause permanent eye damage.`,
+    'year': `This countdown tracks the days remaining until the new year on January 1. New Year's Eve is traditionally celebrated with fireworks and sparkling wine; the new year begins at midnight. Many people use the turn of the year for resolutions and to plan the public holidays and long weekends ahead.`,
+    'thanksgiving': `Thanksgiving is a US holiday on the fourth Thursday of November. Families traditionally gather for a meal of turkey, sweet potatoes and pumpkin pie. The following Friday, Black Friday, marks the start of the Christmas shopping season.`,
+    'german-unity-day': `German Unity Day on October 3 commemorates the reunification of Germany in 1990. It is the only nationwide public holiday based on a political event. The central celebrations (the Bürgerfest) are hosted by a different federal state each year.`
   };
   const normSlug = slug.toLowerCase().replace(/-\d{4}$/, '');
   return content[normSlug] || '';
@@ -184,6 +202,9 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           <a id="whatsapp-share-btn" class="btn btn--ghost" target="_blank" rel="noopener" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem; color: #25d366; border-color: rgba(37, 211, 102, 0.3);">
             WhatsApp
           </a>
+          <button id="ics-btn" class="btn btn--ghost" style="padding: var(--space-2) var(--space-4); font-size: 0.8rem;" data-name={displayName} data-date={icsDate}>
+            Add to calendar
+          </button>
         </div>
       </div>
     </div>
@@ -223,6 +244,27 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
         waBtn.href = `https://wa.me/?text=${waText}`;
       }
       
+      const icsBtn = document.getElementById('ics-btn');
+      if (icsBtn) {
+        icsBtn.addEventListener('click', () => {
+          const name = icsBtn.dataset.name || 'Event';
+          const d = icsBtn.dataset.date; // YYYYMMDD
+          const y = +d.slice(0,4), mo = +d.slice(4,6), day = +d.slice(6,8);
+          const pad = n => String(n).padStart(2,'0');
+          const end = new Date(Date.UTC(y, mo-1, day+1)); // all-day: DTEND = day after
+          const dend = `${end.getUTCFullYear()}${pad(end.getUTCMonth()+1)}${pad(end.getUTCDate())}`;
+          const stamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+          const uid = `${d}-${Math.random().toString(36).slice(2)}@zeit-rechner.com`;
+          const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//zeit-rechner.com//countdown//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:${uid}`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${dend}`,`SUMMARY:${name}`,`URL:${currentUrl}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+          const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `${name.replace(/[^\w-]+/g,'-').toLowerCase()}.ics`;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        });
+      }
+
       if (copyBtn && input) {
         copyBtn.addEventListener('click', () => {
           navigator.clipboard.writeText(input.value).then(() => {
@@ -252,6 +294,25 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
           defaultTarget={activeTargetDate}
           eventName={displayName}
         />
+      </div>
+    </div>
+  </section>
+
+  <!-- Countdown breakdown — evergreen, parameterized per event -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>The countdown to {displayName} in detail</h2>
+        <p>
+          There are currently <strong>{days} days</strong> until <strong>{displayName}</strong> on {fullDate}.
+          That works out to about {weeks} weeks, roughly {months} months, or {(days * 24).toLocaleString()} hours.
+          Counting only weekdays (Monday to Friday), around {workingDays} business days remain.
+        </p>
+        <p>
+          The countdown counts the full days from tomorrow — the day already underway is not included. The calculation
+          accounts for leap years and Daylight Saving Time changes, so the day count to {displayName} stays exact. Use the
+          “Add to calendar” button to save the date as an <code>.ics</code> file in Google Calendar, Apple Calendar or Outlook.
+        </p>
       </div>
     </div>
   </section>
