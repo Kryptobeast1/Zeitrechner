@@ -47,8 +47,8 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
 ---
 
 <BaseLayout
-  title={`Time Calculator ${new Date().getFullYear()} — Hours, Work Hours & Countdown Online`}
-  description="Precise online time calculator for 2026. Calculate time differences, work hours with breaks, and live countdowns. Free and mobile-friendly."
+  title={`Time Calculator ${new Date().getFullYear()} — Duration, Work Hours & Countdown (Free)`}
+  description="Free online time calculator: find the duration between two times, add or subtract hours, calculate net work hours with breaks and decimal hours, and count the days to any event. No sign-up."
   canonical={getFullUrl(canonical)}
   hreflang={hreflang}
   lang={lang}
@@ -66,10 +66,11 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
           <span class="badge badge--green">DST-safe</span>
         </div>
 
-        <h1 style="margin-bottom: 1.25rem;">Time Calculator — Hours, Work Hours & Countdowns</h1>
+        <h1 style="margin-bottom: 1.25rem;">Time Calculator — Hours Between Times, Work Hours & Countdowns</h1>
 
         <p class="landing-hero__lead">
-          Calculate time differences, add or subtract hours, track net work hours, and count days until any event.
+          Find the duration between two times, add or subtract hours, calculate net work hours with breaks and
+          decimal hours, and count the days until any event.
           <strong>5 modes, instant results, no sign-up required.</strong>
         </p>
 
@@ -85,6 +86,21 @@ const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', mi
           <span>Current time:</span>
           <span id="live-time-en" aria-live="off"></span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── QUICK ANSWER (featured-snippet target) ─────────────────────────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="featured-snippet" role="complementary" aria-label="Quick answer">
+        <div class="featured-snippet__label">How to calculate the time between two times</div>
+        <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+          Subtract the start time from the end time; if the start minutes are larger, borrow 60 minutes from the hour.
+          <strong>Example: 09:15 to 17:45 is 8 hours 30 minutes, or 8.5 decimal hours.</strong> For a span that runs past
+          midnight, add 24 hours (22:00 to 06:00 = 8 hours). The calculator above works in both 24-hour and 12-hour
+          (AM/PM) time and does this automatically.
+        </p>
       </div>
     </div>
   </section>
