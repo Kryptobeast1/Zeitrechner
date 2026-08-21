@@ -67,7 +67,7 @@ const useCaseList = useCases_en[ui];
 // Merged FAQ: time-range questions + net-after-break questions
 const faqs = [
   ...faqSets_en[fi](start24, end24, hours),
-  ...workHoursFaqSets_en[0](start24, end24, net30.netDecimal),
+  ...workHoursFaqSets_en[variantIndex(range.slug + 'whfaq', workHoursFaqSets_en.length)](start24, end24, net30.netDecimal),
 ];
 
 const similarRanges = getSimilarRanges(range, 8);

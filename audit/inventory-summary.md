@@ -1,7 +1,7 @@
 # Block 1 audit summary
 
 Pages analysed: 1329 (local dist/ build)
-Boilerplate strings (>50%): 67
+Boilerplate strings (>50%): 85
 Broken in-page anchors: 0
 Non-self-canonical indexable pages: 0
 
@@ -9,10 +9,10 @@ Non-self-canonical indexable pages: 0
 
 | family | pages | median unique words | has_calc | has_pdf | has_embed |
 |---|---|---|---|---|---|
-| en-hours-between | 588 | 459 | 588 | 588 | 588 |
-| stunden-zwischen | 588 | 455 | 588 | 588 | 588 |
-| en-days-until | 56 | 146 | 56 | 56 | 0 |
-| tage-bis | 56 | 122 | 56 | 56 | 0 |
+| en-hours-between | 588 | 440 | 588 | 588 | 588 |
+| stunden-zwischen | 588 | 446 | 588 | 588 | 588 |
+| en-days-until | 56 | 288 | 56 | 56 | 0 |
+| tage-bis | 56 | 251 | 56 | 56 | 0 |
 | static | 11 | 196 | 0 | 11 | 0 |
 | tool | 7 | 539 | 5 | 7 | 0 |
 | ratgeber | 7 | 1120 | 1 | 7 | 0 |

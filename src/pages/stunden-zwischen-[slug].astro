@@ -70,7 +70,7 @@ const useCaseList = useCases_de[ui];
 // Merged FAQ: time-range questions + net-after-break (ArbZG) questions
 const faqs = [
   ...faqSets_de[fi](start24, end24, hours),
-  ...workHoursFaqSets_de[0](start24, end24, net30.netDecimal),
+  ...workHoursFaqSets_de[variantIndex(range.deSlug + 'whfaq', workHoursFaqSets_de.length)](start24, end24, net30.netDecimal),
 ];
 
 const similarRanges = getSimilarRanges(range, 8);

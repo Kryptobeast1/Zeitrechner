@@ -254,6 +254,34 @@ export const workHoursFaqSets_de = [
         a: `Tragen Sie ${start} Uhr als Beginn und ${end} Uhr als Ende ein und vermerken Sie die 30-minütige Pflichtpause separat. Die Nettoarbeitszeit beträgt somit ${dec(netVal)} Stunden. Mit unserem Arbeitsstunden-Rechner ermitteln Sie die Nettozeit auch für andere Pausen (45 oder 60 Minuten) exakt.`
       }
     ];
+  },
+  // Variant 2 — different questions/angles so the merged work-hours FAQ is not identical across pages
+  (start: string, end: string, netDecimal: string | number) => {
+    const netVal = typeof netDecimal === 'string' ? parseFloat(netDecimal) : netDecimal;
+    const net45 = Math.max(0, netVal - 0.25);
+    const net60 = Math.max(0, netVal - 0.5);
+    return [
+      {
+        q: `Wie viel Nettoarbeitszeit bleibt von ${start} bis ${end} Uhr bei 45 oder 60 Minuten Pause?`,
+        a: `Bei 45 Minuten Pause bleiben ${dec(net45)} Dezimalstunden, bei 60 Minuten Pause ${dec(net60)} Dezimalstunden. Zum Vergleich: Mit der Mindestpause von 30 Minuten sind es ${dec(netVal)} Stunden. Je länger die Pause, desto geringer die bezahlte Nettozeit.`
+      },
+      {
+        q: `Wie rechne ich diese Nettozeit in Industrieminuten um?`,
+        a: `${dec(netVal)} Dezimalstunden entsprechen ${industrieMin(netVal)} Industrieminuten (Hundertstel einer Stunde). 30 echte Minuten sind dabei 50 Industrieminuten. Viele Zeiterfassungssysteme und Excel-Vorlagen rechnen intern mit diesem Format.`
+      },
+      {
+        q: `Muss ich bei ${start} bis ${end} Uhr eine Pause machen, auch wenn ich durcharbeiten möchte?`,
+        a: `Sofern die Arbeitszeit 6 Stunden überschreitet, ja. Die Ruhepause nach § 4 ArbZG ist Pflicht und dient dem Gesundheitsschutz – auf sie kann nicht freiwillig verzichtet werden, und der Arbeitgeber muss ihre Einhaltung überwachen.`
+      },
+      {
+        q: `Welche Ruhezeit gilt nach dieser Schicht bis zum nächsten Arbeitsbeginn?`,
+        a: `Nach § 5 ArbZG müssen zwischen dem Arbeitsende um ${end} Uhr und dem nächsten Arbeitsbeginn mindestens 11 Stunden ununterbrochene Ruhezeit liegen. In einzelnen Branchen (z. B. Krankenhaus, Gastronomie) ist eine Verkürzung auf 10 Stunden mit Ausgleich zulässig.`
+      },
+      {
+        q: `Wie viel verdiene ich brutto für diese Schicht?`,
+        a: `Multiplizieren Sie die Nettoarbeitszeit mit Ihrem Stundenlohn: ${dec(netVal)} Stunden × Stundenlohn ergibt den Bruttoverdienst. Bei 15 € Stundenlohn wären das ${(netVal * 15).toFixed(2).replace('.', ',')} €, bei 20 € entsprechend ${(netVal * 20).toFixed(2).replace('.', ',')} €.`
+      }
+    ];
   }
 ];
 
@@ -287,6 +315,34 @@ export const workHoursFaqSets_en = [
       {
         q: `How do I record this shift on my timesheet?`,
         a: `Log the start at ${start} and the end at ${end}, listing the 30-minute break separately. That yields ${decEn(netVal)} net hours. Use our Work Hours Calculator to adjust start, end and break lengths (45 or 60 minutes) and get the exact decimal total.`
+      }
+    ];
+  },
+  // Variant 2 — different questions/angles so the merged work-hours FAQ is not identical across pages
+  (start: string, end: string, netDecimal: string | number) => {
+    const netVal = typeof netDecimal === 'string' ? parseFloat(netDecimal) : netDecimal;
+    const net45 = Math.max(0, netVal - 0.25);
+    const net60 = Math.max(0, netVal - 0.5);
+    return [
+      {
+        q: `How much net time is left from ${start} to ${end} with a 45- or 60-minute break?`,
+        a: `With a 45-minute break you keep ${decEn(net45)} decimal hours; with a 60-minute break, ${decEn(net60)} decimal hours. For comparison, a 30-minute break leaves ${decEn(netVal)} hours. The longer the break, the lower the paid net time.`
+      },
+      {
+        q: `How do I convert this net time into industrial minutes?`,
+        a: `${decEn(netVal)} decimal hours equals ${industrieMin(netVal)} industrial minutes (hundredths of an hour); 30 real minutes are 50 industrial minutes. Many time-tracking systems and spreadsheet templates work in this format internally.`
+      },
+      {
+        q: `Do I have to take a break from ${start} to ${end} even if I want to work straight through?`,
+        a: `If the shift exceeds 6 hours, yes. In most jurisdictions an unpaid rest break of 20–30 minutes is mandatory for a shift over 6 hours (e.g. the UK Working Time Regulations), and it cannot be waived to finish earlier.`
+      },
+      {
+        q: `What rest is required after this shift before the next one?`,
+        a: `EU and UK rules require at least 11 consecutive hours of rest between the end at ${end} and the next shift. In the US the FLSA sets no federal minimum, though some states and union contracts do.`
+      },
+      {
+        q: `How much do I earn gross for this shift?`,
+        a: `Multiply the net hours by your hourly rate: ${decEn(netVal)} hours × rate = gross pay. At $15/hour that is $${(netVal * 15).toFixed(2)}, and at $20/hour, $${(netVal * 20).toFixed(2)}.`
       }
     ];
   }
