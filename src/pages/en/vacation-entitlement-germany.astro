@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/vacation-entitlement-germany/';
+
+const faqs = [
+  { q: 'How many vacation days are you entitled to in Germany?', a: 'The statutory minimum under the Federal Leave Act (Bundesurlaubsgesetz, BUrlG) is 24 working days on a 6-day week — equivalent to 20 days on a 5-day week. Most contracts and collective agreements grant more, commonly 28–30 days on a 5-day week.' },
+  { q: 'How is leave prorated for a mid-year start?', a: 'For each full month of employment you earn one twelfth of the annual leave: partial leave = (full months ÷ 12) × annual leave. Starting on 1 August with 30 days\' contractual leave gives (5 ÷ 12) × 30 = 12.5 days. Full entitlement is earned after the six-month qualifying period (§ 4 BUrlG).' },
+  { q: 'How is leave rounded in Germany?', a: 'Under § 5 (2) BUrlG, fractions of a leave day that amount to at least half a day are rounded up to a full day. A calculated 12.5 days therefore becomes 13. Fractions below half a day may not be rounded down by the employer.' },
+  { q: 'What happens to leave if I leave in the second half of the year?', a: 'If you leave from 1 July onward and have completed the six-month qualifying period, you keep the full statutory minimum (20 days on a 5-day week), not just a prorated part. Contractual extra leave may be reduced only if the contract contains a pro-rata-temporis clause.' },
+  { q: 'Does leave change with the number of working days per week?', a: 'Yes. Entitlement scales with weekly working days: leave = (individual working days per week × 24) ÷ 6. A 4-day week gives (4 × 24) ÷ 6 = 16 statutory days; a 3-day week gives 12.' },
+  { q: 'Can unused vacation be carried over?', a: 'In principle leave must be taken within the calendar year. Carry-over into the first quarter of the next year is only allowed for urgent operational or personal reasons. Employers must also actively enable employees to take their leave, or it does not lapse.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Vacation Entitlement in Germany', url: canonical }])];
+---
+<BaseLayout
+  title="Vacation Entitlement in Germany (BUrlG) — How Many Days & Proration"
+  description="German annual leave in English: the statutory minimum (24 days on a 6-day week, 20 on a 5-day week), proration for mid-year start/leave, rounding, and part-time — under the BUrlG. For expats & HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Vacation Entitlement in Germany</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · BUrlG</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Vacation Entitlement in Germany</h1>
+        <p class="landing-hero__lead">How many paid vacation days you are owed under German law, how it is prorated when you join or leave mid-year, and how part-time changes it — explained in English for expats and HR teams.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>The statutory minimum is 24 working days on a 6-day week — 20 days on a 5-day week</strong> (§ 3 BUrlG).
+            For a mid-year start or leaving date it is prorated: (full months ÷ 12) × annual leave, with fractions of at least
+            half a day rounded up (§ 5 (2) BUrlG).
+          </p>
+        </div>
+
+        <h2>The statutory minimum</h2>
+        <p>
+          The Federal Leave Act (Bundesurlaubsgesetz, BUrlG) sets a minimum of <strong>24 working days</strong> per year on a
+          six-day week. Because most people work five days, this is usually expressed as <strong>20 days</strong>. Entitlement
+          scales with the number of working days per week:
+        </p>
+        <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--petrol); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+          <code>Statutory leave = (working days per week × 24) ÷ 6</code>
+        </div>
+        <p>So a 5-day week gives 20 days, a 4-day week 16, and a 3-day week 12. Many contracts grant more (commonly 28–30 on a 5-day week).</p>
+
+        <h2>Proration for a mid-year start or leaving date</h2>
+        <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--petrol); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+          <code>Partial leave = (full months employed ÷ 12) × annual leave</code>
+        </div>
+        <p>
+          Starting on 1 August with 30 days' contractual leave gives (5 ÷ 12) × 30 = 12.5 days, rounded up to
+          <strong>13</strong>. Full entitlement is earned after the six-month qualifying period (§ 4 BUrlG). If you leave from
+          1 July onward after qualifying, you keep the full statutory minimum rather than a prorated share.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-public-holidays/" class="link-card"><span>German public holidays by state</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/overtime-in-germany/" class="link-card"><span>Overtime in Germany</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/ratgeber/urlaubstage-berechnen/" class="link-card"><span>Urlaubstage berechnen (auf Deutsch)</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

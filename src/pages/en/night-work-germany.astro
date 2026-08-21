@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/night-work-germany/';
+
+const faqs = [
+  { q: 'What counts as night work in Germany?', a: 'Under § 2 of the Working Time Act (ArbZG), night time is 23:00 to 06:00 (22:00–05:00 in bakeries). Night work is more than two hours worked in that window; anyone who does it regularly is a "night worker".' },
+  { q: 'How much is the night-work supplement in Germany?', a: 'The law does not fix a percentage; § 6 ArbZG requires an "appropriate" number of paid days off or an appropriate supplement on gross pay. The Federal Labour Court (BAG, 9 Dec 2015) treats about 25% of the gross hourly wage as appropriate, and around 30% for permanent night work. Collective agreements may set more.' },
+  { q: 'Is the night supplement tax-free?', a: 'Within limits, yes. Under § 3b of the Income Tax Act (EStG), night-work supplements are tax- and social-contribution-free up to 25% of the base wage for work between 20:00 and 06:00, rising to 40% for the 00:00–04:00 window if the night work began before midnight. The base wage is capped at €50 per hour.' },
+  { q: 'Can I combine night, Sunday and holiday supplements?', a: 'Yes. The tax-free supplements can be paid on top of one another. Sunday work is tax-free up to 50%, public-holiday work up to 125%, and work on Christmas or 1 May up to 150% — each in addition to the 25% or 40% night supplement.' },
+  { q: 'How do I calculate my night supplement?', a: 'Supplement = night hours × hourly wage × rate. For example, 7 night hours (23:00–06:00) at €18/hour with a 25% supplement gives 7 × €18 × 0.25 = €31.50 extra, on top of normal pay.' },
+  { q: 'Do night workers have extra protections?', a: 'Yes. Under § 6 ArbZG, night workers are entitled to regular occupational health checks, their daily working time is limited to an average of 8 hours, and they can request a transfer to day work in certain circumstances (e.g. health, or caring for a young child).' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Night Work in Germany', url: canonical }])];
+---
+<BaseLayout
+  title="Night Work in Germany — Hours, Supplement & Tax (§ 6 ArbZG, § 3b EStG)"
+  description="Night work in Germany explained in English: what counts as night work (23:00–06:00), the appropriate supplement (BAG 25%/30%), and tax-free rates under § 3b EStG (25% / 40%). For expats & HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Night Work in Germany</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · § 6 ArbZG</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Night Work in Germany: Hours, Supplement & Tax</h1>
+        <p class="landing-hero__lead">Which of your hours count as night work, what supplement is appropriate, and how much of it is tax-free? A plain-English guide to German night-work rules and pay.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Night time is 23:00–06:00; night work is more than 2 hours worked in that window (§ 2 ArbZG).</strong>
+            There is no fixed rate, but the BAG treats ~25% of the gross hourly wage as appropriate (30% for permanent night
+            work). Supplements are tax-free up to 25% (20:00–06:00) or 40% (00:00–04:00) of base wage under § 3b EStG.
+          </p>
+        </div>
+
+        <h2>Night work and the supplement</h2>
+        <p>
+          Night time under § 2 ArbZG is <strong>23:00 to 06:00</strong> (22:00–05:00 in bakeries). Working more than two hours
+          there is night work. § 6 ArbZG requires an "appropriate" compensation — paid days off or a supplement on gross pay.
+          The law names no percentage, but case law does.
+        </p>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 480px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Type of work</th><th style="padding: 10px;">Usual / tax-free rate</th><th style="padding: 10px;">Basis</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Night work (20:00–06:00)</td><td style="padding: 10px;"><strong>up to 25%</strong> tax-free</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Night 00:00–04:00 (started before 0:00)</td><td style="padding: 10px;"><strong>up to 40%</strong> tax-free</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Permanent night work</td><td style="padding: 10px;">~30% appropriate</td><td style="padding: 10px;">BAG 9 Dec 2015</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Sunday work</td><td style="padding: 10px;">up to 50% tax-free</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">Public-holiday work</td><td style="padding: 10px;">up to 125% tax-free</td><td style="padding: 10px;">§ 3b EStG</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--ink-3);">For the tax exemption, the base wage is capped at €50 per hour. Night, Sunday and holiday supplements can be combined tax-free.</p>
+
+        <h2>Worked example: a 22:00–06:00 shift</h2>
+        <p>
+          A shift from 22:00 to 06:00 lasts 8 hours; <strong>7 hours</strong> fall in the night window (23:00–06:00). At €18/hour
+          with a 25% supplement that is <code>7 × €18 × 0.25 = €31.50</code> extra, tax-free, on top of normal pay. Night workers
+          also have a right to regular occupational health checks (§ 6 (3) ArbZG).
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/rest-period-germany/" class="link-card"><span>Rest period (11 hours, § 5 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/break-rules-germany/" class="link-card"><span>Break rules in Germany (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/nachtzuschlag-rechner/" class="link-card"><span>Nachtzuschlag-Rechner (auf Deutsch)</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

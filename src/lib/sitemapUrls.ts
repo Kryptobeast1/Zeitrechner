@@ -29,6 +29,7 @@ export function pagePaths(): string[] {
     '/ratgeber/zeiterfassung-freelancer/', '/ratgeber/zeiterfassung-pflicht/',
     '/en/guides/', '/en/guides/how-to-calculate-work-hours/', '/en/guides/tracking-time-freelancers/',
     '/en/german-working-hours-calculator/', '/en/break-rules-germany/', '/en/overtime-in-germany/', '/en/german-public-holidays/',
+    '/en/rest-period-germany/', '/en/night-work-germany/', '/en/vacation-entitlement-germany/', '/en/decimal-hours-calculator/',
     '/wochenarbeitszeit/', '/datum-in-x-tagen/',
     '/impressum/', '/datenschutz/', '/nutzungsbedingungen/', '/ueber-uns/',
     '/en/imprint/', '/en/privacy-policy/', '/en/terms-of-service/', '/en/about-us/',

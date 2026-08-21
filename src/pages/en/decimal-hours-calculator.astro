@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/decimal-hours-calculator/';
+
+const table = [
+  { m: 15, dec: '0.25', ind: 25 },
+  { m: 20, dec: '0.33', ind: 33 },
+  { m: 30, dec: '0.50', ind: 50 },
+  { m: 40, dec: '0.67', ind: 67 },
+  { m: 45, dec: '0.75', ind: 75 },
+  { m: 50, dec: '0.83', ind: 83 },
+  { m: 60, dec: '1.00', ind: 100 },
+];
+
+const faqs = [
+  { q: 'How do I convert hours and minutes to decimal hours?', a: 'Divide the minutes by 60 and add them to the whole hours: decimal hours = hours + (minutes ÷ 60). So 8 hours 15 minutes = 8 + 15/60 = 8.25 decimal hours.' },
+  { q: 'What are industrial minutes (Industrieminuten)?', a: 'Industrial minutes are hundredths of an hour: one hour = 100 industrial minutes. So 30 real minutes = 50 industrial minutes (0.50 h), and 15 minutes = 25. German time-tracking and payroll use this because it adds and multiplies cleanly.' },
+  { q: 'Why does payroll use decimal hours instead of hours and minutes?', a: 'You cannot multiply 8:15 by an hourly wage directly, but you can multiply 8.25. Decimal hours avoid the rounding errors that occur when the 60-minute clock is used in spreadsheets.' },
+  { q: 'How do I convert decimal hours back to hours and minutes?', a: 'Take the whole number as hours; multiply the decimal part by 60 for minutes. 7.75 hours = 7 hours + 0.75 × 60 = 7 hours 45 minutes.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Decimal Hours Calculator', url: canonical }])];
+---
+<BaseLayout
+  title="Decimal Hours Calculator — Hours & Minutes to Decimal / Industrial Minutes"
+  description="Convert hours and minutes to decimal hours and industrial minutes (and back). Free bidirectional calculator with the formula and a reference table (15 min = 0.25 = 25 industrial minutes)."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Decimal Hours Calculator</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--accent">Converter</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Decimal Hours Calculator</h1>
+        <p class="landing-hero__lead">Convert hours and minutes into decimal hours and industrial minutes — and back again. Handy for timesheets and payroll, where 7h 30m must become 7.5 (or 750 industrial minutes).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="glass" style="padding: 1.5rem; border-radius: var(--radius);">
+        <div class="calc-grid calc-grid--3" style="align-items: end;">
+          <label class="field"><span>Hours</span><input type="number" id="dh-h" min="0" value="7" /></label>
+          <label class="field"><span>Minutes</span><input type="number" id="dh-m" min="0" max="59" value="30" /></label>
+          <div class="field"><span>&nbsp;</span><button class="calc-submit" id="dh-btn" type="button" style="width:100%;">Convert</button></div>
+        </div>
+        <div class="result-hero" id="dh-result" style="margin-top: 18px;">
+          <div class="result-hero__label">Decimal hours</div>
+          <div class="result-hero__duration" id="dh-dec">7.50</div>
+          <div class="result-hero__stats">
+            <div><strong id="dh-ind">750</strong><span>Industrial minutes</span></div>
+            <div><strong id="dh-hhmm">7:30</strong><span>Hours:minutes</span></div>
+            <div><strong id="dh-totmin">450</strong><span>Total minutes</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section content-prose" style="margin-top: 2rem;">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Decimal hours = hours + (minutes ÷ 60).</strong> So 8h 15m = 8.25. Industrial minutes are hundredths of an
+            hour, so 30 minutes = 50 industrial minutes (0.50 h), not 30. Payroll uses these formats so time multiplies cleanly
+            by an hourly wage.
+          </p>
+        </div>
+
+        <h2>Reference table</h2>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 420px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Minutes</th><th style="padding: 10px;">Decimal</th><th style="padding: 10px;">Industrial minutes</th></tr></thead>
+            <tbody>
+              {table.map(r => (
+                <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">{r.m} min</td><td style="padding: 10px;">{r.dec}</td><td style="padding: 10px;">{r.ind}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="internal-links" style="margin-top: 12px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/break-rules-germany/" class="link-card"><span>Break rules in Germany (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/overtime-in-germany/" class="link-card"><span>Overtime in Germany</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/" class="link-card"><span>Time & countdown calculators</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      const h = document.getElementById('dh-h'), m = document.getElementById('dh-m'), btn = document.getElementById('dh-btn');
+      const outDec = document.getElementById('dh-dec'), outInd = document.getElementById('dh-ind'), outHHMM = document.getElementById('dh-hhmm'), outTot = document.getElementById('dh-totmin');
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function convert(){
+        const hh = Math.max(0, parseInt(h.value) || 0);
+        let mm = parseInt(m.value); if (isNaN(mm) || mm < 0) mm = 0; if (mm > 59) mm = 59;
+        const totalMin = hh * 60 + mm;
+        const dec = totalMin / 60;
+        outDec.textContent = dec.toFixed(2);
+        outInd.textContent = Math.round(dec * 100);
+        outHHMM.textContent = hh + ':' + pad(mm);
+        outTot.textContent = totalMin.toLocaleString();
+      }
+      if (btn) btn.addEventListener('click', convert);
+      [h, m].forEach(el => el && el.addEventListener('input', convert));
+      convert();
+    })();
+  </script>
+</BaseLayout>
