@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/break-rules-germany/';
+
+const faqs = [
+  { q: 'How long is the mandatory break in Germany?', a: 'Under § 4 of the Working Time Act (ArbZG), a shift of more than 6 hours requires at least 30 minutes of unpaid break, and more than 9 hours requires 45 minutes. A shift of 6 hours or less requires no statutory break.' },
+  { q: 'Is the break paid in Germany?', a: 'No. Statutory rest breaks under § 4 ArbZG are unpaid and do not count as working time. They are deducted from gross attendance time to reach net (paid) working hours.' },
+  { q: 'Can I split my break into shorter parts?', a: 'Yes. The break can be divided into blocks of at least 15 minutes each. Two 15-minute blocks satisfy the 30-minute requirement, and three satisfy the 45-minute one.' },
+  { q: 'Can I skip the break to leave earlier?', a: 'No. The break must genuinely interrupt the work and cannot be placed at the start or end of the shift. Nobody may work more than 6 hours without a break, and the employer is legally required to ensure compliance.' },
+  { q: 'Do different rules apply to young workers?', a: 'Yes. For employees under 18 the Youth Employment Protection Act (Jugendarbeitsschutzgesetz, JArbSchG) is stricter: at least 30 minutes for 4.5–6 hours of work, and at least 60 minutes for more than 6 hours.' },
+  { q: 'Are smoking or coffee breaks statutory breaks?', a: 'No. Short personal breaks are not rest breaks under § 4 ArbZG. They interrupt working time and are usually clocked out and unpaid, unless a works agreement provides otherwise.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Break Rules in Germany', url: canonical }])];
+---
+<BaseLayout
+  title="Break Rules in Germany (§ 4 ArbZG) — 30 & 45 Minute Rest Breaks"
+  description="German break law explained in English: a shift over 6 hours needs 30 minutes, over 9 hours 45 minutes (§ 4 ArbZG). Splitting breaks, young-worker rules, paid vs unpaid — for expats and HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Break Rules in Germany</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · § 4 ArbZG</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Break Rules in Germany</h1>
+        <p class="landing-hero__lead">How long is the mandatory break, when does it apply, and is it paid? Germany's Working Time Act (Arbeitszeitgesetz, ArbZG) sets clear rules based purely on the length of your shift.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Under § 4 ArbZG, a shift over 6 hours needs at least a 30-minute break; over 9 hours, 45 minutes.</strong>
+            The break is unpaid, must interrupt the work (not sit at the start or end), and can be split into blocks of at least
+            15 minutes. Six hours or less requires no statutory break.
+          </p>
+        </div>
+
+        <h2>The statutory break at a glance</h2>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 460px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Daily working time</th><th style="padding: 10px;">Minimum break</th><th style="padding: 10px;">May be split into</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">up to 6 hours</td><td style="padding: 10px;">none required</td><td style="padding: 10px;">–</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">more than 6 to 9 hours</td><td style="padding: 10px;"><strong>30 minutes</strong></td><td style="padding: 10px;">2 × 15 minutes</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">more than 9 hours</td><td style="padding: 10px;"><strong>45 minutes</strong></td><td style="padding: 10px;">3 × 15 minutes</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Worked example: 08:00 to 17:00</h2>
+        <p>
+          From 08:00 to 17:00 the attendance is <strong>9 hours</strong> (gross). Because the working time exceeds 6 hours, at
+          least 30 minutes must be deducted, giving a <strong>net working time of 8 hours 30 minutes</strong> (8.5 decimal hours).
+          The 45-minute rule only starts once the shift passes 9 hours — for example 08:00 to 17:30.
+        </p>
+
+        <h2>Key points</h2>
+        <ul>
+          <li>The break must be fixed in advance and genuinely interrupt the work.</li>
+          <li>It cannot be moved to the start or end of the shift (no "arrive late, leave early").</li>
+          <li>No one may work more than 6 hours without a break (§ 4 sentence 3 ArbZG).</li>
+          <li>Statutory breaks are unpaid and do not count toward working time.</li>
+          <li>Young workers (under 18) have stricter rules under the JArbSchG (30 min from 4.5h, 60 min over 6h).</li>
+        </ul>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/overtime-in-germany/" class="link-card"><span>Overtime in Germany</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-public-holidays/" class="link-card"><span>German public holidays</span><span class="link-card__arrow">→</span></a>
+          <a href="/pausenrechner/" class="link-card"><span>Pausenrechner (auf Deutsch)</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

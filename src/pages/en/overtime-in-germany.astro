@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/overtime-in-germany/';
+
+const faqs = [
+  { q: 'Is there a legal overtime premium in Germany?', a: 'No. German law sets no statutory overtime bonus for ordinary overtime. Any premium (often 25% or 50%) comes from a collective agreement (Tarifvertrag), a works agreement, or the individual employment contract — not from the Working Time Act.' },
+  { q: 'What is the difference between overtime and "Mehrarbeit"?', a: 'Überstunden (overtime) means exceeding your contractually agreed hours. Mehrarbeit is a public-law term: exceeding the statutory maximum working time under the ArbZG (generally 8 hours per working day). Overtime is a contract matter; exceeding the statutory limits without compensation is an offence for the employer.' },
+  { q: 'Must overtime be paid out or given as time off?', a: 'It depends on the contract, collective agreement or works agreement. If nothing is regulated, § 612 of the Civil Code (BGB) implies that pay is owed where the work could only reasonably be expected against payment. Time off in lieu (Freizeitausgleich) is a common alternative and is tax-neutral.' },
+  { q: 'Are "overtime included in salary" clauses valid?', a: 'Blanket clauses are usually invalid in standard contracts because they breach the transparency requirement (§ 307 BGB). A clause is only valid if it names a concrete cap (e.g. "up to 10 overtime hours per month"), or for genuine senior staff above the social-insurance contribution ceiling.' },
+  { q: 'How do I calculate the value of my overtime?', a: 'Find your hourly rate first: monthly gross ÷ (weekly hours × 4.35). For example, €3,480 ÷ (40 × 4.35) = €20/hour. Fifteen overtime hours are then worth 15 × €20 = €300 gross, before any contractual premium.' },
+  { q: 'How is paid-out overtime taxed?', a: 'Paid overtime is treated as ordinary salary: it raises your gross income for that month and is subject to normal income tax and social contributions, which can push you into a higher marginal rate. Time off in lieu, by contrast, is tax-neutral.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Overtime in Germany', url: canonical }])];
+---
+<BaseLayout
+  title="Overtime in Germany — Rules, Pay, Premiums & Tax (Explained)"
+  description="Overtime (Überstunden) in Germany in English: statutory limits (§ 3 ArbZG), pay vs time off (§ 612 BGB), why 'overtime included in salary' clauses often fail, premiums and tax. For expats & HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Overtime in Germany</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · ArbZG / BGB</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Overtime in Germany</h1>
+        <p class="landing-hero__lead">When is overtime paid, when can it be taken as time off, and is there a legal premium? A plain-English guide to Überstunden for expats, international employees and HR teams in Germany.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Overtime = worked net hours − contractual hours.</strong> There is no statutory overtime premium in Germany;
+            any bonus comes from a collective or employment agreement. Value it via monthly gross ÷ (weekly hours × 4.35).
+            Blanket "overtime is covered by salary" clauses are usually invalid (§ 307 BGB).
+          </p>
+        </div>
+
+        <h2>Overtime (Überstunden) vs. Mehrarbeit</h2>
+        <p>
+          The two terms are often used interchangeably but mean different things. <strong>Overtime (Überstunden)</strong> is
+          exceeding your <em>contractually</em> agreed hours — a 20-hour part-timer who works 25 hours has done 5 overtime hours.
+          <strong>Mehrarbeit</strong> is a public-law concept: exceeding the <em>statutory</em> maximum under § 3 ArbZG (8 hours
+          per working day, extendable to 10 with averaging). Overtime is a contract matter; breaching the statutory limits is an
+          offence the employer can be fined for.
+        </p>
+
+        <h2>Pay or time off in lieu?</h2>
+        <p>
+          Whether overtime is paid out or taken as time off (Freizeitausgleich) depends on your contract, collective agreement or
+          works agreement. If nothing is regulated, § 612 BGB implies a right to payment where the work could only reasonably be
+          expected against pay. For senior staff paid above the contribution ceiling, courts often deny a separate overtime claim.
+          Time off in lieu is tax-neutral, which frequently makes it the more attractive option.
+        </p>
+
+        <h2>"Overtime is included in the salary" — is that legal?</h2>
+        <p>
+          Clauses stating that all overtime is covered by the monthly salary are, in standard contracts, almost always
+          <strong>invalid</strong> for breaching the transparency requirement (§ 307 (1) BGB): an employee cannot tell how much
+          unpaid work they are agreeing to. Such a clause is only valid if it names a concrete cap — for example, "up to 10
+          overtime hours per month are covered" — or applies to genuine executives.
+        </p>
+
+        <h2>Working out the value</h2>
+        <div style="background: var(--petrol-tint); padding: var(--space-4); border-radius: var(--radius); border-left: 4px solid var(--petrol); font-family: var(--font-mono); font-size: 0.9rem; margin: var(--space-4) 0;">
+          <code>Hourly rate = monthly gross ÷ (weekly hours × 4.35)</code>
+        </div>
+        <p>
+          Example: €3,480 gross on a 40-hour week gives €3,480 ÷ 174 = €20/hour. Fifteen overtime hours are worth 15 × €20 =
+          €300 gross, before any contractual premium (often 25% for weekday overtime, 50% for Sundays or public holidays).
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/break-rules-germany/" class="link-card"><span>Break rules in Germany (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-public-holidays/" class="link-card"><span>German public holidays</span><span class="link-card__arrow">→</span></a>
+          <a href="/ratgeber/ueberstunden-berechnen/" class="link-card"><span>Überstunden berechnen (auf Deutsch)</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

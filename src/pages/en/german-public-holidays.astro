@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, getCountdownUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/german-public-holidays/';
+
+// Curated German public holidays. `slug` links to an evergreen countdown page where one exists.
+const nationwide = [
+  { en: 'New Year\'s Day', de: 'Neujahr', date: '1 January', slug: 'new-year' },
+  { en: 'Good Friday', de: 'Karfreitag', date: 'moveable (Fri before Easter)', slug: '' },
+  { en: 'Easter Monday', de: 'Ostermontag', date: 'moveable (Mon after Easter)', slug: '' },
+  { en: 'Labour Day', de: 'Tag der Arbeit', date: '1 May', slug: 'may-day-germany' },
+  { en: 'Ascension Day', de: 'Christi Himmelfahrt', date: 'moveable (39 days after Easter)', slug: '' },
+  { en: 'Whit Monday', de: 'Pfingstmontag', date: 'moveable (50 days after Easter)', slug: '' },
+  { en: 'German Unity Day', de: 'Tag der Deutschen Einheit', date: '3 October', slug: 'german-unity-day' },
+  { en: 'Christmas Day', de: '1. Weihnachtstag', date: '25 December', slug: 'christmas' },
+  { en: 'Boxing Day', de: '2. Weihnachtstag', date: '26 December', slug: 'boxing-day' },
+];
+const regional = [
+  { en: 'Epiphany', de: 'Heilige Drei Könige', date: '6 January', states: 'BW, BY, ST', slug: 'epiphany' },
+  { en: 'International Women\'s Day', de: 'Frauentag', date: '8 March', states: 'Berlin, MV', slug: 'womens-day' },
+  { en: 'Corpus Christi', de: 'Fronleichnam', date: 'moveable', states: 'BW, BY, HE, NW, RP, SL (+ parts)', slug: '' },
+  { en: 'Assumption Day', de: 'Mariä Himmelfahrt', date: '15 August', states: 'Saarland, parts of BY', slug: 'assumption-day' },
+  { en: 'Reformation Day', de: 'Reformationstag', date: '31 October', states: 'BB, HB, HH, MV, NI, SN, ST, SH, TH', slug: '' },
+  { en: 'All Saints\' Day', de: 'Allerheiligen', date: '1 November', states: 'BW, BY, NW, RP, SL', slug: 'all-saints-day' },
+  { en: 'Repentance Day', de: 'Buß- und Bettag', date: 'moveable', states: 'Saxony', slug: '' },
+];
+
+const faqs = [
+  { q: 'How many public holidays are there in Germany?', a: 'There are 9 nationwide public holidays. Individual federal states add their own, so the total ranges from 10 (e.g. Berlin, Bremen, Hamburg) up to 13 or 14 in states such as Bavaria, depending on the region.' },
+  { q: 'Which German state has the most public holidays?', a: 'Bavaria has the most, with up to 13 (14 in the mainly Catholic city of Augsburg, which also observes the Augsburg Peace Festival). Berlin, Bremen, Hamburg, Lower Saxony, Schleswig-Holstein and North Rhine-Westphalia have the fewest.' },
+  { q: 'Are public holidays paid in Germany?', a: 'Yes. If a public holiday falls on a normal working day, employees keep their pay under the Continued Remuneration Act (§ 2 EFZG) — they do not have to make up the hours. Holiday work usually attracts a premium and may be tax-privileged under § 3b EStG.' },
+  { q: 'Do public holidays reduce my weekly target hours?', a: 'Yes. A public holiday on a working day reduces that week\'s target working time by the hours you would normally have worked; those hours are not owed and cannot be reclaimed by the employer.' },
+  { q: 'How are moveable holidays like Easter calculated?', a: 'Easter Sunday is the first Sunday after the first full moon of spring, and Good Friday, Easter Monday, Ascension, Whit Monday and Corpus Christi are all derived from it. Their calendar dates therefore change every year.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'German Public Holidays', url: canonical }])];
+---
+<BaseLayout
+  title="German Public Holidays — Nationwide & by State (in English)"
+  description="German public holidays explained in English: the 9 nationwide holidays plus regional ones by federal state, whether they are paid, and how moveable dates like Easter are set. For expats & HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">German Public Holidays</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · Feiertage</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">German Public Holidays</h1>
+        <p class="landing-hero__lead">Germany has 9 nationwide public holidays; each federal state adds its own, so the total varies by region. Here is the full list in English, with which states observe the regional ones.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Germany has 9 nationwide public holidays</strong>, plus regional ones set by each of the 16 federal states —
+            so the total ranges from 10 (e.g. Berlin, Hamburg) to 13–14 (Bavaria). Holidays on a working day are paid and do not
+            have to be made up (§ 2 EFZG).
+          </p>
+        </div>
+
+        <h2>Nationwide public holidays (all 16 states)</h2>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 480px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Holiday</th><th style="padding: 10px;">German name</th><th style="padding: 10px;">Date</th></tr></thead>
+            <tbody>
+              {nationwide.map(h => (
+                <tr style="border-bottom: 1px solid var(--rule);">
+                  <td style="padding: 10px;">{h.slug ? <a href={getCountdownUrl(lang, h.slug)} style="color: var(--petrol); text-decoration: underline;">{h.en}</a> : h.en}</td>
+                  <td style="padding: 10px;">{h.de}</td>
+                  <td style="padding: 10px;">{h.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Regional public holidays (selected states only)</h2>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 560px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Holiday</th><th style="padding: 10px;">German name</th><th style="padding: 10px;">Date</th><th style="padding: 10px;">States</th></tr></thead>
+            <tbody>
+              {regional.map(h => (
+                <tr style="border-bottom: 1px solid var(--rule);">
+                  <td style="padding: 10px;">{h.slug ? <a href={getCountdownUrl(lang, h.slug)} style="color: var(--petrol); text-decoration: underline;">{h.en}</a> : h.en}</td>
+                  <td style="padding: 10px;">{h.de}</td>
+                  <td style="padding: 10px;">{h.date}</td>
+                  <td style="padding: 10px; font-size: 0.85rem;">{h.states}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--ink-3);">State codes: BW Baden-Württemberg · BY Bavaria · BB Brandenburg · HB Bremen · HH Hamburg · HE Hesse · MV Mecklenburg-Vorpommern · NI Lower Saxony · NW North Rhine-Westphalia · RP Rhineland-Palatinate · SL Saarland · SN Saxony · ST Saxony-Anhalt · SH Schleswig-Holstein · TH Thuringia.</p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/break-rules-germany/" class="link-card"><span>Break rules in Germany (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/overtime-in-germany/" class="link-card"><span>Overtime in Germany</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/" class="link-card"><span>Time & countdown calculators</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

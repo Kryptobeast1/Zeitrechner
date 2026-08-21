@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkHoursCalc from '../../components/calculator/WorkHoursCalc';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+import { computeShiftFromHours } from '../../lib/shift';
+
+const lang = 'en';
+const canonical = '/en/german-working-hours-calculator/';
+const example = computeShiftFromHours(9, 17, 30, 'en'); // 09:00–17:00, 30 min break
+
+const faqs = [
+  { q: 'How are working hours calculated in Germany?', a: 'Net working time = end time − start time − unpaid breaks. For example, 09:00 to 17:00 is 8 hours gross; after the mandatory 30-minute break it is 7.5 net hours (7.50 decimal hours). German payroll records time in decimal hours, not hours-and-minutes.' },
+  { q: 'How long is the legal break in Germany?', a: 'Under § 4 of the Working Time Act (Arbeitszeitgesetz, ArbZG), a shift of more than 6 hours requires at least a 30-minute unpaid break, and more than 9 hours requires 45 minutes. Up to 6 hours, no break is legally required. The break must interrupt the work and cannot be placed at the start or end.' },
+  { q: 'What is the maximum legal working time per day in Germany?', a: 'Under § 3 ArbZG the working day may not exceed 8 hours. It can be extended to 10 hours provided the average stays at 8 hours over 6 months or 24 weeks. The weekly maximum works out to 48 hours (8 hours × 6 working days).' },
+  { q: 'What are decimal hours and industrial minutes?', a: 'Decimal hours = hours + (minutes ÷ 60), so 7h 30m = 7.5. "Industrial minutes" (Industrieminuten) are hundredths of an hour — 30 real minutes equal 50 industrial minutes (0.50 h), not 30. German payroll uses these so time multiplies cleanly by an hourly wage.' },
+  { q: 'What rest is required between two shifts?', a: 'Under § 5 ArbZG, at least 11 consecutive hours of rest must fall between the end of one working day and the start of the next. Certain sectors (hospitals, hospitality, agriculture) may reduce this to 10 hours if compensated within four weeks.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'German Working Hours Calculator', url: canonical }])];
+---
+<BaseLayout
+  title="German Working Hours Calculator — Net Hours, Breaks & Decimal (ArbZG)"
+  description="Calculate net working hours under German law: gross time minus the § 4 ArbZG break (30 min over 6h, 45 min over 9h), in hours and decimal/industrial minutes. Free, for expats and HR in Germany."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">German Working Hours Calculator</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · ArbZG</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">German Working Hours Calculator</h1>
+        <p class="landing-hero__lead">Work out your net working time under German law — gross hours minus the statutory break — in hours, minutes and decimal (industrial) hours. Built for expats, international employees and HR teams dealing with the Arbeitszeitgesetz (ArbZG).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;"><div class="container container--narrow"><div class="glass" style="padding: 1.5rem; border-radius: var(--radius);"><WorkHoursCalc client:visible lang="en" /></div></div></section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Net working hours in Germany = end − start − unpaid break.</strong> A shift over 6 hours must lose at least
+            30 minutes, over 9 hours at least 45 (§ 4 ArbZG). Example: 09:00–17:00 is 8 gross hours; after a 30-minute break,
+            {example.netHHMM} net ({example.netDecimalStr} decimal hours).
+          </p>
+        </div>
+
+        <h2>Gross vs. net time, and the mandatory break</h2>
+        <p>
+          German employment law separates <strong>gross time</strong> (from clock-in to clock-out) from <strong>net working
+          time</strong> (gross minus unpaid rest breaks). Only net time is paid and reported. The break is not optional: under
+          § 4 of the Working Time Act (Arbeitszeitgesetz, ArbZG) it depends solely on the length of the shift.
+        </p>
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left; min-width: 420px;">
+            <thead><tr style="border-bottom: 2px solid var(--rule);"><th style="padding: 10px;">Daily working time</th><th style="padding: 10px;">Minimum break</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">up to 6 hours</td><td style="padding: 10px;">none required</td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">more than 6 to 9 hours</td><td style="padding: 10px;"><strong>30 minutes</strong></td></tr>
+              <tr style="border-bottom: 1px solid var(--rule);"><td style="padding: 10px;">more than 9 hours</td><td style="padding: 10px;"><strong>45 minutes</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Decimal hours and industrial minutes</h2>
+        <p>
+          For payroll, time is recorded in <strong>decimal hours</strong>: decimal hours = hours + (minutes ÷ 60), so 7h 30m is
+          7.5. <em>Industrial minutes</em> (Industrieminuten) are hundredths of an hour — 30 real minutes are 50 industrial
+          minutes, not 30. The calculator above returns net time in both formats so you can multiply directly by an hourly wage.
+        </p>
+
+        <h2>Daily and weekly limits (§ 3 ArbZG)</h2>
+        <p>
+          The working day may not exceed <strong>8 hours</strong>, extendable to 10 if the average stays at 8 over six months —
+          a weekly maximum of 48 hours across six working days. Between two shifts, § 5 ArbZG requires at least
+          <strong>11 hours</strong> of uninterrupted rest.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 32px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/break-rules-germany/" class="link-card"><span>Break rules in Germany (§ 4 ArbZG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/overtime-in-germany/" class="link-card"><span>Overtime in Germany</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-public-holidays/" class="link-card"><span>German public holidays</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/guides/how-to-calculate-work-hours/" class="link-card"><span>Guide: how to calculate work hours</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
