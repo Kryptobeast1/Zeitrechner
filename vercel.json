@@ -277,6 +277,366 @@
       "permanent": true
     },
     {
+      "source": "/tage-bis-weihnachten-2025/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-christmas-2025/",
+      "destination": "/en/days-until-christmas/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-christmas-2025/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-weihnachten-2025/",
+      "destination": "/en/days-until-christmas/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-weihnachten-2026/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-christmas-2026/",
+      "destination": "/en/days-until-christmas/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-christmas-2026/",
+      "destination": "/tage-bis-weihnachten/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-weihnachten-2026/",
+      "destination": "/en/days-until-christmas/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-neujahr-2027/",
+      "destination": "/tage-bis-neujahr/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-new-year-2027/",
+      "destination": "/en/days-until-new-year/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-new-year-2027/",
+      "destination": "/tage-bis-neujahr/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-neujahr-2027/",
+      "destination": "/en/days-until-new-year/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ostersonntag-2026/",
+      "destination": "/tage-bis-ostersonntag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-easter-2026/",
+      "destination": "/en/days-until-easter/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-easter-2026/",
+      "destination": "/tage-bis-ostersonntag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ostersonntag-2026/",
+      "destination": "/en/days-until-easter/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ostersonntag-2027/",
+      "destination": "/tage-bis-ostersonntag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-easter-2027/",
+      "destination": "/en/days-until-easter/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-easter-2027/",
+      "destination": "/tage-bis-ostersonntag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ostersonntag-2027/",
+      "destination": "/en/days-until-easter/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-karfreitag-2026/",
+      "destination": "/tage-bis-karfreitag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-good-friday-2026/",
+      "destination": "/en/days-until-good-friday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-good-friday-2026/",
+      "destination": "/tage-bis-karfreitag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-karfreitag-2026/",
+      "destination": "/en/days-until-good-friday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ostermontag-2026/",
+      "destination": "/tage-bis-ostermontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-easter-monday-2026/",
+      "destination": "/en/days-until-easter-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-easter-monday-2026/",
+      "destination": "/tage-bis-ostermontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ostermontag-2026/",
+      "destination": "/en/days-until-easter-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-christi-himmelfahrt-2026/",
+      "destination": "/tage-bis-christi-himmelfahrt/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ascension-day-2026/",
+      "destination": "/en/days-until-ascension-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ascension-day-2026/",
+      "destination": "/tage-bis-christi-himmelfahrt/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-christi-himmelfahrt-2026/",
+      "destination": "/en/days-until-ascension-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-pfingstmontag-2026/",
+      "destination": "/tage-bis-pfingstmontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-whit-monday-2026/",
+      "destination": "/en/days-until-whit-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-whit-monday-2026/",
+      "destination": "/tage-bis-pfingstmontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-pfingstmontag-2026/",
+      "destination": "/en/days-until-whit-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-fronleichnam-2026/",
+      "destination": "/tage-bis-fronleichnam/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-corpus-christi-2026/",
+      "destination": "/en/days-until-corpus-christi/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-corpus-christi-2026/",
+      "destination": "/tage-bis-fronleichnam/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-fronleichnam-2026/",
+      "destination": "/en/days-until-corpus-christi/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-memorial-day-2026/",
+      "destination": "/tage-bis-memorial-day/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-memorial-day-2026/",
+      "destination": "/en/days-until-memorial-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-juneteenth-2026/",
+      "destination": "/tage-bis-juneteenth/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-juneteenth-2026/",
+      "destination": "/en/days-until-juneteenth/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-thanksgiving-2026/",
+      "destination": "/tage-bis-thanksgiving/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-thanksgiving-2026/",
+      "destination": "/en/days-until-thanksgiving/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-tag-der-arbeit-usa-2026/",
+      "destination": "/tage-bis-tag-der-arbeit-usa/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-labor-day-2026/",
+      "destination": "/en/days-until-labor-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-labor-day-2026/",
+      "destination": "/tage-bis-tag-der-arbeit-usa/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-tag-der-arbeit-usa-2026/",
+      "destination": "/en/days-until-labor-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-black-friday-2026/",
+      "destination": "/tage-bis-black-friday/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-black-friday-2026/",
+      "destination": "/en/days-until-black-friday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-wm-2026-start/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-world-cup-2026-start/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-world-cup-2026-start/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-wm-2026-start/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-wm-2026-finale/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-world-cup-2026-final/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-world-cup-2026-final/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-wm-2026-finale/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-sonnenfinsternis-2026/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-solar-eclipse-2026/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-solar-eclipse-2026/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-sonnenfinsternis-2026/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ramadan-2026/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ramadan-2026/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-eid-al-fitr-2026/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-eid-al-fitr-2026/",
+      "destination": "/en/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-jahr-2026/",
+      "destination": "/tage-bis-neujahr/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-year-2026/",
+      "destination": "/tage-bis-neujahr/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-year-2026/",
+      "destination": "/en/days-until-new-year/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-jahr-2026/",
+      "destination": "/en/days-until-new-year/",
+      "permanent": true
+    },
+    {
       "source": "/tage-bis-christmas/",
       "destination": "/tage-bis-weihnachten/",
       "permanent": true
@@ -287,36 +647,6 @@
       "permanent": true
     },
     {
-      "source": "/tage-bis-weihnachten-2025/",
-      "destination": "/tage-bis-weihnachten/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-christmas-2025/",
-      "destination": "/tage-bis-weihnachten/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-christmas-2025/",
-      "destination": "/en/days-until-christmas/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-weihnachten-2025/",
-      "destination": "/en/days-until-christmas/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-christmas-2026/",
-      "destination": "/tage-bis-weihnachten-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-weihnachten-2026/",
-      "destination": "/en/days-until-christmas-2026/",
-      "permanent": true
-    },
-    {
       "source": "/tage-bis-boxing-day/",
       "destination": "/tage-bis-zweiter-weihnachtstag/",
       "permanent": true
@@ -324,16 +654,6 @@
     {
       "source": "/en/days-until-zweiter-weihnachtstag/",
       "destination": "/en/days-until-boxing-day/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-new-year-2027/",
-      "destination": "/tage-bis-neujahr-2027/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-neujahr-2027/",
-      "destination": "/en/days-until-new-year-2027/",
       "permanent": true
     },
     {
@@ -357,46 +677,6 @@
       "permanent": true
     },
     {
-      "source": "/tage-bis-easter-2026/",
-      "destination": "/tage-bis-ostersonntag-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-ostersonntag-2026/",
-      "destination": "/en/days-until-easter-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-easter/",
-      "destination": "/tage-bis-ostersonntag/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-ostersonntag/",
-      "destination": "/en/days-until-easter/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-easter-2027/",
-      "destination": "/tage-bis-ostersonntag-2027/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-ostersonntag-2027/",
-      "destination": "/en/days-until-easter-2027/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-mlk-day/",
-      "destination": "/tage-bis-mlk-tag/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-mlk-tag/",
-      "destination": "/en/days-until-mlk-day/",
-      "permanent": true
-    },
-    {
       "source": "/tage-bis-independence-day/",
       "destination": "/tage-bis-unabhaengigkeitstag-usa/",
       "permanent": true
@@ -404,56 +684,6 @@
     {
       "source": "/en/days-until-unabhaengigkeitstag-usa/",
       "destination": "/en/days-until-independence-day/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-labor-day-2026/",
-      "destination": "/tage-bis-tag-der-arbeit-usa-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-tag-der-arbeit-usa-2026/",
-      "destination": "/en/days-until-labor-day-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-columbus-day/",
-      "destination": "/tage-bis-columbus-tag/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-columbus-tag/",
-      "destination": "/en/days-until-columbus-day/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-veterans-day/",
-      "destination": "/tage-bis-veterans-tag/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-veterans-tag/",
-      "destination": "/en/days-until-veterans-day/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-german-unity-day/",
-      "destination": "/tage-bis-tag-der-deutschen-einheit/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-tag-der-deutschen-einheit/",
-      "destination": "/en/days-until-german-unity-day/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-may-day-germany/",
-      "destination": "/tage-bis-erster-mai/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-erster-mai/",
-      "destination": "/en/days-until-may-day-germany/",
       "permanent": true
     },
     {
@@ -477,53 +707,13 @@
       "permanent": true
     },
     {
-      "source": "/tage-bis-good-friday-2026/",
-      "destination": "/tage-bis-karfreitag-2026/",
+      "source": "/tage-bis-may-day-germany/",
+      "destination": "/tage-bis-erster-mai/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-karfreitag-2026/",
-      "destination": "/en/days-until-good-friday-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-easter-monday-2026/",
-      "destination": "/tage-bis-ostermontag-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-ostermontag-2026/",
-      "destination": "/en/days-until-easter-monday-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-ascension-day-2026/",
-      "destination": "/tage-bis-christi-himmelfahrt-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-christi-himmelfahrt-2026/",
-      "destination": "/en/days-until-ascension-day-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-whit-monday-2026/",
-      "destination": "/tage-bis-pfingstmontag-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-pfingstmontag-2026/",
-      "destination": "/en/days-until-whit-monday-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-corpus-christi-2026/",
-      "destination": "/tage-bis-fronleichnam-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-fronleichnam-2026/",
-      "destination": "/en/days-until-corpus-christi-2026/",
+      "source": "/en/days-until-erster-mai/",
+      "destination": "/en/days-until-may-day-germany/",
       "permanent": true
     },
     {
@@ -547,53 +737,33 @@
       "permanent": true
     },
     {
-      "source": "/tage-bis-lunar-new-year-2027/",
-      "destination": "/tage-bis-chinesisches-neujahr-2027/",
+      "source": "/tage-bis-german-unity-day/",
+      "destination": "/tage-bis-tag-der-deutschen-einheit/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-chinesisches-neujahr-2027/",
-      "destination": "/en/days-until-lunar-new-year-2027/",
+      "source": "/en/days-until-tag-der-deutschen-einheit/",
+      "destination": "/en/days-until-german-unity-day/",
       "permanent": true
     },
     {
-      "source": "/tage-bis-hanukkah-2026/",
-      "destination": "/tage-bis-chanukka-2026/",
+      "source": "/tage-bis-veterans-day/",
+      "destination": "/tage-bis-veterans-tag/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-chanukka-2026/",
-      "destination": "/en/days-until-hanukkah-2026/",
+      "source": "/en/days-until-veterans-tag/",
+      "destination": "/en/days-until-veterans-day/",
       "permanent": true
     },
     {
-      "source": "/tage-bis-world-cup-2026-start/",
-      "destination": "/tage-bis-wm-2026-start/",
+      "source": "/tage-bis-earth-day/",
+      "destination": "/tage-bis-tag-der-erde/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-wm-2026-start/",
-      "destination": "/en/days-until-world-cup-2026-start/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-world-cup-2026-final/",
-      "destination": "/tage-bis-wm-2026-finale/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-wm-2026-finale/",
-      "destination": "/en/days-until-world-cup-2026-final/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-solar-eclipse-2026/",
-      "destination": "/tage-bis-sonnenfinsternis-2026/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-sonnenfinsternis-2026/",
-      "destination": "/en/days-until-solar-eclipse-2026/",
+      "source": "/en/days-until-tag-der-erde/",
+      "destination": "/en/days-until-earth-day/",
       "permanent": true
     },
     {
@@ -637,23 +807,113 @@
       "permanent": true
     },
     {
-      "source": "/tage-bis-earth-day/",
-      "destination": "/tage-bis-tag-der-erde/",
+      "source": "/tage-bis-easter/",
+      "destination": "/tage-bis-ostersonntag/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-tag-der-erde/",
-      "destination": "/en/days-until-earth-day/",
+      "source": "/en/days-until-ostersonntag/",
+      "destination": "/en/days-until-easter/",
       "permanent": true
     },
     {
-      "source": "/tage-bis-year-2026/",
-      "destination": "/tage-bis-jahr-2026/",
+      "source": "/tage-bis-good-friday/",
+      "destination": "/tage-bis-karfreitag/",
       "permanent": true
     },
     {
-      "source": "/en/days-until-jahr-2026/",
-      "destination": "/en/days-until-year-2026/",
+      "source": "/en/days-until-karfreitag/",
+      "destination": "/en/days-until-good-friday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-easter-monday/",
+      "destination": "/tage-bis-ostermontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-ostermontag/",
+      "destination": "/en/days-until-easter-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-ascension-day/",
+      "destination": "/tage-bis-christi-himmelfahrt/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-christi-himmelfahrt/",
+      "destination": "/en/days-until-ascension-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-whit-monday/",
+      "destination": "/tage-bis-pfingstmontag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-pfingstmontag/",
+      "destination": "/en/days-until-whit-monday/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-corpus-christi/",
+      "destination": "/tage-bis-fronleichnam/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-fronleichnam/",
+      "destination": "/en/days-until-corpus-christi/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-mlk-day/",
+      "destination": "/tage-bis-mlk-tag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-mlk-tag/",
+      "destination": "/en/days-until-mlk-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-labor-day/",
+      "destination": "/tage-bis-tag-der-arbeit-usa/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-tag-der-arbeit-usa/",
+      "destination": "/en/days-until-labor-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-columbus-day/",
+      "destination": "/tage-bis-columbus-tag/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-columbus-tag/",
+      "destination": "/en/days-until-columbus-day/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-lunar-new-year-2027/",
+      "destination": "/tage-bis-chinesisches-neujahr-2027/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-chinesisches-neujahr-2027/",
+      "destination": "/en/days-until-lunar-new-year-2027/",
+      "permanent": true
+    },
+    {
+      "source": "/tage-bis-hanukkah-2026/",
+      "destination": "/tage-bis-chanukka-2026/",
+      "permanent": true
+    },
+    {
+      "source": "/en/days-until-chanukka-2026/",
+      "destination": "/en/days-until-hanukkah-2026/",
       "permanent": true
     },
     {
@@ -674,76 +934,6 @@
     {
       "source": "/en/days-until-jahr-2028/",
       "destination": "/en/days-until-year-2028/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2029/",
-      "destination": "/tage-bis-jahr-2029/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2029/",
-      "destination": "/en/days-until-year-2029/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2030/",
-      "destination": "/tage-bis-jahr-2030/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2030/",
-      "destination": "/en/days-until-year-2030/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2031/",
-      "destination": "/tage-bis-jahr-2031/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2031/",
-      "destination": "/en/days-until-year-2031/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2032/",
-      "destination": "/tage-bis-jahr-2032/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2032/",
-      "destination": "/en/days-until-year-2032/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2033/",
-      "destination": "/tage-bis-jahr-2033/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2033/",
-      "destination": "/en/days-until-year-2033/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2034/",
-      "destination": "/tage-bis-jahr-2034/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2034/",
-      "destination": "/en/days-until-year-2034/",
-      "permanent": true
-    },
-    {
-      "source": "/tage-bis-year-2035/",
-      "destination": "/tage-bis-jahr-2035/",
-      "permanent": true
-    },
-    {
-      "source": "/en/days-until-jahr-2035/",
-      "destination": "/en/days-until-year-2035/",
       "permanent": true
     },
     {

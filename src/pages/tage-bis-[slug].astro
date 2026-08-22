@@ -2,43 +2,27 @@
 // /tage-bis-[slug]/
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CountdownCalc from '../components/calculator/CountdownCalc';
-import { ALL_EVENTS, INDEXED_EVENTS, getDaysUntil, getNextOccurrence } from '../data/dateEvents';
+import { INDEXED_EVENTS, resolveActiveDate, daysUntilISO } from '../data/dateEvents';
 import type { DateEvent } from '../data/dateEvents';
 import { buildSEOMeta, buildFAQSchema, buildBreadcrumbSchema, getCountdownUrl, getHubUrl, getFullUrl } from '../lib/seoEngine';
 import { countdownIntros_de, variantIndex } from '../data/contentVariants';
 
 export async function getStaticPaths() {
-  // Canonical German slug only. Past-year event pages are not built — they are
-  // 301'd to their evergreen parent via vercel.json (Phase 6.4 lifecycle).
-  const year = new Date().getFullYear();
-  return ALL_EVENTS
-    .filter(e => parseInt(e.targetDate.split('-')[0], 10) >= year)
-    .map(event => ({ params: { slug: event.deSlug }, props: { event } }));
+  // Build every live event (recurring, or dated-and-not-yet-past). Retired events
+  // are 301'd to their evergreen parent / the hub via vercel.json (lifecycle).
+  return INDEXED_EVENTS.map(event => ({ params: { slug: event.deSlug }, props: { event } }));
 }
 
 interface Props { event: DateEvent; }
 const { event } = Astro.props as Props;
 
 const lang = 'de';
-const { date: activeTargetDate, yearShift } = getNextOccurrence(event.targetDate);
-const days = Math.max(0, getDaysUntil(event.targetDate));
+const activeTargetDate = resolveActiveDate(event);
+const days = daysUntilISO(activeTargetDate);
+const shouldNoindex = false; // only live, correctly-dated pages are built
 
-// Past-year check for noindex
-const targetYear = parseInt(event.targetDate.split('-')[0]);
-const isPastYear = targetYear < new Date().getFullYear();
-const isPastEvent = new Date(event.targetDate).getTime() < new Date().getTime();
-const shouldNoindex = isPastYear || (isPastEvent && event.priority === 'low');
-
-// Dynamic display name if year shifted
-let displayName = event.deName;
-const currentTargetYear = new Date(activeTargetDate).getFullYear();
-if (yearShift > 0) {
-  if (/20\d{2}/.test(displayName)) {
-    displayName = displayName.replace(/20\d{2}/, currentTargetYear.toString());
-  } else {
-    displayName = `${displayName} ${currentTargetYear}`;
-  }
-}
+// Recurring events carry a clean (year-less) name; dated events already include their year.
+const displayName = event.deName;
 
 const canonical = getCountdownUrl(lang, event.deSlug);
 const altUrl = getCountdownUrl('en', event.slug);
@@ -93,12 +77,10 @@ const jsonLd = [
   }
 ];
 
-// Related events — exclude past-year countdown pages
-const relatedEvents = INDEXED_EVENTS.filter(e => {
-  const tYr = parseInt(e.targetDate.split('-')[0]);
-  const isPast = tYr < 2026;
-  return e.deSlug !== event.deSlug && e.category === event.category && !isPast;
-}).slice(0, 6);
+// Related events — INDEXED_EVENTS already excludes retired pages
+const relatedEvents = INDEXED_EVENTS
+  .filter(e => e.deSlug !== event.deSlug && e.category === event.category)
+  .slice(0, 6);
 
 // Secondary Content helper
 function getSecondaryContent(slug: string): string {
@@ -346,7 +328,7 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           </div>
           <div class="link-grid">
             {relatedEvents.map(e => {
-              const d = getDaysUntil(e.targetDate);
+              const d = daysUntilISO(resolveActiveDate(e));
               return (
                 <a href={getCountdownUrl(lang, e.deSlug)} class="link-card">
                   <span>Tage bis {e.deName} ({d} Tage)</span>

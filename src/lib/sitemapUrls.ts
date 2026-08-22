@@ -1,14 +1,13 @@
 // Single source for which URLs go in which sitemap (Phase 6.1). Both the sitemap
 // index and each child sitemap read from here so they can never drift.
 import { INDEXED_RANGES } from '../data/timeRanges';
-import { ALL_EVENTS } from '../data/dateEvents';
+import { INDEXED_EVENTS } from '../data/dateEvents';
 import { shouldIndex } from './seoEngine';
 
 export const SITE = 'https://zeit-rechner.com';
-const CURRENT_YEAR = new Date().getFullYear();
 
-// Future/evergreen events only — past year-pages are 301'd to their evergreen parent.
-const liveEvents = ALL_EVENTS.filter(e => parseInt(e.targetDate.split('-')[0], 10) >= CURRENT_YEAR);
+// Live events only — retired (past one-time / year) events are 301'd, not listed.
+const liveEvents = INDEXED_EVENTS;
 const liveRanges = INDEXED_RANGES.filter(r => r.start !== r.end && shouldIndex('time-range', r.demandScore));
 
 export function deHoursPaths(): string[] { return liveRanges.map(r => `/stunden-zwischen-${r.deSlug}/`); }

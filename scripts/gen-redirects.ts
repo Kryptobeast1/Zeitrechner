@@ -17,7 +17,7 @@ import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { ALL_TIME_RANGES } from '../src/data/timeRanges.ts';
-import { ALL_EVENTS } from '../src/data/dateEvents.ts';
+import { ALL_EVENTS, INDEXED_EVENTS, isRetired, LEGACY_EVENT_REDIRECTS } from '../src/data/dateEvents.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -62,25 +62,42 @@ for (const r of ALL_TIME_RANGES) {
   redirects.push(R(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`));
 }
 
-// 3b. countdown redirects — lifecycle (Phase 6.4) + slug normalisation.
-let explicitEvents = 0, pastEvents = 0;
-const currentYear = new Date().getFullYear();
+// 3b. countdown redirects — date-based lifecycle + dedup + slug normalisation.
+let explicitEvents = 0, retiredEvents = 0, legacyEvents = 0;
 const stripYear = (s: string) => s.replace(/-\d{4}$/, '');
-for (const e of ALL_EVENTS) {
-  const y = parseInt(e.targetDate.split('-')[0], 10);
-  if (y < currentYear) {
-    // Past-year page → 301 to the evergreen parent (auto-jumps to next occurrence), else the hub.
-    const evDe = ALL_EVENTS.find(x => x.deSlug === stripYear(e.deSlug) && !/-\d{4}$/.test(x.deSlug));
-    const evEn = ALL_EVENTS.find(x => x.slug === stripYear(e.slug) && !/-\d{4}$/.test(x.slug));
-    const deTarget = evDe ? `/tage-bis-${evDe.deSlug}/` : '/';
-    const enTarget = evEn ? `/en/days-until-${evEn.slug}/` : '/en/';
-    redirects.push(R(`/tage-bis-${e.deSlug}/`, deTarget));
-    if (e.slug !== e.deSlug) redirects.push(R(`/tage-bis-${e.slug}/`, deTarget));
-    redirects.push(R(`/en/days-until-${e.slug}/`, enTarget));
-    if (e.slug !== e.deSlug) redirects.push(R(`/en/days-until-${e.deSlug}/`, enTarget));
-    pastEvents++;
-    continue;
+const liveDeSlugs = new Set(INDEXED_EVENTS.map(e => e.deSlug));
+const liveEnSlugs = new Set(INDEXED_EVENTS.map(e => e.slug));
+
+// (i) Removed duplicate twins + year-suffixed slugs that are now evergreen → canonical.
+for (const r of LEGACY_EVENT_REDIRECTS) {
+  redirects.push(R(`/tage-bis-${r.fromDe}/`, `/tage-bis-${r.toDe}/`));
+  redirects.push(R(`/en/days-until-${r.fromEn}/`, `/en/days-until-${r.toEn}/`));
+  if (r.fromEn !== r.fromDe) {
+    redirects.push(R(`/tage-bis-${r.fromEn}/`, `/tage-bis-${r.toDe}/`));
+    redirects.push(R(`/en/days-until-${r.fromDe}/`, `/en/days-until-${r.toEn}/`));
   }
+  legacyEvents++;
+}
+
+// (ii) Retired one-time / past year events → evergreen twin, or the hub. Year-series → New Year.
+for (const e of ALL_EVENTS) {
+  if (!isRetired(e)) continue;
+  const deTwin = stripYear(e.deSlug), enTwin = stripYear(e.slug);
+  let deTarget = '/', enTarget = '/en/';
+  if (e.category === 'year') { deTarget = '/tage-bis-neujahr/'; enTarget = '/en/days-until-new-year/'; }
+  else {
+    if (liveDeSlugs.has(deTwin) && deTwin !== e.deSlug) deTarget = `/tage-bis-${deTwin}/`;
+    if (liveEnSlugs.has(enTwin) && enTwin !== e.slug) enTarget = `/en/days-until-${enTwin}/`;
+  }
+  redirects.push(R(`/tage-bis-${e.deSlug}/`, deTarget));
+  if (e.slug !== e.deSlug) redirects.push(R(`/tage-bis-${e.slug}/`, deTarget));
+  redirects.push(R(`/en/days-until-${e.slug}/`, enTarget));
+  if (e.slug !== e.deSlug) redirects.push(R(`/en/days-until-${e.deSlug}/`, enTarget));
+  retiredEvents++;
+}
+
+// (iii) Live events with distinct DE/EN slugs → cross-language 301 to the canonical side.
+for (const e of INDEXED_EVENTS) {
   if (e.slug === e.deSlug) continue;
   explicitEvents++;
   redirects.push(R(`/tage-bis-${e.slug}/`, `/tage-bis-${e.deSlug}/`));
@@ -139,5 +156,6 @@ console.log(`[gen-redirects] wrote vercel.json`);
 console.log(`  total redirects        : ${redirects.length}`);
 console.log(`  legacy 12h EN slugs    : ${explicitLegacy} (x4 rules)`);
 console.log(`  explicit countdowns    : ${explicitEvents} (x2 rules)`);
-console.log(`  past-year countdowns   : ${pastEvents} (lifecycle → evergreen)`);
+console.log(`  legacy/dedup countdowns: ${legacyEvents} (twins/renames → canonical)`);
+console.log(`  retired countdowns     : ${retiredEvents} (past → evergreen/hub)`);
 console.log(`  merge/normalise regex  : 5`);

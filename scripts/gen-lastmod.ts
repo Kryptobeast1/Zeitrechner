@@ -12,7 +12,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { ALL_TIME_RANGES } from '../src/data/timeRanges.ts';
-import { ALL_EVENTS, getNextOccurrence } from '../src/data/dateEvents.ts';
+import { INDEXED_EVENTS, resolveActiveDate } from '../src/data/dateEvents.ts';
 import { formatHour24, getRangeHours } from '../src/data/timeRanges.ts';
 import { computeShiftFromHours } from '../src/lib/shift.ts';
 import { getArchetype } from '../src/lib/archetype.ts';
@@ -58,12 +58,9 @@ for (const r of ALL_TIME_RANGES) {
   record(`/en/hours-between-${r.slug}/`, rangeSignature(r, 'en'));
 }
 
-// ── countdown pages (evergreen only; year pages handled by lifecycle) ────────
-const currentYear = new Date().getFullYear();
-for (const ev of ALL_EVENTS) {
-  const y = parseInt(ev.targetDate.split('-')[0], 10);
-  if (y < currentYear) continue;
-  const { date } = getNextOccurrence(ev.targetDate);
+// ── countdown pages (live events only; retired ones are 301'd) ───────────────
+for (const ev of INDEXED_EVENTS) {
+  const date = resolveActiveDate(ev);
   const introDe = countdownIntros_de[variantIndex(ev.deSlug, countdownIntros_de.length)](ev.deName, 0);
   const introEn = countdownIntros_en[variantIndex(ev.slug, countdownIntros_en.length)](ev.name, 0);
   record(`/tage-bis-${ev.deSlug}/`, `CD|${ev.deSlug}|${date}|${introDe}`);

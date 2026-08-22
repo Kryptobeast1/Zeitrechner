@@ -17,7 +17,7 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { ALL_TIME_RANGES } from '../../src/data/timeRanges.ts';
-import { ALL_EVENTS } from '../../src/data/dateEvents.ts';
+import { INDEXED_EVENTS, LEGACY_EVENT_REDIRECTS } from '../../src/data/dateEvents.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
@@ -148,16 +148,15 @@ for (const r of rangeSample) {
     checkLegacy(`/arbeitsstunden-${r.legacyEnSlug}/`, `/stunden-zwischen-${r.deSlug}/`);
   }
 }
-// countdown legacy slugs — future events do a language-slug swap; past-year
-// pages follow the Phase 6.4 lifecycle to their evergreen parent.
-const nowYear = new Date().getFullYear();
-for (const e of ALL_EVENTS.filter(e => e.slug !== e.deSlug && parseInt(e.targetDate.split('-')[0], 10) >= nowYear).slice(0, 15)) {
+// countdown legacy slugs — live events do a language-slug swap; retired/dedup
+// twins follow the lifecycle to their evergreen canonical page.
+for (const e of INDEXED_EVENTS.filter(e => e.slug !== e.deSlug).slice(0, 15)) {
   checkLegacy(`/tage-bis-${e.slug}/`, `/tage-bis-${e.deSlug}/`);
   checkLegacy(`/en/days-until-${e.deSlug}/`, `/en/days-until-${e.slug}/`);
 }
-for (const e of ALL_EVENTS.filter(e => parseInt(e.targetDate.split('-')[0], 10) < nowYear).slice(0, 10)) {
-  const evDe = ALL_EVENTS.find(x => x.deSlug === e.deSlug.replace(/-\d{4}$/, '') && !/-\d{4}$/.test(x.deSlug));
-  if (evDe) checkLegacy(`/tage-bis-${e.deSlug}/`, `/tage-bis-${evDe.deSlug}/`);
+for (const r of LEGACY_EVENT_REDIRECTS) {
+  checkLegacy(`/tage-bis-${r.fromDe}/`, `/tage-bis-${r.toDe}/`);
+  checkLegacy(`/en/days-until-${r.fromEn}/`, `/en/days-until-${r.toEn}/`);
 }
 
 // ─── Report ──────────────────────────────────────────────────────────────────
