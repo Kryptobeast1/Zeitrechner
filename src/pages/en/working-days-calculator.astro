@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHolidays, BUNDESLAENDER } from '../../lib/holidays';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../../lib/seoEngine';
+
+const lang = 'en';
+const canonical = '/en/working-days-calculator/';
+
+// Embed engine-computed holidays for a rolling window so the client can count
+// working days per Bundesland without shipping the engine. Compact form:
+// { 'YYYY-MM-DD': { name, states:[...] } }.
+const thisYear = new Date().getFullYear();
+const years = [thisYear - 1, thisYear, thisYear + 1, thisYear + 2, thisYear + 3];
+const holidayMap: Record<string, { name: string; states: string[] }> = {};
+for (const y of years) for (const h of getHolidays(y)) holidayMap[h.dateISO] = { name: h.en, states: h.states };
+
+const faqs = [
+  { q: 'What is a working day in Germany?', a: 'For this calculator a working day is Monday to Friday that is not a public holiday in the selected federal state. Note the legal distinction: Werktage are all days except Sundays and public holidays (so Saturday counts), while Arbeitstage are the days you actually work — usually Monday to Friday.' },
+  { q: 'Do public holidays depend on the federal state?', a: 'Yes. Germany has 9 nationwide public holidays; each of the 16 states adds its own, so the number of working days in a period changes depending on the state you select. This calculator applies the correct holidays for the chosen Bundesland.' },
+  { q: 'Are weekends counted as working days?', a: 'No. Saturdays and Sundays are excluded. Public holidays that fall on a weekday are also excluded and shown separately, since they do not reduce working days when they land on a weekend.' },
+  { q: 'How are moveable holidays like Easter handled?', a: 'They are computed, not looked up. Good Friday, Easter Monday, Ascension, Whit Monday and Corpus Christi are all derived from Easter Sunday for the relevant year, so the result is correct for any date range.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Working Days Calculator', url: canonical }])];
+---
+<BaseLayout
+  title="Working Days Calculator Germany — by Federal State (Arbeitstage)"
+  description="Count the working days between two dates in Germany, excluding weekends and the public holidays of the federal state you choose. Moveable feasts computed automatically. Free, for expats & HR."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'de', url: getFullUrl('/arbeitstage-rechner/') }, { lang: 'x-default', url: getFullUrl('/arbeitstage-rechner/') }]}
+  langAlternates={{ de: '/arbeitstage-rechner/', en: canonical }}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Working Days Calculator</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Germany · by state</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Working Days Calculator (Germany)</h1>
+        <p class="landing-hero__lead">Count the working days between two dates, excluding weekends and the public holidays of the federal state you pick. Handy for deadlines, notice periods and leave planning.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="glass" style="padding: 1.5rem; border-radius: var(--radius);">
+        <div class="calc-grid calc-grid--3" style="align-items: end;">
+          <label class="field"><span>Start date</span><input type="date" id="wd-start" /></label>
+          <label class="field"><span>End date</span><input type="date" id="wd-end" /></label>
+          <label class="field"><span>Federal state</span>
+            <select id="wd-state">
+              {BUNDESLAENDER.map(b => <option value={b.code}>{b.en}</option>)}
+            </select>
+          </label>
+        </div>
+        <button class="calc-submit" id="wd-btn" type="button" style="margin-top: 16px;">Calculate working days</button>
+
+        <div class="result-hero" id="wd-result" style="margin-top: 18px; display: none;">
+          <div class="result-hero__label">Working days</div>
+          <div class="result-hero__duration" id="wd-working">0</div>
+          <div class="result-hero__stats">
+            <div><strong id="wd-total">0</strong><span>Total days</span></div>
+            <div><strong id="wd-weekend">0</strong><span>Weekend days</span></div>
+            <div><strong id="wd-holiday">0</strong><span>Public holidays</span></div>
+          </div>
+          <p class="result-hero__note" id="wd-list"></p>
+        </div>
+      </div>
+
+      <div class="content-section content-prose" style="margin-top: 2rem;">
+        <div class="featured-snippet" role="complementary" aria-label="Quick answer" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">In short</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Working days = calendar days − weekends − public holidays of the selected federal state.</strong>
+            Because each of the 16 states has different holidays, the count changes with the state you choose. Moveable
+            feasts (Easter-based) are computed for the year, so any date range is accurate.
+          </p>
+        </div>
+
+        <h2>Werktage vs. Arbeitstage</h2>
+        <p>
+          German law distinguishes two ideas that both translate to "working days". <strong>Werktage</strong> are all days
+          except Sundays and public holidays — so Saturday is a Werktag, which matters for statutory notice and vacation
+          calculations. <strong>Arbeitstage</strong> are the days you actually work, usually Monday to Friday. This calculator
+          counts Arbeitstage (Mon–Fri minus public holidays); use the state selector to apply the right holidays.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 12px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Working time in Germany</h2></div>
+        <div class="link-grid">
+          <a href="/en/german-public-holidays/" class="link-card"><span>German public holidays by state</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/vacation-entitlement-germany/" class="link-card"><span>Vacation entitlement (BUrlG)</span><span class="link-card__arrow">→</span></a>
+          <a href="/en/german-working-hours-calculator/" class="link-card"><span>German working hours calculator</span><span class="link-card__arrow">→</span></a>
+          <a href="/arbeitstage-rechner/" class="link-card"><span>Arbeitstage-Rechner (auf Deutsch)</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Frequently asked questions</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ HOLIDAYS: holidayMap }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = document.getElementById('wd-start'), e = document.getElementById('wd-end'), st = document.getElementById('wd-state'), btn = document.getElementById('wd-btn');
+      const pad = n => String(n).padStart(2, '0');
+      const iso = d => d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate());
+      const now = new Date(); const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+      const in30 = new Date(today.getTime() + 30 * 86400000);
+      if (!s.value) s.value = iso(today);
+      if (!e.value) e.value = iso(in30);
+      function calc() {
+        let start = new Date(s.value + 'T00:00:00Z'), end = new Date(e.value + 'T00:00:00Z');
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return;
+        if (end < start) { const t = start; start = end; end = t; }
+        const state = st.value;
+        let wd = 0, we = 0, hd = 0, tot = 0; const hits = [];
+        const cur = new Date(start.getTime()); let guard = 0;
+        while (cur <= end && guard++ < 20000) {
+          tot++;
+          const dow = cur.getUTCDay(); const key = iso(cur);
+          if (dow === 0 || dow === 6) we++;
+          else if (HOLIDAYS[key] && HOLIDAYS[key].states.indexOf(state) >= 0) { hd++; hits.push(HOLIDAYS[key].name + ' (' + key + ')'); }
+          else wd++;
+          cur.setUTCDate(cur.getUTCDate() + 1);
+        }
+        document.getElementById('wd-working').textContent = wd.toLocaleString();
+        document.getElementById('wd-total').textContent = tot.toLocaleString();
+        document.getElementById('wd-weekend').textContent = we.toLocaleString();
+        document.getElementById('wd-holiday').textContent = hd.toLocaleString();
+        document.getElementById('wd-list').textContent = hits.length ? ('Holidays excluded: ' + hits.join(', ')) : 'No public holiday fell on a weekday in this range.';
+        document.getElementById('wd-result').style.display = '';
+      }
+      btn.addEventListener('click', calc);
+      [s, e, st].forEach(el => el.addEventListener('change', calc));
+      calc();
+    });
+  </script>
+</BaseLayout>

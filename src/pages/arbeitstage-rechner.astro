@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHolidays, BUNDESLAENDER } from '../lib/holidays';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
+
+const lang = 'de';
+const canonical = '/arbeitstage-rechner/';
+
+const thisYear = new Date().getFullYear();
+const years = [thisYear - 1, thisYear, thisYear + 1, thisYear + 2, thisYear + 3];
+const holidayMap: Record<string, { name: string; states: string[] }> = {};
+for (const y of years) for (const h of getHolidays(y)) holidayMap[h.dateISO] = { name: h.de, states: h.states };
+
+const faqs = [
+  { q: 'Was ist der Unterschied zwischen Werktagen und Arbeitstagen?', a: 'Werktage sind alle Tage außer Sonntagen und gesetzlichen Feiertagen – der Samstag ist also ein Werktag (wichtig z. B. für Kündigungsfristen und den gesetzlichen Urlaub). Arbeitstage sind die Tage, an denen tatsächlich gearbeitet wird, meist Montag bis Freitag. Dieser Rechner zählt Arbeitstage (Mo–Fr abzüglich Feiertage).' },
+  { q: 'Hängen die Feiertage vom Bundesland ab?', a: 'Ja. Es gibt 9 bundesweite Feiertage; jedes der 16 Bundesländer hat zusätzlich eigene. Die Zahl der Arbeitstage in einem Zeitraum ändert sich daher je nach Bundesland. Der Rechner wendet die Feiertage des gewählten Bundeslands korrekt an.' },
+  { q: 'Werden Wochenenden mitgezählt?', a: 'Nein. Samstage und Sonntage werden ausgeschlossen. Feiertage, die auf einen Werktag fallen, werden ebenfalls abgezogen und separat ausgewiesen – ein Feiertag am Wochenende reduziert die Arbeitstage dagegen nicht.' },
+  { q: 'Wie werden bewegliche Feiertage wie Ostern berücksichtigt?', a: 'Sie werden berechnet, nicht nachgeschlagen. Karfreitag, Ostermontag, Christi Himmelfahrt, Pfingstmontag und Fronleichnam leiten sich vom Ostersonntag des jeweiligen Jahres ab – das Ergebnis stimmt daher für jeden Zeitraum.' },
+];
+
+const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Arbeitstage-Rechner', url: canonical }])];
+---
+<BaseLayout
+  title="Arbeitstage-Rechner — Werktage nach Bundesland berechnen"
+  description="Berechne die Arbeitstage zwischen zwei Daten in Deutschland – ohne Wochenenden und ohne die Feiertage des gewählten Bundeslands. Bewegliche Feiertage werden automatisch berechnet. Kostenlos."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'en', url: getFullUrl('/en/working-days-calculator/') }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  langAlternates={{ de: canonical, en: '/en/working-days-calculator/' }}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Arbeitstage-Rechner</span></nav>
+      <div style="margin-top: 1.5rem; max-width: 760px;">
+        <span class="badge badge--green">Deutschland · nach Bundesland</span>
+        <h1 style="margin: 0.5rem 0 0.75rem;">Arbeitstage-Rechner</h1>
+        <p class="landing-hero__lead">Berechne die Arbeitstage zwischen zwei Daten – ohne Wochenenden und ohne die Feiertage deines Bundeslands. Praktisch für Fristen, Kündigungen und Urlaubsplanung.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="glass" style="padding: 1.5rem; border-radius: var(--radius);">
+        <div class="calc-grid calc-grid--3" style="align-items: end;">
+          <label class="field"><span>Startdatum</span><input type="date" id="wd-start" /></label>
+          <label class="field"><span>Enddatum</span><input type="date" id="wd-end" /></label>
+          <label class="field"><span>Bundesland</span>
+            <select id="wd-state">
+              {BUNDESLAENDER.map(b => <option value={b.code}>{b.de}</option>)}
+            </select>
+          </label>
+        </div>
+        <button class="calc-submit" id="wd-btn" type="button" style="margin-top: 16px;">Arbeitstage berechnen</button>
+
+        <div class="result-hero" id="wd-result" style="margin-top: 18px; display: none;">
+          <div class="result-hero__label">Arbeitstage</div>
+          <div class="result-hero__duration" id="wd-working">0</div>
+          <div class="result-hero__stats">
+            <div><strong id="wd-total">0</strong><span>Tage gesamt</span></div>
+            <div><strong id="wd-weekend">0</strong><span>Wochenendtage</span></div>
+            <div><strong id="wd-holiday">0</strong><span>Feiertage</span></div>
+          </div>
+          <p class="result-hero__note" id="wd-list"></p>
+        </div>
+      </div>
+
+      <div class="content-section content-prose" style="margin-top: 2rem;">
+        <div class="featured-snippet" role="complementary" aria-label="Kurzantwort" style="margin: 0 0 28px;">
+          <div class="featured-snippet__label">Kurz & knapp</div>
+          <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
+            <strong>Arbeitstage = Kalendertage − Wochenenden − Feiertage des gewählten Bundeslands.</strong>
+            Da jedes der 16 Bundesländer andere Feiertage hat, ändert sich die Zahl je nach Auswahl. Bewegliche
+            (Oster-)Feiertage werden für das jeweilige Jahr berechnet, sodass jeder Zeitraum korrekt ist.
+          </p>
+        </div>
+
+        <h2>Werktage vs. Arbeitstage</h2>
+        <p>
+          Das deutsche Recht unterscheidet zwei Begriffe: <strong>Werktage</strong> sind alle Tage außer Sonn- und
+          Feiertagen – der Samstag zählt also mit, was für Kündigungsfristen und den gesetzlichen Urlaub relevant ist.
+          <strong>Arbeitstage</strong> sind die Tage, an denen tatsächlich gearbeitet wird, in der Regel Montag bis Freitag.
+          Dieser Rechner zählt Arbeitstage (Mo–Fr abzüglich Feiertage); über die Auswahl wird das richtige Bundesland angewendet.
+        </p>
+      </div>
+
+      <div class="internal-links" style="margin-top: 12px;">
+        <div class="internal-links__header"><h2 class="internal-links__title" style="font-size: 1.2rem; margin: 0;">Passende Rechner & Ratgeber</h2></div>
+        <div class="link-grid">
+          <a href="/datum-in-x-tagen/" class="link-card"><span>Datum in X Tagen berechnen</span><span class="link-card__arrow">→</span></a>
+          <a href="/ratgeber/urlaubstage-berechnen/" class="link-card"><span>Urlaubstage berechnen</span><span class="link-card__arrow">→</span></a>
+          <a href="/wochenarbeitszeit/" class="link-card"><span>Wochenarbeitszeit berechnen</span><span class="link-card__arrow">→</span></a>
+          <a href={getHubUrl(lang)} class="link-card"><span>Zum Zeitrechner</span><span class="link-card__arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="content-section"><h2>Häufig gestellte Fragen</h2>
+        <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+          {faqs.map(f => (
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button class="faq-item__question" aria-expanded="false" itemprop="name">{f.q}<span class="faq-arrow" aria-hidden="true">▾</span></button>
+              <div class="faq-item__answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><span itemprop="text">{f.a}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ HOLIDAYS: holidayMap }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = document.getElementById('wd-start'), e = document.getElementById('wd-end'), st = document.getElementById('wd-state'), btn = document.getElementById('wd-btn');
+      const pad = n => String(n).padStart(2, '0');
+      const iso = d => d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate());
+      const now = new Date(); const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+      const in30 = new Date(today.getTime() + 30 * 86400000);
+      if (!s.value) s.value = iso(today);
+      if (!e.value) e.value = iso(in30);
+      function calc() {
+        let start = new Date(s.value + 'T00:00:00Z'), end = new Date(e.value + 'T00:00:00Z');
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return;
+        if (end < start) { const t = start; start = end; end = t; }
+        const state = st.value;
+        let wd = 0, we = 0, hd = 0, tot = 0; const hits = [];
+        const cur = new Date(start.getTime()); let guard = 0;
+        while (cur <= end && guard++ < 20000) {
+          tot++;
+          const dow = cur.getUTCDay(); const key = iso(cur);
+          if (dow === 0 || dow === 6) we++;
+          else if (HOLIDAYS[key] && HOLIDAYS[key].states.indexOf(state) >= 0) { hd++; hits.push(HOLIDAYS[key].name + ' (' + key + ')'); }
+          else wd++;
+          cur.setUTCDate(cur.getUTCDate() + 1);
+        }
+        document.getElementById('wd-working').textContent = wd.toLocaleString('de-DE');
+        document.getElementById('wd-total').textContent = tot.toLocaleString('de-DE');
+        document.getElementById('wd-weekend').textContent = we.toLocaleString('de-DE');
+        document.getElementById('wd-holiday').textContent = hd.toLocaleString('de-DE');
+        document.getElementById('wd-list').textContent = hits.length ? ('Abgezogene Feiertage: ' + hits.join(', ')) : 'Kein Feiertag fiel in diesem Zeitraum auf einen Werktag.';
+        document.getElementById('wd-result').style.display = '';
+      }
+      btn.addEventListener('click', calc);
+      [s, e, st].forEach(el => el.addEventListener('change', calc));
+      calc();
+    });
+  </script>
+</BaseLayout>
