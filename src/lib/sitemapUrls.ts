@@ -32,8 +32,8 @@ export function pagePaths(): string[] {
     '/en/rest-period-germany/', '/en/night-work-germany/', '/en/vacation-entitlement-germany/', '/en/decimal-hours-calculator/',
     '/en/working-days-calculator/',
     '/wochenarbeitszeit/', '/datum-in-x-tagen/',
-    '/impressum/', '/datenschutz/', '/nutzungsbedingungen/', '/ueber-uns/',
-    '/en/imprint/', '/en/privacy-policy/', '/en/terms-of-service/', '/en/about-us/',
+    '/impressum/', '/datenschutz/', '/nutzungsbedingungen/', '/ueber-uns/', '/redaktion/',
+    '/en/imprint/', '/en/privacy-policy/', '/en/terms-of-service/', '/en/about-us/', '/en/editorial-guidelines/',
   ];
 }
 

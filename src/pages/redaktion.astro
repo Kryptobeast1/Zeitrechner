@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema } from '../lib/seoEngine';
+const lang = 'de';
+const canonical = '/redaktion/';
+const jsonLd = [buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Redaktion', url: canonical }])];
+---
+<BaseLayout
+  title="Redaktion & redaktionelle Grundsätze — Zeit-Rechner.com"
+  description="Wer die Inhalte von Zeit-Rechner.com erstellt und prüft, welche Quellen wir nutzen und wie wir aktualisieren. Transparenz zu Redaktion, Methode und Rechtsgrundlagen."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'en', url: getFullUrl('/en/editorial-guidelines/') }, { lang: 'x-default', url: getFullUrl(canonical) }]}
+  langAlternates={{ de: canonical, en: '/en/editorial-guidelines/' }}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container container--narrow">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Redaktion</span></nav>
+      <div style="margin-top: 1.5rem;">
+        <h1 style="margin-bottom: 0.75rem;">Redaktion & redaktionelle Grundsätze</h1>
+        <p class="landing-hero__lead">Wer unsere Inhalte erstellt und prüft, auf welche Quellen wir uns stützen und wie wir aktualisieren – transparent dargestellt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Wer hinter den Inhalten steht</h2>
+        <p>
+          Die Rechner und Ratgeber von <strong>Zeit-Rechner.com</strong> werden von der <strong>Zeit-Rechner Redaktion</strong>
+          erstellt und gepflegt – einem Team aus Entwicklern und Autoren mit Schwerpunkt auf Zeitwirtschaft, Lohnabrechnung und
+          deutschem Arbeitszeitrecht. Wir nennen bewusst kein fiktives Expertenprofil: Verantwortlich für die Inhalte ist die
+          Redaktion als Ganzes, erreichbar über die im <a href="/impressum/">Impressum</a> genannten Angaben.
+        </p>
+
+        <h2>Wie wir arbeiten</h2>
+        <ul>
+          <li><strong>Berechnungen:</strong> Jede Rechenfunktion läuft über eine gemeinsame, mit Unit-Tests abgesicherte Engine. Die auf den Seiten gezeigten Ergebnisse stammen aus derselben Quelle wie die interaktiven Rechner – so kann eine Seite nicht „8 Stunden“ behaupten, während der Rechner 7,50 ausgibt.</li>
+          <li><strong>Rechtliche Aussagen:</strong> Angaben zu Pausen, Ruhezeiten, Nacht- und Mehrarbeit verweisen auf den jeweiligen Paragrafen und verlinken direkt auf den amtlichen Gesetzestext.</li>
+          <li><strong>Aktualisierung:</strong> Wir aktualisieren Inhalte, wenn sich Gesetzeslage oder Daten ändern – nicht nach einem festen Veröffentlichungsrhythmus. Das angezeigte Datum spiegelt eine tatsächliche inhaltliche Änderung wider.</li>
+          <li><strong>Korrekturen:</strong> Fachliche Hinweise und Korrekturen nehmen wir gern entgegen und pflegen sie ein.</li>
+        </ul>
+
+        <h2>Quellen</h2>
+        <ul>
+          <li><a href="https://www.gesetze-im-internet.de/arbzg/" target="_blank" rel="noopener">Arbeitszeitgesetz (ArbZG)</a>, <a href="https://www.gesetze-im-internet.de/burlg/" target="_blank" rel="noopener">Bundesurlaubsgesetz (BUrlG)</a>, <a href="https://www.gesetze-im-internet.de/estg/__3b.html" target="_blank" rel="noopener">§ 3b EStG</a> und weitere Normen über gesetze-im-internet.de</li>
+          <li>Bundesministerium für Arbeit und Soziales (BMAS) und Bundesanstalt für Arbeitsschutz und Arbeitsmedizin (BAuA)</li>
+          <li>Feiertagsgesetze der 16 Bundesländer für die Feiertagsdaten (siehe auch unsere <a href="/arbeitstage-rechner/">Arbeitstage-Berechnung nach Bundesland</a>)</li>
+          <li>Rechtsprechung des Bundesarbeitsgerichts (BAG), soweit einschlägig</li>
+        </ul>
+
+        <h2>Umfang der Angaben</h2>
+        <p>
+          Unsere Inhalte bieten eine allgemeine Orientierungshilfe auf Basis der angegebenen Annahmen und stellen
+          <strong>keine Rechtsberatung</strong> dar. Maßgeblich sind der jeweils geltende Gesetzestext sowie Tarif- und
+          Arbeitsvertrag. Im Einzelfall ersetzen unsere Rechner keine rechtliche oder steuerliche Beratung.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

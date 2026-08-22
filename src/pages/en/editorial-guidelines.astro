@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHubUrl, getFullUrl, buildBreadcrumbSchema } from '../../lib/seoEngine';
+const lang = 'en';
+const canonical = '/en/editorial-guidelines/';
+const jsonLd = [buildBreadcrumbSchema([{ name: 'Home', url: getHubUrl(lang) }, { name: 'Editorial Guidelines', url: canonical }])];
+---
+<BaseLayout
+  title="Editorial Guidelines & Team — Zeit-Rechner.com"
+  description="Who produces and reviews the content on Zeit-Rechner.com, the sources we rely on, and how we update. Transparency about our editorial team, method and legal sources."
+  canonical={getFullUrl(canonical)}
+  hreflang={[{ lang: 'en', url: getFullUrl(canonical) }, { lang: 'de', url: getFullUrl('/redaktion/') }, { lang: 'x-default', url: getFullUrl('/redaktion/') }]}
+  langAlternates={{ de: '/redaktion/', en: canonical }}
+  lang={lang}
+  jsonLd={jsonLd}
+  theme="info"
+>
+  <section class="section landing-hero" style="padding-bottom: 1.5rem;">
+    <div class="container container--narrow">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/en/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Editorial Guidelines</span></nav>
+      <div style="margin-top: 1.5rem;">
+        <h1 style="margin-bottom: 0.75rem;">Editorial Guidelines & Team</h1>
+        <p class="landing-hero__lead">Who creates and reviews our content, the sources we rely on, and how we keep it current — set out transparently.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2>Who is behind the content</h2>
+        <p>
+          The calculators and guides on <strong>Zeit-Rechner.com</strong> are produced and maintained by the
+          <strong>Zeit-Rechner editorial team</strong> — developers and writers focused on time management, payroll and German
+          working-time law. We deliberately do not present a fictitious "expert" profile: the editorial team as a whole is
+          accountable for the content, reachable via the details in our <a href="/en/imprint/">imprint</a>.
+        </p>
+
+        <h2>How we work</h2>
+        <ul>
+          <li><strong>Calculations:</strong> every function runs through a single, unit-tested engine, so a page cannot state "8 hours" while the calculator returns 7.50. The figures shown and the interactive tools share one source of truth.</li>
+          <li><strong>Legal statements:</strong> claims about breaks, rest periods, night and overtime work cite the relevant section and link directly to the official statute text.</li>
+          <li><strong>Updates:</strong> we update content when the law or the underlying data changes — not on a fixed publishing schedule. A displayed date reflects a real change to the content.</li>
+          <li><strong>Corrections:</strong> we welcome expert feedback and corrections and incorporate them.</li>
+        </ul>
+
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://www.gesetze-im-internet.de/arbzg/" target="_blank" rel="noopener">Working Time Act (ArbZG)</a>, <a href="https://www.gesetze-im-internet.de/burlg/" target="_blank" rel="noopener">Federal Leave Act (BUrlG)</a>, <a href="https://www.gesetze-im-internet.de/estg/__3b.html" target="_blank" rel="noopener">§ 3b Income Tax Act (EStG)</a> and related statutes via gesetze-im-internet.de</li>
+          <li>Federal Ministry of Labour and Social Affairs (BMAS) and the Federal Institute for Occupational Safety and Health (BAuA)</li>
+          <li>The public-holiday acts of all 16 federal states for holiday dates (see our <a href="/en/working-days-calculator/">working-days calculator by state</a>)</li>
+          <li>Federal Labour Court (BAG) case law where relevant</li>
+        </ul>
+
+        <h2>Scope of the information</h2>
+        <p>
+          Our content offers general guidance based on the assumptions given and does <strong>not constitute legal advice</strong>.
+          The applicable statute, collective agreement and employment contract prevail. In an individual case, our calculators do
+          not replace legal or tax advice.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
