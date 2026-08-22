@@ -44,6 +44,16 @@ const breakResults = BREAK_OPTIONS.map(b => ({ break: b, result: computeShiftFro
 const net30 = breakResults[1].result;
 const bandBreak = gross.grossMin > 360 ? 30 : 0; // only show a break notch when one would legally apply
 
+// Context-aware "next actions", derived from the net result (Phase 2.1 / P2 info-gain)
+const netDec = net30.netDecimal;
+const weeklyNet = netDec * 5;
+const diffTo40 = weeklyNet - 40;
+const nextStartVal = (((range.end + 11) % 24) + 24) % 24;
+const p2 = (n: number) => String(Math.floor(n)).padStart(2, '0');
+const fmtHour = (v: number) => `${p2(v)}:${p2(Math.round((v % 1) * 60))}`;
+const fmtNum = (n: number) => n.toLocaleString('de-DE', { maximumFractionDigits: 2 });
+const touchesNight = range.start < 6 || range.end > 23 || range.end <= range.start || range.start >= 23;
+
 // Phase 5 variation axes (all derived from the shift shape / slug)
 const archetype = getArchetype(range.start, range.end);
 const band = getBand(range.start);
@@ -224,6 +234,23 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
           <div class="sign-line">Datum, Unterschrift Arbeitnehmer:in</div>
           <div class="sign-line">Datum, Unterschrift Arbeitgeber:in</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DARAUS ABGELEITET (context-aware next actions, Phase 2.1) ───────── -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container container--narrow">
+      <div class="content-section content-prose">
+        <h2 style="font-size: 1.3rem;">Daraus abgeleitet</h2>
+        <ul>
+          <li>Bei 5 Arbeitstagen ergeben sich rund <strong>{fmtNum(weeklyNet)} Wochenstunden</strong> (netto, nach 30 Minuten Pause).</li>
+          <li>Gegenüber einem 40-Stunden-Vertrag: <strong>{diffTo40 >= 0 ? '+' : '−'}{fmtNum(Math.abs(diffTo40))} Stunden</strong> pro Woche.</li>
+          <li>Ruhezeit (§ 5 ArbZG): frühester nächster Arbeitsbeginn <strong>{fmtHour(nextStartVal)} Uhr</strong> (Arbeitsende {end24} + 11 Stunden).</li>
+          {touchesNight && (
+            <li>Nachtarbeit (§ 6 ArbZG): Teile dieser Zeit fallen in die Nachtzeit (23:00–6:00 Uhr) – es kann ein Anspruch auf Zuschlag oder Freizeitausgleich bestehen. <a href="/nachtzuschlag-rechner/">Nachtzuschlag berechnen</a>.</li>
+          )}
+        </ul>
       </div>
     </div>
   </section>
