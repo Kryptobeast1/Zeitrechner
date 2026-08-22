@@ -17,6 +17,11 @@ pnpm-debug.log*
 .env
 .env.production
 
+# google indexing api — service-account key + local submission progress
+*.serviceaccount.json
+google-sa-key*.json
+.google-indexing-progress.json
+
 # macOS-specific files
 .DS_Store
 

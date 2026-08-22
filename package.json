@@ -11,6 +11,7 @@
     "gen:lastmod": "node --experimental-strip-types scripts/gen-lastmod.ts",
     "prebuild": "npm run gen:redirects && npm run gen:lastmod",
     "build": "npm run prebuild && astro build && node scripts/submit-indexnow.js",
+    "submit:google": "node scripts/google-indexing.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "audit": "node --experimental-strip-types scripts/audit/01-correctness.ts && node --experimental-strip-types scripts/audit/02-crawl.ts && node --experimental-strip-types scripts/audit/03-urls.ts && node --experimental-strip-types scripts/audit/04-design.ts && node --experimental-strip-types scripts/audit/05-variation.ts && node --experimental-strip-types scripts/audit/06-indexing.ts && node --experimental-strip-types scripts/audit/07-features.ts",
