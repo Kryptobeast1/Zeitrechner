@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { computeBrueckentage } from '../lib/brueckentage';
-import { BUNDESLAENDER } from '../lib/holidays';
+import { computeBrueckentage, STATE_SLUGS } from '../lib/brueckentage';
+import { getHolidays, BUNDESLAENDER } from '../lib/holidays';
 import { getHubUrl, getFullUrl, buildBreadcrumbSchema, buildFAQSchema } from '../lib/seoEngine';
 
 const lang = 'de';
@@ -10,37 +10,29 @@ const canonical = '/brueckentage-rechner/';
 const thisYear = new Date().getFullYear();
 const years = [thisYear, thisYear + 1, thisYear + 2];
 const defaultYear = thisYear + 1;      // people plan the next full year
-const defaultState = 'NW';             // most populous Bundesland
 
-// Precompute every (year × state) combination once, embed for client switching.
-const matrix: Record<string, { bestUrlaub: number; bestFree: number; bridges: any[] }> = {};
-for (const y of years) for (const b of BUNDESLAENDER) {
-  const r = computeBrueckentage(y, b.code);
-  matrix[`${y}|${b.code}`] = { bestUrlaub: r.bestUrlaub, bestFree: r.bestFree, bridges: r.bridges };
+// Per-year overview: one summary row per Bundesland, sorted by free days gained.
+const overview: Record<number, { code: string; name: string; slug: string; hc: number; u: number; f: number }[]> = {};
+for (const y of years) {
+  overview[y] = BUNDESLAENDER.map(b => {
+    const r = computeBrueckentage(y, b.code);
+    return { code: b.code, name: b.de, slug: STATE_SLUGS[b.code], hc: getHolidays(y, b.code).length, u: r.bestUrlaub, f: r.bestFree };
+  }).sort((a, b) => b.f - a.f);
 }
-
-const pad = (n: number) => String(n).padStart(2, '0');
-const WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-const fmt = (iso: string) => { const d = new Date(iso + 'T00:00:00Z'); return `${WD[d.getUTCDay()]}, ${pad(d.getUTCDate())}.${pad(d.getUTCMonth() + 1)}.`; };
-const fmtRange = (a: string, b: string) => `${fmt(a)} – ${fmt(b)}`;
-
-const def = matrix[`${defaultYear}|${defaultState}`];
-const defStateName = BUNDESLAENDER.find(b => b.code === defaultState)!.de;
-const displayBridges = [...def.bridges].sort((a, b) => a.freeStartISO.localeCompare(b.freeStartISO));
+const defRows = overview[defaultYear];
 
 const faqs = [
   { q: 'Was ist ein Brückentag?', a: 'Ein Brückentag ist ein Arbeitstag, der zwischen einem gesetzlichen Feiertag und dem Wochenende liegt. Nimmt man diesen einzelnen Tag frei, entsteht ein langes, zusammenhängendes freies Wochenende. Fällt ein Feiertag etwa auf einen Donnerstag, „überbrückt" der Freitag die Lücke zum Wochenende – aus einem Urlaubstag werden vier freie Tage.' },
-  { q: 'Wie berechnet dieser Rechner die Brückentage?', a: 'Der Rechner ermittelt zunächst alle gesetzlichen Feiertage des gewählten Bundeslands für das Jahr – bewegliche Feiertage wie Christi Himmelfahrt werden dabei aus dem Osterdatum berechnet, nicht nachgeschlagen. Anschließend sucht er die kurzen Arbeitstag-Lücken (1 bis 4 Tage) zwischen freien Blöcken und zeigt, wie viele freie Tage am Stück ein Urlaubstag jeweils bringt.' },
-  { q: 'Warum unterscheiden sich die Brückentage je nach Bundesland?', a: 'Neben den neun bundesweiten Feiertagen hat jedes der 16 Bundesländer eigene. Fronleichnam ist zum Beispiel nur in Bayern, Baden-Württemberg, Hessen, NRW, Rheinland-Pfalz und dem Saarland ein Feiertag – dort ergibt sich eine zusätzliche Brücke. Deshalb ändert sich die Liste, sobald du das Bundesland wechselst.' },
+  { q: 'Wie berechnet dieser Rechner die Brückentage?', a: 'Der Rechner ermittelt alle gesetzlichen Feiertage des gewählten Bundeslands – bewegliche Feiertage wie Christi Himmelfahrt werden aus dem Osterdatum berechnet, nicht nachgeschlagen. Anschließend sucht er die kurzen Arbeitstag-Lücken (1 bis 4 Tage) zwischen freien Blöcken und zeigt, wie viele freie Tage am Stück ein Urlaubstag jeweils bringt.' },
+  { q: 'Warum unterscheiden sich die Brückentage je nach Bundesland?', a: 'Neben den neun bundesweiten Feiertagen hat jedes der 16 Bundesländer eigene. Fronleichnam ist zum Beispiel nur in Bayern, Baden-Württemberg, Hessen, NRW, Rheinland-Pfalz und dem Saarland ein Feiertag – dort ergibt sich eine zusätzliche Brücke. Deshalb ändert sich die Liste je nach Bundesland.' },
   { q: 'Was bedeutet die „Effizienz"?', a: 'Die Effizienz ist das Verhältnis von freien Tagen zu eingesetzten Urlaubstagen. Ein Feiertag am Donnerstag mit einem Brückentag am Freitag ergibt vier freie Tage für einen Urlaubstag – also den Faktor 4,0. Je höher der Wert, desto mehr Erholung pro Urlaubstag.' },
-  { q: 'Zählt der Samstag als Brückentag?', a: 'Nein. Als Brückentage kommen nur reguläre Arbeitstage (Montag bis Freitag) in Frage, die keine Feiertage sind. Samstag und Sonntag sind bereits frei und bilden zusammen mit den Feiertagen die „Brücken", die überbrückt werden.' },
 ];
 
 const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite', url: getHubUrl(lang) }, { name: 'Brückentage-Rechner', url: canonical }])];
 ---
 <BaseLayout
   title="Brückentage-Rechner — Urlaub optimal planen nach Bundesland"
-  description="Brückentage berechnen: Finde für dein Bundesland und Jahr, wie du mit wenigen Urlaubstagen viele freie Tage am Stück gewinnst. Bewegliche Feiertage werden automatisch berechnet. Kostenlos."
+  description="Brückentage berechnen für alle 16 Bundesländer: Vergleiche, wo du mit wenigen Urlaubstagen die meisten freien Tage gewinnst. Mit Detailseite je Bundesland und Jahr. Kostenlos."
   canonical={getFullUrl(canonical)}
   hreflang={[{ lang: 'de', url: getFullUrl(canonical) }, { lang: 'x-default', url: getFullUrl(canonical) }]}
   lang={lang}
@@ -51,57 +43,35 @@ const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite
     <div class="container">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb__sep">›</span><span aria-current="page">Brückentage-Rechner</span></nav>
       <div style="margin-top: 1.5rem; max-width: 760px;">
-        <span class="badge badge--green">Deutschland · nach Bundesland</span>
+        <span class="badge badge--green">Deutschland · alle 16 Bundesländer</span>
         <h1 style="margin: 0.5rem 0 0.75rem;">Brückentage-Rechner</h1>
-        <p class="landing-hero__lead">Hol das Maximum aus deinem Urlaub: Wähle Jahr und Bundesland und sieh sofort, mit welchen Brückentagen aus wenigen Urlaubstagen lange freie Zeiträume werden.</p>
+        <p class="landing-hero__lead">Hol das Maximum aus deinem Urlaub: Wähle ein Jahr und vergleiche alle Bundesländer – oder öffne dein Bundesland für die vollständige Liste aller Brücken mit Datum und Effizienz.</p>
       </div>
     </div>
   </section>
 
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
-      <div class="glass" style="padding: 1.5rem; border-radius: var(--radius);">
-        <div class="calc-grid" style="align-items: end;">
-          <label class="field"><span>Jahr</span>
-            <select id="bt-year">{years.map(y => <option value={y} selected={y === defaultYear}>{y}</option>)}</select>
-          </label>
-          <label class="field"><span>Bundesland</span>
-            <select id="bt-state">{BUNDESLAENDER.map(b => <option value={b.code} selected={b.code === defaultState}>{b.de}</option>)}</select>
-          </label>
-        </div>
-
-        <div class="result-hero" id="bt-summary" style="margin-top: 18px;">
-          <div class="result-hero__label">Optimale Urlaubsplanung <span id="bt-head-meta">{defStateName} {defaultYear}</span></div>
-          <div class="result-hero__duration"><span id="bt-best-free">{def.bestFree}</span> freie Tage</div>
-          <div class="result-hero__stats">
-            <div><strong id="bt-best-urlaub">{def.bestUrlaub}</strong><span>Urlaubstage</span></div>
-            <div><strong id="bt-bridge-count">{def.bridges.length}</strong><span>Brücken-Optionen</span></div>
-            <div><strong id="bt-ratio">{def.bestUrlaub ? (def.bestFree / def.bestUrlaub).toFixed(1) : '0'}×</strong><span>Ø Effizienz</span></div>
-          </div>
-        </div>
+      <div class="glass" style="padding: 1.25rem 1.5rem; border-radius: var(--radius);">
+        <label class="field" style="max-width: 220px;"><span>Jahr</span>
+          <select id="bt-year">{years.map(y => <option value={y} selected={y === defaultYear}>{y}</option>)}</select>
+        </label>
+        <p style="margin: 12px 0 0; color: var(--ink-3); font-size: 0.9rem;">Beste überschneidungsfreie Auswahl je Bundesland – sortiert nach den meisten freien Tagen. Für alle Brücken mit genauem Datum auf ein Bundesland klicken.</p>
       </div>
 
       <div style="overflow-x: auto; margin-top: 1.25rem;">
-        <table class="bt-table" id="bt-table">
+        <table class="bt-table" id="bt-overview">
           <thead>
-            <tr>
-              <th>Feiertag(e)</th>
-              <th>Urlaub nehmen</th>
-              <th style="text-align:center;">Urlaubstage</th>
-              <th style="text-align:center;">Frei am Stück</th>
-              <th>Zeitraum</th>
-              <th style="text-align:center;">Effizienz</th>
-            </tr>
+            <tr><th>Bundesland</th><th style="text-align:center;">Feiertage</th><th style="text-align:center;">Urlaubstage</th><th style="text-align:center;">Freie Tage</th><th></th></tr>
           </thead>
-          <tbody id="bt-tbody">
-            {displayBridges.map(b => (
+          <tbody id="bt-obody">
+            {defRows.map(r => (
               <tr>
-                <td>{b.label}</td>
-                <td>{b.urlaubDates.map((d: string) => fmt(d)).join(', ')}</td>
-                <td style="text-align:center;">{b.urlaubCount}</td>
-                <td style="text-align:center;"><strong>{b.freeDays}</strong></td>
-                <td>{fmtRange(b.freeStartISO, b.freeEndISO)}</td>
-                <td style="text-align:center;">{b.efficiency.toFixed(1)}×</td>
+                <td>{r.name}</td>
+                <td style="text-align:center;">{r.hc}</td>
+                <td style="text-align:center;">{r.u}</td>
+                <td style="text-align:center;"><strong>{r.f}</strong></td>
+                <td style="text-align:right;"><a class="bt-detail-link" href={`/brueckentage-${defaultYear}-${r.slug}/`}>Details →</a></td>
               </tr>
             ))}
           </tbody>
@@ -113,24 +83,19 @@ const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite
           <div class="featured-snippet__label">Kurz & knapp</div>
           <p class="featured-snippet__sentence" style="margin: 8px 0 0;">
             <strong>Ein Brückentag ist ein Arbeitstag zwischen Feiertag und Wochenende.</strong> Nimmst du ihn frei,
-            wird aus einem Urlaubstag ein langes Wochenende. Der Rechner findet für dein Bundesland und Jahr alle
-            solchen Brücken – bewegliche Feiertage wie Christi Himmelfahrt werden aus dem Osterdatum berechnet.
+            wird aus einem Urlaubstag ein langes Wochenende. Die Tabelle zeigt je Bundesland, wie viele freie Tage mit
+            optimal gelegten Urlaubstagen möglich sind – die Detailseite listet jede einzelne Brücke mit Datum.
           </p>
         </div>
 
         <h2>So funktionieren Brückentage</h2>
         <p>
           Gesetzliche Feiertage fallen jedes Jahr auf einen anderen Wochentag. Liegt ein Feiertag auf einem
-          <strong>Dienstag</strong>, brauchst du nur den Montag als Urlaub, um von Samstag bis Dienstag – vier Tage am
-          Stück – frei zu haben. Ein Feiertag am <strong>Donnerstag</strong> lässt sich mit dem Freitag zum langen
-          Wochenende verbinden. Rund um Ostern und die Feiertage im Mai (Tag der Arbeit, Christi Himmelfahrt,
-          Pfingsten) lassen sich mit wenigen Urlaubstagen besonders lange Auszeiten planen.
-        </p>
-        <p>
-          Die <strong>Effizienz</strong> zeigt das Verhältnis von freien Tagen zu eingesetzten Urlaubstagen. Faktor
-          4,0 bedeutet: ein Urlaubstag bringt vier freie Tage. Die Zusammenfassung oben nennt eine überschneidungsfreie
-          Auswahl der besten Brücken für das ganze Jahr – so siehst du auf einen Blick, wie viele freie Tage insgesamt
-          drin sind.
+          <strong>Dienstag</strong>, brauchst du nur den Montag als Urlaub, um von Samstag bis Dienstag frei zu haben.
+          Ein Feiertag am <strong>Donnerstag</strong> lässt sich mit dem Freitag zum langen Wochenende verbinden. Rund um
+          Ostern und die Mai-Feiertage (Tag der Arbeit, Christi Himmelfahrt, Pfingsten) lassen sich mit wenigen
+          Urlaubstagen besonders lange Auszeiten planen. Da jedes Bundesland eigene Feiertage hat, unterscheidet sich
+          die Ausbeute – Bayern und Baden-Württemberg mit den meisten Feiertagen bieten in der Regel die meisten Brücken.
         </p>
       </div>
 
@@ -157,40 +122,23 @@ const jsonLd = [buildFAQSchema(faqs), buildBreadcrumbSchema([{ name: 'Startseite
     </div>
   </section>
 
-  <script define:vars={{ DATA: matrix }}>
+  <script define:vars={{ OVERVIEW: overview }}>
     document.addEventListener('DOMContentLoaded', () => {
       const yearSel = document.getElementById('bt-year');
-      const stateSel = document.getElementById('bt-state');
-      const tbody = document.getElementById('bt-tbody');
-      const WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-      const pad = n => String(n).padStart(2, '0');
-      const fmt = iso => { const d = new Date(iso + 'T00:00:00Z'); return WD[d.getUTCDay()] + ', ' + pad(d.getUTCDate()) + '.' + pad(d.getUTCMonth() + 1) + '.'; };
-      const stateName = () => stateSel.options[stateSel.selectedIndex].textContent;
-
+      const tbody = document.getElementById('bt-obody');
       function render() {
-        const key = yearSel.value + '|' + stateSel.value;
-        const r = DATA[key];
-        if (!r) return;
-        document.getElementById('bt-head-meta').textContent = stateName() + ' ' + yearSel.value;
-        document.getElementById('bt-best-free').textContent = r.bestFree;
-        document.getElementById('bt-best-urlaub').textContent = r.bestUrlaub;
-        document.getElementById('bt-bridge-count').textContent = r.bridges.length;
-        document.getElementById('bt-ratio').textContent = (r.bestUrlaub ? (r.bestFree / r.bestUrlaub).toFixed(1) : '0') + '×';
-
-        const rows = [...r.bridges].sort((a, b) => a.freeStartISO.localeCompare(b.freeStartISO));
-        tbody.innerHTML = rows.map(b => {
-          const take = b.urlaubDates.map(fmt).join(', ');
-          const span = fmt(b.freeStartISO) + ' – ' + fmt(b.freeEndISO);
-          return '<tr><td>' + b.label + '</td><td>' + take + '</td>' +
-            '<td style="text-align:center;">' + b.urlaubCount + '</td>' +
-            '<td style="text-align:center;"><strong>' + b.freeDays + '</strong></td>' +
-            '<td>' + span + '</td>' +
-            '<td style="text-align:center;">' + b.efficiency.toFixed(1) + '×</td></tr>';
-        }).join('');
-        if (!rows.length) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:1rem;">Für diese Auswahl wurden keine sinnvollen Brückentage gefunden.</td></tr>';
+        const y = yearSel.value;
+        const rows = OVERVIEW[y];
+        if (!rows) return;
+        tbody.innerHTML = rows.map(r =>
+          '<tr><td>' + r.name + '</td>' +
+          '<td style="text-align:center;">' + r.hc + '</td>' +
+          '<td style="text-align:center;">' + r.u + '</td>' +
+          '<td style="text-align:center;"><strong>' + r.f + '</strong></td>' +
+          '<td style="text-align:right;"><a class="bt-detail-link" href="/brueckentage-' + y + '-' + r.slug + '/">Details →</a></td></tr>'
+        ).join('');
       }
       yearSel.addEventListener('change', render);
-      stateSel.addEventListener('change', render);
       render();
     });
   </script>

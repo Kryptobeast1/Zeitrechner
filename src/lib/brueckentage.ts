@@ -3,7 +3,24 @@
 // weekend and/or a public holiday). Taking those working days as vacation turns
 // a holiday into a long stretch off. Fully computed from the holiday engine —
 // no hardcoded dates, correct for every state and year (movable feasts included).
-import { getHolidays, type Bundesland } from './holidays.ts';
+import { getHolidays, BUNDESLAENDER, type Bundesland } from './holidays.ts';
+
+/** URL slug per Bundesland (German name, ASCII-folded) for /brueckentage-{year}-{slug}/. */
+export const STATE_SLUGS: Record<Bundesland, string> = {
+  BW: 'baden-wuerttemberg', BY: 'bayern', BE: 'berlin', BB: 'brandenburg',
+  HB: 'bremen', HH: 'hamburg', HE: 'hessen', MV: 'mecklenburg-vorpommern',
+  NI: 'niedersachsen', NW: 'nordrhein-westfalen', RP: 'rheinland-pfalz', SL: 'saarland',
+  SN: 'sachsen', ST: 'sachsen-anhalt', SH: 'schleswig-holstein', TH: 'thueringen',
+};
+export const STATE_BY_SLUG: Record<string, Bundesland> =
+  Object.fromEntries(Object.entries(STATE_SLUGS).map(([code, slug]) => [slug, code as Bundesland]));
+
+/** Other states with an identical set of public-holiday DATES in this year (⇒ identical Brückentage). */
+export function statesWithSameHolidays(year: number, state: Bundesland): Bundesland[] {
+  const sig = (s: Bundesland) => getHolidays(year, s).map(h => h.dateISO).join(',');
+  const mine = sig(state);
+  return BUNDESLAENDER.map(b => b.code).filter(c => c !== state && sig(c) === mine);
+}
 
 export interface Bridge {
   label: string;          // holiday(s) that anchor the bridge, e.g. "Christi Himmelfahrt"

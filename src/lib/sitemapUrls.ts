@@ -2,6 +2,7 @@
 // index and each child sitemap read from here so they can never drift.
 import { INDEXED_RANGES } from '../data/timeRanges';
 import { INDEXED_EVENTS } from '../data/dateEvents';
+import { STATE_SLUGS } from './brueckentage';
 import { shouldIndex } from './seoEngine';
 
 export const SITE = 'https://zeit-rechner.com';
@@ -9,6 +10,15 @@ export const SITE = 'https://zeit-rechner.com';
 // Live events only — retired (past one-time / year) events are 301'd, not listed.
 const liveEvents = INDEXED_EVENTS;
 const liveRanges = INDEXED_RANGES.filter(r => r.start !== r.end && shouldIndex('time-range', r.demandScore));
+
+// Brückentage detail pages: current year + next two × all 16 Bundesländer.
+export function brueckentagePaths(): string[] {
+  const y0 = new Date().getFullYear();
+  const years = [y0, y0 + 1, y0 + 2];
+  const out: string[] = [];
+  for (const y of years) for (const slug of Object.values(STATE_SLUGS)) out.push(`/brueckentage-${y}-${slug}/`);
+  return out;
+}
 
 export function deHoursPaths(): string[] { return liveRanges.map(r => `/stunden-zwischen-${r.deSlug}/`); }
 export function enHoursPaths(): string[] { return liveRanges.map(r => `/en/hours-between-${r.slug}/`); }
@@ -23,6 +33,7 @@ export function pagePaths(): string[] {
     '/schichten/ab-07-uhr/', '/schichten/8-stunden/', '/schichten/nachtschichten/', '/schichten/teilzeit/',
     '/en/shifts/ab-07-uhr/', '/en/shifts/8-stunden/', '/en/shifts/nachtschichten/', '/en/shifts/teilzeit/',
     '/pausenrechner/', '/ruhezeit-checker/', '/nachtzuschlag-rechner/', '/gleitzeitkonto/', '/tarifmodelle/', '/arbeitstage-rechner/', '/brueckentage-rechner/',
+    ...brueckentagePaths(),
     '/ratgeber/', '/ratgeber/arbeitszeit-berechnen/', '/ratgeber/ueberstunden-berechnen/',
     '/ratgeber/urlaubstage-berechnen/', '/ratgeber/monatsarbeitszeit/',
     '/ratgeber/zeiterfassung-freelancer/', '/ratgeber/zeiterfassung-pflicht/',
