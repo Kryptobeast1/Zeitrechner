@@ -22,7 +22,7 @@ export function pagePaths(): string[] {
     '/alle-rechner/', '/en/all-calculators/',
     '/schichten/ab-07-uhr/', '/schichten/8-stunden/', '/schichten/nachtschichten/', '/schichten/teilzeit/',
     '/en/shifts/ab-07-uhr/', '/en/shifts/8-stunden/', '/en/shifts/nachtschichten/', '/en/shifts/teilzeit/',
-    '/pausenrechner/', '/ruhezeit-checker/', '/nachtzuschlag-rechner/', '/gleitzeitkonto/', '/tarifmodelle/', '/arbeitstage-rechner/',
+    '/pausenrechner/', '/ruhezeit-checker/', '/nachtzuschlag-rechner/', '/gleitzeitkonto/', '/tarifmodelle/', '/arbeitstage-rechner/', '/brueckentage-rechner/',
     '/ratgeber/', '/ratgeber/arbeitszeit-berechnen/', '/ratgeber/ueberstunden-berechnen/',
     '/ratgeber/urlaubstage-berechnen/', '/ratgeber/monatsarbeitszeit/',
     '/ratgeber/zeiterfassung-freelancer/', '/ratgeber/zeiterfassung-pflicht/',

@@ -407,6 +407,17 @@ input[type="time"], input[type="datetime-local"], input[type="number"], input[ty
 .badge--accent { background: var(--petrol-tint); color: var(--petrol); }
 .badge--violet { background: var(--surface-3); color: var(--ink-2); }
 
+/* Brückentage table — theme-aware, scrolls horizontally inside its wrapper. */
+.bt-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 640px; }
+.bt-table thead th {
+  text-align: left; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 700; padding: 10px 12px; border-bottom: 2px solid var(--rule);
+}
+.bt-table tbody td { padding: 11px 12px; border-bottom: 1px solid var(--rule); color: var(--ink-2); vertical-align: top; }
+.bt-table tbody tr:nth-child(even) { background: var(--surface-2); }
+.bt-table tbody tr:hover { background: var(--petrol-tint); }
+.bt-table tbody td strong { color: var(--petrol); font-variant-numeric: tabular-nums; }
+
 /* ── Centered, calculator-first hero ─────────────────────────────── */
 .hero-centered { max-width: 780px; margin: 0 auto; text-align: center; }
 .hero-centered .landing-hero__meta { justify-content: center; }
