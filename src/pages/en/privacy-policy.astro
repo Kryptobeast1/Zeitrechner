@@ -3,17 +3,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { buildSEOMeta, getHubUrl, getFullUrl } from '../../lib/seoEngine';
 
 const lang = 'en';
-const title = 'Privacy Policy — Secure & Local Time Calculations';
-const description = 'Privacy Policy for Zeit-Rechner.com. Learn how we protect your data. Calculations are performed 100% locally for maximum privacy.';
+const title = 'Privacy Policy — Zeit-Rechner.com';
+const description = 'Privacy policy for Zeit-Rechner.com: what data is processed, how Google Analytics is used only with your consent, and the rights you have under the GDPR.';
 const canonical = '/en/privacy-policy/';
 
-const seo = buildSEOMeta(
-  'hub', lang,
-  {},
-  canonical, 'de', '/datenschutz/',
-  false
-);
+// Flip to true once Google AdSense is approved and the ad code is live.
+const adsEnabled = false;
 
+const seo = buildSEOMeta('hub', lang, {}, canonical, 'de', '/datenschutz/', false);
 seo.title = title;
 seo.description = description;
 
@@ -30,46 +27,141 @@ const lastUpdated = new Date().toLocaleDateString('en-GB', { year: 'numeric', mo
 >
   <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container container--narrow">
-      <div class="badge badge--accent" style="margin-bottom: var(--space-3);">
-        100% Client-Side Privacy
-      </div>
       <h1>Privacy Policy</h1>
-      <p class="landing-hero__lead">Your data is yours. Learn how we protect your privacy.</p>
-      <div class="last-updated">Last Updated: {lastUpdated}</div>
+      <p class="landing-hero__lead">Transparent information about what data is processed when you visit this site — and what you decide for yourself.</p>
+      <div class="last-updated">Last updated: {lastUpdated}</div>
     </div>
   </section>
 
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
       <div class="content-prose legal-content animate-in">
-        <h3>1. Data Protection at a Glance</h3>
+
+        <h3>1. Controller</h3>
         <p>
-          The use of our website is generally possible without providing any personal data. 
-          If personal data is collected on our pages, it is always done on a voluntary basis.
+          The controller for data processing on this website is the operator named in the
+          <a href="/en/imprint/">imprint</a>, where you will also find the contact details for any privacy enquiries.
         </p>
-        <p><strong>Special Note on the Time Calculator:</strong></p>
+
+        <h3>2. Principle: your calculations stay on your device</h3>
+        <p>
+          Every calculation on this site — time spans, working hours, countdowns, public holidays and bridge days —
+          runs <strong>entirely locally in your browser</strong>. The values you enter are never transmitted to our
+          servers or to third parties, and they are not stored.
+        </p>
+
+        <h3>3. Hosting and server log files</h3>
+        <p>
+          This website is hosted by Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA. When pages are requested,
+          Vercel processes technically necessary server log files, in particular IP address, date and time of the
+          request, the requested URL, referrer, browser type and operating system. This processing is required to
+          deliver the site securely and reliably and is based on our legitimate interest (Art. 6(1)(f) GDPR). Transfers
+          to the USA are covered by the EU Standard Contractual Clauses.
+        </p>
+
+        <h3>4. Cookies and local storage</h3>
+        <p>
+          <strong>No cookies are required</strong> to operate the calculators. We only use the following storage:
+        </p>
         <ul>
-          <li>All calculations (times, dates, countdowns) are performed <strong>entirely locally within your browser</strong>.</li>
-          <li>Your calculation data is <strong>never sent to our servers or any third party</strong>.</li>
-          <li>We do not store cookies to track your behavior or your timesheet entries.</li>
+          <li>
+            <strong>Necessary (no consent required):</strong> your cookie choice and a few calculator interface
+            preferences are kept in your browser's local storage. This data never leaves your device.
+            Legal basis: § 25(2) TTDSG, Art. 6(1)(f) GDPR.
+          </li>
+          <li>
+            <strong>Statistics (consent only):</strong> Google Analytics sets cookies or comparable identifiers —
+            exclusively if you have agreed (see section 5).
+          </li>
         </ul>
 
-        <h3>2. Hosting and Vercel</h3>
+        <h3>5. Consent and Google Consent Mode</h3>
         <p>
-          Our website is hosted by Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA).
-          When providing the website, Vercel collects server log files (which may include IP address, date and time of the request, browser used, operating system).
-          This data collection by Vercel is highly standard and technically necessary to display our website reliably and securely to you.
+          On your first visit we ask for your consent via a notice at the bottom of the page. Until you agree, all
+          non-essential services are <strong>disabled by default</strong> ("denied" under Google Consent Mode v2) and
+          the analytics script is not loaded at all. If you choose <em>"Essential only"</em>, it stays that way.
+        </p>
+        <p>
+          You can change or withdraw your decision at any time using the <strong>"Cookie settings"</strong> link in the
+          footer of every page. Withdrawal takes effect for the future; the lawfulness of processing carried out before
+          withdrawal is unaffected.
         </p>
 
-        <h3>3. Contact Information</h3>
+        <h3>6. Google Analytics (consent only)</h3>
         <p>
-          If you correspond with us via email, your email address and message will only be saved for the purpose of communicating with you and answering your request. We will not share this data without your explicit consent.
+          With your consent we use Google Analytics 4, a web analytics service provided by Google Ireland Limited,
+          Gordon House, Barrow Street, Dublin 4, Ireland. It helps us understand which calculators and content are
+          used so we can improve the site.
+        </p>
+        <ul>
+          <li>Data processed includes a truncated IP address, device and browser information, pages viewed, time on page and referrer.</li>
+          <li><strong>IP anonymisation is enabled</strong>; your IP address is truncated before any further processing.</li>
+          <li>Transfer to Google LLC in the USA is possible, based on the EU Standard Contractual Clauses and the EU-US Data Privacy Framework.</li>
+          <li>Legal basis: your consent under Art. 6(1)(a) GDPR and § 25(1) TTDSG.</li>
+        </ul>
+        <p>
+          For more information see
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.
+          You can also prevent collection using
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out browser add-on</a>.
         </p>
 
-        <h3>4. Your Rights</h3>
+        <h3>7. Advertising</h3>
+        {adsEnabled ? (
+          <>
+            <p>
+              With your consent we display advertising through Google AdSense (Google Ireland Limited, Gordon House,
+              Barrow Street, Dublin 4, Ireland). Google and its partners may set cookies or comparable identifiers to
+              serve ads, measure their performance and — where you have agreed — show personalised advertising.
+            </p>
+            <p>
+              The legal basis is your consent (Art. 6(1)(a) GDPR, § 25(1) TTDSG), which you can withdraw at any time via
+              "Cookie settings". You can manage your Google ad preferences at
+              <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.
+            </p>
+          </>
+        ) : (
+          <p>
+            <strong>No advertising is currently served</strong> on this website and no advertising cookies are set.
+            Should this change, we will update this section in advance and obtain your consent through the cookie
+            notice before any such services are loaded.
+          </p>
+        )}
+
+        <h3>8. Contacting us by email</h3>
         <p>
-          You have the right to request information about your stored personal data, its origin, its recipients, and the purpose of its collection at no charge. You also have the right to request that it be corrected, blocked, or deleted. 
-          If you have further questions about privacy and data protection, you can contact us at any time using the address given in the Imprint.
+          If you contact us by email, we process your details to handle your enquiry and any follow-up questions. The
+          legal basis is our legitimate interest in responding (Art. 6(1)(f) GDPR), or Art. 6(1)(b) GDPR where the
+          enquiry relates to a contract. We do not pass this data on without your consent and delete it once it is no
+          longer required.
+        </p>
+
+        <h3>9. Retention</h3>
+        <p>
+          Server log files are deleted or anonymised automatically after a short period. Analytics data in Google
+          Analytics is deleted after a maximum of 14 months. Your locally stored cookie choice remains until you change
+          it or clear site data in your browser.
+        </p>
+
+        <h3>10. Your rights</h3>
+        <p>You have the right at any time to:</p>
+        <ul>
+          <li>access the personal data we process about you (Art. 15 GDPR),</li>
+          <li>rectification of inaccurate data (Art. 16 GDPR),</li>
+          <li>erasure (Art. 17 GDPR) and restriction of processing (Art. 18 GDPR),</li>
+          <li>data portability (Art. 20 GDPR),</li>
+          <li>object to processing based on legitimate interests (Art. 21 GDPR),</li>
+          <li>withdraw consent with effect for the future (Art. 7(3) GDPR).</li>
+        </ul>
+        <p>
+          You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR),
+          either where you reside or the authority responsible for the controller.
+        </p>
+
+        <h3>11. Changes to this privacy policy</h3>
+        <p>
+          We update this policy whenever our processing or the legal position changes. The version published here, with
+          the date shown above, is the one that applies.
         </p>
       </div>
     </div>

@@ -3,17 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { buildSEOMeta, getHubUrl, getFullUrl } from '../lib/seoEngine';
 
 const lang = 'de';
-const title = 'Datenschutzerklärung — Sicherer Umgang mit Ihren Daten';
-const description = 'Datenschutzerklärung für Zeit-Rechner.com. Erfahren Sie, wie wir Ihre Privatsphäre schützen. Berechnungen erfolgen zu 100% lokal.';
+const title = 'Datenschutzerklärung — Zeit-Rechner.com';
+const description = 'Datenschutzerklärung für Zeit-Rechner.com: Welche Daten verarbeitet werden, wie Google Analytics nur mit Einwilligung eingesetzt wird und welche Rechte du hast.';
 const canonical = '/datenschutz/';
 
-const seo = buildSEOMeta(
-  'hub', lang,
-  {},
-  canonical, 'en', '/en/privacy-policy/',
-  false
-);
+// Flip to true once Google AdSense is approved and the ad code is live.
+const adsEnabled = false;
 
+const seo = buildSEOMeta('hub', lang, {}, canonical, 'en', '/en/privacy-policy/', false);
 seo.title = title;
 seo.description = description;
 
@@ -30,11 +27,8 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
 >
   <section class="section landing-hero" style="padding-bottom: 2rem;">
     <div class="container container--narrow">
-      <div class="badge badge--accent" style="margin-bottom: var(--space-3);">
-        100% Client-Side Privacy
-      </div>
       <h1>Datenschutzerklärung</h1>
-      <p class="landing-hero__lead">Ihre Daten gehören Ihnen. Erfahren Sie, wie wir Ihre Privatsphäre schützen.</p>
+      <p class="landing-hero__lead">Transparente Informationen darüber, welche Daten beim Besuch dieser Website verarbeitet werden – und worüber du selbst entscheidest.</p>
       <div class="last-updated">Stand: {lastUpdated}</div>
     </div>
   </section>
@@ -42,34 +36,137 @@ const lastUpdated = new Date().toLocaleDateString('de-DE', { year: 'numeric', mo
   <section class="section" style="padding-top: 0;">
     <div class="container container--narrow">
       <div class="content-prose legal-content animate-in">
-        <h3>1. Datenschutz auf einen Blick</h3>
+
+        <h3>1. Verantwortlicher</h3>
         <p>
-          Die Nutzung von Zeit-Rechner.com ist in der Regel ohne Angabe personenbezogener Daten möglich. 
-          Soweit auf unseren Seiten personenbezogene Daten erhoben werden, erfolgt dies immer auf freiwilliger Basis.
+          Verantwortlich für die Datenverarbeitung auf dieser Website ist der im
+          <a href="/impressum/">Impressum</a> genannte Betreiber. Dort findest du auch die Kontaktdaten für alle
+          Anliegen zum Datenschutz.
         </p>
-        <p><strong>Besonderer Hinweis zum Zeitrechner:</strong></p>
+
+        <h3>2. Grundsatz: Deine Berechnungen bleiben auf deinem Gerät</h3>
+        <p>
+          Alle Rechenfunktionen dieser Website – Zeitspannen, Arbeitszeiten, Countdowns, Feiertage und Brückentage –
+          laufen <strong>ausschließlich lokal in deinem Browser</strong>. Die von dir eingegebenen Werte werden nicht an
+          unsere Server oder an Dritte übertragen und nicht gespeichert.
+        </p>
+
+        <h3>3. Hosting und Server-Logfiles</h3>
+        <p>
+          Diese Website wird bei der Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA, gehostet. Beim Abruf der
+          Seiten verarbeitet Vercel technisch notwendige Server-Logfiles, insbesondere IP-Adresse, Datum und Uhrzeit der
+          Anfrage, angefragte URL, Referrer, Browsertyp und Betriebssystem. Diese Verarbeitung ist erforderlich, um die
+          Website sicher und zuverlässig auszuliefern, und beruht auf unserem berechtigten Interesse
+          (Art. 6 Abs. 1 lit. f DSGVO). Für die Übermittlung in die USA stützt sich Vercel auf die
+          EU-Standardvertragsklauseln.
+        </p>
+
+        <h3>4. Cookies und lokale Speicherung</h3>
+        <p>
+          Für den Betrieb der Rechner sind <strong>keine Cookies erforderlich</strong>. Wir setzen lediglich folgende
+          Speichervorgänge ein:
+        </p>
         <ul>
-          <li>Alle Berechnungen (Zeiten, Daten, Countdowns) werden <strong>ausschließlich lokal in Ihrem Browser</strong> durchgeführt.</li>
-          <li>Ihre Berechnungsdaten werden <strong>niemals an unsere Server oder Dritte gesendet</strong>.</li>
-          <li>Wir speichern keine Cookies, um ihr Nutzerverhalten oder Ihre Berechnungen zu profilieren.</li>
+          <li>
+            <strong>Notwendig (ohne Einwilligung):</strong> Im lokalen Speicher deines Browsers (localStorage) merken
+            wir uns deine Cookie-Entscheidung sowie einzelne Bedien-Einstellungen der Rechner. Diese Daten verlassen
+            dein Gerät nicht. Rechtsgrundlage: § 25 Abs. 2 TTDSG, Art. 6 Abs. 1 lit. f DSGVO.
+          </li>
+          <li>
+            <strong>Statistik (nur mit Einwilligung):</strong> Google Analytics setzt Cookies bzw. vergleichbare
+            Kennungen ein – ausschließlich, wenn du zugestimmt hast (siehe Ziffer 5).
+          </li>
         </ul>
 
-        <h3>2. Hosting und Vercel</h3>
+        <h3>5. Einwilligung und Google Consent Mode</h3>
         <p>
-          Unsere Website wird bei Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet.
-          Vercel erhebt bei der Bereitstellung der Website sogenannte Server-Logfiles (umfasst u.A. IP-Adresse, Datum und Uhrzeit der Anfrage, genutzter Browser, Betriebssystem).
-          Die Erfassung dieser Daten durch Vercel ist technisch notwendig, um Ihnen unsere Website sicher und zuverlässig anzeigen zu können (Art. 6 Abs. 1 lit. f DSGVO).
+          Beim ersten Besuch fragen wir über einen Hinweis am Seitenende deine Einwilligung ab. Bis du zustimmst, sind
+          alle nicht notwendigen Dienste <strong>standardmäßig deaktiviert</strong> („denied" im Google Consent Mode v2);
+          das Analyse-Skript wird gar nicht erst geladen. Wählst du <em>„Nur notwendige"</em>, bleibt es dabei.
+        </p>
+        <p>
+          Du kannst deine Entscheidung jederzeit ändern oder widerrufen – über den Link
+          <strong>„Cookie-Einstellungen"</strong> im Fußbereich jeder Seite. Der Widerruf wirkt für die Zukunft; die
+          Rechtmäßigkeit der bis dahin erfolgten Verarbeitung bleibt unberührt.
         </p>
 
-        <h3>3. E-Mails und Kontaktaufnahmen</h3>
+        <h3>6. Google Analytics (nur mit Einwilligung)</h3>
         <p>
-          Wenn Sie uns per E-Mail kontaktieren, wird Ihre E-Mail inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+          Mit deiner Einwilligung nutzen wir Google Analytics 4, einen Webanalysedienst der Google Ireland Limited,
+          Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics hilft uns zu verstehen, welche Rechner und
+          Inhalte genutzt werden, um die Website zu verbessern.
+        </p>
+        <ul>
+          <li>Verarbeitet werden u. a. gekürzte IP-Adresse, Geräte- und Browserinformationen, aufgerufene Seiten, Verweildauer und Referrer.</li>
+          <li>Die <strong>IP-Anonymisierung ist aktiviert</strong>; deine IP-Adresse wird vor jeder weiteren Verarbeitung gekürzt.</li>
+          <li>Eine Übermittlung an die Google LLC in den USA ist möglich; Grundlage sind die EU-Standardvertragsklauseln sowie das EU-US Data Privacy Framework.</li>
+          <li>Rechtsgrundlage: deine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TTDSG.</li>
+        </ul>
+        <p>
+          Weitere Informationen findest du in der
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.
+          Zusätzlich kannst du die Erfassung mit dem
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Deaktivierungs-Add-on von Google</a>
+          unterbinden.
         </p>
 
-        <h3>4. Ihre Rechte</h3>
+        <h3>7. Werbung</h3>
+        {adsEnabled ? (
+          <>
+            <p>
+              Mit deiner Einwilligung binden wir Werbeanzeigen über Google AdSense ein (Google Ireland Limited, Gordon
+              House, Barrow Street, Dublin 4, Irland). Google und seine Partner können dabei Cookies oder vergleichbare
+              Kennungen setzen, um Anzeigen auszuliefern, deren Leistung zu messen und – sofern du dem zugestimmt hast –
+              personalisierte Werbung anzuzeigen.
+            </p>
+            <p>
+              Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG). Du kannst sie
+              jederzeit über „Cookie-Einstellungen" widerrufen. Deine Werbeeinstellungen bei Google kannst du unter
+              <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a> verwalten.
+            </p>
+          </>
+        ) : (
+          <p>
+            Derzeit werden auf dieser Website <strong>keine Werbeanzeigen ausgeliefert</strong> und keine
+            Werbe-Cookies gesetzt. Sollte sich das ändern, informieren wir an dieser Stelle vorab und holen deine
+            Einwilligung über den Cookie-Hinweis ein, bevor entsprechende Dienste geladen werden.
+          </p>
+        )}
+
+        <h3>8. Kontaktaufnahme per E-Mail</h3>
         <p>
-          Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.
-          Bei Fragen zum Datenschutz wenden Sie sich bitte an unsere im Impressum angegebene Adresse.
+          Wenn du uns per E-Mail kontaktierst, verarbeiten wir deine Angaben zur Bearbeitung der Anfrage und für
+          etwaige Anschlussfragen. Rechtsgrundlage ist unser berechtigtes Interesse an der Beantwortung
+          (Art. 6 Abs. 1 lit. f DSGVO) bzw. Art. 6 Abs. 1 lit. b DSGVO, sofern die Anfrage einen Vertrag betrifft. Wir
+          geben diese Daten nicht ohne deine Einwilligung weiter und löschen sie, sobald sie nicht mehr erforderlich sind.
+        </p>
+
+        <h3>9. Speicherdauer</h3>
+        <p>
+          Server-Logfiles werden nach kurzer Zeit automatisch gelöscht oder anonymisiert. Analysedaten in Google
+          Analytics werden nach maximal 14 Monaten gelöscht. Deine lokal gespeicherte Cookie-Entscheidung bleibt
+          erhalten, bis du sie änderst oder die Websitedaten in deinem Browser löschst.
+        </p>
+
+        <h3>10. Deine Rechte</h3>
+        <p>Du hast jederzeit das Recht auf:</p>
+        <ul>
+          <li>Auskunft über die zu deiner Person verarbeiteten Daten (Art. 15 DSGVO),</li>
+          <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO),</li>
+          <li>Löschung (Art. 17 DSGVO) und Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+          <li>Datenübertragbarkeit (Art. 20 DSGVO),</li>
+          <li>Widerspruch gegen Verarbeitungen auf Basis berechtigter Interessen (Art. 21 DSGVO),</li>
+          <li>Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO).</li>
+        </ul>
+        <p>
+          Zudem steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu (Art. 77 DSGVO). Zuständig ist
+          die Aufsichtsbehörde deines Wohnsitzes oder die für den Verantwortlichen zuständige Behörde.
+        </p>
+
+        <h3>11. Änderungen dieser Datenschutzerklärung</h3>
+        <p>
+          Wir passen diese Datenschutzerklärung an, sobald sich die Verarbeitung oder die Rechtslage ändert. Es gilt
+          jeweils die hier veröffentlichte Fassung mit dem oben genannten Stand.
         </p>
       </div>
     </div>
